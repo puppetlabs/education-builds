@@ -5,6 +5,7 @@
 - Modify root user password (for debug-login purposes)
 - Clone /usr/src/puppet /usr/src/facter /usr/src/mcollective
 - Kick off a puppet run
+- Shutdown VM
 
 ## Puppet Tasks:
 
