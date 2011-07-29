@@ -1,6 +1,4 @@
-# Author: Cody Herriges
-
-class puppetbase {
+class pebase {
   # do some basic setup for PE
   file { ['/etc/puppetlabs/',
           '/etc/puppetlabs/puppet/',
