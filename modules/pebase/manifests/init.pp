@@ -1,4 +1,7 @@
 class pebase {
+  #exec { 'Curl PE tarball':
+  #  command => 'curl -s -o /root/puppet-enterprise-1.1-centos-5-x86_64.tar http://kshost/',
+  #  source => '',
   # do some basic setup for PE
   file { ['/etc/puppetlabs/',
           '/etc/puppetlabs/puppet/',
