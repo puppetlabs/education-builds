@@ -1,8 +1,8 @@
 # Bootstrap CentOS VMs for training
 ## Kickstart Tasks:
 - Modify root user password (for debug-login purposes)
-- Clone /usr/src/puppet /usr/src/facter /usr/src/mcollective /usr/src/puppetlabs-training-bootstrap
-- Kick off a puppet run on /usr/src/puppetlabs-training-bootstrap/manifests/site.pp
+- Clone `/usr/src/puppet` `/usr/src/facter` `/usr/src/mcollective` `/usr/src/puppetlabs-training-bootstrap`
+- Kick off a puppet run on `/usr/src/puppetlabs-training-bootstrap/manifests/site.pp`
 - Shutdown VM
 
 ## Puppet Tasks (by module):
