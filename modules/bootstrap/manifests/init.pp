@@ -15,7 +15,14 @@ class bootstrap {
     mode   => '0755',
   }
   file { '/root/.bashrc':
-    source => 'puppet:///modules/bootstrap/root_bashrc',
+    source => 'puppet:///modules/bootstrap/bashrc',
+  }
+  file { '/root/.emacs':
+    source => 'puppet:///modules/bootstrap/emacs',
+  }
+  file { '/root/.emacs.d':
+    source   => 'puppet:///modules/bootstrap/emacs.d',
+    recusive => true,
   }
   yumrepo { 'puppetlabs':
     baseurl  => 'http://yum.puppetlabs.com/base/',
