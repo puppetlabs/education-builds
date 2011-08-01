@@ -1,0 +1,18 @@
+# .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias vi=vim
+#export TERM=ansi
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+  . /etc/bashrc
+fi
+
+## uncomment for dev training:
+#export PATH=/root/src/puppet/sbin:/root/src/puppet/bin:/root/src/facter/bin:$PATH
+#export RUBYLIB=/root/src/puppet/lib:/root/src/facter/lib:$RUBYLIB
