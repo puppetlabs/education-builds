@@ -1,7 +1,8 @@
 class pebase {
-  #exec { 'Curl PE tarball':
-  #  command => 'curl -s -o /root/puppet-enterprise-1.1-centos-5-x86_64.tar http://kshost/',
-  #  source => '',
+  exec { 'Curl PE tarball':
+    command => 'curl -s -o /root/puppet-enterprise-1.1-centos-5-x86_64.tar http://pm.puppetlabs.com/puppet-enterprise/1.1/puppet-enterprise-1.1-centos-5-x86_64.tar',
+    creates => '/root/puppet-enterprise-1.1-centos-5-x86_64.tar',
+  }
   # do some basic setup for PE
   file { ['/etc/puppetlabs/',
           '/etc/puppetlabs/puppet/',
@@ -10,8 +11,13 @@ class pebase {
          ]:
     ensure => directory
   }
-  file { '/etc/puppetlabs/puppet/manifests/site.pp':
-    content => ''
+  file { '/root/dev-answers.txt':
+    source => 'puppet:///modules/pebase/dev-answers.txt',
   }
-  # TODO - install our git version of Puppet using vcsrepo
+  file { '/root/pe-agent.answers':
+    source => 'puppet:///modules/pebase/pe-agent.answers',
+  }
+  file { '/root/pe-puppetmaster.answers':
+    source => 'puppet:///modules/pebase/pe-puppetmaster.answers',
+  }
 }
