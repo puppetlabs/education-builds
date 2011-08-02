@@ -25,30 +25,19 @@
 #     repopath => "${base}/mirror/centos/5/os/i386",
 #   }
 
-define localrepo::pkgsync ($pkglist = $name, $source, $server = "mirrors.cat.pdx.edu", $syncer = "rsync", $syncops = "-rltDvzPH --delete --delete-after", $repopath) {
+define localrepo::repobuild ($repopath, $repoer = "createrepo", $repoops = "-C -p") {
 
-  file { "/tmp/${name}list":
-    content => "${pkglist}",
-    mode     => 644,
-    owner    => puppet,
-    group    => puppet,
-    notify   => Exec["get_${name}"],
+  exec { "${name}_build":
+    command     => "${repoer} ${repoops} ${repopath}",
+    user        => puppet,
+    group       => puppet,
+    path        => "/usr/bin:/bin",
+    refreshonly => true,
   }
 
-  file { [ "${repopath}", "${repopath}/RPMS" ]:
-    ensure => directory,
-    mode   => 644,
-    owner  => puppet,
-    group  => puppet,
+  file { "/etc/yum.repos.d/${name}.repo":
+    content => "[${name}]\nname=Locally stored packages for ${name}\nbaseurl=file://${repopath}\nenabled=1\ngpgcheck=0",
+    require => Exec["${name}_build"],
   }
 
-  exec { "get_${name}":
-    command => "${syncer} ${syncops} --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS",
-    user    => puppet,
-    group   => puppet,
-    path    => "/usr/bin:/bin",
-    timeout => "1200",
-    onlyif  => "${syncer} ${syncops} -n --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS | grep 'rpm$'",
-    require  => [ File["${repopath}/RPMS"], File["/tmp/${name}list"] ],
-  }
 }

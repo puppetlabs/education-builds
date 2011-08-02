@@ -1,6 +1,6 @@
 class pebase {
   exec { 'Curl PE tarball':
-    command => 'curl -s -o /root/puppet-enterprise-1.1-centos-5-x86_64.tar http://pm.puppetlabs.com/puppet-enterprise/1.1/puppet-enterprise-1.1-centos-5-x86_64.tar',
+    command => '/usr/bin/curl -s -o /root/puppet-enterprise-1.1-centos-5-x86_64.tar http://pm.puppetlabs.com/puppet-enterprise/1.1/puppet-enterprise-1.1-centos-5-x86_64.tar',
     creates => '/root/puppet-enterprise-1.1-centos-5-x86_64.tar',
   }
   # do some basic setup for PE

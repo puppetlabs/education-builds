@@ -21,8 +21,8 @@ class bootstrap {
     source => 'puppet:///modules/bootstrap/emacs',
   }
   file { '/root/.emacs.d':
-    source   => 'puppet:///modules/bootstrap/emacs.d',
-    recusive => true,
+    source  => 'puppet:///modules/bootstrap/emacs.d',
+    recurse => true,
   }
   yumrepo { 'puppetlabs':
     baseurl  => 'http://yum.puppetlabs.com/base/',
