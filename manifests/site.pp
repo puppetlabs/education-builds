@@ -1,3 +1,5 @@
 node default {
-  # Post-kickstart stuff here
+  include bootstrap
+  include localrepo
+  include pebase
 }
