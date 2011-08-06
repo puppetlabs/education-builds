@@ -1,6 +1,9 @@
 <?php
 header("Content-Type: text/plain");
 echo("# host is " . $_SERVER['SERVER_NAME'] . "\n");
+$host = $_SERVER['SERVER_NAME'];
+preg_match('^/~(\w+)/^', $_SERVER['REQUEST_URI'], $user_match);
+$user = $user_match[1];
 ?>
 # product: centos
 # version: 5
@@ -67,15 +70,16 @@ tar
 set -x
 exec > /root/post.log 2>&1
 #sed -i "s/HOSTNAME.*/HOSTNAME=centos64/" /etc/sysconfig/network
-rpm -Uvh http://<? echo($_SERVER['SERVER_NAME']); ?>/ptb/epel-release-5-4.noarch.rpm
+curl -s http://<? echo($host . '/~' . $user); ?>/data/puppet-enterprise-1.1-centos-5-x86_64.tar | tar xf -
+rpm -Uvh http://<? echo($host . '/~' . $user); ?>/data/epel-release-5-4.noarch.rpm
 yum -y install git
 yum -y upgrade
 mkdir /usr/src
 cd /usr/src
-git clone git://github.com/puppetlabs/puppet.git
-git clone git://github.com/puppetlabs/facter.git
-git clone git://github.com/puppetlabs/marionette-collective.git mcollective
-git clone git://github.com/puppetlabs/puppetlabs-training-bootstrap.git
+git clone http://<? echo($host . '/~' . $user); ?>/data/puppet.git
+git clone http://<? echo($host . '/~' . $user); ?>/data/facter.git
+git clone http://<? echo($host . '/~' . $user); ?>/data/mcollective.git
+git clone http://<? echo($host . '/~' . $user); ?>/data/puppetlabs-training-bootstrap.git
 cd /root
 RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
 export RUBYLIB
