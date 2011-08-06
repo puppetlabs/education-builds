@@ -71,7 +71,7 @@ set -x
 exec > /root/post.log 2>&1
 #sed -i "s/HOSTNAME.*/HOSTNAME=centos64/" /etc/sysconfig/network
 curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-1.1-centos-5-x86_64.tar | tar xf -
-rpm -Uvh http://<? echo($host . '/~' . $user); ?>/ks/epel-release-5-4.noarch.rpm
+rpm -Uvh http://<? echo($host . '/%7E' . $user); ?>/ks/epel-release-5-4.noarch.rpm
 yum -y install git
 yum -y upgrade
 mkdir /usr/src
