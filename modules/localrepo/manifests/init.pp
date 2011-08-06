@@ -42,7 +42,7 @@ class localrepo {
                    "${base}/mirror/puppetlabs/local",
                    "${base}/mirror/puppetlabs/local/base", ]
 
-  File { mode => 644, owner => puppet, group => puppet }
+  File { mode => 644, owner => root, group => root }
 
   file { $directories:
     ensure => directory,

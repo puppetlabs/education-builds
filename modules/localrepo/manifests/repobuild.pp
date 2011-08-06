@@ -29,8 +29,8 @@ define localrepo::repobuild ($repopath, $repoer = "createrepo", $repoops = "-C -
 
   exec { "${name}_build":
     command     => "${repoer} ${repoops} ${repopath}",
-    user        => puppet,
-    group       => puppet,
+    user        => root,
+    group       => root,
     path        => "/usr/bin:/bin",
     refreshonly => true,
   }

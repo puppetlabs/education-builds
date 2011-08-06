@@ -30,22 +30,22 @@ define localrepo::pkgsync ($pkglist = $name, $source, $server = "mirrors.cat.pdx
   file { "/tmp/${name}list":
     content => "${pkglist}",
     mode     => 644,
-    owner    => puppet,
-    group    => puppet,
+    owner    => root,
+    group    => root,
     notify   => Exec["get_${name}"],
   }
 
   file { [ "${repopath}", "${repopath}/RPMS" ]:
     ensure => directory,
     mode   => 644,
-    owner  => puppet,
-    group  => puppet,
+    owner  => root,
+    group  => root,
   }
 
   exec { "get_${name}":
     command => "${syncer} ${syncops} --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS",
-    user    => puppet,
-    group   => puppet,
+    user    => root,
+    group   => root,
     path    => "/usr/bin:/bin",
     timeout => "1200",
     onlyif  => "${syncer} ${syncops} -n --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS | grep 'rpm$'",
