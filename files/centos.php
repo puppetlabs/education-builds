@@ -65,6 +65,8 @@ tar
 ruby
 
 %post
+exec < /dev/tty3 > /dev/tty3
+chvt 3
 (
 set -x
 cd /root
@@ -84,3 +86,4 @@ export RUBYLIB
 /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp
 echo 'Hello, World!'
 ) 2>&1 | /usr/bin/tee /root/post.log
+chvt 1
