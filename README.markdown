@@ -4,13 +4,13 @@
 - Clone this repo to anywhere
 - Download full CentOS DVD iso
 - Run ./scripts/setup-bootstrap.sh
-  - It will create `~/Sites/ks`
-    - It will copy centos kickstart file into `~/Sites/ks`
-    - It will copy PE tarball into `~/Sites/ks`
-    - It will clone four git repos into `~/Sites/ks`
-  - It will create `~/Sites/dvd`
-    - It will prompt for the location of the DVD image (Protip: drag 'n drop the .iso to the terminal instead of typing the path)
-    - It will mount the DVD image at `~/Sites/dvd`
+    - It will create `~/Sites/ks`
+        - It will copy centos kickstart file into `~/Sites/ks`
+        - It will copy PE tarball into `~/Sites/ks`
+        - It will clone four git repos into `~/Sites/ks`
+    - It will create `~/Sites/dvd`
+        - It will prompt for the location of the DVD image (Protip: drag 'n drop the .iso to the terminal instead of typing the path)
+        - It will mount the DVD image at `~/Sites/dvd`
   - It will enable php on your local apache for kickstart (prompts for password for sudo)
 - Enable web sharing in System Preferences if it is not already enabled
 - Boot a blank VM with `~/Sites/dvd/images/boot.iso`
