@@ -94,8 +94,12 @@ fi
 
 ## Enable PHP for kickstart file {{{1
 #
-echo "Enabling php... (requires sudo)"
-sudo sed -i -e 's^#LoadModule php5_module libexec/apache2/libphp5.so^LoadModule php5_module libexec/apache2/libphp5.so^' /private/etc/apache2/httpd.conf || bail "Cannot enable php"
-sudo apachectl restart || bail "Cannot restart apache"
-echo "Copying centos.php..."
+if `grep '#LoadModule php5_module' /private/etc/apache2/httpd.conf > /dev/null` ; then
+    echo "Enabling php... (requires sudo)"
+    sudo sed -i -e 's^#LoadModule php5_module libexec/apache2/libphp5.so^LoadModule php5_module libexec/apache2/libphp5.so^' /private/etc/apache2/httpd.conf || bail "Cannot enable php"
+    sudo apachectl restart || bail "Cannot restart apache"
+else
+    echo "PHP already enabled... (skipping)"
+fi
+echo "Copying centos.php to ks.php..."
 cp ${repodir}/files/centos.php ${datadir}/ks.php
