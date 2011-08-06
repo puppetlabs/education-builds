@@ -23,8 +23,6 @@ part pv.01 --size=1 --grow
 volgroup vg00 pv.01
 logvol / --name=rootvol --vgname=vg00 --size=1 --grow --fstype ext3
 logvol swap --name=swapvol --vgname=vg00 --size=256
-#logvol /tmp --name=tmpvol --vgname=vg00 --size=1024 --fstype ext3
-#logvol /home --name=homevol --vgname=vg00 --size=5120 --fstyp ext3
 # Use text mode install
 #text
 # Use the *real* text mode install
