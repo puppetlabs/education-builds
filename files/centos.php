@@ -1,3 +1,7 @@
+<?php
+header("Content-Type: text/plain");
+echo("# host is " . $_SERVER['SERVER_NAME'] . "\n");
+?>
 # product: centos
 # version: 5
 # arch: x64
@@ -31,7 +35,7 @@ lang en_US
 # Installation logging level
 logging --level=info
 # Use network installation
-url --url=http://mirrors.herriges.lan/centos/5/os/x86_64
+url --url=http://<? echo($_SERVER['SERVER_NAME']); ?>/dvd/centos/5/os/x86_64
 # Network information
 network --bootproto=dhcp --device=eth0 --onboot=on
 # Reboot after installation
@@ -44,7 +48,7 @@ selinux --disabled
 # Do not configure the X Window System
 skipx
 # System timezone
-timezone  America/Los_Angeles
+timezone UTC
 # Install OS instead of upgrade
 install
 
@@ -63,7 +67,7 @@ tar
 set -x
 exec > /root/post.log 2>&1
 #sed -i "s/HOSTNAME.*/HOSTNAME=centos64/" /etc/sysconfig/network
-rpm -Uvh http://download.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
+rpm -Uvh http://<? echo($_SERVER['SERVER_NAME']); ?>/ptb/epel-release-5-4.noarch.rpm
 yum -y install git
 yum -y upgrade
 mkdir /usr/src
