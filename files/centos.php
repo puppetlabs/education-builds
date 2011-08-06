@@ -70,16 +70,16 @@ tar
 set -x
 exec > /root/post.log 2>&1
 #sed -i "s/HOSTNAME.*/HOSTNAME=centos64/" /etc/sysconfig/network
-curl -s http://<? echo($host . '/~' . $user); ?>/data/puppet-enterprise-1.1-centos-5-x86_64.tar | tar xf -
-rpm -Uvh http://<? echo($host . '/~' . $user); ?>/data/epel-release-5-4.noarch.rpm
+curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-1.1-centos-5-x86_64.tar | tar xf -
+rpm -Uvh http://<? echo($host . '/~' . $user); ?>/ks/epel-release-5-4.noarch.rpm
 yum -y install git
 yum -y upgrade
 mkdir /usr/src
 cd /usr/src
-git clone http://<? echo($host . '/~' . $user); ?>/data/puppet.git
-git clone http://<? echo($host . '/~' . $user); ?>/data/facter.git
-git clone http://<? echo($host . '/~' . $user); ?>/data/mcollective.git
-git clone http://<? echo($host . '/~' . $user); ?>/data/puppetlabs-training-bootstrap.git
+git clone http://<? echo($host . '/~' . $user); ?>/ks/puppet.git
+git clone http://<? echo($host . '/~' . $user); ?>/ks/facter.git
+git clone http://<? echo($host . '/~' . $user); ?>/ks/mcollective.git
+git clone http://<? echo($host . '/~' . $user); ?>/ks/puppetlabs-training-bootstrap.git
 cd /root
 RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
 export RUBYLIB

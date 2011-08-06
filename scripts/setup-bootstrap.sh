@@ -35,7 +35,7 @@ function gitclone () {
 
 ## Set up the directory variables {{{1
 #
-datadir="${HOME}/Sites/data"
+datadir="${HOME}/Sites/ks"
 mountdir="${HOME}/Sites/dvd"
 repodir="`dirname $0`/.."
 echo "Creating directories..."
@@ -84,7 +84,7 @@ gitclone \
 ## Mount ~/Sites/dvd from centos DVD {{{1
 #
 if [[ ! -f ${mountdir}/GPL ]] ; then
-    echo -n "Please enter the path to CentOS DVD iso (drag 'n drop): "
+    echo "Please enter the path to CentOS DVD iso (drag 'n drop): \c"
     read cdrompath
     hdiutil attach -mountpoint $mountdir $cdrompath || bail "Cannot mount ${cdrompath}"
 else
@@ -94,7 +94,7 @@ fi
 
 ## Enable PHP for kickstart file {{{1
 #
-echo "Enabling php..."
+echo "Enabling php... (requires sudo)"
 sudo sed -i -e 's^#LoadModule php5_module libexec/apache2/libphp5.so^LoadModule php5_module libexec/apache2/libphp5.so^' /private/etc/apache2/httpd.conf || bail "Cannot enable php"
 sudo apachectl restart || bail "Cannot restart apache"
 echo "Copying centos.php..."
