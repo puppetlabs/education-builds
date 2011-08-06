@@ -13,9 +13,9 @@ class pebase {
          ]:
     ensure => directory
   }
-  file { '/root/puppet-enterprise-1.1-centos-5-x86_64.tar':
-    source => 'puppet:///modules/pebase/puppet-enterprise-1.1-centos-5-x86_64.tar',
-  }
+  #file { '/root/puppet-enterprise-1.1-centos-5-x86_64.tar':
+  #  source => 'puppet:///modules/pebase/puppet-enterprise-1.1-centos-5-x86_64.tar',
+  #}
   file { '/root/dev-answers.txt':
     source => 'puppet:///modules/pebase/dev-answers.txt',
   }
