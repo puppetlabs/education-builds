@@ -47,7 +47,7 @@ define localrepo::pkgsync ($pkglist = $name, $source, $server = "mirrors.cat.pdx
     user    => root,
     group   => root,
     path    => "/usr/bin:/bin",
-    timeout => "1200",
+    timeout => "2400",
     onlyif  => "${syncer} ${syncops} -n --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS | grep 'rpm$'",
     require  => [ File["${repopath}/RPMS"], File["/tmp/${name}list"] ],
   }
