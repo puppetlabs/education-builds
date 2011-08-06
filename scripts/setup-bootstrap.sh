@@ -101,5 +101,5 @@ if `grep '#LoadModule php5_module' /private/etc/apache2/httpd.conf > /dev/null` 
 else
     echo "PHP already enabled... (skipping)"
 fi
-echo "Copying centos.php to ks.php..."
-cp ${repodir}/files/centos.php ${datadir}/ks.php
+echo "Copying centos.php..."
+cp ${repodir}/files/centos.php ${datadir}

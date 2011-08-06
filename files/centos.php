@@ -38,7 +38,7 @@ lang en_US
 # Installation logging level
 logging --level=info
 # Use network installation
-url --url=http://<? echo($_SERVER['SERVER_NAME']); ?>/dvd/centos/5/os/x86_64
+url --url=http://<? echo($host . '/~' . $user); ?>/dvd
 # Network information
 network --bootproto=dhcp --device=eth0 --onboot=on
 # Reboot after installation
