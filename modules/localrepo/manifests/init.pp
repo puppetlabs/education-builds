@@ -49,6 +49,10 @@ class localrepo {
     recurse => true,
   }
 
+  package { 'createrepo':
+    ensure => present,
+  }
+
   ## Build the "base" repo
   localrepo::pkgsync { "base_pkgs":
     pkglist  => "perl-URI*\nsubversion*\nneon*\ngmp*\nhttpd*\nperl-DBI*\nlibart_lgpl*\napr*\nruby-rdoc*\nntp*\nbluez-libs*\nbluez-utils*\nperl-DBD-MySQL*\nruby-ri*\nruby-irb*\nscreen*\nemacs*\nvim*\nemacs-nox*\njava-1.6.0-openjdk*\nalsa-lib*\ngiflib*\njpackage-utils*\nlibXtst*\nopenssh*\nopenssh-clients*\nopenssh-server*\n",
@@ -59,6 +63,7 @@ class localrepo {
 
   localrepo::repobuild { "base_local":
     repopath => "${base}/mirror/centos/5/os/i386",
+    require  => Package["createrepo"],
     notify   => Exec["makecache"],
   }
 
@@ -72,6 +77,7 @@ class localrepo {
 
   localrepo::repobuild { "updates_local":
     repopath => "${base}/mirror/centos/5/updates/i386",
+    require  => Package["createrepo"],
     notify   => Exec["makecache"],
   }
 
@@ -85,6 +91,7 @@ class localrepo {
 
   localrepo::repobuild { "epel_local":
     repopath => "${base}/mirror/epel/5/local/i386",
+    require  => Package["createrepo"],
     notify   => Exec["makecache"],
   }
 
@@ -99,6 +106,7 @@ class localrepo {
 
   localrepo::repobuild { "puppetlabs_local":
     repopath => "${base}/mirror/puppetlabs/local/base/i386",
+    require  => Package["createrepo"],
     notify   => Exec["makecache"],
   }
 
