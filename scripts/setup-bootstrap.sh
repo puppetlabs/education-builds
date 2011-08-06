@@ -83,9 +83,13 @@ gitclone \
 
 ## Mount ~/Sites/dvd from centos DVD {{{1
 #
-echo -n "Please enter the path to CentOS DVD iso (drag 'n drop): "
-read cdrompath
-hdiutil attach -mountpoint $mountdir $cdrompath || bail "Cannot mount ${cdrompath}"
+if [[ ! -f ${mountdir}/GPL ]] ; then
+    echo -n "Please enter the path to CentOS DVD iso (drag 'n drop): "
+    read cdrompath
+    hdiutil attach -mountpoint $mountdir $cdrompath || bail "Cannot mount ${cdrompath}"
+else
+    echo "$mountdir is already mounted; skipping"
+fi
 
 
 ## Enable PHP for kickstart file {{{1
