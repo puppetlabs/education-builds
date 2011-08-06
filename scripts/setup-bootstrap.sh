@@ -29,7 +29,7 @@ function gitclone () {
     destination=$2
     [[ ! -d $destination ]] \
         && (git clone --bare $source $destination && cd $destination && git update-server-info || bail "Cannot clone ${source}") \
-        || (cd $destination && (git fetch || bail "Cannot pull ${source}"))
+        || (cd $destination && (git fetch origin '+refs/heads/*:refs/heads/*' || bail "Cannot pull ${source}"))
 }
 
 
