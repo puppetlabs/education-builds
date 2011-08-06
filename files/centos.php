@@ -26,7 +26,9 @@ logvol swap --name=swapvol --vgname=vg00 --size=1024
 logvol /tmp --name=tmpvol --vgname=vg00 --size=1024 --fstype ext3
 logvol /home --name=homevol --vgname=vg00 --size=5120 --fstyp ext3
 # Use text mode install
-text
+#text
+# Use the *real* text mode install
+cmdline
 # Firewall configuration
 firewall --disabled
 # Run the Setup Agent on first boot
@@ -56,24 +58,22 @@ timezone UTC
 install
 
 #Packages
-%packages
-@base
+%packages --excludedocs --nobase
+@Core
 @editors
-@server-cfg
-@system-tools
 ntp
 curl
 tar
--sysreport
+ruby
 
 %post
+(
 set -x
-exec > /root/post.log 2>&1
+cd /root
 #sed -i "s/HOSTNAME.*/HOSTNAME=centos64/" /etc/sysconfig/network
 curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-1.1-centos-5-x86_64.tar | tar xf -
 rpm -Uvh http://<? echo($host . '/%7E' . $user); ?>/ks/epel-release-5-4.noarch.rpm
 yum -y install git
-yum -y install ruby
 yum -y upgrade
 cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/puppet.git
@@ -84,4 +84,5 @@ cd /root
 RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
 export RUBYLIB
 /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp
-#curl -s http://host.vm.lan/~ody/enterprise/puppet-enterprise-1.1-ubuntu-10.04-amd64.tar | tar xf -
+echo 'Hello, World!'
+) 2>&1 | /usr/bin/tee /root/post.log
