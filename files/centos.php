@@ -73,8 +73,8 @@ exec > /root/post.log 2>&1
 curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-1.1-centos-5-x86_64.tar | tar xf -
 rpm -Uvh http://<? echo($host . '/%7E' . $user); ?>/ks/epel-release-5-4.noarch.rpm
 yum -y install git
+yum -y install ruby
 yum -y upgrade
-mkdir /usr/src
 cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/puppet.git
 git clone http://<? echo($host . '/~' . $user); ?>/ks/facter.git
