@@ -25,4 +25,8 @@ class pebase {
   file { '/root/pe-puppetmaster.answers':
     source => 'puppet:///modules/pebase/pe-puppetmaster.answers',
   }
+  file { '/root/puppet-enterprise':
+    ensure => symlink,
+    target => '/root/puppet-enterprise-1.1-centos-5-x86_64',
+  }
 }
