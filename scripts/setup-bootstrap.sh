@@ -1,8 +1,8 @@
 #!/bin/sh
 
 set -e
-set -x
 set -u
+#set -x
 
 ## Define helper functions {{{1
 #
@@ -16,21 +16,31 @@ function download () {
     ## Usage: download <source> <destination>
     source=$1
     destination=$2
-    [[ ! -f $destination ]] \
-        && curl -so $destination $source \
-        || bail "Cannot curl ${source}"
+    [[ ! -f $destination ]] && (curl -so $destination $source || bail "Cannot curl ${source}")
+    true
 }
 # 2}}}
+
+# Git clone/pull function {{{2
+#
+function gitclone () {
+    ## Usage: clone <source> <destination>
+    source=$1
+    destination=$2
+    [[ ! -d $destination ]] \
+        && (git clone --bare $source $destination || bail "Cannot clone ${source}") \
+        || (cd $destination && (git pull || bail "Cannot pull ${source}"))
+}
 
 
 ## Set up the directory variables {{{1
 #
 datadir="${HOME}/Sites/data"
 mountdir="${HOME}/Sites/dvd"
-moduledir="`dirname $0`/../modules"
+repodir="`dirname $0`/.."
 echo "Creating directories..."
-[[ ! -d $datadir ]] && mkdir $datadir #|| bail "Cannot create ${datadir}"
-[[ ! -d $mountdir ]] && mkdir $mountdir #|| bail "Cannot create ${mountdir}"
+[[ ! -d $datadir ]] && (mkdir $datadir || bail "Cannot create ${datadir}")
+[[ ! -d $mountdir ]] && (mkdir $mountdir || bail "Cannot create ${mountdir}")
 
 
 ## Download files to 'data' {{{1
@@ -47,20 +57,28 @@ download \
 echo "Downloading PE..."
 download \
     https://pm.puppetlabs.com/puppet-enterprise/1.1/puppet-enterprise-1.1-centos-5-x86_64.tar \
-    ${moduledir}/pebase/files/puppet-enterprise-1.1-centos-5-x86_64.tar
+    ${datadir}/puppet-enterprise-1.1-centos-5-x86_64.tar
 # 2}}}
 
 
 ## Clone repos to 'data' {{{1
 #
-echo "Cloning puppet..."
-git clone git://github.com/puppetlabs/puppet.git ${datadir}/puppet || bail "Cannot clone puppet"
-echo "Cloning facter..."
-git clone git://github.com/puppetlabs/facter.git ${datadir}/facter || bail "Cannot clone facter"
-echo "Cloning mcollective..."
-git clone git://github.com/puppetlabs/marionette-collective.git ${datadir}/mcollective || bail "Cannot clone mcollective"
-echo "Cloning ptb..."
-git clone git@github.com:puppetlabs/puppetlabs-training-bootstrap.git ${datadir}/puppetlabs-training-bootstrap || bail "Cannot clone ptb"
+echo "Cloning puppet..." # {{{2
+gitclone \
+    git://github.com/puppetlabs/puppet.git \
+    ${datadir}/puppet.git
+echo "Cloning facter..." # {{{2
+gitclone \
+    git://github.com/puppetlabs/facter.git \
+    ${datadir}/facter.git
+echo "Cloning mcollective..." # {{{2
+gitclone \
+    git://github.com/puppetlabs/marionette-collective.git \
+    ${datadir}/mcollective.git
+echo "Cloning ptb..." # {{{2
+gitclone \
+    git@github.com:puppetlabs/puppetlabs-training-bootstrap.git \
+    ${datadir}/puppetlabs-training-bootstrap.git
 
 
 ## Mount ~/Sites/dvd from centos DVD {{{1
@@ -75,3 +93,5 @@ hdiutil attach -mountpoint $mountdir $cdrompath || bail "Cannot mount ${cdrompat
 echo "Enabling php..."
 sudo sed -i -e 's^#LoadModule php5_module libexec/apache2/libphp5.so^LoadModule php5_module libexec/apache2/libphp5.so^' /private/etc/apache2/httpd.conf || bail "Cannot enable php"
 sudo apachectl restart || bail "Cannot restart apache"
+echo "Copying centos.php..."
+cp ${repodir}/files/centos.php ${datadir}/ks.php
