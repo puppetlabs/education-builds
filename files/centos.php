@@ -56,8 +56,9 @@ timezone UTC
 install
 
 #Packages
-%packages --excludedocs --nobase
+%packages
 @Core
+@base
 @editors
 ntp
 curl
