@@ -14,5 +14,5 @@ if [ -f /etc/bashrc ]; then
 fi
 
 ## uncomment for dev training:
-#export PATH=/root/src/puppet/sbin:/root/src/puppet/bin:/root/src/facter/bin:$PATH
-#export RUBYLIB=/root/src/puppet/lib:/root/src/facter/lib:$RUBYLIB
+#export PATH=/usr/src/puppet/sbin:/usr/src/puppet/bin:/usr/src/facter/bin:$PATH
+#export RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib:$RUBYLIB
