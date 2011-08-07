@@ -75,7 +75,6 @@ cd /root
 curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-1.1-centos-5-x86_64.tar | tar xf -
 rpm -Uvh http://<? echo($host . '/%7E' . $user); ?>/ks/epel-release-5-4.noarch.rpm
 yum -y install git
-yum -y upgrade
 cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/puppet.git
 cd puppet && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/puppet.git && git fetch origin ; cd /usr/src
