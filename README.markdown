@@ -13,9 +13,17 @@
         - It will mount the DVD image at `~/Sites/dvd`
   - It will enable php on your local apache for kickstart (prompts for password for sudo)
 - Enable web sharing in System Preferences if it is not already enabled
+- Create a blank VM with 4GB disk and 256MB ram named "Puppet Training"
 - Boot a blank VM with `~/Sites/dvd/images/boot.iso`
 - At `boot:` prompt, enter `linux ks=http://192.168.XXX.1/~username/ks/centos.php`
 - Wait 30 minutes (depends on bandwidth for `yum update` et al)
+- Remove the `boot.iso` from the VMs cdrom
+- Shutdown the vm
+
+## Packaging the VM:
+- Quit VMWare
+- Remove the `.lck` and `.log` files from the VM directory
+- Uh, `<insert directions from Puppetlabs sites here>`
 
 ## Kickstart Tasks:
 - Modify root user password (for debug-login purposes)
