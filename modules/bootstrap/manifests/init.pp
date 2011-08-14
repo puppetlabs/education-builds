@@ -24,6 +24,14 @@ class bootstrap {
     source  => 'puppet:///modules/bootstrap/emacs.d',
     recurse => true,
   }
+  file { '/root/.vim':
+    ensure  => 'directory',
+    source  => "/usr/src/puppet/ext/vim",
+    recurse => true,
+  }
+  file { '/root/.vimrc':
+    source => 'puppet:///modules/bootstrap/vimrc',
+  }
   yumrepo { 'puppetlabs':
     baseurl  => 'http://yum.puppetlabs.com/base/',
     enabled  => '0',
