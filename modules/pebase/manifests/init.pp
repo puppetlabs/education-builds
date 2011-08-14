@@ -27,6 +27,6 @@ class pebase {
   }
   file { '/root/puppet-enterprise':
     ensure => symlink,
-    target => '/root/puppet-enterprise-1.1-centos-5-x86_64',
+    target => '/root/puppet-enterprise-1.1-centos-5-i386',
   }
 }

@@ -49,5 +49,5 @@
 - Create symlink at `/root/puppet-enterprise`
 - Set up `/etc` directories for PE
 - At some point in the future: (currently in kickstart)
-    - Grab PE tarball from the [direct link](http://pm.puppetlabs.com/puppet-enterprise/1.1/puppet-enterprise-1.1-centos-5-x86_64.tar)
+    - Grab PE tarball from the [direct link](http://pm.puppetlabs.com/puppet-enterprise/1.1/puppet-enterprise-1.1-centos-5-i386.tar)
 

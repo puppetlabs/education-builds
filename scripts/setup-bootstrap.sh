@@ -49,15 +49,15 @@ echo "Creating directories..."
 #
 echo "Downloading epel..."
 download \
-    http://mirrors.cat.pdx.edu/epel/5/x86_64/epel-release-5-4.noarch.rpm \
+    http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm \
     ${datadir}/epel-release-5-4.noarch.rpm
 
 # Download PE tarball {{{2
 #
 echo "Downloading PE..."
 download \
-    https://pm.puppetlabs.com/puppet-enterprise/1.1/puppet-enterprise-1.1-centos-5-x86_64.tar \
-    ${datadir}/puppet-enterprise-1.1-centos-5-x86_64.tar
+    https://pm.puppetlabs.com/puppet-enterprise/1.1/puppet-enterprise-1.1-centos-5-i386.tar \
+    ${datadir}/puppet-enterprise-1.1-centos-5-i386.tar
 # 2}}}
 
 
