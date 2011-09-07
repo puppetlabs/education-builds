@@ -69,7 +69,7 @@ class localrepo {
 
   ## Build the "updates" repo
   localrepo::pkgsync { "updates_pkgs":
-    pkglist  => "php*\nkernel-headers*\nlibgomp*\ncpp*\ngcc*\nglibc*\nmysql*\npostgresql-libs*\n",
+    pkglist  => "php*\nkernel-headers*\nlibgomp*\ncpp*\ngcc*\nglibc*\ngcc*\nmysql*\npostgresql-libs*\n",
     repopath => "${base}/mirror/centos/5/updates/i386",
     source   => "::centos/5/updates/i386/RPMS/",
     notify   => Repobuild["updates_local"]
