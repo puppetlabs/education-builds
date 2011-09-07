@@ -72,7 +72,7 @@ chvt 3
 set -x
 cd /root
 #sed -i "s/HOSTNAME.*/HOSTNAME=centos32/" /etc/sysconfig/network
-curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-1.1-centos-5-i386.tar | tar xf -
+curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-1.2.1-el-5-i386.tar.gz | tar zxf -
 rpm -Uvh http://<? echo($host . '/%7E' . $user); ?>/ks/epel-release-5-4.noarch.rpm
 yum -y install git
 #yum -y upgrade

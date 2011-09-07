@@ -56,8 +56,8 @@ download \
 #
 echo "Downloading PE..."
 download \
-    https://pm.puppetlabs.com/puppet-enterprise/1.1/puppet-enterprise-1.1-centos-5-i386.tar \
-    ${datadir}/puppet-enterprise-1.1-centos-5-i386.tar
+    https://pm.puppetlabs.com/puppet-enterprise/1.2.1/puppet-enterprise-1.2.1-el-5-i386.tar.gz \
+    ${datadir}/puppet-enterprise-1.2.1-el-5-i386.tar.gz
 # 2}}}
 
 

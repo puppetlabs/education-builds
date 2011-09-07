@@ -10,7 +10,7 @@ OVFTOOL=${OVFTOOL:='/opt/vmware/ovftool/ovftool'}
 OVFOPS=${OVFOPS:='-dm=monolithicSparse'}
 OSVER=${OSVER:='5.5'}
 OSDIST=${OSDIST:='centos'}
-PUPPETVER=${PUPPETVER:='pe-1.1'}
+PUPPETVER=${PUPPETVER:='pe-1.2.1'}
 VMDIST=${VMDIST:='vmware'}
 
 PATCH='--- CentOS-min.ovf       2010-08-27 12:11:48.000000000 -0700
