@@ -70,6 +70,8 @@ exec < /dev/tty3 > /dev/tty3
 chvt 3
 (
 set -x
+groupadd -r puppet
+useradd -d /var/lib/puppet -g puppet -M -r puppet
 cd /root
 #sed -i "s/HOSTNAME.*/HOSTNAME=centos32/" /etc/sysconfig/network
 curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-1.2.1-el-5-i386.tar.gz | tar zxf -
