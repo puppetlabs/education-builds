@@ -41,8 +41,8 @@ logging --level=info
 url --url=http://<? echo($host . '/~' . $user); ?>/dvd
 # Network information
 network --bootproto=dhcp --device=eth0 --onboot=on
-# Reboot after installation
-reboot
+# Shutdown after installation so we don't have to
+shutdown
 #Root password
 rootpw --iscrypted $1$jrm5tnjw$h8JJ9mCZLmJvIxvDLjw1M/
 
