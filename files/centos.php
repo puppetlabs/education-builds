@@ -80,13 +80,13 @@ yum -y install git
 #yum -y upgrade
 cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/puppet.git
-cd puppet && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/puppet.git && git fetch origin ; cd /usr/src
+cd puppet && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/puppet.git && git fetch origin && git branch --set-upstream master origin/master ; cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/facter.git
-cd facter && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/facter.git && git fetch origin ; cd /usr/src
+cd facter && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/facter.git && git fetch origin && git branch --set-upstream master origin/master ; cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/mcollective.git
-cd mcollective && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/marionette-collective.git && git fetch origin ; cd /usr/src
+cd mcollective && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/marionette-collective.git && git fetch origin && git branch --set-upstream master origin/master ; cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/puppetlabs-training-bootstrap.git
-cd puppetlabs-training-bootstrap && git remote rename origin ks && git remote add origin git@github.com:puppetlabs/puppetlabs-training-bootstrap.git ; cd /usr/src
+cd puppetlabs-training-bootstrap && git remote rename origin ks && git remote add origin git@github.com:puppetlabs/puppetlabs-training-bootstrap.git && git branch --set-upstream master origin/master ; cd /usr/src
 cd /root
 RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
 export RUBYLIB
