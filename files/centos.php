@@ -91,6 +91,8 @@ cd /root
 RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
 export RUBYLIB
 /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp
+# Cleanup from the puppet run
+rm -rf /var/lib/puppet
 echo 'Hello, World!'
 ) 2>&1 | /usr/bin/tee /root/post.log
 chvt 1
