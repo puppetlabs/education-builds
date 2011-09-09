@@ -8,10 +8,11 @@ OSSLBIN=${OSSLBIN:='/opt/local/bin/openssl'}
 SEDBIN=${SEDBIN:='/usr/bin/sed'}
 OVFTOOL=${OVFTOOL:='/opt/vmware/ovftool/ovftool'}
 OVFOPS=${OVFOPS:='-dm=monolithicSparse'}
-OSVER=${OSVER:='5.5'}
+OSVER=${OSVER:='5.6'}
 OSDIST=${OSDIST:='centos'}
 PUPPETVER=${PUPPETVER:='pe-1.2.1'}
 VMDIST=${VMDIST:='vmware'}
+VMNAME=${OSDIST}-${OSVER}-${PUPPETVER}-${VMDIST}
 
 PATCH='--- CentOS-min.ovf       2010-08-27 12:11:48.000000000 -0700
 +++ CentOS-min-edit.ovf  2010-08-27 12:14:38.000000000 -0700
@@ -38,7 +39,7 @@ PATCH='--- CentOS-min.ovf       2010-08-27 12:11:48.000000000 -0700
 \ No newline at end of file
 +</Envelope>'
 
-${OVFTOOL} ${OVFOPS} ../${OSDIST}-${OSVER}-${PUPPETVER}-${VMDIST}/CentOS-min.vmx ${PWD}/CentOS-min.ovf
+${OVFTOOL} ${OVFOPS} ../${VMNAME}/${VMNAME}.vmx ${PWD}/${VMNAME}.ovf
 
 OVFFILE=`ls ${PWD} | grep \.ovf$`
 MFFILE=`ls ${PWD} | grep \.mf$`
@@ -52,5 +53,5 @@ rm -f ${OVFFILE}.orig
 
 NEWSHA=`${OSSLBIN} sha1 ${OVFFILE}`
 
-${SEDBIN} s/"SHA1(CentOS-min.ovf.*"/"${NEWSHA}"/ ${MFFILE} > ${MFFILE}.tmp
+${SEDBIN} s/"SHA1(${VMNAME}.ovf.*"/"${NEWSHA}"/ ${MFFILE} > ${MFFILE}.tmp
 mv ${MFFILE}.tmp ${MFFILE}
