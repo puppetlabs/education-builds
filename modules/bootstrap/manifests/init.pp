@@ -38,7 +38,7 @@ class bootstrap {
     gpgcheck => '0',
     descr    => 'Puppetlabs yum repo'
   }
-  yumrepo { ['epel', 'updates', 'base']:
+  yumrepo { ['epel', 'updates', 'base', 'extras']:
     enabled => 0,
   }
   service { 'sshd':
@@ -46,5 +46,18 @@ class bootstrap {
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
+  }
+
+  # puppetmaster bluetooth training
+  service { 'hidd':
+    ensure => stopped,
+    enable => false,
+    # hasstatus => broken
+  } ->
+  package { 'bluez-utils':
+    ensure => absent,
+  } ->
+  package { 'bluez-libs':
+    ensure => absent,
   }
 }

@@ -36,9 +36,10 @@
 ### bootstrap
 - Set up root password, `.bashrc`
 - Set up Yumrepo for `puppetlabs` disabled
-- Disable `epel`, `base`, and `updates` Yumrepos
+- Disable `epel`, `base`, `updates`, and `extras`  Yumrepos
 - Set up `host` entries (optional)
 - Start `sshd`
+- Disable bluetooth and remove bluetooth packages
 
 ### localrepo
 - Create local repo
@@ -50,4 +51,3 @@
 - Set up `/etc` directories for PE
 - At some point in the future: (currently in kickstart)
     - Grab PE tarball from the [direct link](https://pm.puppetlabs.com/puppet-enterprise/1.2.1/puppet-enterprise-1.2.1-el-5-i386.tar.gz)
-
