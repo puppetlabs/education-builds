@@ -14,8 +14,8 @@ PUPPETVER=${PUPPETVER:='pe-1.2.1'}
 VMDIST=${VMDIST:='vmware'}
 VMNAME=${OSDIST}-${OSVER}-${PUPPETVER}-${VMDIST}
 
-PATCH='--- CentOS-min.ovf       2010-08-27 12:11:48.000000000 -0700
-+++ CentOS-min-edit.ovf  2010-08-27 12:14:38.000000000 -0700
+PATCH='--- centos-5.6-pe-1.2.1-vmware.ovf	2011-09-27 05:52:34.000000000 -0400
++++ centos-5.6-pe-1.2.1-vmware.ovf.new	2011-09-27 05:56:31.000000000 -0400
 @@ -14,11 +14,12 @@
        <Description>The nat network</Description>
      </Network>
@@ -24,20 +24,13 @@ PATCH='--- CentOS-min.ovf       2010-08-27 12:11:48.000000000 -0700
 +  <VirtualSystem ovf:id="Puppet Training">
      <Info>A virtual machine</Info>
      <Name>Puppet Training</Name>
--    <OperatingSystemSection ovf:id="36" vmw:osType="centosGuest">
+-    <OperatingSystemSection ovf:id="1" vmw:osType="otherGuest">
 +    <OperatingSystemSection ovf:id="79">
        <Info>The kind of installed guest operating system</Info>
 +      <Description>RedHat</Description>
      </OperatingSystemSection>
      <VirtualHardwareSection>
-       <Info>Virtual hardware requirements</Info>
-@@ -72,4 +73,4 @@
-       </Item>
-     </VirtualHardwareSection>
-   </VirtualSystem>
--</Envelope>
-\ No newline at end of file
-+</Envelope>'
+       <Info>Virtual hardware requirements</Info>'
 
 ${OVFTOOL} ${OVFOPS} ../${VMNAME}/${VMNAME}.vmx ${PWD}/${VMNAME}.ovf
 
