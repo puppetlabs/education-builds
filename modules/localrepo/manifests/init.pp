@@ -68,18 +68,18 @@ class localrepo {
   }
 
   ## Build the "updates" repo
-  localrepo::pkgsync { "updates_pkgs":
-    pkglist  => template("localrepo/updates_pkgs.erb"),
-    repopath => "${base}/mirror/centos/5/updates/i386",
-    source   => "::centos/5/updates/i386/RPMS/",
-    notify   => Repobuild["updates_local"]
-  }
+  #localrepo::pkgsync { "updates_pkgs":
+  #  pkglist  => template("localrepo/updates_pkgs.erb"),
+  #  repopath => "${base}/mirror/centos/5/updates/i386",
+  #  source   => "::centos/5/updates/i386/RPMS/",
+  #  notify   => Repobuild["updates_local"]
+  #}
 
-  localrepo::repobuild { "updates_local":
-    repopath => "${base}/mirror/centos/5/updates/i386",
-    require  => Package["createrepo"],
-    notify   => Exec["makecache"],
-  }
+  #localrepo::repobuild { "updates_local":
+  #  repopath => "${base}/mirror/centos/5/updates/i386",
+  #  require  => Package["createrepo"],
+  #  notify   => Exec["makecache"],
+  #}
 
   ## Build the "epel" repo
   localrepo::pkgsync { "epel_pkgs":
