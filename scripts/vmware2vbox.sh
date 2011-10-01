@@ -10,12 +10,12 @@ OVFTOOL=${OVFTOOL:='/opt/vmware/ovftool/ovftool'}
 OVFOPS=${OVFOPS:='-dm=monolithicSparse'}
 OSVER=${OSVER:='5.6'}
 OSDIST=${OSDIST:='centos'}
-PUPPETVER=${PUPPETVER:='pe-1.2.1'}
+PUPPETVER=${PUPPETVER:='pe-1.2.3'}
 VMDIST=${VMDIST:='vmware'}
 VMNAME=${OSDIST}-${OSVER}-${PUPPETVER}-${VMDIST}
 
-PATCH='--- centos-5.6-pe-1.2.1-vmware.ovf	2011-09-27 05:52:34.000000000 -0400
-+++ centos-5.6-pe-1.2.1-vmware.ovf.new	2011-09-27 05:56:31.000000000 -0400
+PATCH='--- centos-5.6-pe-1.2.3-vmware.ovf	2011-09-27 05:52:34.000000000 -0400
++++ centos-5.6-pe-1.2.3-vmware.ovf.new	2011-09-27 05:56:31.000000000 -0400
 @@ -14,11 +14,12 @@
        <Description>The nat network</Description>
      </Network>

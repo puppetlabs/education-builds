@@ -57,8 +57,8 @@ download \
 #
 echo "Downloading PE..."
 download \
-    https://pm.puppetlabs.com/puppet-enterprise/1.2.1/puppet-enterprise-1.2.1-el-5-i386.tar.gz \
-    ${datadir}/puppet-enterprise-1.2.1-el-5-i386.tar.gz
+    https://pm.puppetlabs.com/puppet-enterprise/1.2.3/puppet-enterprise-1.2.3-el-5-i386.tar.gz \
+    ${datadir}/puppet-enterprise-1.2.3-el-5-i386.tar.gz
 # 2}}}
 
 
@@ -79,15 +79,25 @@ gitclone \
     git://github.com/puppetlabs/marionette-collective.git \
     ${datadir}/mcollective.git \
     master
+
+# Set PTB user {{{2
 echo "Please choose a github user for puppetlabs-training-bootstrap [puppetlabs]: \c"
 read ptbuser
+if [[ -z $ptbuser ]] ; then ptbuser="puppetlabs" ; fi
+
+# Set PTB repo {{{2
+defaultptbrepo="git@github.com:${ptbuser}/puppetlabs-training-bootstrap.git"
+echo "Modify repo path [${defaultptbrepo}]: \c"
+read ptbrepo
+if [[ -z $ptbrepo ]] ; then ptbrepo=$defaultptbrepo ; fi
+
+# Set PTB branch {{{2
 echo "Please choose a branch to use for puppetlabs-training-bootstrap [master]: \c"
 read ptbbranch
-if [[ -z $ptbuser   ]] ; then ptbuser="puppetlabs" ; fi
-if [[ -z $ptbbranch ]] ; then ptbbranch="master"   ; fi
+if [[ -z $ptbbranch ]] ; then ptbbranch="master" ; fi
 echo "Cloning ptb..." # {{{2
 gitclone \
-    git@github.com:${ptbuser}/puppetlabs-training-bootstrap.git \
+    ${ptbrepo} \
     ${datadir}/puppetlabs-training-bootstrap.git \
     $ptbbranch
 

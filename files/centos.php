@@ -39,7 +39,7 @@ lang en_US
 logging --level=info
 # Use network installation
 url --url=http://<? echo($host . '/~' . $user); ?>/dvd
-repo --name=dvd --baseurl=http://<? echo($host . '/~' . $user); ?>/dvd/centos/$releasever/os/$basearch/
+repo --name=dvd --baseurl=http://<? echo($host . '/~' . $user); ?>/dvd/CentOS
 # Network information
 network --bootproto=dhcp --device=eth0 --onboot=on
 # Shutdown after installation so we don't have to
@@ -75,7 +75,7 @@ groupadd -r puppet
 useradd -d /var/lib/puppet -g puppet -M -r puppet
 cd /root
 #sed -i "s/HOSTNAME.*/HOSTNAME=centos32/" /etc/sysconfig/network
-curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-1.2.1-el-5-i386.tar.gz | tar zxf -
+curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-1.2.3-el-5-i386.tar.gz | tar zxf -
 rpm -Uvh http://<? echo($host . '/%7E' . $user); ?>/ks/epel-release-5-4.noarch.rpm
 yum -y install git
 yum -y install yum-utils #For yumdownloader and package-cleanup

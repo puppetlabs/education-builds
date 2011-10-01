@@ -50,4 +50,4 @@
 - Create symlink at `/root/puppet-enterprise`
 - Set up `/etc` directories for PE
 - At some point in the future: (currently in kickstart)
-    - Grab PE tarball from the [direct link](https://pm.puppetlabs.com/puppet-enterprise/1.2.1/puppet-enterprise-1.2.1-el-5-i386.tar.gz)
+    - Grab PE tarball from the [direct link](https://pm.puppetlabs.com/puppet-enterprise/1.2.3/puppet-enterprise-1.2.3-el-5-i386.tar.gz)
