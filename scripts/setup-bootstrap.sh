@@ -86,19 +86,25 @@ read ptbuser
 if [[ -z $ptbuser ]] ; then ptbuser="puppetlabs" ; fi
 
 # Set PTB repo {{{2
-defaultptbrepo="git@github.com:${ptbuser}/puppetlabs-training-bootstrap.git"
-echo "Modify repo path [${defaultptbrepo}]: \c"
+ptbrepo_default="git@github.com:${ptbuser}/puppetlabs-training-bootstrap.git"
+echo "Modify repo path [${ptbrepo_default}]: \c"
 read ptbrepo
-if [[ -z $ptbrepo ]] ; then ptbrepo=$defaultptbrepo ; fi
+if [[ -z $ptbrepo ]] ; then ptbrepo=$ptbrepo_default ; fi
 
 # Set PTB branch {{{2
-echo "Please choose a branch to use for puppetlabs-training-bootstrap [master]: \c"
+ptbrepo_destination=${datadir}/puppetlabs-training-bootstrap.git
+if [[ -f ${ptbrepo_destination}/HEAD ]] ; then
+  ptbbranch_default=`sed 's/.*refs\/heads\///' ${ptbrepo_destination}/HEAD`
+else
+  ptbbranch_default='master'
+fi
+echo "Please choose a branch to use for puppetlabs-training-bootstrap [${ptbbranch_default}]: \c"
 read ptbbranch
-if [[ -z $ptbbranch ]] ; then ptbbranch="master" ; fi
+if [[ -z $ptbbranch ]] ; then ptbbranch=$ptbbranch_default ; fi
 echo "Cloning ptb..." # {{{2
 gitclone \
-    ${ptbrepo} \
-    ${datadir}/puppetlabs-training-bootstrap.git \
+    $ptbrepo \
+    $ptbrepo_destination \
     $ptbbranch
 
 
