@@ -80,19 +80,27 @@ gitclone \
     ${datadir}/mcollective.git \
     master
 
-# Set PTB user {{{2
-echo "Please choose a github user for puppetlabs-training-bootstrap [puppetlabs]: \c"
-read ptbuser
-if [[ -z $ptbuser ]] ; then ptbuser="puppetlabs" ; fi
+# Set PTB settings {{{2
+ptbrepo_destination=${datadir}/puppetlabs-training-bootstrap.git
 
-# Set PTB repo {{{2
-ptbrepo_default="git@github.com:${ptbuser}/puppetlabs-training-bootstrap.git"
-echo "Modify repo path [${ptbrepo_default}]: \c"
-read ptbrepo
+# Set PTB repo {{{3
+if [[ -f ${ptbrepo_destination}/config ]] ; then
+  ptbrepo_default=`grep "url = " ${ptbrepo_destination}/config | sed 's/.*url = //'`
+  ptbrepo=$ptbrepo_default
+  echo "Current repo url: ${ptbrepo_default} (\`rm\` local repo to reset)"
+else
+  # Set PTB user
+  echo "Please choose a github user for puppetlabs-training-bootstrap [puppetlabs]: \c"
+  read ptbuser
+  if [[ -z $ptbuser ]] ; then ptbuser="puppetlabs" ; fi
+
+  ptbrepo_default="git@github.com:${ptbuser}/puppetlabs-training-bootstrap.git"
+  echo "Modify repo url [${ptbrepo_default}]: \c"
+  read ptbrepo
+fi
 if [[ -z $ptbrepo ]] ; then ptbrepo=$ptbrepo_default ; fi
 
 # Set PTB branch {{{2
-ptbrepo_destination=${datadir}/puppetlabs-training-bootstrap.git
 if [[ -f ${ptbrepo_destination}/HEAD ]] ; then
   ptbbranch_default=`sed 's/.*refs\/heads\///' ${ptbrepo_destination}/HEAD`
 else
