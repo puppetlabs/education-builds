@@ -58,7 +58,8 @@ class localrepo {
     pkglist  => template("localrepo/base_pkgs.erb"),
     repopath => "${base}/mirror/centos/5/os/i386",
     syncer   => "yumdownloader",
-    notify   => Repobuild["base_local"]
+    source   => "dvd",
+    notify   => Repobuild["base_local"],
   }
 
   localrepo::repobuild { "base_local":
@@ -85,8 +86,9 @@ class localrepo {
   localrepo::pkgsync { "epel_pkgs":
     pkglist  => template("localrepo/epel_pkgs.erb"),
     repopath => "${base}/mirror/epel/5/local/i386",
-    source   => "::fedora-epel/5/i386/",
-    notify   => Repobuild["epel_local"]
+    syncer   => "yumdownloader",
+    source   => "epel",
+    notify   => Repobuild["epel_local"],
   }
 
   localrepo::repobuild { "epel_local":
@@ -99,8 +101,8 @@ class localrepo {
   localrepo::pkgsync { "puppetlabs_pkgs":
     pkglist  => template("localrepo/puppetlabs_pkgs.erb"),
     repopath => "${base}/mirror/puppetlabs/local/base/i386",
-    source   => "::packages/yum/base/",
-    server   => "yum.puppetlabs.com",
+    syncer   => "yumdownloader",
+    source   => "puppetlabs",
     notify   => Repobuild["puppetlabs_local"],
   }
 

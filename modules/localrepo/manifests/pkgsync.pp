@@ -48,10 +48,10 @@ define localrepo::pkgsync ($pkglist = $name, $source="", $server = "mirrors.cat.
     ensure => directory,
   }
 
+  if ! $source {
+    fail("localrepo::pkgsync error: source is required for ${syncer} syncer")
+  }
   if $syncer == "rsync" {
-    if ! $source {
-      fail("localrepo::pkgsync error: source is required for ${syncer} syncer")
-    }
     if $syncops == "default" {
       $syncops_real = "-rltDvzPH --delete --delete-after"
     } else {
@@ -63,7 +63,7 @@ define localrepo::pkgsync ($pkglist = $name, $source="", $server = "mirrors.cat.
     }
   } elsif $syncer == "yumdownloader" {
     if $syncops == "default" {
-      $syncops_real = "--destdir=${repopath}/RPMS --enablerepo=dvd"
+      $syncops_real = "--destdir=${repopath}/RPMS --enablerepo=${source}"
     } else {
       $syncops_real = $syncops
     }
