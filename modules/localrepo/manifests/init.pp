@@ -57,7 +57,7 @@ class localrepo {
   localrepo::pkgsync { "base_pkgs":
     pkglist  => template("localrepo/base_pkgs.erb"),
     repopath => "${base}/mirror/centos/5/os/i386",
-    source   => "::centos/5/os/i386/CentOS/",
+    syncer   => "yumdownloader",
     notify   => Repobuild["base_local"]
   }
 
