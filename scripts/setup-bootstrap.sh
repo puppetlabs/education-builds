@@ -27,9 +27,10 @@ function gitclone () {
     ## Usage: clone <source> <destination>
     source=$1
     destination=$2
+    branch=$3
     [[ ! -d $destination ]] \
-        && (git clone --bare $source $destination && cd $destination && git update-server-info || bail "Cannot clone ${source}") \
-        || (cd $destination && (git fetch origin '+refs/heads/*:refs/heads/*' && git update-server-info || bail "Cannot pull ${source}"))
+        && (git clone --bare $source $destination && cd $destination && git update-server-info && git symbolic-ref HEAD refs/heads/$branch || bail "Cannot clone ${source}") \
+        || (cd $destination && (git fetch origin '+refs/heads/*:refs/heads/*' && git update-server-info && git symbolic-ref HEAD refs/heads/$branch || bail "Cannot pull ${source}"))
 }
 
 
@@ -66,19 +67,29 @@ download \
 echo "Cloning puppet..." # {{{2
 gitclone \
     git://github.com/puppetlabs/puppet.git \
-    ${datadir}/puppet.git
+    ${datadir}/puppet.git \
+    master
 echo "Cloning facter..." # {{{2
 gitclone \
     git://github.com/puppetlabs/facter.git \
-    ${datadir}/facter.git
+    ${datadir}/facter.git \
+    master
 echo "Cloning mcollective..." # {{{2
 gitclone \
     git://github.com/puppetlabs/marionette-collective.git \
-    ${datadir}/mcollective.git
+    ${datadir}/mcollective.git \
+    master
+echo "Please choose a github user for puppetlabs-training-bootstrap [puppetlabs]: \c"
+read ptbuser
+echo "Please choose a branch to use for puppetlabs-training-bootstrap [master]: \c"
+read ptbbranch
+if [[ -z $ptbuser   ]] ; then ptbuser="puppetlabs" ; fi
+if [[ -z $ptbbranch ]] ; then ptbbranch="master"   ; fi
 echo "Cloning ptb..." # {{{2
 gitclone \
-    git@github.com:puppetlabs/puppetlabs-training-bootstrap.git \
-    ${datadir}/puppetlabs-training-bootstrap.git
+    git@github.com:${ptbuser}/puppetlabs-training-bootstrap.git \
+    ${datadir}/puppetlabs-training-bootstrap.git \
+    $ptbbranch
 
 
 ## Mount ~/Sites/dvd from centos DVD {{{1
