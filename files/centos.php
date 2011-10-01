@@ -39,7 +39,7 @@ lang en_US
 logging --level=info
 # Use network installation
 url --url=http://<? echo($host . '/~' . $user); ?>/dvd
-repo --name=dvd --baseurl=http://<? echo($host . '/~' . $user); ?>/dvd/CentOS
+repo --name=dvd --baseurl=http://<? echo($host . '/~' . $user); ?>/dvd
 # Network information
 network --bootproto=dhcp --device=eth0 --onboot=on
 # Shutdown after installation so we don't have to
