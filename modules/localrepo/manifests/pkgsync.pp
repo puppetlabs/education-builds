@@ -25,7 +25,7 @@
 #     repopath => "${base}/mirror/centos/5/os/i386",
 #   }
 
-define localrepo::pkgsync ($pkglist = $name, $source, $server = "mirrors.cat.pdx.edu", $syncer = "rsync", $syncops = "-rltDvzPH --delete --delete-after", $repopath) {
+define localrepo::pkgsync ($pkglist = $name, $source, $server = "mirrors.cat.pdx.edu", $syncer = "rsync", $syncops = "default", $repopath) {
 
   file { "/tmp/${name}list":
     content => "${pkglist}",
@@ -42,13 +42,23 @@ define localrepo::pkgsync ($pkglist = $name, $source, $server = "mirrors.cat.pdx
     group  => root,
   }
 
-  exec { "get_${name}":
-    command => "${syncer} ${syncops} --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS",
-    user    => root,
-    group   => root,
-    path    => "/usr/bin:/bin",
-    timeout => "3600",
-    onlyif  => "${syncer} ${syncops} -n --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS | grep 'rpm$'",
-    require  => [ File["${repopath}/RPMS"], File["/tmp/${name}list"] ],
+  if $syncer == "rsync" {
+    if $syncops == "default" {
+      $syncops_real = "-rltDvzPH --delete --delete-after"
+    } else {
+      $syncops_real = $syncops
+    }
+    exec { "get_${name}":
+      command => "${syncer} ${syncops_real} --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS",
+      user    => root,
+      group   => root,
+      path    => "/usr/bin:/bin",
+      timeout => "3600",
+      onlyif  => "${syncer} ${syncops_real} -n --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS | grep 'rpm$'",
+      require  => [ File["${repopath}/RPMS"], File["/tmp/${name}list"] ],
+    }
+  } else {
+    fail("localrepo error: ${syncer} syncer is unknown")
   }
+
 }
