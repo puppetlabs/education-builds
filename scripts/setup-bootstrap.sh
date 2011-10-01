@@ -16,7 +16,7 @@ function download () {
     ## Usage: download <source> <destination>
     source=$1
     destination=$2
-    [[ ! -f $destination ]] && (curl -so $destination $source || bail "Cannot curl ${source}")
+    [[ ! -f $destination ]] && (curl -#o $destination $source || bail "Cannot curl ${source}")
     true
 }
 # 2}}}
