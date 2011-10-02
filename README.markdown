@@ -21,7 +21,7 @@
 - ENSURE THAT PE INSTALLS WITH DEV TOOLS WITHOUT PROBLEMS
 - Uh, `<insert upload directions from Puppetlabs sites here>`
 
-## Creating the VM:
+## Creating the VM (Pre-kickstart):
 - Create a blank VM of type CentOS (not 64bit)
 - Choose to boot with an ISO, and choose `~/Sites/dvd/images/boot.iso`
 - Choose to customize VM settings
@@ -31,7 +31,7 @@
 - Edit VM name to be "Puppet Training"
 - Boot
 
-## Packaging the VM:
+## Packaging the VM (Post-kickstart):
 - In VM settings:
     - Disconnect CD-ROM and set to Physical drive
 - Create snapshot called `initial` (the VM should never have been booted after kickstart at this point)
