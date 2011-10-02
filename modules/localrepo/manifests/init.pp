@@ -98,19 +98,19 @@ class localrepo {
   }
 
   ## Build the "puppetlabs" repo
-  localrepo::pkgsync { "puppetlabs_pkgs":
-    pkglist  => template("localrepo/puppetlabs_pkgs.erb"),
-    repopath => "${base}/mirror/puppetlabs/local/base/i386",
-    syncer   => "yumdownloader",
-    source   => "puppetlabs",
-    notify   => Repobuild["puppetlabs_local"],
-  }
+  #localrepo::pkgsync { "puppetlabs_pkgs":
+  #  pkglist  => template("localrepo/puppetlabs_pkgs.erb"),
+  #  repopath => "${base}/mirror/puppetlabs/local/base/i386",
+  #  syncer   => "yumdownloader",
+  #  source   => "puppetlabs",
+  #  notify   => Repobuild["puppetlabs_local"],
+  #}
 
-  localrepo::repobuild { "puppetlabs_local":
-    repopath => "${base}/mirror/puppetlabs/local/base/i386",
-    require  => Package["createrepo"],
-    notify   => Exec["makecache"],
-  }
+  #localrepo::repobuild { "puppetlabs_local":
+  #  repopath => "${base}/mirror/puppetlabs/local/base/i386",
+  #  require  => Package["createrepo"],
+  #  notify   => Exec["makecache"],
+  #}
 
   exec { "makecache":
     command     => "yum makecache",
