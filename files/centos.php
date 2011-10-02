@@ -75,6 +75,13 @@ groupadd -r puppet
 useradd -d /var/lib/puppet -g puppet -M -r puppet
 cd /root
 #sed -i "s/HOSTNAME.*/HOSTNAME=centos32/" /etc/sysconfig/network
+# For some reason Anaconda doesn't place this file
+cat <<DVDREPO > /etc/yum.repos.d/dvd.repo
+[dvd]
+name=dvd
+baseurl=http://<? echo($host . '/~' . $user); ?>/dvd
+enabled=0
+DVDREPO
 curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-1.2.3-el-5-i386.tar.gz | tar zxf -
 rpm -Uvh http://<? echo($host . '/%7E' . $user); ?>/ks/epel-release-5-4.noarch.rpm
 yum -y install git
