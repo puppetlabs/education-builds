@@ -38,7 +38,7 @@ class bootstrap {
     gpgcheck => '0',
     descr    => 'Puppetlabs yum repo'
   }
-  yumrepo { ['epel', 'updates', 'base', 'extras']:
+  yumrepo { ['epel', 'updates', 'base', 'extras', 'dvd']:
     enabled => 0,
   }
   service { 'sshd':

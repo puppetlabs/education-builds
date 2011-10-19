@@ -4,33 +4,26 @@ set -e
 set -u
 
 PATCHBIN=${PATCHBIN:='/usr/bin/patch'}
-OSSLBIN=${OSSLBIN:='/opt/local/bin/openssl'}
+OSSLBIN=${OSSLBIN:='/usr/bin/openssl'}
 SEDBIN=${SEDBIN:='/usr/bin/sed'}
 OVFTOOL=${OVFTOOL:='/opt/vmware/ovftool/ovftool'}
 OVFOPS=${OVFOPS:='-dm=monolithicSparse'}
 OSVER=${OSVER:='5.6'}
 OSDIST=${OSDIST:='centos'}
-PUPPETVER=${PUPPETVER:='pe-1.2.1'}
+PUPPETVER=${PUPPETVER:='pe-1.2.3'}
 VMDIST=${VMDIST:='vmware'}
 VMNAME=${OSDIST}-${OSVER}-${PUPPETVER}-${VMDIST}
 
-PATCH='--- centos-5.6-pe-1.2.1-vmware.ovf	2011-09-27 05:52:34.000000000 -0400
-+++ centos-5.6-pe-1.2.1-vmware.ovf.new	2011-09-27 05:56:31.000000000 -0400
-@@ -14,11 +14,12 @@
+PATCH='--- centos-5.6-pe-1.2.3-vmware.ovf	2011-10-01 21:05:06.000000000 -0400
++++ centos-5.6-pe-1.2.3-vmware.ovf.new	2011-10-01 21:04:50.000000000 -0400
+@@ -14,7 +14,7 @@
        <Description>The nat network</Description>
      </Network>
    </NetworkSection>
 -  <VirtualSystem ovf:id="vm">
 +  <VirtualSystem ovf:id="Puppet Training">
      <Info>A virtual machine</Info>
-     <Name>Puppet Training</Name>
--    <OperatingSystemSection ovf:id="1" vmw:osType="otherGuest">
-+    <OperatingSystemSection ovf:id="79">
-       <Info>The kind of installed guest operating system</Info>
-+      <Description>RedHat</Description>
-     </OperatingSystemSection>
-     <VirtualHardwareSection>
-       <Info>Virtual hardware requirements</Info>'
+     <Name>Puppet Training</Name>'
 
 ${OVFTOOL} ${OVFOPS} ../${VMNAME}/${VMNAME}.vmx ${PWD}/${VMNAME}.ovf
 
