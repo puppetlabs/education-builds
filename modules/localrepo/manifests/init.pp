@@ -57,8 +57,9 @@ class localrepo {
   localrepo::pkgsync { "base_pkgs":
     pkglist  => template("localrepo/base_pkgs.erb"),
     repopath => "${base}/mirror/centos/5/os/i386",
-    source   => "::centos/5/os/i386/CentOS/",
-    notify   => Repobuild["base_local"]
+    syncer   => "yumdownloader",
+    source   => "dvd",
+    notify   => Repobuild["base_local"],
   }
 
   localrepo::repobuild { "base_local":
@@ -85,8 +86,9 @@ class localrepo {
   localrepo::pkgsync { "epel_pkgs":
     pkglist  => template("localrepo/epel_pkgs.erb"),
     repopath => "${base}/mirror/epel/5/local/i386",
-    source   => "::fedora-epel/5/i386/",
-    notify   => Repobuild["epel_local"]
+    syncer   => "yumdownloader",
+    source   => "epel",
+    notify   => Repobuild["epel_local"],
   }
 
   localrepo::repobuild { "epel_local":
@@ -96,19 +98,19 @@ class localrepo {
   }
 
   ## Build the "puppetlabs" repo
-  localrepo::pkgsync { "puppetlabs_pkgs":
-    pkglist  => template("localrepo/puppetlabs_pkgs.erb"),
-    repopath => "${base}/mirror/puppetlabs/local/base/i386",
-    source   => "::packages/yum/base/",
-    server   => "yum.puppetlabs.com",
-    notify   => Repobuild["puppetlabs_local"],
-  }
+  #localrepo::pkgsync { "puppetlabs_pkgs":
+  #  pkglist  => template("localrepo/puppetlabs_pkgs.erb"),
+  #  repopath => "${base}/mirror/puppetlabs/local/base/i386",
+  #  syncer   => "yumdownloader",
+  #  source   => "puppetlabs",
+  #  notify   => Repobuild["puppetlabs_local"],
+  #}
 
-  localrepo::repobuild { "puppetlabs_local":
-    repopath => "${base}/mirror/puppetlabs/local/base/i386",
-    require  => Package["createrepo"],
-    notify   => Exec["makecache"],
-  }
+  #localrepo::repobuild { "puppetlabs_local":
+  #  repopath => "${base}/mirror/puppetlabs/local/base/i386",
+  #  require  => Package["createrepo"],
+  #  notify   => Exec["makecache"],
+  #}
 
   exec { "makecache":
     command     => "yum makecache",
