@@ -10,7 +10,7 @@ OVFTOOL=${OVFTOOL:='/opt/vmware/ovftool/ovftool'}
 OVFOPS=${OVFOPS:='-dm=monolithicSparse'}
 OSVER=${OSVER:='5.7'}
 OSDIST=${OSDIST:='centos'}
-PUPPETVER=${PUPPETVER:='pe-1.2.4'}
+PUPPETVER=${PUPPETVER:='pe-2.0.0'}
 VWNAME=${OSDIST}-${OSVER}-${PUPPETVER}-vmware
 VBNAME=${OSDIST}-${OSVER}-${PUPPETVER}-vbox
 
