@@ -89,18 +89,17 @@ yum -y install yum-utils #For yumdownloader and package-cleanup
 #yum -y upgrade #This takes a while
 cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/puppet.git
-cd puppet && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/puppet.git && git fetch origin && git branch --set-upstream master origin/master ; cd /usr/src
+cd puppet && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/puppet.git && git fetch origin && git branch --set-upstream master origin/master && git checkout 2.7.9 ; cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/facter.git
-cd facter && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/facter.git && git fetch origin && git branch --set-upstream master origin/master ; cd /usr/src
+cd facter && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/facter.git && git fetch origin && git branch --set-upstream master origin/master && git checkout 1.6.4 ; cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/mcollective.git
 cd mcollective && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/marionette-collective.git && git fetch origin && git branch --set-upstream master origin/master ; cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/puppetlabs-training-bootstrap.git
 cd puppetlabs-training-bootstrap && git remote rename origin ks && git remote add origin git@github.com:puppetlabs/puppetlabs-training-bootstrap.git && git branch --set-upstream master origin/master ; cd /usr/src
-cd /usr/src/puppet && git checkout 2.7.6
 cd /root
 RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
 export RUBYLIB
-/usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp
+/usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp || (echo "ERROR IN PUPPET RUN" && exit 1)
 # Cleanup from the puppet run
 rm -rf /var/lib/puppet
 echo 'Hello, World!'
