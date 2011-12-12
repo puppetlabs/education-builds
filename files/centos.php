@@ -66,7 +66,7 @@ curl
 tar
 ruby
 
-%post
+%post --erroronfail
 exec < /dev/tty3 > /dev/tty3
 chvt 3
 (
@@ -99,7 +99,7 @@ cd puppetlabs-training-bootstrap && git remote rename origin ks && git remote ad
 cd /root
 RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
 export RUBYLIB
-/usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp || (echo "ERROR IN PUPPET RUN" && exit 1)
+/usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp
 # Cleanup from the puppet run
 rm -rf /var/lib/puppet
 echo 'Hello, World!'
