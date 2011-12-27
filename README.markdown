@@ -1,27 +1,35 @@
 # Bootstrap CentOS VMs for training
 
-## Usage (what a human has to do):
+## Initial Setup (first time):
+- Enable web sharing in System Preferences if it is not already enabled
+    - Click "Create Personal Website Folder" if `~/Sites` does not already exist
 - Clone this repo to anywhere
-- Download full CentOS DVD iso
+- Download full CentOS DVD ISOs to anywhere
+    - You only need the `1 of 2` ISO, but the torrent comes with 2
+- Install [OVF Tool](http://www.vmware.com/resources/techresources/1013) from VMware's website
+
+## Usage (what a human has to do):
+
+### Starting point for each build:
+- Ensure that the "Initial Setup" above is satisfied
 - Run ./scripts/setup-bootstrap.sh
     - It will create `~/Sites/ks`
         - It will copy centos kickstart file into `~/Sites/ks`
         - It will copy PE tarball into `~/Sites/ks`
         - It will clone four git repos into `~/Sites/ks`
     - It will create `~/Sites/dvd`
-        - It will prompt for the location of the first DVD image (Protip: drag 'n drop the .iso to the terminal instead of typing the path)
+        - It will prompt for the location of the first DVD image (Protip: drag 'n drop the `.iso` to the terminal instead of typing the path)
         - It will mount the DVD image at `~/Sites/dvd`
-  - It will enable php on your local apache for kickstart (prompts for password for sudo)
-- Enable web sharing in System Preferences if it is not already enabled
+    - It will enable php on your local apache for kickstart (prompts for password for sudo)
 - Create a new VM (See "Creating the VM" below)
 - At `boot:` prompt, enter `linux ks=http://192.168.XXX.1/~username/ks/centos.php`
 - Wait 8 minutes (depends on bandwidth)
 - Power off VM when prompted
 - Package VM (see "Packaging the VM" below)
 - ENSURE THAT PE INSTALLS WITH DEV TOOLS WITHOUT PROBLEMS
-- Uh, `<insert upload directions from `[Puppetlabs sites](https://sites.google.com/a/puppetlabs.com/main/teams/professional-services/training/editing-the-training-vm)` here>`
+- Uh, `<insert upload directions from` [Puppetlabs sites](https://sites.google.com/a/puppetlabs.com/main/teams/professional-services/training/editing-the-training-vm) `here>`
 
-## Creating the VM (Pre-kickstart):
+### Creating the VM (Pre-kickstart):
 - Create a blank VM of type CentOS (not 64bit)
 - Choose to boot with an ISO, and choose `~/Sites/dvd/images/boot.iso`
 - Choose to customize VM settings
@@ -31,7 +39,7 @@
 - Edit VM name to be "Puppet Training"
 - Boot
 
-## Packaging the VM (Post-kickstart):
+### Packaging the VM (Post-kickstart):
 - In VM settings:
     - Disconnect CD-ROM and set to Physical drive
 - Create snapshot called `initial` (the VM should never have been booted after kickstart at this point)
@@ -41,10 +49,9 @@
 - `zip -r centos-5.7-pe-2.0.0-vmware.zip centos-5.7-pe-2.0.0-vmware` to create zip (should be ~450MB)
 - Make vbox directory: `mkdir centos-5.7-pe-2.0.0-vbox`
 - `cd` to vbox directory and invoke the `vmware2vbox.sh` script from PTB repo's `scripts` directory
-    - Requires [OVF Tool](http://www.vmware.com/resources/techresources/1013) from VMware be installed
 - Zip vbox as above for vmware
 
-## Automated Kickstart Tasks:
+## Automated Kickstart Tasks (What the kickstart install script does, in english):
 - Modify root user password (for debug-login purposes)
 - Install `epel` rpm, then `git`
 - Clone `/usr/src/puppet` `/usr/src/facter` `/usr/src/mcollective` `/usr/src/puppetlabs-training-bootstrap`
