@@ -19,7 +19,7 @@
 - Power off VM when prompted
 - Package VM (see "Packaging the VM" below)
 - ENSURE THAT PE INSTALLS WITH DEV TOOLS WITHOUT PROBLEMS
-- Uh, `<insert upload directions from Puppetlabs sites here>`
+- Uh, `<insert upload directions from `[Puppetlabs sites](https://sites.google.com/a/puppetlabs.com/main/teams/professional-services/training/editing-the-training-vm)` here>`
 
 ## Creating the VM (Pre-kickstart):
 - Create a blank VM of type CentOS (not 64bit)
@@ -41,6 +41,7 @@
 - `zip -r centos-5.7-pe-2.0.0-vmware.zip centos-5.7-pe-2.0.0-vmware` to create zip (should be ~450MB)
 - Make vbox directory: `mkdir centos-5.7-pe-2.0.0-vbox`
 - `cd` to vbox directory and invoke the `vmware2vbox.sh` script from PTB repo's `scripts` directory
+    - Requires [OVF Tool](http://www.vmware.com/resources/techresources/1013) from VMware be installed
 - Zip vbox as above for vmware
 
 ## Automated Kickstart Tasks:
