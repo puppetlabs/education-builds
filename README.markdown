@@ -15,7 +15,7 @@
 - Run ./scripts/setup-bootstrap.sh
     - It will create `~/Sites/ks`
         - It will copy centos kickstart file into `~/Sites/ks`
-        - It will copy PE tarball into `~/Sites/ks`
+        - It will download PE tarball into `~/Sites/ks`
         - It will clone four git repos into `~/Sites/ks`
     - It will create `~/Sites/dvd`
         - It will prompt for the location of the first DVD image (Protip: drag 'n drop the `.iso` to the terminal instead of typing the path)
