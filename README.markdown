@@ -15,6 +15,7 @@
 - Run ./scripts/setup-bootstrap.sh
     - It will create `~/Sites/ks`
         - It will copy centos kickstart file into `~/Sites/ks`
+        - It will download EPEL rpm into `~/Sites/ks`
         - It will download PE tarball into `~/Sites/ks`
         - It will clone four git repos into `~/Sites/ks`
     - It will create `~/Sites/dvd`
