@@ -1,6 +1,8 @@
 <?php
 header("Content-Type: text/plain");
-echo("# host is " . $_SERVER['SERVER_NAME'] . "\n");
+$hostname = isset($_GET['hostname']) ? $_GET['hostname'] : 'localhost.localdomain';
+echo("# kickstart host is " . $_SERVER['SERVER_NAME'] . "\n");
+echo("# vm hostname is " . $hostname . "\n");
 $host = $_SERVER['SERVER_NAME'];
 preg_match('^/~(\w+)/^', $_SERVER['REQUEST_URI'], $user_match);
 $user = $user_match[1];
@@ -74,7 +76,12 @@ set -x
 groupadd -r puppet
 useradd -d /var/lib/puppet -g puppet -M -r puppet
 cd /root
-#sed -i "s/HOSTNAME.*/HOSTNAME=centos32/" /etc/sysconfig/network
+# Set the hostname; must be done before puppet
+sed -i 's/HOSTNAME.*/HOSTNAME=<? echo($hostname); ?>/' /etc/sysconfig/network
+hostname <? echo($hostname); ?>
+cat <<ETCHOSTS >> /etc/hosts
+127.0.0.1 `hostname` `hostname -s`
+ETCHOSTS
 # For some reason Anaconda doesn't place this file
 cat <<DVDREPO > /etc/yum.repos.d/dvd.repo
 [dvd]
