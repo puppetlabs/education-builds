@@ -62,19 +62,25 @@
 ## Automated Puppet Tasks (by module):
 ### bootstrap
 - Set up root password, `.bashrc`
-- Set up Yumrepo for `puppetlabs` disabled
-- Disable `epel`, `base`, `updates`, and `extras`  Yumrepos
-- Set up `host` entries (optional)
+- Set up network sysconfig and hosts for 'puppet'
+- Set up rc.local job to print IP to TTY after boot
+- Remove cluttery /etc/puppet directory
 - Start `sshd`
-- Disable bluetooth and remove bluetooth packages
 
 ### localrepo
 - Create local repo
 - Add local `yumrepo` instance enabled
 
 ### pebase
-- Copy in master and dev answer files (via `source =>`)
 - Create symlink at `/root/puppet-enterprise`
-- Set up `/etc` directories for PE
 - At some point in the future: (currently in kickstart)
     - Grab PE tarball from the [direct link](https://pm.puppetlabs.com/puppet-enterprise/2.0.0/puppet-enterprise-2.0.0-el-5-i386.tar.gz)
+
+### learning
+- Copy in answer file
+- Install PE with an exec resource and an answer file
+
+### training
+- Set up Yumrepo for `puppetlabs` disabled
+- Disable `epel`, `base`, `updates`, and `extras`  Yumrepos
+- Disable bluetooth and remove bluetooth packages
