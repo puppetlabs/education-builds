@@ -50,15 +50,6 @@ class bootstrap {
     source => 'puppet:///modules/bootstrap/rc.local',
     mode   => 0755,
   }
-  yumrepo { 'puppetlabs':
-    baseurl  => 'http://yum.puppetlabs.com/base/',
-    enabled  => '0',
-    gpgcheck => '0',
-    descr    => 'Puppetlabs yum repo'
-  }
-  yumrepo { ['epel', 'updates', 'base', 'extras', 'dvd']:
-    enabled => 0,
-  }
   service { 'sshd':
     ensure     => running,
     enable     => true,
@@ -66,16 +57,22 @@ class bootstrap {
     hasrestart => true,
   }
 
-  # puppetmaster bluetooth training
-  service { 'hidd':
-    ensure => stopped,
-    enable => false,
-    # hasstatus => broken
-  } ->
-  package { 'bluez-utils':
-    ensure => absent,
-  } ->
-  package { 'bluez-libs':
-    ensure => absent,
+  # Hostname setup
+  host { $fqdn:
+    ensure       => present,
+    ip           => '127.0.0.1',
+    host_aliases => [$hostname, "puppet.${domain}", 'puppet'],
+    comment      => "This host is required for Puppet's name resolution to work correctly.",
+  }
+  file { '/etc/sysconfig/network':
+    ensure  => file,
+    content => template('bootstrap/network.erb'),
+    require => Host[$fqdn],
+  }
+  service { 'network':
+    ensure    => running,
+    enable    => true,
+    subscribe => File['/etc/sysconfig/network'],
+    hasstatus => true,
   }
 }
