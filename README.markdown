@@ -23,7 +23,11 @@
         - It will mount the DVD image at `~/Sites/dvd`
     - It will enable php on your local apache for kickstart (prompts for password for sudo)
 - Create a new VM (See "Creating the VM" below)
-- At `boot:` prompt, enter `linux ks=http://192.168.XXX.1/~username/ks/centos.php`
+- For training VM:
+    - At `boot:` prompt, enter `linux ks=http://192.168.XXX.1/~username/ks/centos.php`
+    - At `boot:` prompt, enter `linux ks=http://192.168.XXX.1/~username/ks/centos.php?hostname=training.puppetlabs.lan` or something
+- For learning VM:
+    - At `boot:` prompt, enter `linux ks=http://192.168.XXX.1/~username/ks/centos.php?hostname=learn.localdomain`
 - Wait 8 minutes (depends on bandwidth)
 - Power off VM when prompted
 - Package VM (see "Packaging the VM" below)
