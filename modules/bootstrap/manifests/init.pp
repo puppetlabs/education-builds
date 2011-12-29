@@ -7,10 +7,7 @@ class bootstrap {
   user { 'root':
     password => '$1$hgIZHl1r$tEqMTzoXz.NBwtW3kFv33/',
   }
-  file { '/root/bin':
-    ensure => directory,
-  }
-  file { '/root/bin/envpuppet':
+  file { '/usr/bin/envpuppet':
     source => 'puppet:///modules/bootstrap/envpuppet',
     mode   => '0755',
   }
