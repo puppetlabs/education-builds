@@ -79,8 +79,10 @@ cd /root
 # Set the hostname; must be done before puppet
 sed -i 's/HOSTNAME.*/HOSTNAME=<? echo($hostname); ?>/' /etc/sysconfig/network
 hostname <? echo($hostname); ?>
+
 cat <<ETCHOSTS >> /etc/hosts
-127.0.0.1 `hostname` `hostname -s`
+127.0.0.1 <? echo($hostname); ?> <? $foo = explode('.', $hostname); echo($foo[0]); ?>
+
 ETCHOSTS
 # For some reason Anaconda doesn't place this file
 cat <<DVDREPO > /etc/yum.repos.d/dvd.repo
