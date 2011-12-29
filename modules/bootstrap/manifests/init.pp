@@ -32,6 +32,24 @@ class bootstrap {
   file { '/root/.vimrc':
     source => 'puppet:///modules/bootstrap/vimrc',
   }
+  # This is the thing Dom came up with to print the IP to the TTY
+  file {'/root/.ip_info.sh':
+    ensure => file,
+    source => 'puppet:///modules/bootstrap/ip_info.sh',
+    mode   => 0755,
+  }
+  # This shouldn't change anything, but want to make sure it actually IS laid out the way I expect.
+  file {'/etc/rc.local':
+    ensure => symlink,
+    target => 'rc.d/rc.local',
+    mode   => 0755,
+  }
+  # Make sure we run the ip_info script.
+  file {'/etc/rc.d/rc.local':
+    ensure => file,
+    source => 'puppet:///modules/bootstrap/rc.local',
+    mode   => 0755,
+  }
   yumrepo { 'puppetlabs':
     baseurl  => 'http://yum.puppetlabs.com/base/',
     enabled  => '0',
