@@ -104,7 +104,6 @@ cd facter && git remote rename origin ks && git remote add origin git://github.c
 git clone http://<? echo($host . '/~' . $user); ?>/ks/mcollective.git
 cd mcollective && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/marionette-collective.git && git fetch origin && git branch --set-upstream master origin/master ; cd /usr/src
 git clone http://<? echo($host . '/~' . $user); ?>/ks/puppetlabs-training-bootstrap.git
-cd puppetlabs-training-bootstrap && git remote rename origin ks && git remote add origin git@github.com:puppetlabs/puppetlabs-training-bootstrap.git && git branch --set-upstream master origin/master ; cd /usr/src
 cd /root
 RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
 export RUBYLIB
