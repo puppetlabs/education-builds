@@ -5,14 +5,6 @@ class pebase {
   #  creates => '/root/puppet-enterprise-2.0.0-el-5-i386.tar.gz',
   #}
 
-  # do some basic setup for PE
-  file { ['/etc/puppetlabs/',
-          '/etc/puppetlabs/puppet/',
-          '/etc/puppetlabs/puppet/modules',
-          '/etc/puppetlabs/puppet/manifests',
-         ]:
-    ensure => directory
-  }
   file { '/root/puppet-enterprise':
     ensure => symlink,
     target => '/root/puppet-enterprise-2.0.0-el-5-i386',
