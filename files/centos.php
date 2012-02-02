@@ -91,7 +91,7 @@ name=dvd
 baseurl=http://<? echo($host . '/~' . $user); ?>/dvd
 enabled=0
 DVDREPO
-curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-2.0.0-el-5-i386.tar.gz | tar zxf -
+curl -s http://<? echo($host . '/~' . $user); ?>/ks/puppet-enterprise-2.0.1-el-5-i386.tar.gz | tar zxf -
 rpm -Uvh http://<? echo($host . '/%7E' . $user); ?>/ks/epel-release-5-4.noarch.rpm
 yum -y install git
 yum -y install yum-utils #For yumdownloader and package-cleanup
