@@ -16,7 +16,7 @@ function download () {
     ## Usage: download <source> <destination>
     source=$1
     destination=$2
-    [[ ! -f $destination ]] && (curl -so $destination $source || bail "Cannot curl ${source}")
+    [[ ! -f $destination ]] && (curl -#o $destination $source || bail "Cannot curl ${source}")
     true
 }
 # 2}}}
@@ -27,9 +27,10 @@ function gitclone () {
     ## Usage: clone <source> <destination>
     source=$1
     destination=$2
+    branch=$3
     [[ ! -d $destination ]] \
-        && (git clone --bare $source $destination && cd $destination && git update-server-info || bail "Cannot clone ${source}") \
-        || (cd $destination && (git fetch origin '+refs/heads/*:refs/heads/*' && git update-server-info || bail "Cannot pull ${source}"))
+        && (git clone --bare $source $destination && cd $destination && git update-server-info && git symbolic-ref HEAD refs/heads/$branch || bail "Cannot clone ${source}") \
+        || (cd $destination && (git fetch origin '+refs/heads/*:refs/heads/*' && git update-server-info && git symbolic-ref HEAD refs/heads/$branch || bail "Cannot pull ${source}"))
 }
 
 
@@ -56,8 +57,8 @@ download \
 #
 echo "Downloading PE..."
 download \
-    https://pm.puppetlabs.com/puppet-enterprise/1.2.1/puppet-enterprise-1.2.1-el-5-i386.tar.gz \
-    ${datadir}/puppet-enterprise-1.2.1-el-5-i386.tar.gz
+    https://pm.puppetlabs.com/puppet-enterprise/2.0.1/puppet-enterprise-2.0.1-el-5-i386.tar.gz \
+    ${datadir}/puppet-enterprise-2.0.1-el-5-i386.tar.gz
 # 2}}}
 
 
@@ -66,19 +67,53 @@ download \
 echo "Cloning puppet..." # {{{2
 gitclone \
     git://github.com/puppetlabs/puppet.git \
-    ${datadir}/puppet.git
+    ${datadir}/puppet.git \
+    master
 echo "Cloning facter..." # {{{2
 gitclone \
     git://github.com/puppetlabs/facter.git \
-    ${datadir}/facter.git
+    ${datadir}/facter.git \
+    master
 echo "Cloning mcollective..." # {{{2
 gitclone \
     git://github.com/puppetlabs/marionette-collective.git \
-    ${datadir}/mcollective.git
+    ${datadir}/mcollective.git \
+    master
+
+# Set PTB settings {{{2
+ptbrepo_destination=${datadir}/puppetlabs-training-bootstrap.git
+
+# Set PTB repo {{{3
+if [[ -f ${ptbrepo_destination}/config ]] ; then
+  ptbrepo_default=`grep "url = " ${ptbrepo_destination}/config | sed 's/.*url = //'`
+  ptbrepo=$ptbrepo_default
+  echo "Current repo url: ${ptbrepo_default} (\`rm\` local repo to reset)"
+else
+  # Set PTB user
+  echo "Please choose a github user for puppetlabs-training-bootstrap [puppetlabs]: \c"
+  read ptbuser
+  if [[ -z $ptbuser ]] ; then ptbuser="puppetlabs" ; fi
+
+  ptbrepo_default="git@github.com:${ptbuser}/puppetlabs-training-bootstrap.git"
+  echo "Modify repo url [${ptbrepo_default}]: \c"
+  read ptbrepo
+fi
+if [[ -z $ptbrepo ]] ; then ptbrepo=$ptbrepo_default ; fi
+
+# Set PTB branch {{{2
+if [[ -f ${ptbrepo_destination}/HEAD ]] ; then
+  ptbbranch_default=`sed 's/.*refs\/heads\///' ${ptbrepo_destination}/HEAD`
+else
+  ptbbranch_default='master'
+fi
+echo "Please choose a branch to use for puppetlabs-training-bootstrap [${ptbbranch_default}]: \c"
+read ptbbranch
+if [[ -z $ptbbranch ]] ; then ptbbranch=$ptbbranch_default ; fi
 echo "Cloning ptb..." # {{{2
 gitclone \
-    git@github.com:puppetlabs/puppetlabs-training-bootstrap.git \
-    ${datadir}/puppetlabs-training-bootstrap.git
+    $ptbrepo \
+    $ptbrepo_destination \
+    $ptbbranch
 
 
 ## Mount ~/Sites/dvd from centos DVD {{{1

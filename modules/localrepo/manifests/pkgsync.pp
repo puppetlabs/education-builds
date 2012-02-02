@@ -25,30 +25,53 @@
 #     repopath => "${base}/mirror/centos/5/os/i386",
 #   }
 
-define localrepo::pkgsync ($pkglist = $name, $source, $server = "mirrors.cat.pdx.edu", $syncer = "rsync", $syncops = "-rltDvzPH --delete --delete-after", $repopath) {
+define localrepo::pkgsync ($pkglist = $name, $source="", $server = "mirrors.cat.pdx.edu", $syncer = "rsync", $syncops = "default", $repopath) {
 
-  file { "/tmp/${name}list":
-    content => "${pkglist}",
+
+  File {
     mode     => 644,
     owner    => root,
     group    => root,
-    notify   => Exec["get_${name}"],
   }
-
-  file { [ "${repopath}", "${repopath}/RPMS" ]:
-    ensure => directory,
-    mode   => 644,
-    owner  => root,
-    group  => root,
-  }
-
-  exec { "get_${name}":
-    command => "${syncer} ${syncops} --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS",
+  Exec {
     user    => root,
     group   => root,
     path    => "/usr/bin:/bin",
     timeout => "3600",
-    onlyif  => "${syncer} ${syncops} -n --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS | grep 'rpm$'",
     require  => [ File["${repopath}/RPMS"], File["/tmp/${name}list"] ],
   }
+  file { "/tmp/${name}list":
+    content => "${pkglist}",
+    notify   => Exec["get_${name}"],
+  }
+  file { [ "${repopath}", "${repopath}/RPMS" ]:
+    ensure => directory,
+  }
+
+  if ! $source {
+    fail("localrepo::pkgsync error: source is required for ${syncer} syncer")
+  }
+  if $syncer == "rsync" {
+    if $syncops == "default" {
+      $syncops_real = "-rltDvzPH --delete --delete-after"
+    } else {
+      $syncops_real = $syncops
+    }
+    exec { "get_${name}":
+      command => "${syncer} ${syncops_real} --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS",
+      onlyif  => "${syncer} ${syncops_real} -n --include-from=/tmp/${name}list  --exclude=* ${server}${source} ${repopath}/RPMS | grep 'rpm$'",
+    }
+  } elsif $syncer == "yumdownloader" {
+    if $syncops == "default" {
+      $syncops_real = "--destdir=${repopath}/RPMS --enablerepo=${source}"
+    } else {
+      $syncops_real = $syncops
+    }
+    exec { "get_${name}":
+      command => "${syncer} ${syncops_real} `cat /tmp/${name}list`",
+    }
+  } else {
+    fail("localrepo error: ${syncer} syncer is unknown")
+  }
+
 }
