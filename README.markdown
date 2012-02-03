@@ -12,7 +12,7 @@
 
 ### Starting point for each build:
 - Ensure that the "Initial Setup" above is satisfied
-- Run ./scripts/setup-bootstrap.sh
+- Run `rake init`
     - It will create `~/Sites/ks`
         - It will copy centos kickstart file into `~/Sites/ks`
         - It will download EPEL rpm into `~/Sites/ks`
