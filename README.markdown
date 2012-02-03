@@ -38,7 +38,7 @@
 - Create a blank VM of type CentOS (not 64bit)
 - Choose to boot with an ISO, and choose `~/Sites/dvd/images/boot.iso`
 - Choose to customize VM settings
-- Name VM "centos-5.7-pe-2.0.1-vmware" (or as appropriate)
+- Name VM "centos-5.7-pe-2.0.2-vmware" (or as appropriate)
 - Edit harddrive settings to use a 4GB disk *not* split into 2GB chunks
 - Edit ram settings to be 512 MB
 - Edit VM name to be "Puppet Training"
@@ -49,10 +49,10 @@
     - Disconnect CD-ROM and set to Physical drive
 - Create snapshot called `initial` (the VM should never have been booted after kickstart at this point)
 - Quit VMWare
-- Rename vm directory: `mv centos-5.7-pe-2.0.1-vmware.vmwarevm centos-5.7-pe-2.0.1-vmware`
+- Rename vm directory: `mv centos-5.7-pe-2.0.2-vmware.vmwarevm centos-5.7-pe-2.0.2-vmware`
 - Remove any `.lck` and `.log` files from the VM directory
-- `zip -r centos-5.7-pe-2.0.1-vmware.zip centos-5.7-pe-2.0.1-vmware` to create zip (should be ~450MB)
-- Make vbox directory: `mkdir centos-5.7-pe-2.0.1-vbox`
+- `zip -r centos-5.7-pe-2.0.2-vmware.zip centos-5.7-pe-2.0.2-vmware` to create zip (should be ~450MB)
+- Make vbox directory: `mkdir centos-5.7-pe-2.0.2-vbox`
 - `cd` to vbox directory and invoke the `vmware2vbox.sh` script from PTB repo's `scripts` directory
 - Zip vbox as above for vmware
 
@@ -78,7 +78,7 @@
 ### pebase
 - Create symlink at `/root/puppet-enterprise`
 - At some point in the future: (currently in kickstart)
-    - Grab PE tarball from the [direct link](https://pm.puppetlabs.com/puppet-enterprise/2.0.1/puppet-enterprise-2.0.1-el-5-i386.tar.gz)
+    - Grab PE tarball from the [direct link](https://pm.puppetlabs.com/puppet-enterprise/2.0.2/puppet-enterprise-2.0.2-el-5-i386.tar.gz)
 
 ### learning
 - Copy in answer file
