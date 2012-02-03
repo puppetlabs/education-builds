@@ -55,16 +55,15 @@ class bootstrap {
   }
 
   # Hostname setup
-  host { $fqdn:
+  host { $::fqdn:
     ensure       => present,
     ip           => '127.0.0.1',
-    host_aliases => [$hostname, "puppet.${domain}", 'puppet'],
-    comment      => "This host is required for Puppet's name resolution to work correctly.",
+    host_aliases => [$::hostname, "puppet.${::domain}", 'puppet'],
   }
   file { '/etc/sysconfig/network':
     ensure  => file,
     content => template('bootstrap/network.erb'),
-    require => Host[$fqdn],
+    require => Host[$::fqdn],
   }
   service { 'network':
     ensure    => running,
