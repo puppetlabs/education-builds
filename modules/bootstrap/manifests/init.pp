@@ -72,4 +72,11 @@ class bootstrap {
     subscribe => File['/etc/sysconfig/network'],
     hasstatus => true,
   }
+
+  # /etc/puppet/ssl is confusing to have around. Sloppy. Kill.
+  file {'/etc/puppet':
+    ensure  => absent,
+    recurse => true,
+    force   => true,
+  }
 }
