@@ -1,5 +1,7 @@
 require 'erb'
+require 'uri'
 require 'net/http'
+require 'net/https'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
@@ -10,9 +12,11 @@ PEVERSION = '2.0.2'
 
 desc "Build and populate data directory"
 task :init do
-  unless File.directory?(DATADIR)
-    cputs "Making #{DATADIR} for all kickstart data"
-    File.mkdir(DATADIR)
+  [DATADIR, MOUNTDIR].each do |dir|
+    unless File.directory?(dir)
+      cputs "Making #{dir} for all kickstart data"
+      FileUtils.mkdir(dir)
+    end
   end
 
   unless File.exist?("#{DATADIR}/epel-release-5-4.noarch.rpm")
@@ -93,35 +97,10 @@ end
 
 desc "Create a new vmware instance for kickstarting (unimplemented)"
 task :createvm do
-  #puts "ActiveMQ: Extracting"
-  #`tar zxvf #{BASEDIR}/data/apache-activemq-*.tar.gz`
-  #`chmod 755 apache-activemq-5.4.2/bin/activemq`
-  #puts "ActiveMQ: Writing config"
-  #File.open("apache-activemq-5.4.2/conf/activemq.xml", "w") do |f|
-  #  f.puts activemqconf
-  #end
-  #puts "MCollective: Cloning collective-builder repo"
-  #`git clone #{BASEDIR}/data/mcollective-collective-builder`
-  #puts "MCollective: Building 10 instances"
-  #`cd mcollective-collective-builder && MC_NAME=mcollective MC_SERVER=localhost MC_USER=mcollective MC_PASSWORD=marionette MC_PORT=6163 MC_VERSION=1.1.2 MC_COUNT=10 MC_COUNT_START=0 MC_SSL=n MC_SOURCE=#{BASEDIR}/data/marionette-collective rake create`
-  #puts "MCollective: Patching config"
-  #file = File.open("#{BASEDIR}/mcollective-collective-builder/client/lib/mcollective.rb", "r+")
-  #text = file.read
-  #file.close
-  #File.open("#{BASEDIR}/mcollective-collective-builder/client/lib/mcollective.rb", "w+") do |f|
-  #  f.write text.gsub(/require 'optparse'/, "require 'optparse'\nrequire 'shellwords'")
-  #end
-  #puts "Demo: Created"
 end
 
 desc "Starts the kickstart (unimplemented)"
 task :kickstart do
-  #puts "ActiveMQ: Starting"
-  #`apache-activemq-5.4.2/bin/activemq start`
-  #puts "Demo: Sleeping 2 seconds for MQ to start"
-  #sleep 2
-  #puts "MCollective: Starting 10 instances"
-  #`cd mcollective-collective-builder && rake start`
 end
 
 desc "Convert VMWare to VBox (unimplemented)"
@@ -132,31 +111,27 @@ desc "Package the VMs (unimplemented)"
 task :package do
 end
 
-desc "Remove kickstart files and repos and unmount the ISO (unimplemented)"
-task :clean => [:stop] do
-  #puts "ActiveMQ: Stopping"
-  #`apache-activemq-5.4.2/bin/activemq stop`
-  #puts "Demo: Removing directories"
-  #CLEANFILES = ["mcollective-collective-builder", "apache-activemq-5.4.2", "activemq-data"]
-  #FileUtils.rm_rf(CLEANFILES)
-  #puts "Demo: Done"
+desc "Unmount the ISO and remove kickstart files and repos"
+task :clean do
+  system("hdiutil unmount #{MOUNTDIR}") or raise(Error, "Cannot unmount #{cdrompath}")
+  FileUtils.rm_rf(DATADIR)
+  FileUtils.rmdir(MOUNTDIR)
 end
 
 def download(url,path)
-  m = url.match(/(https?):\/\/([^\/]+)(\/.*)/)
-  proto = m[1]
-  urlhost = m[2]
-  urlpath = m[3]
-  case proto
+  u = URI.parse(url)
+  net = Net::HTTP.new(u.host, u.port)
+  case u.scheme
   when "http"
-    net = Net::HTTP
+    net.use_ssl = false
   when "https"
-    net = Net::HTTPS
+    net.use_ssl = true
+    net.verify_mode = OpenSSL::SSL::VERIFY_NONE
   else
     raise "Link #{url} is not HTTP(S)"
   end
-  net.start(urlhost) do |http|
-    resp = http.get(urlpath)
+  net.start do |http|
+    resp = http.get(u.path)
     open(path, "wb") do |file|
       file.write(resp.body)
     end
