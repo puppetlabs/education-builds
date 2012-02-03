@@ -6,7 +6,7 @@ BASEDIR = File.dirname(__FILE__)
 SITESDIR = ENV['HOME'] + "/Sites"
 DATADIR = "#{SITESDIR}/ks"
 MOUNTDIR = "#{SITESDIR}/dvd"
-PEVERSION = '2.0.1'
+PEVERSION = '2.0.2'
 
 desc "Build and populate data directory"
 task :init do
