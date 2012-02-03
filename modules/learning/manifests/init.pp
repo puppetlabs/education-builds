@@ -20,11 +20,4 @@ class learning {
   #service { 'pe-puppet': }
   #service { 'pe-httpd': }
   #service { 'pe-activemq': }
-
-  # /etc/puppet/ssl is confusing to have around. Sloppy. Kill.
-  file {'/etc/puppet':
-    ensure  => absent,
-    recurse => true,
-    force   => true,
-  }
 }
