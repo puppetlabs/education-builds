@@ -29,20 +29,21 @@ define localrepo::pkgsync ($pkglist = $name, $source="", $server = "mirrors.cat.
 
 
   File {
-    mode     => 644,
-    owner    => root,
-    group    => root,
+    mode  => 644,
+    owner => root,
+    group => root,
   }
   Exec {
-    user    => root,
-    group   => root,
-    path    => "/usr/bin:/bin",
-    timeout => "3600",
-    require  => [ File["${repopath}/RPMS"], File["/tmp/${name}list"] ],
+    user      => root,
+    group     => root,
+    path      => "/usr/bin:/bin",
+    timeout   => "3600",
+    logoutput => 'on_failure',
+    require   => [ File["${repopath}/RPMS"], File["/tmp/${name}list"] ],
   }
   file { "/tmp/${name}list":
     content => "${pkglist}",
-    notify   => Exec["get_${name}"],
+    notify  => Exec["get_${name}"],
   }
   file { [ "${repopath}", "${repopath}/RPMS" ]:
     ensure => directory,
