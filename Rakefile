@@ -95,6 +95,9 @@ task :init do
   FileUtils.cp "#{Rake.application.find_rakefile_location[1]}/files/centos.php", DATADIR
 end
 
+desc "Update the data directory and remount image"
+task :update => :init
+
 desc "Create a new vmware instance for kickstarting (unimplemented)"
 task :createvm do
 end
