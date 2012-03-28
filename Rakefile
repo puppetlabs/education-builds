@@ -8,7 +8,10 @@ BASEDIR = File.dirname(__FILE__)
 SITESDIR = ENV['HOME'] + "/Sites"
 DATADIR = "#{SITESDIR}/ks"
 MOUNTDIR = "#{SITESDIR}/dvd"
-PEVERSION = '2.0.2'
+PEVERSION = '2.5.0'
+PE_RELEASE_URL = "https://pm.puppetlabs.com/puppet-enterprise/#{PEVERSION}"
+PE_DEV_URL = "http://pluto.puppetlabs.lan/ci-ready"
+PE_URL = PE_RELEASE_URL # Set the place you want to get PE from
 
 desc "Build and populate data directory"
 task :init do
@@ -26,7 +29,7 @@ task :init do
 
   unless File.exist?("#{DATADIR}/puppet-enterprise-#{PEVERSION}-el-5-i386.tar.gz")
     cputs "Downloading PE #{PEVERSION}"
-    download "https://pm.puppetlabs.com/puppet-enterprise/#{PEVERSION}/puppet-enterprise-#{PEVERSION}-el-5-i386.tar.gz", "#{DATADIR}/puppet-enterprise-#{PEVERSION}-el-5-i386.tar.gz"
+    download "#{PE_URL}/puppet-enterprise-#{PEVERSION}-el-5-i386.tar.gz", "#{DATADIR}/puppet-enterprise-#{PEVERSION}-el-5-i386.tar.gz"
   end
 
   cputs "Cloning puppet..."
