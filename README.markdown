@@ -39,8 +39,8 @@
 - Choose to boot with an ISO, and choose `~/Sites/dvd/images/boot.iso`
 - Choose to customize VM settings
 - Name VM "centos-5.7-pe-2.0.2-vmware" (or as appropriate)
-- Edit harddrive settings to use a 4GB disk *not* split into 2GB chunks
-- Edit ram settings to be 512 MB
+- Edit harddrive settings to use a 4GB disk, split into 2GB chunks
+- Edit ram settings to be 1024 MB
 - Edit VM name to be "Puppet Training"
 - Boot
 
