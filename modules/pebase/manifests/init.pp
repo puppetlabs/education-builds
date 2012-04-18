@@ -1,6 +1,6 @@
 class pebase {
   file { '/root/puppet-enterprise':
     ensure => symlink,
-    target => '/root/puppet-enterprise-2.0.2-el-5-i386',
+    target => "/root/puppet-enterprise-${::pe_version}-el-5-i386",
   }
 }
