@@ -54,6 +54,7 @@
 - `zip -r centos-5.7-pe-2.0.2-vmware.zip centos-5.7-pe-2.0.2-vmware` to create zip (should be ~450MB)
 - Make vbox directory: `mkdir centos-5.7-pe-2.0.2-vbox`
 - `cd` to vbox directory and invoke the `vmware2vbox.sh` script from PTB repo's `scripts` directory
+    - If you're making the Learning Puppet VM, specify the VWNAME, VBNAME, and NAME environment variables appropriately instead of relying on the defaults.
 - Zip vbox as above for vmware
 
 ## Automated Kickstart Tasks (What the kickstart install script does, in english):

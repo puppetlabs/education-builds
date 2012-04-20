@@ -15,11 +15,12 @@ DEFAULTVWNAME=${OSDIST}-${OSVER}-${PUPPETVER}-vmware
 DEFAULTVBNAME=${OSDIST}-${OSVER}-${PUPPETVER}-vbox
 VWNAME=${VWNAME:=${DEFAULTVWNAME}}
 VBNAME=${VBNAME:=${DEFAULTVBNAME}}
+NAME=${NAME:='Puppet Training'}
 
 "${OVFTOOL}" ${OVFOPS} "../${VWNAME}/${VWNAME}.vmx" "${PWD}/${VBNAME}.ovf"
 
 OVFFILE=`ls "${PWD}" | grep \.ovf$`
-SED_ID='s/ovf:id="vm"/ovf:id="Puppet Training"/'
+SED_ID="s/ovf:id=\"vm\"/ovf:id=\"${NAME}\"/"
 ${SEDBIN} -i -e "$SED_ID" ${OVFFILE}
 
 MFFILE=`ls "${PWD}" | grep \.mf$`
