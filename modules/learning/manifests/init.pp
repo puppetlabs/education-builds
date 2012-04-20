@@ -10,14 +10,4 @@ class learning {
     source => 'puppet:///modules/learning/learning.answers',
   }
 
-  # Actually not planning to disable these services, on further consideration.
-  #Service {
-  #  require   => Exec['install-pe'],
-  #  hasstatus => true,
-  #  ensure    => stopped,
-  #  enable    => false,
-  #}
-  #service { 'pe-puppet': }
-  #service { 'pe-httpd': }
-  #service { 'pe-activemq': }
 }

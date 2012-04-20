@@ -80,7 +80,7 @@ cd /root
 sed -i 's/HOSTNAME.*/HOSTNAME=<? echo($hostname); ?>/' /etc/sysconfig/network
 hostname <? echo($hostname); ?>
 
-sed -i 's/127\.0\.0\.1.*/127.0.0.1 <? echo($hostname); ?> <? $foo = explode('.', $hostname); echo($foo[0]); ?>/' /etc/hosts
+sed -i 's/127\.0\.0\.1.*/\0 <? echo($hostname); ?> <? $foo = explode('.', $hostname); echo($foo[0]); ?>/' /etc/hosts
 # For some reason Anaconda doesn't place this file
 cat <<DVDREPO > /etc/yum.repos.d/dvd.repo
 [dvd]
