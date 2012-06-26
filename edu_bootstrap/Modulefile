@@ -1,4 +1,4 @@
-name    'rcoleman-edu_env'
+name    'rcoleman-edu_bootstrap'
 version '0.0.1'
 source 'UNKNOWN'
 author 'rcoleman'

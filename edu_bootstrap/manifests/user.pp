@@ -1,16 +1,16 @@
 define edu_bootstrap::user(
   # Password defaults to puppetlabs
-  $password='$1$Av8OZEC1$bTdzLXqDgQcH7rDG9DO/Z/'
+  $password='$1$Tge1IxzI$kyx2gPUvWmXwrCQrac8/m0'
 ) {
 
-  include edu_env
+  include edu_bootstrap
   include concat::setup
-  include netatalk
+  include edu_bootstrap::repo
 
   user { $name:
     ensure   => present,
     gid      => 'pe-puppet',
-    password => 'puppetlabs',
+    password => $password,
     home     => "/home/${name}",
   }
 
@@ -23,9 +23,17 @@ define edu_bootstrap::user(
 
   concat::fragment{ "${name}_env":
     target  => '/etc/puppetlabs/puppet/puppet.conf',
-    content => "[${name}]\n  modulepath=/home/${name}/modules\n",
+    content => "[${name}]\n  modulepath=/home/${name}/modules:/opt/puppet/share/puppet/modules\n",
     order   => '02',
     require => Concat::Fragment['puppet_conf'],
+  }
+
+  exec { "add_console_user_${name}":
+    path    => '/opt/puppet/bin:/usr/bin',
+    cwd     => '/opt/puppet/share/console-auth',
+    command => "rake db:create_initial_admin[${name}@puppetlabs.com,puppetlabs]",
+    unless  => "test -d /home/${name}",
+    before  => File["/home/${name}"],
   }
 
 }
