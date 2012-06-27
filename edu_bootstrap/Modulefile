@@ -1,5 +1,5 @@
 name    'rcoleman-edu_bootstrap'
-version '0.0.1'
+version '0.0.2'
 source 'UNKNOWN'
 author 'rcoleman'
 license 'Apache License, Version 2.0'
