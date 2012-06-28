@@ -21,9 +21,15 @@ define edu_bootstrap::user(
     mode   => '0770',
   }
 
+  file { "/home/${name}/site.pp":
+    ensure => file,
+    owner  => $name,
+    group  => 'pe-puppet',
+  }
+
   concat::fragment{ "${name}_env":
     target  => '/etc/puppetlabs/puppet/puppet.conf',
-    content => "[${name}]\n  modulepath=/home/${name}/modules:/opt/puppet/share/puppet/modules\n",
+    content => "[${name}]\n  modulepath=/home/${name}/modules:/opt/puppet/share/puppet/modules\n  manifest=/home/${name}/site.pp\n",
     order   => '02',
     require => Concat::Fragment['puppet_conf'],
   }
