@@ -1,12 +1,11 @@
 name    'rcoleman-edu_bootstrap'
-version '0.0.3'
-source 'UNKNOWN'
+version '0.9.1'
+source ''
 author 'rcoleman'
 license 'Apache License, Version 2.0'
-summary 'UNKNOWN'
+summary 'Module to aid in Puppet EDU training environment creation'
 description 'UNKNOWN'
 project_page 'UNKNOWN'
 
 ## Add dependencies, if any:
-dependency 'rcoleman/netatalk', '>= 0.0.2'
 dependency 'ripienaar/concat', '>= 0.1.0'
