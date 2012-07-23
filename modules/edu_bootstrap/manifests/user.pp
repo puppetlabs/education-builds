@@ -5,7 +5,10 @@ define edu_bootstrap::user(
 
   include edu_bootstrap
   include concat::setup
+<<<<<<< HEAD
   include edu_bootstrap::repo
+=======
+>>>>>>> 60cdac3283cc1099866cb0badd3afd74755298de
 
   user { $name:
     ensure   => present,
