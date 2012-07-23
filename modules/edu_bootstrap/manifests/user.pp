@@ -36,7 +36,7 @@ define edu_bootstrap::user(
   exec { "add_console_user_${name}":
     path    => '/opt/puppet/bin:/usr/bin',
     cwd     => '/opt/puppet/share/console-auth',
-    command => "rake db:create_initial_admin[${name}@puppetlabs.com,puppetlabs]",
+    command => "rake db:create_user EMAIL=${name}@puppetlabs.com PASSWORD=${password} ROLE=Read-Write",
     unless  => "test -d /home/${name}",
     before  => File["/home/${name}"],
   }
