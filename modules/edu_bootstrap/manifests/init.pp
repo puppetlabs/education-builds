@@ -1,7 +1,5 @@
 class edu_bootstrap {
 
-<<<<<<< HEAD
-=======
   include concat::setup
 
   # Convert facter strings to booleans
@@ -10,7 +8,6 @@ class edu_bootstrap {
   $is_puppetconsole = $::fact_is_puppetconsole ? { 'true'  => true, 'false' => false }
   $is_puppetagent = $::fact_is_puppetagent ? { 'true'  => true, 'false' => false }
 
->>>>>>> 60cdac3283cc1099866cb0badd3afd74755298de
   concat{ 'puppet_conf_concat':
     name  => '/etc/puppetlabs/puppet/puppet.conf',
     owner => 'pe-puppet',
@@ -30,8 +27,6 @@ class edu_bootstrap {
     before  => Concat::Fragment['puppet_conf'],
   }
 
-<<<<<<< HEAD
-=======
 
   if $is_puppetmaster {
 
@@ -59,5 +54,4 @@ class edu_bootstrap {
 
   }
 
->>>>>>> 60cdac3283cc1099866cb0badd3afd74755298de
 }
