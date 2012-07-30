@@ -1,0 +1,9 @@
+class users {
+  user { "<%= @environment %>":
+    ensure => present,
+    shell  => '/bin/bash',
+  }
+  group { 'staff':
+    ensure => present,
+  }
+}

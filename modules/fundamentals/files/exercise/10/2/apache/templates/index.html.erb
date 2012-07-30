@@ -1,0 +1,7 @@
+Hello World,Puppet is Fun!<br> 
+Welcome to <%= @hostname %><br> 
+My IP Address is: <%= @ipaddress %><br> 
+My Uptime is <%= @uptime_seconds %> seconds<br> 
+<% if @is_virtual == 'true' then %> 
+I am a virtual machine.<br> 
+<% end -%>

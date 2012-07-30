@@ -1,0 +1,12 @@
+Listen <%= port %>
+NameVirtualHost <%= vhost_name %>:<%= port %>
+<VirtualHost <%= vhost_name %>:<%= port %>>
+ServerName <%= servername %>
+DocumentRoot <%= docroot %>
+<Directory <%= docroot %>>
+  Options <%= options %>
+  AllowOverride None
+  Order allow,deny
+  allow from all
+</Directory>
+</VirtualHost>

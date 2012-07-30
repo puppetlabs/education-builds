@@ -1,0 +1,56 @@
+class apache {
+  case $::osfamily {
+    'RedHat': {
+    $httpd_user = 'apache'
+    $httpd_group = 'apache'
+    $httpd_pkg = 'httpd'
+    $httpd_svc = 'httpd'
+    $httpd_conf = '/etc/httpd/conf.d'
+    }
+  'Debian': {
+    $httpd_user = 'www-data'
+    $httpd_group = 'www-data'
+    $httpd_pkg = 'apache2'
+    $httpd_svc = 'apache2'
+    $httpd_conf = '/etc/apache2/conf.d'
+    }
+  }
+  apache::vhost { '<%= @environment %>.puppetlabs.vm':
+    port => '8080',
+    docroot => '/var/www/<%= @environment %>',
+    confdir => $httpd_conf,
+    docowner => $httpd_user,
+    docgroup => $httpd_group,
+    notify => Service[$httpd_svc],
+  }
+  File {
+    owner => $httpd_user,
+    group => $httpd_group,
+    mode => 0644,
+  }
+  file { '/var/www/<%= @environment %>':
+    ensure => directory,
+  }
+  file { '/var/www/<%= @environment %>/index.html':
+    ensure => file,
+    content => template("apache/index.html.erbp; ),
+  }
+  package {"${httpd_pkg}":
+    ensure => present,
+  }
+  service { "${httpd_svc}":
+    ensure => running,
+    require => Package[$httpd_pkg],
+    subscribe => File['/var/www/html/index.html'],
+  }
+  file { '/var/www':
+    ensure => directory,
+  }
+  file { '/var/www/html':
+    ensure => directory,
+  }
+  file { '/var/www/html/index.html':
+    ensure => file,
+    content => template("apache/index.html.erb"),
+  }
+}
