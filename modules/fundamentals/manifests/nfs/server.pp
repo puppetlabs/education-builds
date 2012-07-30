@@ -10,7 +10,7 @@ class fundamentals::nfs::server {
   }
   file {'/etc/exports':
     ensure  => file,
-    content => template("fundamentals/nfs/server/exports.erb"),
+    content => template("${module_name}/nfs/server/exports.erb"),
     notify  => Service['nfs'],
   }
 }
