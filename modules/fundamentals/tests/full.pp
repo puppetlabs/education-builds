@@ -3,4 +3,4 @@
 # $students is what you use in the console, to pass a comma delmited string
 
 $student_array = [ 'ryan', 'zack', 'ben', 'brad', 'ralph' ]
-include edu_bootstrap
+include fundamentals

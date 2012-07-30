@@ -1,1 +1,1 @@
-edu_bootstrap::user { ['ryan', 'ben', 'ralph']: }
+fundamentals::user { ['ryan', 'ben', 'ralph']: }
