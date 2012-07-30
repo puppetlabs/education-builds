@@ -44,6 +44,7 @@ class fundamentals {
     file { '/root/master_home':
       ensure => directory,
     }
+    include fundamentals::nfs::client
 
     package { 'fuse-sshfs':
       ensure => present,
