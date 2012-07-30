@@ -1,13 +1,13 @@
 class apache {
-  apache::vhost { "<%= @environment %>.puppetlabs.vm":
+  apache::vhost { "<%= @hostname %>.puppetlabs.vm":
     port => '8080',
-    docroot => "/var/www/<%= @environment %>",
+    docroot => "/var/www/<%= @hostname %>",
     notify => Service['httpd'],
   }
-  file { "/var/www/<%= @environment %>":
+  file { "/var/www/<%= @hostname %>":
     ensure => directory,
   }
-  file { "/var/www/<%= @environment %>/index.html":
+  file { "/var/www/<%= @hostname %>/index.html":
     ensure => file,
     content => template("apache/index.html.erb"),
   }
