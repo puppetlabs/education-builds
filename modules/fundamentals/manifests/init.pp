@@ -35,7 +35,7 @@ class fundamentals {
 
     $class_array = split($::classes, ',')
     fundamentals::console_class { $class_array: }
-
+    include fundamentals::nfs::server
   }
 
   if $is_puppetagent and ! $is_puppetmaster {
