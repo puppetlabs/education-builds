@@ -1,7 +1,6 @@
-class fundamentals::agent(
-  $set_domain   = "puppetlabs.vm",
-  $set_fqdn     = "${::set_hostname}.${set_domain}",
-  ) {
+class fundamentals::agent {
+  $set_domain   = "puppetlabs.vm"
+  $set_fqdn     = "${::set_hostname}.${set_domain}"
 
   # If we are still in the first boot state
   host { "${set_fqdn}":

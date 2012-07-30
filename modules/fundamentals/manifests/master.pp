@@ -1,11 +1,7 @@
-class fundamentals::master(
-  $set_domain   = "puppetlabs.vm",
-  $set_hostname = "master",
-  $set_fqdn     = "${set_hostname}.${set_domain}",
-  $set_user     = "admin",
-  $set_password = "puppetfun",
-  $set_email    = "${set_user}@puppetlabs.com",
-  ) {
+class fundamentals::master {
+  $set_domain   = "puppetlabs.vm"
+  $set_hostname = "master"
+  $set_fqdn     = "${set_hostname}.${set_domain}"
 
   # If we are still in the first boot state
   host { "${set_fqdn}":
@@ -27,12 +23,6 @@ class fundamentals::master(
     enable    => true,
     subscribe => File['/etc/sysconfig/network'],
   }
-
-  # Create out answer file
-  #file { '/root/answers.txt':
-  #  ensure  => file,
-  #  content => template("${module_name}/master-answers.erb"),
-  #}
 
   # Set our current hostname
   if $::fqdn != $set_fqdn {

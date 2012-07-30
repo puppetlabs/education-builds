@@ -1,8 +1,8 @@
 #!/bin/bash
 
-export FACTER_SET_HOST_NAME="$1"
+export FACTER_SET_HOSTNAME="$1"
 
-if [ ${#FACTER_SET_HOST_NAME} -eq 0 ] ; then
+if [ ${#FACTER_SET_HOSTNAME} -eq 0 ] ; then
     echo "Usage:"
     echo "$0 <yourname>"
     exit 1
@@ -22,4 +22,5 @@ $puppet apply \
 
 # Respawn our shell
 unset RUBYLIB
+unset FACTER_SET_HOSTNAME
 exec "$SHELL"
