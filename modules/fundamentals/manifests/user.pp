@@ -1,10 +1,10 @@
-define edu_bootstrap::user(
+define fundamentals::user(
   # Password defaults to puppetlabs
   $password='$1$Tge1IxzI$kyx2gPUvWmXwrCQrac8/m0',
   $console_password='puppetlabs'
 ) {
 
-  include edu_bootstrap
+  include fundamentals
   include concat::setup
 
   user { $name:

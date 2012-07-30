@@ -1,4 +1,4 @@
-define edu_bootstrap::console_class {
+define fundamentals::console_class {
 
     exec { "add_console_class_${name}":
       path        => '/opt/puppet/bin:/bin',
