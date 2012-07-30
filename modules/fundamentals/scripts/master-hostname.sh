@@ -10,7 +10,7 @@ declare -x CLASS_NAME="master"
 $puppet apply \
 --verbose \
 --modulepath="${MODULE_PATH:?}" \
--e "include fundamental::${CLASS_NAME:?}"
+-e "include fundamentals::${CLASS_NAME:?}"
 
 # Respawn our shell
 unset RUBYLIB
