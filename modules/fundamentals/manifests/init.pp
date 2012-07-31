@@ -44,6 +44,7 @@ class fundamentals {
     file { '/root/master_home':
       ensure => directory,
     }
+    # Configure the NFS Mount
     include fundamentals::nfs::client
 
     package { 'fuse-sshfs':
