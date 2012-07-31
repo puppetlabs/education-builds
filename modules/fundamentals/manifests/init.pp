@@ -47,6 +47,13 @@ class fundamentals {
     # Configure the NFS Mount
     include fundamentals::nfs::client
 
+    # Configure their Environment
+    file_line {'environment':
+      ensure => present,
+      path   => "/etc/puppetlabs/puppet/puppet.conf",
+      line   => "    environment = ${::hostname}",
+    }
+
     package { 'fuse-sshfs':
       ensure => present,
     }
