@@ -1,0 +1,25 @@
+# Exercise 12.2 - catch up file
+
+# cd /root/master_home/modules
+# mkdir -p conditionals/manifests
+# vim conditionals/manifests/init.pp
+
+class conditionals {
+  $text = $::operatingsystem ? {
+    'CentOS' => "This is a centos box. (out test)\n",
+    'Ubuntu' => "This is a ubuntu box. (out test)\n",
+    default => "This is an unknown box.(out test)\n",
+  }
+  file {'/tmp/os' :
+    ensure => file,
+    content => $text,
+  }
+}
+
+# mkdir -p conditionals/tests
+# echo "include conditionals" > conditionals/tests/init.pp
+# puppet parser validate conditionals/manifests/init.pp
+# puppet parser validate conditionals/tests/init.pp
+# puppet apply --noop conditionals/tests/init.pp
+# puppet apply conditionals/tests/init.pp
+

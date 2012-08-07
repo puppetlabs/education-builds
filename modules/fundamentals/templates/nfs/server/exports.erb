@@ -1,0 +1,6 @@
+<% @students.split(',').each do |student| -%>
+<% user = Etc::getpwnam(student) -%>
+<% uid  = user.uid -%>
+<% gid  = user.gid -%>
+/home/<%= student %> *(rw,insecure,all_squash,anonuid=<%= uid %>,anongid=<%= gid %>)
+<% end -%>

@@ -1,0 +1,7 @@
+name    'puppetlabs-fundamentals'
+version '1.0'
+source ''
+author 'puppetlabs'
+license 'Apache License, Version 2.0'
+summary 'Module to aid in Puppet EDU training environment creation'
+dependency 'ripienaar/concat', '>= 0.1.0'
