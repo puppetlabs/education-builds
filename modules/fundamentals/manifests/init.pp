@@ -47,14 +47,6 @@ class fundamentals {
     # Configure the NFS Mount
     include fundamentals::nfs::client
 
-    # Configure their Environment
-    file_line {'environment':
-      ensure => present,
-      path   => "/etc/puppetlabs/puppet/puppet.conf",
-      line   => "    environment = ${::hostname}",
-    }
-
-
     # A little hack to make the remote mount behave as
     # part of the users local modulepath, useful for apply
     file { '/etc/puppetlabs/puppet/modules':
