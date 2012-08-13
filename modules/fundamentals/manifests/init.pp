@@ -54,9 +54,6 @@ class fundamentals {
       line   => "    environment = ${::hostname}",
     }
 
-    package { 'fuse-sshfs':
-      ensure => present,
-    }
 
     # A little hack to make the remote mount behave as
     # part of the users local modulepath, useful for apply
