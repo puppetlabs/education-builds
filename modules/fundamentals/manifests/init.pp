@@ -61,6 +61,12 @@ class fundamentals {
       ensure => 'symlink',
       target => '/root/master_home/modules',
     }
+    # /etc/puppet/ssl is confusing to have around. Sloppy. Kill.
+    file {'/etc/puppet':
+      ensure  => absent,
+      recurse => true,
+      force   => true,
+    }
 
   }
 
