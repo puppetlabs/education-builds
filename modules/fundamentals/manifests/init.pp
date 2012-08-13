@@ -45,8 +45,18 @@ class fundamentals {
       ensure => directory,
     }
     # Configure the NFS Mount
-    include fundamentals::nfs::client
-
+    # Updated to skip our ubuntu demo boxen
+    case $::osfamily {
+      'RedHat': {
+        $configure_nfs = true
+      }
+      'Debian': {
+        $configure_nfs = false 
+      }
+    }
+    if $configure_nfs {
+      include fundamentals::nfs::client
+    }
     # A little hack to make the remote mount behave as
     # part of the users local modulepath, useful for apply
     file { '/etc/puppetlabs/puppet/modules':
