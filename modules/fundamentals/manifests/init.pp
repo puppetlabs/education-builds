@@ -50,7 +50,7 @@ class fundamentals {
         $configure_nfs = true
       }
       'Debian': {
-        $configure_nfs = false 
+        $configure_nfs = false
       }
     }
     if $configure_nfs {
