@@ -1,6 +1,7 @@
 class users {
   user { "<%= @hostname %>":
     ensure => present,
+    gid    => 'staff',
     shell  => '/bin/bash',
   }
   group { 'staff':
