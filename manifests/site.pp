@@ -1,4 +1,4 @@
-$pe_version = '2.5.2'
+$pe_version = '2.5.3'
 node default {
   include bootstrap
   include pebase
