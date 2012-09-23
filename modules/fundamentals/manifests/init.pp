@@ -39,10 +39,6 @@ class fundamentals {
 
   if $is_puppetagent and ! $is_puppetmaster {
 
-    # Establish the mount point for sshfs/nfs
-    file { '/root/master_home':
-      ensure => directory,
-    }
     # Configure the NFS Mount
     # Updated to skip our ubuntu demo boxen
     case $::osfamily {
