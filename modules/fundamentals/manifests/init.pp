@@ -30,7 +30,8 @@ class fundamentals {
       before  => Concat::Fragment['puppet_conf'],
     }
 
-    $student_array = split($::students, ',')
+    $student_normalized = regsubst($::students,'\s', '', G)
+    $student_array = split($student_normalized, ',')
     fundamentals::user { $student_array: }
 
     $class_array = split($::classes, ',')
