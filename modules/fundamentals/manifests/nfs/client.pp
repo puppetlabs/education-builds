@@ -1,9 +1,13 @@
 class fundamentals::nfs::client {
- mount { "/root/master_home":
-        device  => "${::serverip}:/home/${::hostname}",
-        fstype  => "nfs",
-        ensure  => "mounted",
-        options => "rw",
-        atboot  => true,
+  file { '/root/master_home':
+    ensure => directory,
+  }
+  mount { "/root/master_home":
+    device  => "${::serverip}:/home/${::hostname}",
+    fstype  => "nfs",
+    ensure  => "mounted",
+    options => "rw",
+    atboot  => true,
+    require => File['/root/master_home'],
  }
 }
