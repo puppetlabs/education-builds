@@ -89,4 +89,9 @@ class bootstrap {
     recurse => true,
     force   => true,
   }
+
+  # An array of modules to copy from /usr/src to PE /opt/puppet
+  bootstrap::copymod{ ['fundamentals','concat']:
+    require => Class['pebase'],
+  }
 }
