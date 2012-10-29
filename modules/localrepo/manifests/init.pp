@@ -40,7 +40,10 @@ class localrepo {
                    "${base}/mirror/centos/6/updates",
                    "${base}/mirror/puppetlabs",
                    "${base}/mirror/puppetlabs/local",
-                   "${base}/mirror/puppetlabs/local/base", ]
+                   "${base}/mirror/puppetlabs/local/base",
+                   "${base}/mirror/puppetlabs-enterprise-extras",
+                   "${base}/mirror/puppetlabs-enterprise-extras/6",
+                   "${base}/mirror/puppetlabs-enterprise-extras/6/local" ]
 
   File { mode => 644, owner => root, group => root }
 
@@ -97,20 +100,20 @@ class localrepo {
     notify   => Exec["makecache"],
   }
 
-  ## Build the "puppetlabs" repo
-  #localrepo::pkgsync { "puppetlabs_pkgs":
-  #  pkglist  => template("localrepo/puppetlabs_pkgs.erb"),
-  #  repopath => "${base}/mirror/puppetlabs/local/base/i386",
-  #  syncer   => "yumdownloader",
-  #  source   => "puppetlabs",
-  #  notify   => Repobuild["puppetlabs_local"],
-  #}
+  # Build the "puppetlabs-enterprise-extras" repo
+  localrepo::pkgsync { "puppetlabs-enterprise-extras_pkgs":
+    pkglist  => template("localrepo/puppetlabs-enterprise-extras_pkgs.erb"),
+    repopath => "${base}/mirror/puppetlabs-enterprise-extras/6/local/i386",
+    syncer   => "yumdownloader",
+    source   => "puppetlabs-enterprise-extras",
+    notify   => Repobuild["puppetlabs-enterprise-extras_local"],
+  }
 
-  #localrepo::repobuild { "puppetlabs_local":
-  #  repopath => "${base}/mirror/puppetlabs/local/base/i386",
-  #  require  => Package["createrepo"],
-  #  notify   => Exec["makecache"],
-  #}
+  localrepo::repobuild { "puppetlabs-enterprise-extras_local":
+    repopath => "${base}/mirror/puppetlabs-enterprise-extras/6/local/i386",
+    require  => Package["createrepo"],
+    notify   => Exec["makecache"],
+  }
 
   exec { "makecache":
     command     => "yum makecache",
