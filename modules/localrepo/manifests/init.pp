@@ -1,5 +1,5 @@
 # Author: Cody Herriges
-# Pulls a selection of packages from a full Centos 5 mirror and
+# Pulls a selection of packages from a full Centos 6 mirror and
 # drops the packages into a requested location on the local machine
 # if any packages are updated it then runs createrepo to generate
 # a local yum repo.  The local repos are meant to allow PuppetMaster
@@ -16,13 +16,13 @@
 # Example:
 #   pkgsync { "base_pkgs":
 #     pkglist  => "httpd*\nperl-DBI*\nlibart_lgpl*\napr*\nruby-rdoc*\nntp*\n",
-#     repopath => "/var/yum/mirror/centos/5/os/i386",
-#     source   => "::centos/5/os/i386/CentOS/",
+#     repopath => "/var/yum/mirror/centos/6/os/i386",
+#     source   => "::centos/6/os/i386/CentOS/",
 #     notify   => Repobuild["base"]
 #   }
 #
 #   repobuild { "base":
-#     repopath => "${base}/mirror/centos/5/os/i386",
+#     repopath => "${base}/mirror/centos/6/os/i386",
 #   }
 
 class localrepo {
@@ -32,12 +32,12 @@ class localrepo {
   $directories = [ "${base}",
                    "${base}/mirror",
                    "${base}/mirror/epel",
-                   "${base}/mirror/epel/5",
-                   "${base}/mirror/epel/5/local",
+                   "${base}/mirror/epel/6",
+                   "${base}/mirror/epel/6/local",
                    "${base}/mirror/centos",
-                   "${base}/mirror/centos/5",
-                   "${base}/mirror/centos/5/os",
-                   "${base}/mirror/centos/5/updates",
+                   "${base}/mirror/centos/6",
+                   "${base}/mirror/centos/6/os",
+                   "${base}/mirror/centos/6/updates",
                    "${base}/mirror/puppetlabs",
                    "${base}/mirror/puppetlabs/local",
                    "${base}/mirror/puppetlabs/local/base", ]
@@ -56,14 +56,14 @@ class localrepo {
   ## Build the "base" repo
   localrepo::pkgsync { "base_pkgs":
     pkglist  => template("localrepo/base_pkgs.erb"),
-    repopath => "${base}/mirror/centos/5/os/i386",
+    repopath => "${base}/mirror/centos/6/os/i386",
     syncer   => "yumdownloader",
     source   => "dvd",
     notify   => Repobuild["base_local"],
   }
 
   localrepo::repobuild { "base_local":
-    repopath => "${base}/mirror/centos/5/os/i386",
+    repopath => "${base}/mirror/centos/6/os/i386",
     require  => Package["createrepo"],
     notify   => Exec["makecache"],
   }
@@ -71,13 +71,13 @@ class localrepo {
   ## Build the "updates" repo
   #localrepo::pkgsync { "updates_pkgs":
   #  pkglist  => template("localrepo/updates_pkgs.erb"),
-  #  repopath => "${base}/mirror/centos/5/updates/i386",
-  #  source   => "::centos/5/updates/i386/RPMS/",
+  #  repopath => "${base}/mirror/centos/6/updates/i386",
+  #  source   => "::centos/6/updates/i386/RPMS/",
   #  notify   => Repobuild["updates_local"]
   #}
 
   #localrepo::repobuild { "updates_local":
-  #  repopath => "${base}/mirror/centos/5/updates/i386",
+  #  repopath => "${base}/mirror/centos/6/updates/i386",
   #  require  => Package["createrepo"],
   #  notify   => Exec["makecache"],
   #}
@@ -85,14 +85,14 @@ class localrepo {
   ## Build the "epel" repo
   localrepo::pkgsync { "epel_pkgs":
     pkglist  => template("localrepo/epel_pkgs.erb"),
-    repopath => "${base}/mirror/epel/5/local/i386",
+    repopath => "${base}/mirror/epel/6/local/i386",
     syncer   => "yumdownloader",
     source   => "epel",
     notify   => Repobuild["epel_local"],
   }
 
   localrepo::repobuild { "epel_local":
-    repopath => "${base}/mirror/epel/5/local/i386",
+    repopath => "${base}/mirror/epel/6/local/i386",
     require  => Package["createrepo"],
     notify   => Exec["makecache"],
   }
