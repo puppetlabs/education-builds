@@ -19,7 +19,7 @@ class training {
     gpgcheck => '0',
     descr    => 'Puppetlabs yum repo'
   }
-  yumrepo { ['epel', 'updates', 'base', 'extras', 'dvd']:
+  yumrepo { ['epel', 'updates', 'base', 'extras', 'c6-media']:
     enabled => 0,
   }
 }
