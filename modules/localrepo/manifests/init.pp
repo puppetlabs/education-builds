@@ -61,7 +61,7 @@ class localrepo {
     pkglist  => template("localrepo/base_pkgs.erb"),
     repopath => "${base}/mirror/centos/6/os/i386",
     syncer   => "yumdownloader",
-    source   => "dvd",
+    source   => "c6-media",
     notify   => Repobuild["base_local"],
   }
 
