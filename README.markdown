@@ -1,8 +1,12 @@
 # Bootstrap CentOS VMs for training
 
 ## Initial Setup (first time):
-- Enable web sharing in System Preferences if it is not already enabled
+- Pre-mountain-lion:
+    - Enable web sharing in System Preferences if it is not already enabled
     - Click "Create Personal Website Folder" if `~/Sites` does not already exist
+- Mountain-lion:
+    - Enable apache on your laptop: `sudo launchctl load -w /System/Library/LaunchDaemons/org.apache.httpd.plist`
+    - `mkdir ~/Sites` if `~/Sites` does not already exist
 - Clone this repo to anywhere
 - Download full CentOS DVD ISOs to anywhere
     - You only need the `1 of 2` ISO, but the torrent comes with 2
