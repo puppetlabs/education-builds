@@ -67,5 +67,10 @@ class fundamentals {
     }
 
   }
-
+  if $::osfamily == 'RedHat' {
+    service { 'nscd':
+      ensure => stopped,
+      enable => false,
+    }
+  }
 }
