@@ -67,6 +67,8 @@ ntp
 curl
 tar
 ruby
+-nscd*
+-nss_ldap*
 
 %post --erroronfail
 exec < /dev/tty3 > /dev/tty3
