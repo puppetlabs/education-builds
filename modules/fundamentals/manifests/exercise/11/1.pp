@@ -16,4 +16,8 @@ class fundamentals::exercise::11::1 inherits fundamentals::exercise::10::2 {
     content => template("${module_name}/exercise/${exercise_major}/${exercise_minor}/${exercise_module}/manifests/vhost.pp.erb"),
     tag     => $exercise_version,
   }
+  File ["${exercise_module}/manifests/init.pp"] {
+    content => template("${module_name}/exercise/${exercise_major}/${exercise_minor}/${exercise_module}/manifests/init.pp.erb"),
+    tag     => $exercise_version,
+  }
 }

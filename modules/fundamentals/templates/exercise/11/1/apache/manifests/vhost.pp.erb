@@ -1,38 +1,19 @@
-class apache {
-  apache::vhost { "<%= @hostname %>.puppetlabs.vm":
-    port => '8080',
-    docroot => "/var/www/<%= @hostname %>",
-    notify => Service['httpd'],
-  }
-  file { "/var/www/<%= @hostname %>":
-    ensure => directory,
-  }
-  file { "/var/www/<%= @hostname %>/index.html":
-    ensure => file,
-    content => template("apache/index.html.erb"),
-  }
-  File {
-    owner => 'apache',
-    group => 'apache',
-    mode => 0644,
-  }
-  package {'httpd':
+define apache::vhost (
+  $port,
+  $docroot,
+  $docowner,
+  $docgroup,
+  $confdir,
+  $priority = '10',
+  $options = "Indexes MultiViews",
+  $vhost_name = $name,
+  $servername = $name,
+){
+  file { "${confdir}/${name}.conf":
     ensure => present,
-  }
-  service {'httpd':
-    ensure => running,
-    require => Package['httpd'],
-    subscribe => File['/var/www/html/index.html'],
-  }
-  file { '/var/www':
-    ensure => directory,
-  }
-  file { '/var/www/html':
-    ensure => directory,
-  }
-  file { '/var/www/html/index.html':
-    ensure  => file,
-    #source => 'puppet:///modules/apache/index.html',
-    content => template("apache/index.html.erb"),
+    owner => $docowner,
+    group => $docgroup,
+    mode => '0644',
+    content => template("apache/vhost.conf.erb"),
   }
 }
