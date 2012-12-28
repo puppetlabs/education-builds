@@ -33,4 +33,13 @@ class fundamentals::master {
         require => Host["${set_fqdn}"],
     }
   }
+
+  file { '/root/forge':
+    ensure => directory,
+  }
+
+  fundamentals::forge { 'saz-sudo': }
+  fundamentals::forge { 'jonhadfield-wordpress': }
+  fundamentals::forge { 'puppetlabs-firewall': }
+  fundamentals::forge { 'puppetlabs-mysql': }
 }
