@@ -33,7 +33,7 @@ class apache {
   }
   file { '/var/www/<%= @hostname %>/index.html':
     ensure => file,
-    content => template("apache/index.html.erbp; ),
+    content => template('apache/index.html.erb' ),
   }
   package {"${httpd_pkg}":
     ensure => present,
