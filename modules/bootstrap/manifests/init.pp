@@ -58,11 +58,6 @@ class bootstrap {
   # 1. Make sure our own hostname resolves.
   # 2. If our hostname isn't localhost.localdomain, then we had to contaminate
   #    localhost during kickstart. Restore localhost to its default state.
-  host { $::fqdn:
-    ensure       => present,
-    ip           => '127.0.0.1',
-    host_aliases => [$::hostname, "puppet.${::domain}", 'puppet'],
-  }
   if $::fqdn != 'localhost.localdomain' {
     host { 'localhost.localdomain':
       ensure       => present,
