@@ -41,8 +41,8 @@ d-i debian-installer/locale string en_US
 d-i console-keymaps-at/keymap select us
 d-i keyboard-configuration/xkb-keymap select us
 d-i netcfg/choose_interface select auto
-d-i netcfg/get_hostname string unassigned-hostname
-d-i netcfg/get_domain string unassigned-domain
+d-i netcfg/get_hostname string <%= $settings[:hostname] %>
+d-i netcfg/get_domain string <%= $settings[:hostname].split('.')[1..-1].join('.') %>
 d-i netcfg/wireless_wep string
 d-i mirror/country string manual
 d-i mirror/http/hostname string http.us.debian.org
