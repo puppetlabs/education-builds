@@ -32,4 +32,15 @@ class fundamentals::agent {
         require => Host["${set_fqdn}"],
     }
   }
+
+  # Enable base repo when we are doing the capstone
+  if str2bool($::yumrepo_base_enabled) {
+    $yumrepo_base = 1
+  } else {
+    $yumrepo_base = 0
+  }
+
+  yumrepo { 'base':
+    enabled => $yumrepo_base,
+  }
 }
