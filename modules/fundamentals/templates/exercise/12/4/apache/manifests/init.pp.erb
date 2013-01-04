@@ -1,18 +1,21 @@
 class apache {
   case $::osfamily {
-    'RedHat': {
-    $httpd_user = 'apache'
-    $httpd_group = 'apache'
-    $httpd_pkg = 'httpd'
-    $httpd_svc = 'httpd'
-    $httpd_conf = '/etc/httpd/conf.d'
+    RedHat': {
+      $httpd_user = 'apache'
+      $httpd_group = 'apache'
+      $httpd_pkg = 'httpd'
+      $httpd_svc = 'httpd'
+      $httpd_conf = '/etc/httpd/conf.d'
     }
-  'Debian': {
-    $httpd_user = 'www-data'
-    $httpd_group = 'www-data'
-    $httpd_pkg = 'apache2'
-    $httpd_svc = 'apache2'
-    $httpd_conf = '/etc/apache2/conf.d'
+    'Debian': {
+      $httpd_user = 'www-data'
+      $httpd_group = 'www-data'
+      $httpd_pkg = 'apache2'
+      $httpd_svc = 'apache2'
+      $httpd_conf = '/etc/apache2/conf.d'
+    }
+    default: {
+        fail("This class supports RedHat and Debian. Your osfamily is ${::osfamily}")
     }
   }
   apache::vhost { '<%= @hostname %>.puppetlabs.vm':
@@ -33,7 +36,7 @@ class apache {
   }
   file { '/var/www/<%= @hostname %>/index.html':
     ensure => file,
-    content => template("apache/index.html.erbp; ),
+    content => template('apache/index.html.erb' ),
   }
   package {"${httpd_pkg}":
     ensure => present,
