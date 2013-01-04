@@ -68,4 +68,7 @@ class fundamentals {
 
   }
 
+  package { 'nano':
+    ensure => present,
+  }
 }

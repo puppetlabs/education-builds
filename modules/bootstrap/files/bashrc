@@ -6,6 +6,7 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias vi=vim
+alias nano=‘nano -E -T2 -i -w’
 #export TERM=ansi
 
 # Source global definitions
@@ -14,5 +15,5 @@ if [ -f /etc/bashrc ]; then
 fi
 
 ## uncomment for dev training:
-#export PATH=/usr/src/puppet/sbin:/usr/src/puppet/bin:/usr/src/facter/bin:$PATH
-#export RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib:$RUBYLIB
+#export PATH=/opt/puppet/bin:$PATH
+#export RUBYLIB=/opt/puppet/lib/ruby/site_ruby/1.8/puppet:/opt/puppet/lib/ruby/site_ruby/1.8/facter:$RUBYLIB
