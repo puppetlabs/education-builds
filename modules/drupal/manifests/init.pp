@@ -21,14 +21,14 @@ class drupal (
     source  => 'puppet:///modules/drupal/htaccess',
     require => Package['drupal7'],
   }
-  
+
   file { 'settings.php':
     ensure  => file,
     path    => '/usr/share/drupal7/sites/default/settings.php',
     content => template('drupal/settings.php.erb'),
     require => Package['drupal7'],
   }
-  
+
   apache::vhost { $::fqdn:
     ensure     => present,
     vhost_name => '*',
@@ -47,16 +47,18 @@ class drupal (
   }
 
   exec { 'install default drupal site':
-    command     => 'drush site-install standard -y',
-    path        => '/usr/local/bin:/bin:/usr/bin',
-    refreshonly => true,
-    require     => [ Mysql::Db[$database], Class['drupal::drush'], File['settings.php'] ],
+    command => 'drush site-install standard -y',
+    path    => '/usr/local/bin:/bin:/usr/bin',
+    unless  => 'drush core-status | grep "bootstrap.*Successful"',
+    require => [ Mysql::Db[$database], Class['drupal::drush'], File['settings.php'] ],
+    notify  => Exec['set default drupal admin password'];
   }
 
   exec { 'set default drupal admin password':
-    command => "drush user-password admin --password=${admin_password}",
-    path    => '/usr/local/bin:/bin:/usr/bin',
-    require => Exec['install default drupal site'],
+    command     => "drush user-password admin --password=${admin_password}",
+    path        => '/usr/local/bin:/bin:/usr/bin',
+    refreshonly => true,
+    require     => Exec['install default drupal site'],
   }
 
 }
