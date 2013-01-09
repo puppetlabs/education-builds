@@ -69,7 +69,6 @@ class bootstrap {
   file { '/etc/sysconfig/network':
     ensure  => file,
     content => template('bootstrap/network.erb'),
-    require => Host[$::fqdn],
   }
   service { 'network':
     ensure    => running,
