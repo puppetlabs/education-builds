@@ -1,0 +1,121 @@
+<?php
+// $Id: puppet_report.module,v 1.9 2010/10/30 11:02:11 hass Exp $
+// http://www.json.org/JSONRequest.html
+/**
+ * Implements hook_menu().
+ */
+function puppet_report_menu() {
+  $items['puppet/post'] = array(
+    'page callback' => 'puppet_report_webservice',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+// Drupal will automatically pass URI path components as arguments
+function puppet_report_webservice($certname = null, $level = null, $message = null) {
+
+  if (_puppet_report_check_key($_SERVER, 'REQUEST_METHOD', 'GET')) {
+  
+    // GET requests must include all three arguments
+    if ( $certname && $level && $message ) {
+      if ($response = _puppet_report_simple_report($certname, $level, $message)) {
+        drupal_json_output($response);
+      }
+    }
+    else {
+      drupal_json_output(array('#error' => TRUE, '#data' => t('Malformed GET request.')));
+    }
+  }
+
+  elseif (_puppet_report_check_key($_SERVER, 'REQUEST_METHOD', 'POST')) {
+  
+    // POSTed requests must be JSON
+    if($request = drupal_json_decode(file_get_contents('php://input'))) {  
+      if ($response = _puppet_report_json_report($request)) {
+        drupal_json_output($response);
+      }
+      else {
+        drupal_json_output(array('#error' => TRUE, '#data' => t('No handler for request.')));
+      }
+    }
+    else {
+      drupal_json_output(array('#error' => TRUE, '#data' => t('Malformed JSON body.')));
+    }
+  }
+
+  else {
+    drupal_json_output(array('#error' => TRUE, '#data' => t('Malformed request.')));
+  }
+
+  // We don't want any of the rest of Drupal loading
+  exit;
+}
+
+/**
+ * Simple report handler.
+ *
+ * Just accepts a handful of arguments and directly logs them.
+ */
+function _puppet_report_simple_report($certname, $level, $message) {
+  $severity = _puppet_report_severity($level);
+  watchdog('Puppet', '[%certname] %message', array('%certname' => $certname, '%message' => $message), $severity);
+  return array('#response' => TRUE, '#data' => t('Report successfully posted'));
+}
+
+/**
+ * JSON report handler.
+ *
+ * Accepts a JSON object and parses it for a series of log messages.
+ *
+ * Object looks like:
+ *
+ * {
+ *   "#certname": "agent.example.com",
+ *   "#messages": {
+ *     "info":  "This is an informational message",
+ *     "alert": "This is an alert message",
+ *   }
+ * }
+ *
+ */
+function _puppet_report_json_report($request) {
+  $certname = $request['#certname'];
+  
+  if($certname) {
+    foreach($request['#messages'] as $level => $message) {
+      $severity = _puppet_report_severity($level);
+      watchdog('Puppet', '[%certname] %message', array('%certname' => $certname, '%message' => $message), $severity);
+    }
+    return array('#response' => TRUE, '#data' => t('Report successfully posted'));
+  }
+  else {
+    return array('#error' => TRUE, '#data' => t('Malformed request.'));
+  }
+}
+
+function _puppet_report_severity($level) {
+  switch($level) {
+    case 'alert':     $severity = WATCHDOG_ALERT;     break; # Alert, action must be taken immediately.
+    case 'critical':  $severity = WATCHDOG_CRITICAL;  break; # Critical conditions.
+    case 'error':     $severity = WATCHDOG_ERROR;     break; # Error conditions.
+    case 'warning':   $severity = WATCHDOG_WARNING;   break; # Warning conditions.
+    case 'notice':    $severity = WATCHDOG_NOTICE;    break; # Normal but significant conditions.
+    case 'info':      $severity = WATCHDOG_INFO;      break; # Informational messages.
+    case 'debug':     $severity = WATCHDOG_DEBUG;     break; # Debug-level messages.
+    default:          $severity = WATCHDOG_NOTICE;
+  }
+  return $severity; 
+}
+
+function _puppet_report_check_key($array, $key, $value, $lc = TRUE) {
+	if(array_key_exists($key, $array)) {
+		if($lc)
+			return strtolower($array[$key]) == strtolower($value);
+		else
+			return $array[$key] == $value;
+	}
+	return false;
+}
