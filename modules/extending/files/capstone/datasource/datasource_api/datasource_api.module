@@ -1,0 +1,111 @@
+<?php
+// $Id: datasource_api.module,v 1.9 2010/10/30 11:02:11 hass Exp $
+// http://www.json.org/JSONRequest.html
+/**
+ * Implements hook_menu().
+ */
+function datasource_api_menu() {
+  $items['puppet/hiera'] = array(
+    'page callback' => 'datasource_api_webservice',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function datasource_api_webservice($source = null, $key = null) {
+
+  if (_datasource_api_check_key($_SERVER, 'REQUEST_METHOD', 'GET')) {
+    // return plain text for simple requests
+    drupal_add_http_header('Content-Type', 'text/plain');
+    
+    if($source && $key) {
+      echo _datasource_api_simple_query($source, $key);
+    }
+    else {
+      echo 'Malformed request.';
+    }
+  }
+
+  elseif (_datasource_api_check_key($_SERVER, 'REQUEST_METHOD', 'POST')) {
+  
+    // POSTed requests must be JSON
+    if($request = drupal_json_decode(file_get_contents('php://input'))) {  
+      if ($response = _datasource_api_json_query($request)) {
+        drupal_json_output($response);
+      }
+    }
+    else {
+      drupal_json_output(array('#error' => TRUE, '#data' => t('Malformed JSON body.')));
+    }
+  }
+
+  else {
+    drupal_json_output(array('#error' => TRUE, '#data' => t('Malformed request.')));
+  }
+
+  // We don't want any of the rest of Drupal loading
+  exit;
+}
+
+/**
+ * Simple query handler.
+ *
+ * Just accepts a handful of arguments and performs a query.
+ */
+function _datasource_api_simple_query($source, $key) {
+  // ugly query coupled tightly to this version of composed_field
+  $result = db_query('SELECT field_key_composed FROM {field_data_field_key} AS k, {node} AS n 
+                      WHERE k.entity_id = n.nid AND n.title = :source', array(':source' => $source));
+  
+  // it's gross. I know. Bear with me.
+  $datasource = array();
+  foreach($result as $row) {
+    $result = unserialize($row->field_key_composed);
+    $datasource[$result[1]] = $result[2];
+  }
+  
+  if(array_key_exists($key, $datasource)) {
+    watchdog('Hiera', '[%source] %key: %result', array('%source' => $source, '%key' => $key, '%result' => $datasource[$key]), WATCHDOG_DEBUG);
+    return $datasource[$key];
+  }
+}
+
+/**
+ * JSON query handler.
+ *
+ * Accepts a JSON object and parses it for a query. Calls the simple_query handler.
+ *
+ * Object looks like:
+ *
+ *   { "#source": "production/redhat", "#key": "repository" }
+ *
+ * Return a JSON object like:
+ *
+ *   { "#source": "production/redhat", "#key": "repository", "#value": "yum.puppetlabs.com" }
+ *
+ */
+function _datasource_api_json_report($request) {
+  $source = $request['#source'];
+  $key    = $request['#key'];
+  
+  if ($source && $key) {
+    if($result = _datasource_api_simple_query($source, $key)) {
+      return array('#source' => $source, '#key' => $key, '#value' => $result);
+    }
+  }
+  else {
+    return array('#error' => TRUE, '#data' => t('Malformed JSON body.'));
+  }
+}
+
+function _datasource_api_check_key($array, $key, $value, $lc = TRUE) {
+	if(array_key_exists($key, $array)) {
+		if($lc)
+			return strtolower($array[$key]) == strtolower($value);
+		else
+			return $array[$key] == $value;
+	}
+	return false;
+}

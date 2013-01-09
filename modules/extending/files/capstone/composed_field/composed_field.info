@@ -1,0 +1,11 @@
+name = Composed Field
+description = Defines composed field types
+package = Fields
+core = 7.x
+
+; Information added by drupal.org packaging script on 2012-07-16
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "composed_field"
+datestamp = "1342473683"
+
