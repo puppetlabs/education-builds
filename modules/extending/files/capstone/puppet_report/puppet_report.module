@@ -105,6 +105,7 @@ function _puppet_report_severity($level) {
     case 'notice':    $severity = WATCHDOG_NOTICE;    break; # Normal but significant conditions.
     case 'info':      $severity = WATCHDOG_INFO;      break; # Informational messages.
     case 'debug':     $severity = WATCHDOG_DEBUG;     break; # Debug-level messages.
+    default:          $severity = WATCHDOG_NOTICE;
   }
   return $severity; 
 }
