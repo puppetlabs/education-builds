@@ -7,7 +7,7 @@ define fundamentals::user(
   include fundamentals
   include concat::setup
 
-  if versioncmp($::peversion, '2.6') < 0 {
+  if versioncmp($::fundamentals_pe_version, '2.6') < 0 {
     $userstring = 'EMAIL'
   } else {
     $userstring = 'USERNAME'
