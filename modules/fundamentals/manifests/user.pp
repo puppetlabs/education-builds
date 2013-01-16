@@ -7,6 +7,12 @@ define fundamentals::user(
   include fundamentals
   include concat::setup
 
+  if versioncmp($::peversion, '2.6') < 0 {
+    $userstring = 'EMAIL'
+  } else {
+    $userstring = 'USERNAME'
+  }
+
   user { $name:
     ensure   => present,
     gid      => 'pe-puppet',
@@ -37,7 +43,7 @@ define fundamentals::user(
   exec { "add_console_user_${name}":
     path    => '/opt/puppet/bin:/usr/bin',
     cwd     => '/opt/puppet/share/console-auth',
-    command => "rake db:create_user EMAIL=${name}@puppetlabs.com PASSWORD=${console_password} ROLE=Read-Write",
+    command => "rake db:create_user ${userstring}=${name}@puppetlabs.com PASSWORD=${console_password} ROLE=Read-Write",
     unless  => "test -d /home/${name}",
     before  => File["/home/${name}"],
   }
