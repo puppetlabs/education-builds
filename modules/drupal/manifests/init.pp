@@ -6,14 +6,13 @@ class drupal (
   $dbport         = '',
   $dbdriver       = 'mysql',
   $dbprefix       = '',
-  $admin_password = 'puppet',
+  $admin_password,
 ) {
   include drupal::drush
 
   package { 'drupal7':
     ensure => present,
     notify => Exec['install default drupal site'],
-    before => Apache::Vhost[$::fqdn],
   }
 
   file { '/usr/share/drupal7/.htaccess':
@@ -29,28 +28,11 @@ class drupal (
     require => Package['drupal7'],
   }
 
-  apache::vhost { $::fqdn:
-    ensure     => present,
-    vhost_name => '*',
-    port       => '80',
-    ssl        => false,
-    override   => 'all',
-    docroot    => '/usr/share/drupal7',
-  }
-
-  mysql::db { $database:
-    ensure   => present,
-    user     => $dbuser,
-    password => $dbpassword,
-    host     => $dbhost,
-    grant    => ['all'],
-  }
-
   exec { 'install default drupal site':
     command => 'drush site-install standard -y',
     path    => '/usr/local/bin:/bin:/usr/bin',
     unless  => 'drush core-status | grep "bootstrap.*Successful"',
-    require => [ Mysql::Db[$database], Class['drupal::drush'], File['settings.php'] ],
+    require => [ Class['drupal::drush'], File['settings.php'] ],
     notify  => Exec['set default drupal admin password'];
   }
 
@@ -62,4 +44,3 @@ class drupal (
   }
 
 }
-

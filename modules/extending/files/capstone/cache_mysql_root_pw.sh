@@ -7,8 +7,7 @@
 
 source /root/puppet-enterprise/answers.lastrun.`hostname`
 
-echo -n "[client]
-user=root
-host=localhost
-password=${q_puppet_enterpriseconsole_database_root_password}
-" > /root/.my.cnf
+if [ "${q_puppet_enterpriseconsole_database_root_password}" != "" ]
+then
+  echo -e "[client]\nuser=root\nhost=localhost\npassword=${q_puppet_enterpriseconsole_database_root_password}" > /root/.my.cnf
+fi
