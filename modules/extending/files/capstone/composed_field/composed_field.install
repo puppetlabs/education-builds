@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the composed field module.
+ */
+
+/**
+ * Implements hook_field_schema().
+ */
+function composed_field_field_schema($field) {
+  return array(
+    'columns' => array(
+      'composed' => array(
+        'type' => 'blob',
+        'size' => 'big',
+        'not null' => FALSE,
+        'serialize' => TRUE,
+      ),
+    ),
+  );
+}
