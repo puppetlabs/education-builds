@@ -1,0 +1,98 @@
+# kickstart host is <%= %x{hostname} %>
+# vm hostname is <%= $settings[:hostname] %>
+# product: centos
+# version: 6
+# arch: i386
+
+# System bootloader configuration
+bootloader --location=mbr
+# Clear the Master Boot Record
+zerombr
+# Partition clearing information
+clearpart --all --initlabel
+# Disk partitioning information
+part /boot --fstype ext2 --size=100
+part pv.01 --size=1 --grow
+volgroup vg00 pv.01
+logvol / --name=rootvol --vgname=vg00 --size=1 --grow --fstype ext3
+logvol swap --name=swapvol --vgname=vg00 --size=256
+# Use the *real* text mode install
+cmdline
+# Install OS instead of upgrade
+install
+# Use CDROM install media
+cdrom
+#repo --name=cdrom --baseurl=cdrom:sr0 --cost=100
+# SELinux configuration
+selinux --disabled
+# Do not configure the X Window System
+skipx
+# System authorization information
+auth  --useshadow  --enablemd5  --enablecache
+#Root password
+rootpw --iscrypted $1$jrm5tnjw$h8JJ9mCZLmJvIxvDLjw1M/
+# Firewall configuration
+firewall --disabled
+# Run the Setup Agent on first boot
+firstboot --disable
+# System keyboard
+keyboard us
+# System language
+lang en_US
+# System timezone
+timezone UTC
+# Network information
+network --bootproto=dhcp --device=eth0 --onboot=on
+# Installation logging level
+logging --level=info
+# Shutdown after installation so we don't have to
+poweroff
+
+#Packages
+%packages
+@Core
+@base
+ntp
+curl
+tar
+ruby
+
+%post --erroronfail
+exec < /dev/tty3 > /dev/tty3
+chvt 3
+(
+set -x
+mount /dev/sr0 /mnt
+groupadd -r puppet
+useradd -d /var/lib/puppet -g puppet -M -r puppet
+cd /root
+# Set the dns info and hostname; must be done before puppet
+cat <<EOF > /etc/resolv.conf
+domain puppetlabs.vm
+nameserver 8.8.8.8
+EOF
+sed -i 's/HOSTNAME.*/HOSTNAME=<%= $settings[:hostname] %>/' /etc/sysconfig/network
+hostname <%= $settings[:hostname] %>
+
+sed -i 's/127\.0\.0\.1.*/\0 <%= $settings[:hostname] %> <%= $settings[:hostname].split('.')[0] %>/' /etc/hosts
+tar zxf /mnt/puppet/<%= $settings[:pe_tarball] %> -C /root
+ln -s /root/puppet-enterprise-<%= PEVERSION + $settings[:pe_install_suffix] %> /root/puppet-enterprise
+rpm -Uvh /mnt/puppet/epel-release.rpm
+yum -y install git
+#yum -y upgrade #This takes a while
+cd /usr/src
+git clone /mnt/puppet/puppet.git
+cd puppet && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/puppet.git && git fetch origin && git branch --set-upstream master origin/master && git checkout 2.7.19 ; cd /usr/src
+git clone /mnt/puppet/facter.git
+cd facter && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/facter.git && git fetch origin && git branch --set-upstream master origin/master && git checkout 1.6.14 ; cd /usr/src
+git clone /mnt/puppet/puppetlabs-training-bootstrap.git
+cd /root
+RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
+export RUBYLIB
+/usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp
+# Cleanup from the puppet run
+rm -rf /var/lib/puppet
+/bin/sh
+echo 'Hello, World!'
+) 2>&1 | /usr/bin/tee /root/post.log
+chvt 1
