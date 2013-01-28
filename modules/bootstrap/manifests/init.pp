@@ -55,7 +55,8 @@ class bootstrap {
   }
   # Ensure nfs-utils and tree are installed for fundamentals
   package { [ 'nfs-utils', 'tree' ] :
-    ensure => present,
+    ensure  => present,
+    require => Class['localrepo'],
   }
   # Hostname setup:
   # 1. Make sure our own hostname resolves.
