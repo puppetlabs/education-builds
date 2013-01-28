@@ -88,11 +88,6 @@ class bootstrap {
     force   => true,
   }
 
-  service { 'nscd':
-    ensure => stopped,
-    enable => false,
-  }
-
   # An array of modules to copy from /usr/src to PE /opt/puppet
   #bootstrap::copymod{ ['fundamentals','concat']:
   #  require => Class['pebase'],
