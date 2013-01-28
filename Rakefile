@@ -200,7 +200,7 @@ task :createiso, [:vmtype] do |t,args|
   end
 end
 
-task :mountiso, [:vmtype] => [:createvm, :createiso] do |t,args|
+task :mountiso, [:vmtype] => [:createiso] do |t,args|
   args.with_defaults(:vmtype => $settings[:vmtype])
   prompt_vmtype(args.vmtype)
   cputs "Mounting #{$settings[:vmtype]} on #{$settings[:vmname]}"
@@ -243,13 +243,13 @@ task :startvm, [:vmtype] do |t,args|
 
   cputs "Starting #{$settings[:vmname]}"
   system("VBoxManage startvm '#{$settings[:vmname]}'")
-  Rake::Task[:unmountiso].invoke($settings[:vmtype])
 end
 
 desc "Reload the VM"
 task :reloadvm, [:vmtype] => [:createvm, :mountiso, :startvm] do |t,args|
   args.with_defaults(:vmtype => $settings[:vmtype])
   prompt_vmtype(args.vmtype)
+  Rake::Task[:unmountiso].invoke($settings[:vmtype])
 end
 
 desc "Do everything!"
@@ -389,7 +389,8 @@ def gitclone(source,destination,branch)
   end
 end
 
-def prompt_vmtype(type=(ENV['vmtype']||nil))
+def prompt_vmtype(type=nil)
+  type = type || ENV['vmtype']
   loop do
     cprint "Please choose an OS type of 'RedHat' or 'Debian' [RedHat]: "
     type = STDIN.gets.chomp
