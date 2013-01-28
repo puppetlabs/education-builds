@@ -156,7 +156,7 @@ task :createiso, [:vmtype] do |t,args|
       unless File.exist?("#{CACHEDIR}/epel-release.rpm")
         cputs "Downloading EPEL rpm"
         #download "http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
-        download "http://mirrors.cat.pdx.edu/epel/6/i386/epel-release-6-7.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
+        download "http://mirrors.cat.pdx.edu/epel/6/i386/epel-release-6-8.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
       end
 
       # Define ISO file targets
