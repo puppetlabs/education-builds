@@ -92,6 +92,9 @@ export RUBYLIB
 /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp
 # Cleanup from the puppet run
 rm -rf /var/lib/puppet
+# Ensure ethernet interface is still eth0
+rm -rf /etc/udev/rules.d/70-persistent-net.rules
+sed -i '' -e '/^HWADDR.*/d' /etc/sysconfig/network-scripts/ifcfg-eth0 
 /bin/sh
 echo 'Hello, World!'
 ) 2>&1 | /usr/bin/tee /root/post.log
