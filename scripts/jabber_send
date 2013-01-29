@@ -1,4 +1,4 @@
-#! /usr/bin/env ruby
+#! /opt/puppet/bin/ruby
 
 require 'rubygems'
 require 'xmpp4r/client'
