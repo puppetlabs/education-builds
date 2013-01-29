@@ -1,3 +1,4 @@
+# Manage our wonky mcollective config for this course
 class advanced::mcollective {
   # The rake API does not support removing a class from a group
   # So we remove the entire class from the console.
