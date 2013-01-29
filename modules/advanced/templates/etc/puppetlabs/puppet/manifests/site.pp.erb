@@ -1,0 +1,55 @@
+
+## site.pp ##
+
+# This file (/etc/puppetlabs/puppet/manifests/site.pp) is the main entry point
+# used when an agent connects to a master and asks for an updated configuration.
+#
+# Global objects like filebuckets and resource defaults should go in this file,
+# as should the default node definition. (The default node can be omitted
+# if you use the console and don't define any other nodes in site.pp. See
+# http://docs.puppetlabs.com/guides/language_guide.html#nodes for more on
+# node definitions.)
+
+## Active Configurations ##
+
+# PRIMARY FILEBUCKET
+# This configures puppet agent and puppet inspect to back up file contents when
+# they run. The Puppet Enterprise console needs this to display file contents
+# and differences.
+
+# Define filebucket 'main':
+filebucket { 'main':
+  server => 'classroom.puppetlabs.vm',
+  path   => false,
+}
+
+# Make filebucket 'main' the default backup location for all File resources:
+File { backup => 'main' }
+
+# DEFAULT NODE
+# Node definitions in this file are merged with node data from the console. See
+# http://docs.puppetlabs.com/guides/language_guide.html#nodes for more on
+# node definitions.
+
+# The default node definition matches any node lacking a more specific node
+# definition. If there are no other nodes in this file, classes declared here
+# will be included in every node's catalog, *in addition* to any classes
+# specified in the console for that node.
+
+node default {
+  # We are managing this here as it will work with --server but not cause
+  # errors when the student does a run against themselves as they share a
+  # ENC. Further this is better the default group as its cron entry would not
+  # work to get this classified on the first run. Deal with it.
+  include advanced
+
+  # pe_mcollective has been removed from the ENC ( PE Console ).  Adding it 
+  # back here, allows for pe_mcollective runs to happen only when targeting 
+  # this host with `--server` or server = classroom.puppetlabs.vm
+  # You must set an ENC parameter fact_is_puppetmaster to false on the default
+  # group. This will override the defaults and trigger this condtional
+  # This will not be configured until later exercises given the rake API cron interval
+  if ! str2bool($::fact_is_puppetmaster) {
+    include pe_mcollective
+  }
+}
