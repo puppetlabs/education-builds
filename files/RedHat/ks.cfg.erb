@@ -96,7 +96,7 @@ rm -rf /var/lib/puppet
 # Ensure ethernet interface is still eth0
 rm -rf /etc/udev/rules.d/70-persistent-net.rules
 sed -i '' -e '/^HWADDR.*/d' /etc/sysconfig/network-scripts/ifcfg-eth0 
-/bin/sh
-echo 'Hello, World!'
+#/bin/sh
+#echo 'Hello, World!'
 ) 2>&1 | /usr/bin/tee /root/post.log
 chvt 1

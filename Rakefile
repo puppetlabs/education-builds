@@ -170,6 +170,7 @@ task :createiso, [:vmtype] do |t,args|
         "#{BUILDDIR}/RedHat/isolinux.cfg"               => '/isolinux/isolinux.cfg',
         "#{BUILDDIR}/RedHat/ks.cfg"                     => '/puppet/ks.cfg',
         "#{CACHEDIR}/epel-release.rpm"                  => '/puppet/epel-release.rpm',
+        "#{CACHEDIR}/puppetlabs-enterprise-release-extras"  => '/puppet/puppetlabs-enterprise-release-extras',
         "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
         "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
         "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
