@@ -1,3 +1,4 @@
+# Main class applied to classroom
 class advanced::classroom {
   include pe_mcollective
   # These are the files that we manage with this class
