@@ -1,4 +1,7 @@
 #! /opt/puppet/bin/ruby
+# Using the Puppet vendored ruby install is bad practice, but it is
+# sufficient for the classroom environment where we will be using thes
+# scripts to test Puppet's ability to send messages.
 
 require 'rubygems'
 require 'xmpp4r'
