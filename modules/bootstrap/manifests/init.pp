@@ -88,6 +88,9 @@ class bootstrap {
     force   => true,
   }
 
+  # Cache forge modules locally in the vm:
+  class { 'bootstrap::cache_modules': cache_dir = '/usr/src/forge' }
+  
   # An array of modules to copy from /usr/src to PE /opt/puppet
   #bootstrap::copymod{ ['fundamentals','concat']:
   #  require => Class['pebase'],
