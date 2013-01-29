@@ -43,20 +43,19 @@ class bootstrap::cache_modules(
   }
 
   # These are the additional modules needed by the Advanced course
-#  bootstrap::forge { 'zack-advanced': 
-#    version => '',
-#  }
-#  bootstrap::forge { 'zack-haproxy': 
-#    version => '',
-#  }
-#  bootstrap::forge { 'zack-irc': 
-#    version => '',
-#  }
-#  bootstrap::forge { 'zack-irssi': 
-#    version => '',
-#  }
-
+  # puppetlabs-mysql are also needed
+  bootstrap::forge { 'zack-haproxy': 
+    version => '0.2.0',
+  }
+  bootstrap::forge { 'zack-irc': 
+    version => '0.0.4',
+  }
+  bootstrap::forge { 'hunner-charybdis': 
+    version => '0.2.0',
+  }
+  
 
   # These are the additional modules needed by the extending puppet using ruby course
+  # puppetlabs-mysql and puppetlabs-apache are also needed
 
 }
