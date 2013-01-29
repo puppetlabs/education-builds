@@ -15,7 +15,7 @@ class advanced::mcollective {
 
   $stomp_server = 'classroom.puppetlabs.vm'
 
-  exec { "node:parameters":
+  exec { 'node:parameters':
     path        => '/opt/puppet/bin:/bin',
     cwd         => '/opt/puppet/share/puppet-dashboard',
     environment => 'RAILS_ENV=production',
