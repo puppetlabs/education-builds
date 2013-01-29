@@ -1,0 +1,2 @@
+class advanced::agent::hostname {
+}
