@@ -23,18 +23,20 @@ class advanced::classroom {
 
 
   # Enable autosigning to simplify exercises
-  file { '/etc/puppetlabs/puppet/autosign.conf':
+
+  $autosign_file = '/etc/puppetlabs/puppet/autosign.conf'
+  file { $autosign_file:
     ensure  => file,
-    content => template("${module_name}/etc/puppetlabs/puppet/autosign.conf.erb"),
+    content => template("${module_name}${autosign_file}.erb"),
   }
 
   # Setup the wordpress class for exercise 2.2
-  exec { "nodeclass:add wordpress":
+  exec { 'nodeclass:add wordpress':
     path        => '/opt/puppet/bin:/bin',
     cwd         => '/opt/puppet/share/puppet-dashboard',
     environment => 'RAILS_ENV=production',
-    command     => "rake nodeclass:add name=wordpress",
-    unless      => "rake RAILS_ENV=production nodeclass:list | grep wordpress",
+    command     => 'rake nodeclass:add name=wordpress',
+    unless      => 'rake RAILS_ENV=production nodeclass:list | grep wordpress',
     returns     => '1',
   }
 
