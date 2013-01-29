@@ -17,7 +17,7 @@ class advanced::classroom {
     replace_file => false,
   }
   file { '/etc/puppetlabs/puppet/.mcollective_advanced_class':
-    mode   => '666',
+    mode   => '0666',
     source => '/var/lib/peadmin/.mcollective',
   }
 
