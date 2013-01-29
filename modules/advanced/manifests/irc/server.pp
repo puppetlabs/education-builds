@@ -1,3 +1,4 @@
+# This class configures our irc server
 class advanced::irc::server {
   package {'pe-rubygem-json':
     ensure => present,
@@ -18,11 +19,11 @@ class advanced::irc::server {
     privset  => 'admin',
     password => 'puppet',
     snomask  => '+CZbcdfkrsuxy',
-    flags   => [
+    flags    => [
       '~encrypted',
       '~need_ssl',
     ],
-    umodes  => [
+    umodes   => [
       'locops',
       'servnotice',
       'operwall',

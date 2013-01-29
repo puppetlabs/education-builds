@@ -1,3 +1,4 @@
+# The puppetdb setup for classroom.puppetlabs.vm
 class advanced::classroom::puppetdb {
   class { '::puppetdb':
     puppetdb_package => 'pe-puppetdb',

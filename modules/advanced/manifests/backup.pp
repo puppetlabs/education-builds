@@ -1,3 +1,4 @@
+# This is a helper class used with advanced::template
 define advanced::backup(
   $path_to_move = $title,
 ){
