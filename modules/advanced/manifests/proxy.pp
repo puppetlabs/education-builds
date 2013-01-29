@@ -1,3 +1,4 @@
+# Main proxy configuration, commented lines see readme
 class advanced::proxy {
 
   # The .deb stuff is temp before a refactor of vm
