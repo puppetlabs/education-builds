@@ -30,7 +30,7 @@ class bootstrap::cache_modules(
     version => '0.6.1',
   }
   bootstrap::forge { 'puppetlabs-apache': 
-    version => '0.4.0',
+    version => '0.5.0-rc1',
   }
   bootstrap::forge { 'thias-vsftpd': 
     version => '0.1.1',
@@ -53,6 +53,7 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'hunner-charybdis': 
     version => '0.2.0',
   }
+  bootstrap::forge { 'puppetlabs-puppetdb': }
   
 
   # These are the additional modules needed by the extending puppet using ruby course
