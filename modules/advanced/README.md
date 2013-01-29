@@ -10,10 +10,11 @@ Each type of system will then have `advanced::classroom`,`advanced::proxy`,`adva
 
 ## Classroom (classroom.puppetlabs.vm)
 1. Download a new centos 6+ virtual machine from [downloads](http://downloads.puppetlabs.vm)
-2. Setup the hostname to `classroom.puppetlabs.vm` and add `/etc/hosts` entries respectively
-3. Install puppet enteprise (standard master installation) PE 2.6.1+ on EL6.3+
-4. Add the `advanced` class to the puppet enterprise console (ENC).
-5. classify `advanced` on `classroom.puppetlabs.vm`
+2. Ensure your virtual machine is set to bridged networking mode.
+3. Setup the hostname to `classroom.puppetlabs.vm` and add `/etc/hosts` entries respectively
+4. Install puppet enteprise (standard master installation) PE 2.6.1+ on EL6.3+
+5. Add the `advanced` class to the puppet enterprise console (ENC).
+6. classify `advanced` on `classroom.puppetlabs.vm`
 7. Add `fact_is_puppetmaster` parameter to default group and set to `false`
 8. Add `fact_is_puppetmaster` paramter to `classroom.puppetlabs.vm` and set to `true`
 9. Trigger an agent run using `puppet agent -t`
@@ -23,16 +24,17 @@ Step 8 is currently automated with `advanced::mcollective` but 7 is manual due t
 
 ## Proxy (proxy.puppetlabs.vm)
 1. Download a new debian virtual machine from [downloads](http://downloads.puppetlabs.vm)
-2. Setup the hostname to `proxy.puppetlabs.vm` and add `/etc/hosts` entries respectively
-3. Add a `/etc/hosts` entry for `classroom.puppetlabs.vm`
-4. Install puppet enteprise (standard agent installation) PE 2.6.1+ on
-5. Add the enterprise extras repo (currently requires internet access )
+2. Ensure your virtual machine is set to bridged networking mode.
+3. Setup the hostname to `proxy.puppetlabs.vm` and add `/etc/hosts` entries respectively
+4. Add a `/etc/hosts` entry for `classroom.puppetlabs.vm`
+5. Install puppet enteprise (standard agent installation) PE 2.6.1+ on
+6. Add the enterprise extras repo (currently requires internet access )
  * `wget http://apt-enterprise.puppetlabs.com/puppetlabs-enterprise-release-extras_1.0-2_all.deb`  
  * `sudo dpkg -i puppetlabs-enterprise-release-extras_1.0-2_all.deb`  
  * `sudo apt-get update`  
-6. Trigger an agent run using `puppet agent -t`
-7. You should have a `haproxy` service and be able to type `irssi` and connect to the course irc channel
-8. You can login to haproxy with the following  `http://puppet:puppet@yourip:9090`
+7. Trigger an agent run using `puppet agent -t`
+8. You should have a `haproxy` service and be able to type `irssi` and connect to the course irc channel
+9. You can login to haproxy with the following  `http://puppet:puppet@yourip:9090`
 
 Step 5 should go away once the VM is pre built with this.
 
@@ -46,7 +48,7 @@ Older 5.8 Virtual machines will not work with the `puppetdb` section.
 ## Technical Breakdown
 ***
 
-#### Classroom (classroom.puppetlabs.vm) 
+### Classroom (classroom.puppetlabs.vm) 
 The following files are managed with this module
 1. `/etc/puppetlabs/puppet/auth.conf`
 
