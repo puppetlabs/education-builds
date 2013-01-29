@@ -1,0 +1,3 @@
+class advanced::classroom::haproxy {
+
+}
