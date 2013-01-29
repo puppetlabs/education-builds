@@ -43,7 +43,7 @@ class bootstrap::cache_modules(
   }
 
   # These are the additional modules needed by the Advanced course
-  # puppetlabs-mysql are also needed
+  # puppetlabs-mysql is also needed
   bootstrap::forge { 'zack-haproxy': 
     version => '0.2.0',
   }
