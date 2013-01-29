@@ -4,7 +4,6 @@ source 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/
 author 'puppetlabs'
 license 'Apache License, Version 2.0'
 summary 'Module to aid in Puppet EDU training environment creation'
-dependency '
-puppetlabs/puppetdb', '>= 1.1.4'
+dependency 'puppetlabs/puppetdb', '>= 1.1.4'
 dependency 'zack/haproxy', '>= 0.2.0'
 dependency 'hunner/charybdis', '>= 0.2.0'
