@@ -158,12 +158,19 @@ task :createiso, [:vmtype] do |t,args|
         #download "http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
         download "http://mirrors.cat.pdx.edu/epel/6/i386/epel-release-6-8.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
       end
+      
+      unless File.exist?("#{CACHEDIR}/puppetlabs-enterprise-release-extras.rpm")
+        cputs "Downloading Puppet Enterprise Extras rpm"
+        #download "http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
+      download "http://yum-enterprise.puppetlabs.com/el/6/extras/i386/puppetlabs-enterprise-release-extras-6-2.noarch.rpm", "#{CACHEDIR}/puppetlabs-enterprise-release-extras.rpm"
+      end
 
       # Define ISO file targets
       files = {
         "#{BUILDDIR}/RedHat/isolinux.cfg"               => '/isolinux/isolinux.cfg',
         "#{BUILDDIR}/RedHat/ks.cfg"                     => '/puppet/ks.cfg',
         "#{CACHEDIR}/epel-release.rpm"                  => '/puppet/epel-release.rpm',
+        "#{CACHEDIR}/puppetlabs-enterprise-release-extras.rpm"  => '/puppet/puppetlabs-enterprise-release-extras.rpm',
         "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
         "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
         "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
