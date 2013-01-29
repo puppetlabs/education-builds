@@ -20,7 +20,7 @@ end -%>")
     if !$ver { fail("Unable to determine ${name} module version.") }
   }
 
-  $mod = split($name, '-')
+  $mod = split($name, '[-/]')
   $author = $mod[0]
   $module = $mod[1]
   $filename = "${author}-${module}-${ver}.tar.gz"
