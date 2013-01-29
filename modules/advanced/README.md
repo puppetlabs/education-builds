@@ -20,7 +20,7 @@ Each type of system will then have `advanced::classroom`,`advanced::proxy`,`adva
 9. Trigger an agent run using `puppet agent -t`
 10. You should have a `puppetdb` environment with customized `auth.conf` and `site.pp`
 
-Step 8 is currently automated with `advanced::mcollective` but 7 is manual due to missing rake api calls.
+Step 7 is currently automated with `advanced::mcollective` but 7 is manual due to unimplemented rake api calls.
 
 ## Proxy (proxy.puppetlabs.vm)
 1. Download a new debian virtual machine from [downloads](http://downloads.puppetlabs.vm)
@@ -36,7 +36,7 @@ Step 8 is currently automated with `advanced::mcollective` but 7 is manual due t
 8. You should have a `haproxy` service and be able to type `irssi` and connect to the course irc channel
 9. You can login to haproxy with the following  `http://puppet:puppet@yourip:9090`
 
-Step 5 should go away once the VM is pre built with this.
+Step 6 should go away once the debian VM is pre built or replaced with centos 6
 
 ## Student (yourname.puppetlabs.vm)
 1. Download a new Centos 6.3+ virtual machine from [downloads](http://downloads.puppetlabs.vm)
@@ -50,7 +50,7 @@ Older 5.8 Virtual machines will not work with the `puppetdb` section.
 
 ### Classroom (classroom.puppetlabs.vm) 
 The following files are managed with this module
-1. `/etc/puppetlabs/puppet/auth.conf`
+* `/etc/puppetlabs/puppet/auth.conf`  
 
 We manage `auth.conf` because of the following modification  
 `path ~ ^/facts/([^/]+)$
@@ -62,10 +62,10 @@ allow $1
 This allows for the first run of the students machines against `classroom.puppetlabs.vm` to work without having to add each hostname to this file (i.e.`allow yourname.puppetlabs.vm`). After their initial run they will be configured with `puppetdb::master::config` and this setting is moot as `inventory_server` in `puppet.conf` will be ignored.
 
 
-2. `/etc/puppetlabs/puppet/manifests/site.pp`
+* `/etc/puppetlabs/puppet/manifests/site.pp`  
 
 We use `site.pp` in this course as the `default` PE/ENC group will not work for the classification timing we have. The students will only do 2 to 3 runs against `classroom.puppetlabs.vm`. In order to classify the `advanced` module we use site.pp so we don't have to run the rake task in a loop i.e.  
-`while true ; do /opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile nodegroup:add_all_nodes group=default RAILS_ENV=production ; done`  
+`/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile nodegroup:add_all_nodes group=default RAILS_ENV=production`  
 
 Using `site.pp` the `advanced` module is automatically classified during the first run. In addition as its not added to the PE Console/ENC, the students will not receive an error for the missing `advanced` class in their local `modulepath` when they do puppet runs against themselves ( using `classroom.puppetlabs.vm` as the `ENC`).
 
@@ -75,6 +75,12 @@ Both files are created using the `advanced::template` class. This class is desig
 
 ### Proxy (proxy.puppetlabs.vm)
 Two main classes configure your proxy node. `advanced::proxy::haproxy` and `advanced::irc::server`. The system is debian based mainly out of convenience as all of the packages for `charybdis` are available out of the box (that may change). The haproxy configuration will collect all `haproxy::balancermember` that the students will create. The `advanced::proxy::haproxy` class creates a `haproxy::listen` resources for `puppet00`. This is listening on port 8140 ( this is an agent node so no port conflict or customization is required ). Students should be able to collect the exported resource declared in `advanced::proxy::hostname` to allow for automatic setup of both client and server. The `advanced::irc::client` class includes the `irssi` class for irssi client setup.
+
+
+### Student (yourname.puppetlabs.vm)
+Student machines are configured by default ( as their hostnames are not matched to `classroom` or `proxy`. We configure them to use our puppetdb installation on the classroom using `puppetdb::master::config`. This allows them to export records to the other students in the room.  
+
+The `advanced::agent::peadmin` class automatically sets up the .mcollective file (from a copy with ownership that allows it ). This allows the students to use the mco command line utility using the `classroom.puppetlabs.vm` as a broker system. The `advanced::irc::client` setups the `irssi` software to point to `irc.puppetlabs.vm`.  This irc host is exported during the labs and collected by the students. After they collected all `Host` resources with `classroom` tags they should be able to simply type `irssi`
 
 License
 -------
