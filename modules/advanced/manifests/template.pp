@@ -1,3 +1,4 @@
+# Manage the file once based on a .old file in the same directory
 define advanced::template (
   $extension    = 'erb',
   $replace_file = true,

@@ -1,3 +1,4 @@
+# Helper class used by the module
 class advanced::hostname(
   $set_hostname,
   $set_domain   = 'puppetlabs.vm',

@@ -1,3 +1,4 @@
+# Configures haproxy server
 class advanced::proxy::haproxy {
     class {'::haproxy':}
     haproxy::listen { 'puppet00':
@@ -7,7 +8,7 @@ class advanced::proxy::haproxy {
         'mode'  => 'tcp',
       },
     }
- 
+
     haproxy::listen { 'stats':
       ipaddress => $::ipaddress,
       ports     => '9090',
