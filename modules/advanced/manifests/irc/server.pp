@@ -31,5 +31,5 @@ class advanced::irc::server {
     ],
   }
   # This is our irssi client configuration
-  include irssi
+  include advanced::irc::client
 }
