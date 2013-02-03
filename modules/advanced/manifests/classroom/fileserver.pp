@@ -1,9 +1,10 @@
 class advanced::classroom::fileserver {
 
   File {
-    owner => 'pe-puppet',
-    group => 'pe-puppet',
-    mode  => '0440',
+    ensure => file,
+    owner  => 'pe-puppet',
+    group  => 'pe-puppet',
+    mode   => '0440',
   }
 
   # Manage fileserver.conf, initially for the capstone
@@ -17,7 +18,6 @@ class advanced::classroom::fileserver {
   }
 
   file { '/etc/puppetlabs/puppet/ssl_public/crl.pem':
-    ensure => symlink,
-    target => '/etc/puppetlabs/puppet/ssl/crl.pem',
+    source => '/etc/puppetlabs/puppet/ssl/crl.pem',
   }
 }
