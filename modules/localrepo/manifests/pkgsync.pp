@@ -64,7 +64,7 @@ define localrepo::pkgsync ($pkglist = $name, $source="", $server = "mirrors.cat.
     }
   } elsif $syncer == "yumdownloader" {
     if $syncops == "default" {
-      $syncops_real = "--destdir=${repopath}/RPMS --enablerepo=${source}"
+      $syncops_real = "--destdir=${repopath}/RPMS --enablerepo=${source} --resolve"
     } else {
       $syncops_real = $syncops
     }
