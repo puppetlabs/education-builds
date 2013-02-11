@@ -1,0 +1,8 @@
+; $Id: datasource_api.info,v 1.6 2010/02/22 00:30:24 hass Exp $
+name = Puppet Hiera endpoint
+description = "Provides endpoint for querying simple  Hiera keys."
+core = 7.x
+dependencies[] = datasource
+version = "7.x-1.x-dev"
+package = "puppet"
+project = "puppet"
