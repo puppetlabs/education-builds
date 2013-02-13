@@ -1,0 +1,48 @@
+#! /opt/puppet/bin/ruby
+# Using the Puppet vendored ruby install is bad practice, but it is
+# sufficient for the classroom environment where we will be using thes
+# scripts to test Puppet's ability to send messages.
+
+require 'rubygems'
+require 'xmpp4r/client'
+require 'xmpp4r/muc/helper/simplemucclient'
+
+# Argument checking
+if ARGV.size < 4
+  puts("Usage:\n\n")
+  puts("To send a message to a user:")
+  puts("  #{$0} <your jid> <your password> <recipient jid> <message>\n\n")
+  puts("To send a message to a chatroom:")
+  puts("  #{$0} <your jid> <your password> <chatroom id> <message>\n\n")
+  exit
+end
+
+jid       = ARGV[0]
+password  = ARGV[1]
+recipient = ARGV[2]
+message   = ARGV[3..-1].join(' ') # Accept both quoted and not forms of a message
+
+begin
+  # The usual procedure
+  cl = Jabber::Client.new(Jabber::JID.new(jid))
+  cl.connect.auth(password) 
+
+  if recipient =~ /.*conference.*/
+    puts "Sending message to chatroom #{recipient}..."
+    m = Jabber::MUC::SimpleMUCClient.new(cl)
+    m.join("#{recipient}/#{jid.split('@').first}")
+    m.say(message)
+  else
+    puts "Sending message to user #{recipient}..."
+    m = Jabber::Message.new(recipient, message)
+    m.type = :chat
+    cl.send(m)
+  end
+  puts "OK"
+rescue Jabber::ServerError => e
+  puts "Error: #{e.error.text}"
+end
+
+# Shutdown
+cl.close
+

@@ -1,0 +1,41 @@
+#! /opt/puppet/bin/ruby
+# Using the Puppet vendored ruby install is bad practice, but it is
+# sufficient for the classroom environment where we will be using thes
+# scripts to test Puppet's ability to send messages.
+
+require 'rubygems'
+require 'xmpp4r'
+
+# Argument checking
+if ARGV.size < 2 or ARGV.size > 3
+  puts("Usage:\n\n")
+  puts("To create a new account:")
+  puts("  #{$0} <desired jid> <desired password>\n\n")
+  puts("To change your password:")
+  puts("  #{$0} <desired jid> <old password> <new password>\n\n")
+  exit
+end
+
+# The usual procedure
+cl = Jabber::Client.new(Jabber::JID.new(ARGV[0]))
+cl.connect
+
+begin
+  if ARGV.size == 2
+    # Registration of the new user account
+    puts "Registering..."
+    cl.register(ARGV[1], {})
+  else
+    # Changing password
+    puts "Changing password..."
+    cl.auth(ARGV[1])
+    cl.password = ARGV[2]
+  end
+  puts "OK"
+rescue Jabber::ServerError => e
+  puts "Error: #{e.error.text}"
+end
+
+# Shutdown
+cl.close
+
