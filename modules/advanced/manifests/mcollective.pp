@@ -21,7 +21,7 @@ class advanced::mcollective {
     cwd         => '/opt/puppet/share/puppet-dashboard',
     environment => 'RAILS_ENV=production',
     command     => "rake node:parameters name=${stomp_server} parameters=fact_is_puppetmaster=true",
-    returns     => '1',
+    returns     => '0',
     refreshonly => true,
   }
 }
