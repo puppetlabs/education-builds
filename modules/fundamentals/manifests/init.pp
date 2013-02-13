@@ -15,7 +15,7 @@ class fundamentals {
       name  => '/etc/puppetlabs/puppet/puppet.conf',
       owner => 'pe-puppet',
       group => 'pe-puppet',
-      mode  => '0644',
+      mode  => '0600',
     }
 
     concat::fragment{ 'puppet_conf':
