@@ -53,7 +53,11 @@ class bootstrap {
     hasstatus  => true,
     hasrestart => true,
   }
-
+  # Ensure nfs-utils and tree are installed for fundamentals
+  package { [ 'nfs-utils', 'tree' ] :
+    ensure  => present,
+    require => Class['localrepo'],
+  }
   # Hostname setup:
   # 1. Make sure our own hostname resolves.
   # 2. If our hostname isn't localhost.localdomain, then we had to contaminate
@@ -69,7 +73,6 @@ class bootstrap {
   file { '/etc/sysconfig/network':
     ensure  => file,
     content => template('bootstrap/network.erb'),
-    require => Host[$::fqdn],
   }
   service { 'network':
     ensure    => running,
@@ -85,11 +88,9 @@ class bootstrap {
     force   => true,
   }
 
-  service { 'nscd':
-    ensure => stopped,
-    enable => false,
-  }
-
+  # Cache forge modules locally in the vm:
+  class { 'bootstrap::cache_modules': cache_dir => '/usr/src/forge' }
+  
   # An array of modules to copy from /usr/src to PE /opt/puppet
   #bootstrap::copymod{ ['fundamentals','concat']:
   #  require => Class['pebase'],
