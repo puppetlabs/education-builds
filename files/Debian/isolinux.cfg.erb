@@ -1,0 +1,6 @@
+# D-I config version 2.0
+default linux
+label linux
+	say Installing Debian GNU/Linux...
+	kernel /install.386/vmlinuz
+	append vga=normal initrd=/install.386/initrd.gz debian-installer/locale=en_US.UTF-8 console-keymaps-at/keymap=us preseed/file=/cdrom/puppet/preseed.cfg -- quiet

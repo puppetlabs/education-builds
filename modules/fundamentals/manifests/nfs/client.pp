@@ -3,7 +3,7 @@ class fundamentals::nfs::client {
     ensure => directory,
   }
   mount { "/root/master_home":
-    device  => "${server}:/home/${::hostname}",
+    device  => "${::servername}:/home/${::hostname}",
     fstype  => "nfs",
     ensure  => "mounted",
     options => "rw",
