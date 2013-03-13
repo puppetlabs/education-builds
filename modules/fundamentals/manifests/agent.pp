@@ -1,46 +1,86 @@
+# This class configures the agent with
+#  * root sshkey
+#  * git source repository
+#  * git pre-commit hook
 class fundamentals::agent {
-  $set_domain   = "puppetlabs.vm"
-  $set_fqdn     = "${::set_hostname}.${set_domain}"
-
-  # If we are still in the first boot state
-  host { "${set_fqdn}":
-    ensure       => present,
-    ip           => $::ipaddress,
-    host_aliases => [$::set_hostname],
+  File {
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+  }
+  Exec {
+    path => '/usr/bin:/bin:/user/sbin:/usr/sbin',
   }
 
-  # Set our persistant hostname
-  file { '/etc/sysconfig/network':
+  package { 'git':
+    ensure => present,
+  }
+
+  file { '/root/.ssh':
+    ensure => directory,
+    mode   => '0600',
+  }
+
+  exec { 'generate_key':
+    command => 'ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa',
+    creates => '/root/.ssh/id_rsa',
+    require => File['/root/.ssh'],
+  }
+
+  file { [ '/root/puppetcode', '/root/puppetcode/modules' ]:
+    ensure => directory,
+  }
+
+  file { '/root/puppetcode/site.pp':
     ensure  => file,
-    content => template("${module_name}/network.erb"),
-    require => Host[$set_fqdn],
+    source  => 'puppet:///modules/fundamentals/site.pp',
+    replace => false,
   }
 
-  service { 'network':
-    ensure    => running,
-    hasstatus => true,
-    enable    => true,
-    subscribe => File['/etc/sysconfig/network'],
+  exec { "git config --global user.name '${::hostname}'":
+    unless  => 'git config --global user.name',
+    require => Package['git'],
   }
 
-  # Set our current hostname
-  if $::fqdn != $set_fqdn {
-    exec { 'hostname':
-        path    => '/bin',
-        cwd     => '/root',
-        command => "hostname ${set_fqdn}",
-        require => Host["${set_fqdn}"],
-    }
+  exec { "git config --global user.email ${::hostname}@puppetlabs.vm":
+    unless  => 'git config --global user.email',
+    require => Package['git'],
   }
 
-  # Enable base repo when we are doing the capstone
-  if str2bool($::yumrepo_base_enabled) {
-    $yumrepo_base = 1
-  } else {
-    $yumrepo_base = 0
+  # Can't use vcsrepo because we cannot clone.
+  exec { 'initialize git repo':
+    command   => 'git init /root/puppetcode',
+    creates   => "/root/puppetcode/.git",
+    require   => File["/root/puppetcode"],
   }
 
-  yumrepo { 'base':
-    enabled => $yumrepo_base,
+  exec { 'add git remote':
+    unless  => "git --git-dir /root/puppetcode/.git config remote.origin.url",
+    command => "git --git-dir /root/puppetcode/.git remote add origin ${::hostname}@master.puppetlabs.vm:/var/repositories/${hostname}.git",
+    require => Exec['initialize git repo'],
+  }
+
+  file { '/root/puppetcode/.git/hooks/pre-commit':
+    ensure  => file,
+    source  => 'puppet:///modules/fundamentals/pre-commit',
+    mode    => '0755',
+    require => Exec['initialize git repo'],
+  }
+
+  # /etc/puppet/ssl is confusing to have around. Sloppy. Kill.
+  file {'/etc/puppet':
+    ensure  => absent,
+    recurse => true,
+    force   => true,
+  }
+
+  # export a fundamentals::user with our ssh key.
+  #
+  # !!!! THIS WILL EXPORT AN EMPTY KEY ON THE FIRST RUN !!!!
+  #
+  # On the second run, the ssh key will exist and so this fact will be set.
+  @@fundamentals::user { $::hostname:
+    key  => $::root_ssh_key,
   }
 }
+
