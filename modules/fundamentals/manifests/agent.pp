@@ -37,6 +37,13 @@ class fundamentals::agent {
     replace => false,
   }
 
+  # create a symlink to allow local puppet use
+  file { '/etc/puppetlabs/puppet/modules':
+    ensure => link,
+    target => '/root/puppetcode/modules',
+    force  => true,
+  }
+
   exec { "git config --global user.name '${::hostname}'":
     unless  => 'git config --global user.name',
     require => Package['git'],
