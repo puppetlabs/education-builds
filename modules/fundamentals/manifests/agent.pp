@@ -2,7 +2,7 @@
 #  * root sshkey
 #  * git source repository
 #  * git pre-commit hook
-class fundamentals::agent {
+class fundamentals::agent ( $workdir = '/root/puppetcode' ) {
   File {
     owner => 'root',
     group => 'root',
@@ -27,11 +27,11 @@ class fundamentals::agent {
     require => File['/root/.ssh'],
   }
 
-  file { [ '/root/puppetcode', '/root/puppetcode/modules' ]:
+  file { [ $workdir, "${workdir}/modules" ]:
     ensure => directory,
   }
 
-  file { '/root/puppetcode/site.pp':
+  file { "${workdir}/site.pp":
     ensure  => file,
     source  => 'puppet:///modules/fundamentals/site.pp',
     replace => false,
@@ -40,7 +40,7 @@ class fundamentals::agent {
   # create a symlink to allow local puppet use
   file { '/etc/puppetlabs/puppet/modules':
     ensure => link,
-    target => '/root/puppetcode/modules',
+    target => "${workdir}/modules",
     force  => true,
   }
 
@@ -56,18 +56,18 @@ class fundamentals::agent {
 
   # Can't use vcsrepo because we cannot clone.
   exec { 'initialize git repo':
-    command   => 'git init /root/puppetcode',
-    creates   => "/root/puppetcode/.git",
-    require   => File["/root/puppetcode"],
+    command   => "git init ${workdir}",
+    creates   => "${workdir}/.git",
+    require   => File[$workdir],
   }
 
   exec { 'add git remote':
-    unless  => "git --git-dir /root/puppetcode/.git config remote.origin.url",
-    command => "git --git-dir /root/puppetcode/.git remote add origin ${::hostname}@master.puppetlabs.vm:/var/repositories/${hostname}.git",
+    unless  => "git --git-dir ${workdir}/.git config remote.origin.url",
+    command => "git --git-dir ${workdir}/.git remote add origin ${::hostname}@master.puppetlabs.vm:/var/repositories/${hostname}.git",
     require => Exec['initialize git repo'],
   }
 
-  file { '/root/puppetcode/.git/hooks/pre-commit':
+  file { "${workdir}/.git/hooks/pre-commit":
     ensure  => file,
     source  => 'puppet:///modules/fundamentals/pre-commit',
     mode    => '0755',
