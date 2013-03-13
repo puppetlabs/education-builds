@@ -1,5 +1,9 @@
 #! /bin/sh
 
+# bail out if this is the first commit; no HEAD for comparisons!
+git show > /dev/null 2>&1
+if [ $? -ne 0 ]; then exit 0; fi
+
 # first stash any on-disk changes so we're actually validating
 # what's staged to be committed and not just what's on disk.
 git diff --full-index --binary > /tmp/stash.$$
