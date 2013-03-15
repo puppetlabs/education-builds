@@ -1,13 +1,14 @@
 #! /bin/sh
 
-# bail out if this is the first commit; no HEAD for comparisons!
+# If we have a HEAD, then this isn't the first commit.
 git show > /dev/null 2>&1
-if [ $? -ne 0 ]; then exit 0; fi
-
-# first stash any on-disk changes so we're actually validating
-# what's staged to be committed and not just what's on disk.
-git diff --full-index --binary > /tmp/stash.$$
-git stash -q --keep-index
+if [ $? -eq 0 ]
+then
+  # first stash any on-disk changes so we're actually validating
+  # what's staged to be committed and not just what's on disk.
+  git diff --full-index --binary > /tmp/stash.$$
+  git stash -q --keep-index
+fi
 
 EXITCODE=0
 for file in `git diff-index --cached --name-only HEAD`
