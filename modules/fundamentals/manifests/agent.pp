@@ -2,12 +2,7 @@
 #  * root sshkey
 #  * git source repository
 #  * git pre-commit hook
-class fundamentals::agent ( $workdir = '/root/puppetcode' ) {
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-  }
+class fundamentals::agent ( $workdir = 'puppetcode' ) {
   Exec {
     path => '/usr/bin:/bin:/user/sbin:/usr/sbin',
   }
@@ -27,23 +22,6 @@ class fundamentals::agent ( $workdir = '/root/puppetcode' ) {
     require => File['/root/.ssh'],
   }
 
-  file { [ $workdir, "${workdir}/modules" ]:
-    ensure => directory,
-  }
-
-  file { "${workdir}/site.pp":
-    ensure  => file,
-    source  => 'puppet:///modules/fundamentals/site.pp',
-    replace => false,
-  }
-
-  # create a symlink to allow local puppet use
-  file { '/etc/puppetlabs/puppet/modules':
-    ensure => link,
-    target => "${workdir}/modules",
-    force  => true,
-  }
-
   exec { "git config --global user.name '${::hostname}'":
     unless  => 'git config --global user.name',
     require => Package['git'],
@@ -54,31 +32,34 @@ class fundamentals::agent ( $workdir = '/root/puppetcode' ) {
     require => Package['git'],
   }
 
-  # Can't use vcsrepo because we cannot clone.
-  exec { 'initialize git repo':
-    command   => "git init ${workdir}",
-    creates   => "${workdir}/.git",
-    require   => File[$workdir],
-  }
-
-  exec { 'add git remote':
-    unless  => "git --git-dir ${workdir}/.git config remote.origin.url",
-    command => "git --git-dir ${workdir}/.git remote add origin ${::hostname}@master.puppetlabs.vm:/var/repositories/${hostname}.git",
-    require => Exec['initialize git repo'],
-  }
-
-  file { "${workdir}/.git/hooks/pre-commit":
-    ensure  => file,
-    source  => 'puppet:///modules/fundamentals/pre-commit',
-    mode    => '0755',
-    require => Exec['initialize git repo'],
-  }
-
   # /etc/puppet/ssl is confusing to have around. Sloppy. Kill.
   file {'/etc/puppet':
     ensure  => absent,
     recurse => true,
     force   => true,
+  }
+
+  fundamentals::agent::workdir { $workdir:
+    ensure   => present,
+    username => $::hostname,
+  }
+
+  # If we have teams defined, build a working directory for each.
+  $teams = teams($::hostname)
+  if $teams {
+    fundamentals::agent::workdir { $teams:
+      ensure   => present,
+      populate => false,
+    }
+  } else {
+    # If we don't have teams, enforce the symlink. When they get to
+    # the capstone, they should know how to manage this on their own.
+    # create a symlink to allow local puppet use
+    file { '/etc/puppetlabs/puppet/modules':
+      ensure => link,
+      target => "${workdir}/modules",
+      force  => true,
+    }
   }
 
   # export a fundamentals::user with our ssh key.
@@ -87,7 +68,7 @@ class fundamentals::agent ( $workdir = '/root/puppetcode' ) {
   #
   # On the second run, the ssh key will exist and so this fact will be set.
   @@fundamentals::user { $::hostname:
-    key  => $::root_ssh_key,
+    key => $::root_ssh_key,
   }
 }
 

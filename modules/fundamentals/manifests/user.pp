@@ -1,5 +1,5 @@
 # Create a classroom user on the master
-define fundamentals::user(
+define fundamentals::user (
   $key = undef,
   # Password defaults to puppetlabs
   $password='$1$Tge1IxzI$kyx2gPUvWmXwrCQrac8/m0',
@@ -27,27 +27,23 @@ define fundamentals::user(
     mode   => '0600',
   }
 
-  ssh_authorized_key { $name:
-    key     => $key,
-    type    => 'ssh-rsa',
-    user    => $name,
-    require => File["/home/${name}/.ssh"],
+  if $key {
+    ssh_authorized_key { $name:
+      key     => $key,
+      type    => 'ssh-rsa',
+      user    => $name,
+      require => File["/home/${name}/.ssh"],
+    }
   }
 
-  # create an environment for the user
-  augeas {"puppet.conf.environment.${name}":
-    context => "/files/etc/puppetlabs/puppet/puppet.conf/${name}",
-    changes => [
-      "set manifest /etc/puppetlabs/puppet/environments/${name}/site.pp",
-      "set modulepath /etc/puppetlabs/puppet/environments/${name}:/opt/puppet/share/puppet/modules",
-    ],
+  if $console_password {
+    fundamentals::console::user { $name:
+      password => $console_password,
+    }
   }
 
-  fundamentals::console::user { $name:
-    password => $console_password,
-  }
-
-  fundamentals::repository { $name:
+  fundamentals::master::repository { $name:
     ensure => present,
   }
+
 }

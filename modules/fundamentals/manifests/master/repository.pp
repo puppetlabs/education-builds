@@ -1,9 +1,11 @@
+# Set an environment in puppet.conf
 # Create the user a bare repository in the repository root
 # Create a clone of that repository in the users' puppet environment
 # Add a post-commit hook to automatically update the environment on push
-define fundamentals::repository (
-  $ensure = present,
-  $root   = '/var/repositories',
+define fundamentals::master::repository (
+  $ensure  = present,
+  $root    = '/var/repositories',
+  $envroot = '/etc/puppetlabs/puppet/environments',
 ) {
   File {
     owner => $name,
@@ -14,6 +16,14 @@ define fundamentals::repository (
   }
 
   if $ensure == present {
+    # create an environment for the user
+    augeas {"puppet.conf.environment.${name}":
+      context => "/files/etc/puppetlabs/puppet/puppet.conf/${name}",
+      changes => [
+        "set manifest ${envroot}/${name}/site.pp",
+        "set modulepath ${envroot}/${name}:/opt/puppet/share/puppet/modules",
+      ],
+    }
 
     # requires my patch: https://github.com/puppetlabs/puppetlabs-vcsrepo/pull/57
     vcsrepo { "${root}/${name}.git":
@@ -31,7 +41,7 @@ define fundamentals::repository (
     }
 
     # requires patch at https://github.com/puppetlabs/puppetlabs-vcsrepo/pull/42
-    vcsrepo { "/etc/puppetlabs/puppet/environments/${name}":
+    vcsrepo { "${envroot}/${name}":
       ensure    => present,
       provider  => git,
       user      => $name,
@@ -40,7 +50,7 @@ define fundamentals::repository (
     }
   }
   else {
-    file { "${root}/${name}.git":
+    file { [ "${root}/${name}.git", "${envroot}/${name}" ]:
       ensure => absent,
     }
   }
