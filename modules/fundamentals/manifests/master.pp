@@ -37,6 +37,17 @@ class fundamentals::master ( $classes = [] ) {
     }
   }
 
+  # if we've gotten to the Capstone, create our teams!
+  $teams = hierasafe('teams', undef)
+  if $teams {
+    $teamnames = keys($teams)
+
+    # create each team. Pass in the full hash so that team can set its members
+    fundamentals::master::team { $teamnames:
+      teams => $teams,
+    }
+  }
+
   # Add any classes defined to the console
   # This rake task is currently borken
   #fundamentals::console::class { $classes: }
