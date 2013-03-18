@@ -57,7 +57,7 @@ class fundamentals::agent ( $workdir = 'puppetcode' ) {
     # create a symlink to allow local puppet use
     file { '/etc/puppetlabs/puppet/modules':
       ensure => link,
-      target => "${workdir}/modules",
+      target => "/root/${workdir}/modules",
       force  => true,
     }
   }
