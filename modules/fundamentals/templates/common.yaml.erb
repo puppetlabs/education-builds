@@ -6,7 +6,7 @@
   # Load the list of students via the home directory entries.
   # Note that
   #   1) this only works because this template is being compiled on the same
-  #      host it's being applied to, rarely not a safe assumption to make.
+  #      host it's being applied to, rarely a safe assumption to make.
   #   2) this will only work one time, because each group will get its
   #      own user. (We could "fix" that if we wanted to.)
   students = Dir.glob('/home/*')
