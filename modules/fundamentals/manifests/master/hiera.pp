@@ -7,7 +7,7 @@ class fundamentals::master::hiera {
     group => 'root',
     mode  => '0644',
   }
-  
+
   file { '/etc/puppetlabs/puppet/hieradata':
     ensure => directory,
   }
@@ -15,6 +15,12 @@ class fundamentals::master::hiera {
   file { '/etc/puppetlabs/puppet/hiera.yaml':
     ensure  => file,
     source  => 'puppet:///modules/fundamentals/hiera.yaml',
+    replace => false,
+  }
+
+  file { '/etc/puppetlabs/puppet/hieradata/common.yaml':
+    ensure  => file,
+    content => template('fundamentals/common.yaml.erb'),
     replace => false,
   }
 }
