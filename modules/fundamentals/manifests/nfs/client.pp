@@ -6,7 +6,7 @@ class fundamentals::nfs::client {
     device  => "${::servername}:/home/${::hostname}",
     fstype  => "nfs",
     ensure  => "mounted",
-    options => "rw",
+    options => "rw,nfsvers=3",
     atboot  => true,
     require => File['/root/master_home'],
  }
