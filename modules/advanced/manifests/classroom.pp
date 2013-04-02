@@ -1,6 +1,5 @@
 # Main class applied to classroom
 class advanced::classroom {
-  include pe_mcollective
   include advanced::classroom::fileserver
   # These are the files that we manage with this class
   $managed_files = [
