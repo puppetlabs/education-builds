@@ -11,7 +11,7 @@ class advanced::mcollective {
     environment => 'RAILS_ENV=production',
     command     => "rake nodegroup:parameters name=default parameters=fact_stomp_server=${stomp_server},stomp_password=${stomp_credentials}",
     returns     => '0',
-    subscribe   => File['/etc/puppetlabs/mcollective/credentials'],
+    #subscribe   => File['/etc/puppetlabs/mcollective/credentials'],
     #refreshonly => true,
   }
 }
