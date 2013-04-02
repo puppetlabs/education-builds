@@ -38,7 +38,7 @@ class advanced::classroom {
     environment => 'RAILS_ENV=production',
     command     => 'rake nodeclass:add name=wordpress',
     unless      => 'rake RAILS_ENV=production nodeclass:list | grep wordpress',
-    returns     => '1',
+    #returns     => '1',
   }
 
 }
