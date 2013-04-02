@@ -12,6 +12,6 @@ class advanced::mcollective {
     command     => "rake nodegroup:parameters name=default parameters=fact_stomp_server=${stomp_server},stomp_password=${stomp_credentials}",
     returns     => '0',
     subscribe   => File['/etc/puppetlabs/mcollective/credentials'],
-    refreshonly => true,
+    #refreshonly => true,
   }
 }
