@@ -1,7 +1,8 @@
 # Manage our wonky mcollective config for this course
 class advanced::mcollective {
-  # The rake API does not support removing a class from a group
-  # So we remove the entire class from the console.
+  # We need to set the following console parameters
+  # The susbcribe is to ensure it only runs once -
+  # The first time agent runs after classifying classroom with advanced
   $stomp_server = 'classroom.puppetlabs.vm'
   $stomp_credentials = file('/etc/puppetlabs/mcollective/credentials')
 
@@ -11,7 +12,7 @@ class advanced::mcollective {
     environment => 'RAILS_ENV=production',
     command     => "rake nodegroup:parameters name=default parameters=fact_stomp_server=${stomp_server},stomp_password=${stomp_credentials}",
     returns     => '0',
-    #subscribe   => File['/etc/puppetlabs/mcollective/credentials'],
-    #refreshonly => true,
+    subscribe   => File['/etc/puppetlabs/puppet/.mcollective_advanced_class'],
+    refreshonly => true,
   }
 }
