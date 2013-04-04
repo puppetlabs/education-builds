@@ -8,7 +8,7 @@ class advanced::agent {
   
   # If this agent has PE < 2.7.2, we need to copy over some ssl certs 
   # and the mcollective credentials file
-  if versioncmp($advanced_pe_version, '2.7.2') < 0 {
+  if versioncmp($advanced_pe_version, '2.7.1') < 0 {
     include advanced::agent::mcofiles
   }
 }
