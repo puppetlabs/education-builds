@@ -4,11 +4,10 @@ class advanced::agent {
   class {'advanced::agent::puppetdb':} ->
   class {'advanced::agent::peadmin':} ->
   class {'advanced::irc::client':}
-  $advanced_pe_version = adv_pe_ver()
   
   # If this agent has PE < 2.7.1, we need to copy over some ssl certs 
   # and the mcollective credentials file
-  if versioncmp($advanced_pe_version, '2.7.1') < 0 {
+  if versioncmp($::pe_version, '2.7.1') < 0 {
     include advanced::agent::mcofiles
   }
 }
