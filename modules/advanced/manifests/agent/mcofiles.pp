@@ -24,6 +24,6 @@ class advanced::agent::mcofiles {
 
   advanced::copy { $files_to_sync :
     dir_path => $dir_ssl_files,
-    sync     => true,
+    agent    => true,
   }
 }
