@@ -6,13 +6,25 @@ class advanced::mcollective {
   $stomp_server = 'classroom.puppetlabs.vm'
   $stomp_credentials = file('/etc/puppetlabs/mcollective/credentials')
 
-  exec { 'node:parameters':
+  Exec {
     path        => '/opt/puppet/bin:/bin',
     cwd         => '/opt/puppet/share/puppet-dashboard',
     environment => 'RAILS_ENV=production',
-    command     => "rake nodegroup:parameters name=default parameters=fact_stomp_server=${stomp_server},stomp_password=${stomp_credentials},fact_is_puppetmaster='false'",
     returns     => '0',
     subscribe   => File['/etc/puppetlabs/puppet/.mcollective_advanced_class'],
     refreshonly => true,
   }
+  
+  exec { 'node:parameters:fact_stomp_server':
+    command     => "rake nodegroup:parameters name=default parameters=fact_stomp_server=${stomp_server}",
+  }
+
+  exec { 'node:parameters:stomp_credentials':
+    command     => "rake nodegroup:parameters name=default parameters=stomp_credentials=${stomp_credentials}",
+  }
+
+  exec { 'node:parameters:fact_is_puppetmaster':
+    command     => "rake nodegroup:parameters name=default parameters=fact_is_puppetmaster='false'",
+  }
+
 }
