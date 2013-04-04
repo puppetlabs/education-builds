@@ -10,7 +10,7 @@ class advanced::mcollective {
     path        => '/opt/puppet/bin:/bin',
     cwd         => '/opt/puppet/share/puppet-dashboard',
     environment => 'RAILS_ENV=production',
-    command     => "rake nodegroup:parameters name=default parameters=fact_stomp_server=${stomp_server},stomp_password=${stomp_credentials},fact_is_puppetmaster=false",
+    command     => "rake nodegroup:parameters name=default parameters=fact_stomp_server=${stomp_server},stomp_password=${stomp_credentials},fact_is_puppetmaster='false'",
     returns     => '0',
     subscribe   => File['/etc/puppetlabs/puppet/.mcollective_advanced_class'],
     refreshonly => true,
