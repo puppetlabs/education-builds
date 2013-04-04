@@ -2,9 +2,9 @@ define advanced::copy(
   $to_copy = $name,
   $dir_path,
   $is_dir = false,
-  $sync = false,
+  $agent = false,
 ){
-  $filesource = $sync ? {
+  $filesource = $agent ? {
     true    => 'puppet://classroom.puppetlabs.vm/ssl',
     false   => "${::settings::ssldir}",
     default => undef,
