@@ -42,14 +42,4 @@ node default {
   # ENC. Further this is better the default group as its cron entry would not
   # work to get this classified on the first run. Deal with it.
   include advanced
-
-  # pe_mcollective has been removed from the ENC ( PE Console ).  Adding it 
-  # back here, allows for pe_mcollective runs to happen only when targeting 
-  # this host with `--server` or server = classroom.puppetlabs.vm
-  # You must set an ENC parameter fact_is_puppetmaster to false on the default
-  # group. This will override the defaults and trigger this condtional
-  # This will not be configured until later exercises given the rake API cron interval
-  if ! str2bool($::fact_is_puppetmaster) {
-    include pe_mcollective
-  }
 }

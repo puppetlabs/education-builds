@@ -7,17 +7,38 @@ class advanced::classroom::fileserver {
     mode   => '0440',
   }
 
-  # Manage fileserver.conf, initially for the capstone
-  file { '/etc/puppetlabs/puppet/fileserver.conf':
-    source => 'puppet:///modules/advanced/fileserver.conf',
+  $ssl_mco_files = "${::settings::confdir}/ssl_mco_files"
+  $ssldirs = ['public_keys','private_keys','certs']
+  $mcofiles = [
+    'public_keys/pe-internal-mcollective-servers.pem',
+    'private_keys/pe-internal-mcollective-servers.pem',
+    'certs/pe-internal-mcollective-servers.pem',
+    'public_keys/pe-internal-peadmin-mcollective-client.pem',
+    'public_keys/pe-internal-puppet-console-mcollective-client.pem',
+  ]
+  
+  # copy the credentials file too:
+  file { "${ssl_mco_files}/credentials" :
+    source => '/etc/puppetlabs/mcollective/credentials',
   }
 
-  # Create symlink directory so that public SSL files are accessible
-  file { '/etc/puppetlabs/puppet/ssl_public':
+  # This directory is a fileserver mountpoint that has the files
+  file { $ssl_mco_files :
     ensure => directory,
   }
 
-  file { '/etc/puppetlabs/puppet/ssl_public/crl.pem':
-    source => '/etc/puppetlabs/puppet/ssl/crl.pem',
+  # Manage fileserver.conf 
+  file { "${::settings::confdir}/fileserver.conf":
+    source => 'puppet:///modules/advanced/fileserver.conf',
+  }
+
+  advanced::copy { $ssldirs :
+    dir_path => $ssl_mco_files,
+    is_dir   => true,
+  }
+
+  # Copy over the required certs and credential file to the mountpoint
+  advanced::copy { $mcofiles :
+    dir_path => $ssl_mco_files,
   }
 }

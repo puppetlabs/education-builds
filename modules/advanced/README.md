@@ -11,16 +11,12 @@ Each type of system will then have `advanced::classroom`,`advanced::proxy`,`adva
 ## Classroom (classroom.puppetlabs.vm)
 1. Download a new centos 6+ virtual machine from [downloads](http://downloads.puppetlabs.vm)
 2. Ensure your virtual machine is set to bridged networking mode.
-3. Setup the hostname to `classroom.puppetlabs.vm` and add `/etc/hosts` entries respectively
-4. Install puppet enteprise (standard master installation) PE 2.6.1+ on EL6.3+
+3. Set the hostname to `classroom.puppetlabs.vm` and add `/etc/hosts` entries respectively
+4. Install puppet enteprise (standard master installation) PE 2.7.1+ on EL6.3+
 5. Add the `advanced` class to the puppet enterprise console (ENC).
 6. classify `advanced` on `classroom.puppetlabs.vm`
-7. Add `fact_is_puppetmaster` parameter to default group and set to `false`
-8. Add `fact_is_puppetmaster` paramter to `classroom.puppetlabs.vm` and set to `true`
-9. Trigger an agent run using `puppet agent -t`
-10. You should have a `puppetdb` environment with customized `auth.conf` and `site.pp`
-
-Step 7 is currently automated with `advanced::mcollective` but 7 is manual due to unimplemented rake api calls.
+7. Trigger an agent run using `puppet agent -t`
+8. You should have a `puppetdb` environment with customized `auth.conf` and `site.pp`
 
 ## Proxy (proxy.puppetlabs.vm)
 1. Download a new debian virtual machine from [downloads](http://downloads.puppetlabs.vm)
@@ -43,7 +39,7 @@ Step 6 should go away once the debian VM is pre built or replaced with centos 6
 2. Follow the exercise and lab guide no prep is needed from the instructor.
 
 Older 5.8 Virtual machines will not work with the `puppetdb` section.
-
+PE Versions older than 2.7.1 cannot be used for the `classroom.puppetlabs.vm` due to changes in how mcollective etc are configured
 
 ## Technical Breakdown
 ***
@@ -61,6 +57,7 @@ allow $1
 
 This allows for the first run of the students machines against `classroom.puppetlabs.vm` to work without having to add each hostname to this file (i.e.`allow yourname.puppetlabs.vm`). After their initial run they will be configured with `puppetdb::master::config` and this setting is moot as `inventory_server` in `puppet.conf` will be ignored.
 
+There are raketasks defined for the classroom.puppetlabs.vm machine that automatically add three console parameters for the `default` group. This will run only the very first time you run `puppet agent -t` on `classroom.puppetlabs.vm`. The console parameters added are: `fact_stomp_server`, `stomp_password`, and `fact_is_puppetmaster`.
 
 * `/etc/puppetlabs/puppet/manifests/site.pp`  
 
@@ -68,8 +65,6 @@ We use `site.pp` in this course as the `default` PE/ENC group will not work for 
 `/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile nodegroup:add_all_nodes group=default RAILS_ENV=production`  
 
 Using `site.pp` the `advanced` module is automatically classified during the first run. In addition as its not added to the PE Console/ENC, the students will not receive an error for the missing `advanced` class in their local `modulepath` when they do puppet runs against themselves ( using `classroom.puppetlabs.vm` as the `ENC`).
-
-We automatically remove the `pe_mcollective` class from the ENC using the `advanced::mcollective` class. The `site.pp` file has conditional logic to check for the ENC fact "override" value of `fact_is_puppetmaster`. This will effectively configure the students master machines as if they were a agent only system. This should hopefully be fixed in `pe_mcollective` in the future but its related to the `ca_server` configuration we use in class not working as there is no logic in that modules for a distributed master setup.
 
 Both files are created using the `advanced::template` class. This class is designed to replace the default files created by installation and then not manage them (idempotance is based on the .old file in the same directory). This allows you to be ready for class but also to modify these files during demos in class. We do also manage `autosign.conf` in addition but ensure its content FYI.
 
@@ -81,6 +76,8 @@ Two main classes configure your proxy node. `advanced::proxy::haproxy` and `adva
 Student machines are configured by default ( as their hostnames are not matched to `classroom` or `proxy`. We configure them to use our puppetdb installation on the classroom using `puppetdb::master::config`. This allows them to export records to the other students in the room.  
 
 The `advanced::agent::peadmin` class automatically sets up the .mcollective file (from a copy with ownership that allows it ). This allows the students to use the mco command line utility using the `classroom.puppetlabs.vm` as a broker system. The `advanced::irc::client` setups the `irssi` software to point to `irc.puppetlabs.vm`.  This irc host is exported during the labs and collected by the students. After they collected all `Host` resources with `classroom` tags they should be able to simply type `irssi`
+
+For student machines that are running a version of PE older than 2.7.1, the `advanced::agent::mcofiles` class automatically copies the right certs and mcollective credentials files over as needed.
 
 License
 -------

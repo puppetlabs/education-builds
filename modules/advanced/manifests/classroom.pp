@@ -1,6 +1,5 @@
 # Main class applied to classroom
 class advanced::classroom {
-  include pe_mcollective
   include advanced::classroom::fileserver
   # These are the files that we manage with this class
   $managed_files = [
@@ -39,7 +38,7 @@ class advanced::classroom {
     environment => 'RAILS_ENV=production',
     command     => 'rake nodeclass:add name=wordpress',
     unless      => 'rake RAILS_ENV=production nodeclass:list | grep wordpress',
-    returns     => '1',
+    #returns     => '1',
   }
 
 }
