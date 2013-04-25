@@ -28,9 +28,11 @@ define fundamentals::user(
   }
 
   file { "/home/${name}/site.pp":
-    ensure => file,
-    owner  => $name,
-    group  => 'pe-puppet',
+    ensure  => file,
+    owner   => $name,
+    group   => 'pe-puppet',
+    content => template('fundamentals/site.pp.erb'),
+    replace => false,
   }
 
   concat::fragment{ "${name}_env":
