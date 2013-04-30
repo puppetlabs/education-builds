@@ -30,7 +30,7 @@ class fundamentals::master ( $classes = [] ) {
 
   # Some versions of PE manage this service, some don't
   # We only need it managed so we can notify it to restart
-  if versioncmp($::fundamentals_pe_version, '2.7') < 0 {
+  if versioncmp($::fundamentals_pe_version, '2.7.0') != 0 {
     service { 'pe-httpd':
       ensure => running,
       enable => true,
