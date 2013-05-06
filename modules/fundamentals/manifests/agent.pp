@@ -1,46 +1,74 @@
-class fundamentals::agent {
-  $set_domain   = "puppetlabs.vm"
-  $set_fqdn     = "${::set_hostname}.${set_domain}"
-
-  # If we are still in the first boot state
-  host { "${set_fqdn}":
-    ensure       => present,
-    ip           => $::ipaddress,
-    host_aliases => [$::set_hostname],
+# This class configures the agent with
+#  * root sshkey
+#  * git source repository
+#  * git pre-commit hook
+class fundamentals::agent ( $workdir = 'puppetcode' ) {
+  Exec {
+    path => '/usr/bin:/bin:/user/sbin:/usr/sbin',
   }
 
-  # Set our persistant hostname
-  file { '/etc/sysconfig/network':
-    ensure  => file,
-    content => template("${module_name}/network.erb"),
-    require => Host[$set_fqdn],
+  package { 'git':
+    ensure => present,
   }
 
-  service { 'network':
-    ensure    => running,
-    hasstatus => true,
-    enable    => true,
-    subscribe => File['/etc/sysconfig/network'],
+  file { '/root/.ssh':
+    ensure => directory,
+    mode   => '0600',
   }
 
-  # Set our current hostname
-  if $::fqdn != $set_fqdn {
-    exec { 'hostname':
-        path    => '/bin',
-        cwd     => '/root',
-        command => "hostname ${set_fqdn}",
-        require => Host["${set_fqdn}"],
+  exec { 'generate_key':
+    command => 'ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa',
+    creates => '/root/.ssh/id_rsa',
+    require => File['/root/.ssh'],
+  }
+
+  exec { "git config --global user.name '${::hostname}'":
+    unless  => 'git config --global user.name',
+    require => Package['git'],
+  }
+
+  exec { "git config --global user.email ${::hostname}@puppetlabs.vm":
+    unless  => 'git config --global user.email',
+    require => Package['git'],
+  }
+
+  # /etc/puppet/ssl is confusing to have around. Sloppy. Kill.
+  file {'/etc/puppet':
+    ensure  => absent,
+    recurse => true,
+    force   => true,
+  }
+
+  fundamentals::agent::workdir { $workdir:
+    ensure   => present,
+    username => $::hostname,
+  }
+
+  # If we have teams defined, build a working directory for each.
+  $teams = teams($::hostname)
+  if $teams {
+    fundamentals::agent::workdir { $teams:
+      ensure   => present,
+      populate => false,
+    }
+  } else {
+    # If we don't have teams, enforce the symlink. When they get to
+    # the capstone, they should know how to manage this on their own.
+    # create a symlink to allow local puppet use
+    file { '/etc/puppetlabs/puppet/modules':
+      ensure => link,
+      target => "/root/${workdir}/modules",
+      force  => true,
     }
   }
 
-  # Enable base repo when we are doing the capstone
-  if str2bool($::yumrepo_base_enabled) {
-    $yumrepo_base = 1
-  } else {
-    $yumrepo_base = 0
-  }
-
-  yumrepo { 'base':
-    enabled => $yumrepo_base,
+  # export a fundamentals::user with our ssh key.
+  #
+  # !!!! THIS WILL EXPORT AN EMPTY KEY ON THE FIRST RUN !!!!
+  #
+  # On the second run, the ssh key will exist and so this fact will be set.
+  @@fundamentals::user { $::hostname:
+    key => $::root_ssh_key,
   }
 }
+

@@ -1,21 +1,24 @@
-#fundamentals
+# fundamentals
 
-This is the fundamentals module, its used for creating accounts in the PE console, ssh, and NFS mounts on both agent and master.
-You can classify this module on both the master and the agents, it conditionally will configured both however the order matters.
-1. Create an param in the PE console called "students" i.e. "zack,gary,ryan,james,luke,brad,ralph,hunter"
-2. Classify only the master node in the PE console with the `fundamentals` module
-3. Run `puppet agent -t` on the master
-  + This will create all the PE console users
-  + It will also create the unix accounts ( with home directories )
-  + The PE console users idempotence is determined on the existance of their homes
-4. Classify only the master node in the PE console with the `fundamentals::nfs::server`
-5. Run `puppet agent -t` on the master
-  + This will create the nfs mount records realitive to the users in the students array
-  + You can't currently classify both these at the same time
-6. Classify the `fundamentals` module for the default group.
-7. Run `puppet agent -t` on the agents
-  + This will create the NFS mount records for the agents
-8. Profit
+## This is the fundamentals module, used for setting up the classroom environment.
+
+Simply classify every node in the classroom with `fundamentals`. It will conditionally 
+will configured both master and agent and will account for certain variations in PE versions.
+
+It will enable storeconfigs on the master, then restart `pe-httpd`. On the second and any
+subsequent runs, it will collect all exported user records and instantiate accounts, ssh keys,
+git respositories, console accounts, etc.
+
+Each agent will generate an ssh key, create a git repository with a remote set up to point at
+the master. It will then export a user record for the master to collect. Keep in mind that
+since it uses a custom fact to get root's ssh key, the agent must run twice before a valid
+account will be created on the master. Users who come in late can simply follow along in the
+instruction guide and when they complete these steps, they will automatically join the classroom
+environment.
+
+Once all nodes have been classified, just kick off a few puppet runs and everyone will be happy
+as a clam. Especially because they all walk away with copies of their source code and a teeny
+bit of experience with git.
 
 License
 -------
@@ -23,9 +26,9 @@ License
 
 Contact
 -------
-zack@puppetlabs.com
+ben.ford@puppetlabs.com
 
 Support
 -------
 
-Please log tickets and issues at our [Projects site](http://projects.puppetlabs.com/projects/puppet-fundamentals/issues/new)
+Please log tickets and issues at our [Projects site](http://projects.puppetlabs.com/projects/training/issues)
