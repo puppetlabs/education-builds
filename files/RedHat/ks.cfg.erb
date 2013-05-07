@@ -75,7 +75,8 @@ sed -i 's/HOSTNAME.*/HOSTNAME=<%= $settings[:hostname] %>/' /etc/sysconfig/netwo
 hostname <%= $settings[:hostname] %>
 
 sed -i 's/127\.0\.0\.1.*/\0 <%= $settings[:hostname] %> <%= $settings[:hostname].split('.')[0] %>/' /etc/hosts
-tar zxf /mnt/puppet/<%= $settings[:pe_tarball] %> -C /root
+cp /mnt/puppet/<%= $settings[:pe_tarball] %> /root/
+tar zxf /root/<%= $settings[:pe_tarball] %> -C /root
 ln -s /root/puppet-enterprise-<%= PEVERSION + $settings[:pe_install_suffix] %> /root/puppet-enterprise
 rpm -Uvh /mnt/puppet/epel-release.rpm
 rpm -Uvh /mnt/puppet/puppetlabs-enterprise-release-extras.rpm
@@ -95,7 +96,7 @@ export RUBYLIB
 rm -rf /var/lib/puppet
 # Ensure ethernet interface is still eth0
 rm -rf /etc/udev/rules.d/70-persistent-net.rules
-sed -i '' -e '/^HWADDR.*/d' /etc/sysconfig/network-scripts/ifcfg-eth0 
+sed -i '' -e '/^HWADDR.*/d' /etc/sysconfig/network-scripts/ifcfg-eth0
 #/bin/sh
 #echo 'Hello, World!'
 ) 2>&1 | /usr/bin/tee /root/post.log
