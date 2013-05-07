@@ -1,9 +1,14 @@
-name    'zack-advanced'
+name    'pltraining-advanced'
 version '1.1.0'
-source 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules'
-author 'zack'
+source 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/advanced'
+author 'pltraining'
 license 'Apache License, Version 2.0'
 summary 'Module to aid in Puppet EDU training environment creation'
+description 'Important! This is not the module you are looking for
+    unless you are a trainer teaching the Advanced Puppet course!
+    - Configures and sets up classroom environment for Advanced Puppet trainings.'
+project_page 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/advanced'
+
 dependency 'puppetlabs/puppetdb', '>= 1.1.4'
 dependency 'zack/haproxy', '>= 0.2.0'
 dependency 'hunner/charybdis', '>= 0.2.0'

@@ -27,6 +27,7 @@ License
 Contact
 -------
 ben.ford@puppetlabs.com
+eduteam@puppetlabs.com
 
 Support
 -------
