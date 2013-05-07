@@ -85,6 +85,7 @@ License
 
 Contact
 -------
+zack -@- puppetlabs.com
 eduteam -@- puppetlabs.com
 
 Support
