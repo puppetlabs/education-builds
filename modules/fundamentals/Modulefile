@@ -1,4 +1,4 @@
-me    'pltraining-fundamentals'
+name    'pltraining-fundamentals'
 version '1.2.0'
 source 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/fundamentals'
 author 'pltraining'
