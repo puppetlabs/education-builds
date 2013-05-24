@@ -41,6 +41,9 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'saz-sudo': 
     version => '2.1.0',
   }
+  bootstrap::forge { 'puppetlabs-vcsrepo': 
+    version => '0.1.2',
+  }
 
   # These are the additional modules needed by the Advanced course
   # puppetlabs-mysql is also needed
