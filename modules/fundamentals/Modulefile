@@ -10,3 +10,4 @@ description 'Important! This is not the module you are looking for
 project_page 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/fundamentals'
 
 dependency 'ripienaar/concat', '>= 0.1.0'
+dependency 'puppetlabs/vcsrep', '>= 0.1.2'
