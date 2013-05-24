@@ -21,7 +21,7 @@ define fundamentals::master::repository (
       context => "/files/etc/puppetlabs/puppet/puppet.conf/${name}",
       changes => [
         "set manifest ${envroot}/${name}/site.pp",
-        "set modulepath ${envroot}/${name}/modules:/opt/puppet/share/puppet/modules",
+        "set modulepath ${envroot}/${name}/modules:/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules",
       ],
     }
 
