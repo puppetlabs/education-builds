@@ -57,10 +57,7 @@ class bootstrap::cache_modules(
     version => '0.2.0',
   }
   bootstrap::forge { 'puppetlabs-puppetdb': }
-
-  bootstrap::forge { 'puppetlabs-apache': }
-
-  bootstrap::forge { 'puppetlabs-mysql': }
+  
 
   # These are the additional modules needed by the extending puppet using ruby course
   # puppetlabs-mysql and puppetlabs-apache are also needed
