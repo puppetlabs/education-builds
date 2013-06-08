@@ -9,6 +9,14 @@ class advanced::proxy::haproxy {
       },
     }
 
+    haproxy::listen { 'wordpress00':
+      ipaddress => $::ipaddress,
+      ports     => '80',
+      options   => {
+        'mode'  => 'http',
+      },
+    }
+
     haproxy::listen { 'stats':
       ipaddress => $::ipaddress,
       ports     => '9090',
