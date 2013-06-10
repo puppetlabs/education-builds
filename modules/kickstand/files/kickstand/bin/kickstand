@@ -1,0 +1,91 @@
+#! /opt/puppet/bin/ruby
+
+require 'rubygems'
+require 'sinatra/base'
+require 'webrick'
+require 'resolv'
+require "net/https"
+require 'yaml'
+require 'thread'
+require 'socket'
+require 'fileutils'
+require 'pathname'
+
+SERVERPORT = 9090
+AUTOSIGN   = '/etc/puppetlabs/puppet/autosign.conf' # path to puppetmaster's autosign.conf
+CERTNAME   = 'classroom-%s.dynamic.puppetlabs.vm'   # pattern to use when generating a new certname
+INSTALLER  = '/root/puppet-enterprise-*.tar.gz'     # dir globbing pattern for finding the tarball
+DOCROOT    = '/opt/kickstand/share'                 # where templates and public files go
+LOGFILE    = '/var/log/kickstand'
+
+opts = {
+  :Port         => SERVERPORT,
+  :Logger       => WEBrick::Log::new(LOGFILE, WEBrick::Log::DEBUG),
+  :ServerType   => WEBrick::Daemon,
+  :DocumentRoot => DOCROOT,
+  :SSLEnable    => false,
+}
+
+class Server < Sinatra::Base
+  set :public_folder, 'public'
+  set :root,   DOCROOT
+
+  configure :production, :development do
+    enable :logging
+
+    # grab the installer tarball from /root
+    installer = Dir.glob(INSTALLER).first
+    FileUtils.ln_sf installer, "#{DOCROOT}/public/"
+
+    # why do I have to do this? This page implies I shouldn't.
+    # https://github.com/sinatra/sinatra#logging
+    set :logger,    WEBrick::Log::new(LOGFILE, WEBrick::Log::DEBUG)
+    set :semaphore, Mutex.new
+    set :installer, Pathname(installer).basename.to_s
+  end
+
+  get '/' do
+    @certname   = sprintf(CERTNAME, guid())
+    @serverip   = IPSocket.getaddress(Socket.gethostname)
+    @serverport = SERVERPORT
+    @installer  = settings.installer
+
+    logger = settings.logger
+    logger.debug '------------------------------------------------------------------'
+    logger.debug "Generated new certname: #{@certname}"
+    logger.debug "    Installer filename: #{@installer}"
+    logger.debug "     Server IP address: #{@serverip}"
+    logger.debug "           Server port: #{@serverport}"
+    logger.debug '------------------------------------------------------------------'
+
+    # write an entry into the autosign.conf so the master signs the agent certificate
+    settings.semaphore.synchronize do
+      File.open(AUTOSIGN, 'a') do |f|
+        f.write("#{@certname}\n")
+      end
+    end
+
+    erb :kickstart
+  end
+
+  get '/mirror.repo' do
+    @serverip   = IPSocket.getaddress(Socket.gethostname)
+    @serverport = SERVERPORT
+    erb :mirror
+  end
+
+  not_found do
+    halt 404, 'page not found'
+  end
+
+  helpers do
+    def guid()
+      # this is a terrifyingly simple GUID generator
+      (0..15).to_a.map{|a| rand(16).to_s(16)}.join
+    end
+  end
+end
+
+Rack::Handler::WEBrick.run(Server, opts) do |server|
+  [:INT, :TERM].each { |sig| trap(sig) { server.stop } }
+end
