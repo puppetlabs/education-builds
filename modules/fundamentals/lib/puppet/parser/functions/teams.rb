@@ -7,7 +7,7 @@ module Puppet::Parser::Functions
 
     begin
       teams = function_hiera(['teams', ''])
-      return nil if teams.nil?
+      return '' if teams.nil?
     rescue Puppet::ParseError => e
       # Hiera must not be enabled on the master yet. Boo.
       return false
@@ -17,6 +17,8 @@ module Puppet::Parser::Functions
 
     #  Ruby 1.8, why must you vex me so?
     # teams.select { |name, members| members.include? user }.keys
-    Hash[teams.select { |name, members| members.include? user }].keys
+    teams = Hash[teams.select { |name, members| members.include? user }].keys
+    return teams if teams != []
+    return ''
   end
 end
