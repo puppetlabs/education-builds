@@ -22,15 +22,6 @@ class advanced::classroom {
     source => '/var/lib/peadmin/.mcollective',
   }
 
-
-  # Enable autosigning to simplify exercises
-
-  $autosign_file = '/etc/puppetlabs/puppet/autosign.conf'
-  file { $autosign_file:
-    ensure  => file,
-    content => template("${module_name}${autosign_file}.erb"),
-  }
-
   # Setup the wordpress class for exercise 2.2
   exec { 'nodeclass:add wordpress':
     path        => '/opt/puppet/bin:/bin',
