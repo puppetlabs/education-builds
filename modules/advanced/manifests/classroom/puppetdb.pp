@@ -4,6 +4,7 @@ class advanced::classroom::puppetdb {
     puppetdb_package => 'pe-puppetdb',
     puppetdb_service => 'pe-puppetdb',
     confdir          => '/etc/puppetlabs/puppetdb/conf.d',
+    listen_address   => '0.0.0.0',
   }
   class { 'puppetdb::master::config':
     puppetdb_server          => 'classroom.puppetlabs.vm',
