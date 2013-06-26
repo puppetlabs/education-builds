@@ -35,6 +35,12 @@ class bootstrap {
     source => 'puppet:///modules/bootstrap/ip_info.sh',
     mode   => 0755,
   }
+  # This script generates the initial root SSH key for the fundamentals git workflow
+  file { '/root/.ssh_keygen.sh':
+    ensure => file,
+    source => 'puppet:///modules/bootstrap/ssh_keygen.sh',
+    mode   => 0755,
+  }
   # This shouldn't change anything, but want to make sure it actually IS laid out the way I expect.
   file {'/etc/rc.local':
     ensure => symlink,
