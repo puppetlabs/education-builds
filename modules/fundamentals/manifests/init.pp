@@ -31,4 +31,8 @@ class fundamentals {
     include fundamentals::agent
   }
 
+  # unconditionally configure Hiera for all nodes. The master will get
+  # additional configuration for the capstone lab.
+  include fundamentals::hiera
+
 }
