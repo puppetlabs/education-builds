@@ -1,26 +1,16 @@
 # You can use this if you're lazy and/or don't remember
-# the hiera.yaml format. It's preferred to type it out.
+# the yaml syntax. It's preferred to type it out.
 # Drives the point home how easy it is to configure.
+#
+# ### This is not idempotent, so don't classify the master
+#
 class fundamentals::master::hiera {
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-  }
-
-  file { '/etc/puppetlabs/puppet/hieradata':
-    ensure => directory,
-  }
-
-  file { '/etc/puppetlabs/puppet/hiera.yaml':
+  file { '/etc/puppetlabs/puppet/hieradata/master.puppetlabs.vm.yaml':
     ensure  => file,
-    source  => 'puppet:///modules/fundamentals/hiera.yaml',
-    replace => false,
-  }
-
-  file { '/etc/puppetlabs/puppet/hieradata/common.yaml':
-    ensure  => file,
-    content => template('fundamentals/common.yaml.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('fundamentals/teams.yaml.erb'),
     replace => false,
   }
 }
