@@ -18,9 +18,9 @@ class fundamentals::hiera {
     replace => false,
   }
 
-  file { '/etc/puppetlabs/puppet/hieradata/common.yaml':
+  file { '/etc/puppetlabs/puppet/hieradata/defaults.yaml':
     ensure  => file,
-    source  => 'puppet:///modules/fundamentals/common.yaml',
+    source  => 'puppet:///modules/fundamentals/defaults.yaml',
     replace => false,
   }
 }
