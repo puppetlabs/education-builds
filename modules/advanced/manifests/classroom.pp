@@ -8,7 +8,6 @@ class advanced::classroom {
     '/etc/puppetlabs/puppet/manifests/site.pp',
   ]
 
-  class {'advanced::classroom::hostname':} ->
   class {'advanced::classroom::puppetdb':} ->
   class {'advanced::mcollective':} ->
   class {'advanced::irc::client':}
