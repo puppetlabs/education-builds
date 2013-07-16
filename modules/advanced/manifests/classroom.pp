@@ -8,8 +8,11 @@ class advanced::classroom {
     '/etc/puppetlabs/puppet/manifests/site.pp',
   ]
 
-  class {'advanced::classroom::puppetdb':} ->
-  class {'advanced::mcollective':} ->
+  if versioncmp($::pe_version, '3.0.0') < 1 {
+    class {'advanced::classroom::puppetdb':} 
+  }
+
+  class {'advanced::mcollective':} 
   class {'advanced::irc::client':}
 
   # Backup and create default file then don't replace
