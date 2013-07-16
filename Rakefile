@@ -426,6 +426,7 @@ def prompt_vmtype(type=nil)
     end
   end unless type
   $settings[:vmtype] = type
+  $settings[:vmname] = "centos-6.3-pe-3.0.0"
 end
 
 def build_file(filename)
