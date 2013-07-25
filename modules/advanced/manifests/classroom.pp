@@ -16,7 +16,10 @@ class advanced::classroom {
 
   class {'advanced::mcollective':} 
   class {'advanced::irc::client':}
-  class {'advanced::classroom::console':}
+
+  if versioncmp($::pe_version, '3.0.0') == 0 {
+    class {'advanced::classroom::console':}
+  }
 
   # Backup and create default file then don't replace
   advanced::backup   { $managed_files :} ->
