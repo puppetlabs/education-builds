@@ -6,6 +6,8 @@ class advanced::classroom {
   $managed_files = [
     '/etc/puppetlabs/puppet/auth.conf',
     '/etc/puppetlabs/puppet/manifests/site.pp',
+    '/etc/puppetlabs/console-auth/config.yml',
+    '/etc/puppetlabs/rubycas-server/config.yml'
   ]
 
   if versioncmp($::pe_version, '3.0.0') < 1 {
@@ -14,6 +16,7 @@ class advanced::classroom {
 
   class {'advanced::mcollective':} 
   class {'advanced::irc::client':}
+  class {'advanced::classroom::console':}
 
   # Backup and create default file then don't replace
   advanced::backup   { $managed_files :} ->
