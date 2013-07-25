@@ -7,7 +7,8 @@ class advanced::classroom {
     '/etc/puppetlabs/puppet/auth.conf',
     '/etc/puppetlabs/puppet/manifests/site.pp',
     '/etc/puppetlabs/console-auth/config.yml',
-    '/etc/puppetlabs/rubycas-server/config.yml'
+    '/etc/puppetlabs/rubycas-server/config.yml',
+    '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
   ]
 
   if versioncmp($::pe_version, '3.0.0') < 1 {
