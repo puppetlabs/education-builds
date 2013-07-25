@@ -17,6 +17,7 @@ class advanced::classroom::puppetdb {
     }
   }
   # For 3.0.0 and higher, we need to add a listen_address class param
+  # also, remove certificate_whitelist, else others won't be able to save facts
   else {
     exec { 'node:addclassparam_pe_puppetdb_host' :
       path        => '/opt/puppet/bin:/bin',
@@ -26,6 +27,13 @@ class advanced::classroom::puppetdb {
       unless      => "rake node:listclassparams name=${::clientcert} class='pe_puppetdb' | grep -qs '^listen_address'",
       before      => Class['pe_puppetdb'],
       notify      => Service['pe-puppetdb'],
+    }
+    ini_setting { 'puppetdb-certificate-whitelist':
+      ensure  => absent,
+      path    => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
+      section => jetty,
+      setting => 'certificate-whitelist',
+      notify  => Service['pe-puppetdb'],
     }
   }
 }
