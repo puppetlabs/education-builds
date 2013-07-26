@@ -1,6 +1,11 @@
 # Main class applied to classroom
 class advanced::classroom {
-  include kickstand
+  package { 'sinatra-base':
+    ensure   => present,
+    provider => pe_gem,
+    before   => Class['kickstand']
+  }
+  class { 'kickstand': }
   include advanced::classroom::fileserver
   # These are the files that we manage with this class
   $files_to_backup = [
