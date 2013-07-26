@@ -28,7 +28,7 @@ class advanced::classroom::puppetdb {
       before      => Ini_setting['puppetdb_port'],
       notify      => Service['pe-puppetdb'],
     }
-    Ini_setting <| title = 'puppetdb_host' |> {
+    Ini_setting <| title == 'puppetdb_host' |> {
       value => '0.0.0.0',
     }
     ini_setting { 'puppetdb-certificate-whitelist':
