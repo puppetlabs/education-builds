@@ -19,10 +19,7 @@ class advanced::classroom {
     '/etc/puppetlabs/puppet/manifests/site.pp',
   ]
 
-  if versioncmp($::pe_version, '3.0.0') < 1 {
-    class {'advanced::classroom::puppetdb':} 
-  }
-
+  class {'advanced::classroom::puppetdb':} 
   class {'advanced::mcollective':} 
   class {'advanced::irc::client':}
 
