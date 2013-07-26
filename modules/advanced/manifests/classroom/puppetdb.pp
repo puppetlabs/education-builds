@@ -26,7 +26,7 @@ class advanced::classroom::puppetdb {
       command     => "rake node:addclassparam name=${::clientcert} class='pe_puppetdb' param='listen_address' value='0.0.0.0'",
       unless      => "rake node:listclassparams name=${::clientcert} class='pe_puppetdb' | grep -qs '^listen_address'",
       before      => Ini_setting['puppetdb_port'],
-      notify      => Service['pe-puppetdb']]
+      notify      => Service['pe-puppetdb'],
     }
     ini_setting { 'puppetdb-certificate-whitelist':
       ensure  => absent,
