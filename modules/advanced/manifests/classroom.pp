@@ -4,8 +4,6 @@ class advanced::classroom {
   include advanced::classroom::fileserver
   # These are the files that we manage with this class
   $files_to_backup = [
-    '/etc/puppetlabs/puppet/auth.conf',
-    '/etc/puppetlabs/puppet/manifests/site.pp',
     '/etc/puppetlabs/console-auth/config.yml',
     '/etc/puppetlabs/rubycas-server/config.yml',
     '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
@@ -29,7 +27,10 @@ class advanced::classroom {
   }
 
   # Backup files and create default file then don't replace
-  advanced::backup   { $files_to_backup: } ->
+  advanced::backup { $files_to_backup:
+    delete => false,  
+  } ->
+  advanced::backup { $files_to_replace: } ->
   advanced::template { $files_to_replace :
     replace_file => false,
   }
