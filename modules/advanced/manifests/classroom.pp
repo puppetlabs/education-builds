@@ -17,15 +17,14 @@ class advanced::classroom {
   ]
 
   if versioncmp($::pe_version, '3.0.0') < 1 {
-
-  if versioncmp($::pe_version, '3.0.0') < 1 {
     class {'advanced::classroom::puppetdb':} 
   }
 
   class {'advanced::mcollective':} 
   class {'advanced::irc::client':}
 
-  if versioncmp($::pe_version, '3.0.0') == 0 {
+  # TDB: Check for PE>3.0.0
+  if versioncmp($::pe_version, '3.0.0') >= 0 {
     class {'advanced::classroom::console':}
   }
 
