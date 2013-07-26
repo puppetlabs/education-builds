@@ -25,7 +25,7 @@ class advanced::classroom::puppetdb {
       environment => 'RAILS_ENV=production',
       command     => "rake node:addclassparam name=${::clientcert} class='pe_puppetdb' param='listen_address' value='0.0.0.0'",
       unless      => "rake node:listclassparams name=${::clientcert} class='pe_puppetdb' | grep -qs '^listen_address'",
-      before      => Class['pe_puppetdb'],
+      before      => Class['puppetdb::server::jetty_ini'],
       notify      => Service['pe-puppetdb'],
     }
     ini_setting { 'puppetdb-certificate-whitelist':
