@@ -1,5 +1,6 @@
 # Set up the master with user accounts, environments, etc
 class fundamentals::master ( $classes = [] ) {
+  class { 'fundamentals::master::console': }
   File {
     owner => 'root',
     group => 'root',
