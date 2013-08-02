@@ -23,7 +23,7 @@ class advanced::classroom {
   class {'advanced::mcollective':} 
   class {'advanced::irc::client':}
 
-  # TDB: Check for PE>3.0.0
+  # TBD: Check for PE>3.0.0
   if versioncmp($::pe_version, '3.0.0') >= 0 {
     class {'advanced::classroom::console':}
   }
