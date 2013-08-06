@@ -190,7 +190,7 @@ task :createiso, [:vmtype] do |t,args|
 
     # Extract the OS version from the iso filename as debian and centos are the
     # same basic format and get caught by the match group below
-    iso_version = iso_file[/^.*-(\d+\.\d\.?\d?)-.*\.iso$/,1]
+    iso_version = iso_url[/^.*-(\d+\.\d\.?\d?)-.*\.iso$/,1]
     $settings[:vmname] = "#{settings[:vmtype]}-#{iso_version}-pe-#{PEVERSION}".downcase
 
     if ! iso_file
