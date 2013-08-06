@@ -26,11 +26,11 @@ task :init do
     end
   end
 
-  ['Debian','RedHat'].each do |vmtype|
+  ['Debian','Centos'].each do |vmtype|
     case vmtype
     when 'Debian'
       pe_install_suffix = '-debian-6-i386'
-    when 'RedHat'
+    when 'Centos'
       pe_install_suffix = '-el-6-i386'
     end
     pe_tarball = "puppet-enterprise-#{PEVERSION}#{pe_install_suffix}.tar.gz"
@@ -143,7 +143,7 @@ task :createiso, [:vmtype] do |t,args|
       }
       iso_glob = 'debian-*'
       iso_url = 'http://hammurabi.acc.umu.se/debian-cd/6.0.6/i386/iso-cd/debian-6.0.6-i386-CD-1.iso'
-    when 'RedHat'
+    when 'Centos'
       # Parse templates and output in BUILDDIR
       $settings[:pe_install_suffix] = '-el-6-i386'
       $settings[:hostname] = "training.puppetlabs.vm"
@@ -167,8 +167,8 @@ task :createiso, [:vmtype] do |t,args|
 
       # Define ISO file targets
       files = {
-        "#{BUILDDIR}/RedHat/isolinux.cfg"               => '/isolinux/isolinux.cfg',
-        "#{BUILDDIR}/RedHat/ks.cfg"                     => '/puppet/ks.cfg',
+        "#{BUILDDIR}/Centos/isolinux.cfg"               => '/isolinux/isolinux.cfg',
+        "#{BUILDDIR}/Centos/ks.cfg"                     => '/puppet/ks.cfg',
         "#{CACHEDIR}/epel-release.rpm"                  => '/puppet/epel-release.rpm',
         "#{CACHEDIR}/puppetlabs-enterprise-release-extras.rpm"  => '/puppet/puppetlabs-enterprise-release-extras.rpm',
         "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
@@ -348,7 +348,7 @@ end
 desc "Unmount the ISO and remove kickstart files and repos"
 task :clean do
   cputs "Destroying vms"
-  ['Debian','RedHat'].each do |os|
+  ['Debian','Centos'].each do |os|
     Rake::Task[:destroyvm].invoke(os)
     Rake::Task[:destroyvm].reenable
   end
@@ -399,10 +399,10 @@ end
 def prompt_vmtype(type=nil)
   type = type || ENV['vmtype']
   loop do
-    cprint "Please choose an OS type of 'RedHat' or 'Debian' [RedHat]: "
+    cprint "Please choose an OS type of 'Centos' or 'Debian' [Centos]: "
     type = STDIN.gets.chomp
-    type = 'RedHat' if type.empty?
-    if type !~ /(Debian|RedHat)/
+    type = 'Centos' if type.empty?
+    if type !~ /(Debian|Centos)/
       cputs "Incorrect/unknown OS type: #{type}"
     else
       break #loop
