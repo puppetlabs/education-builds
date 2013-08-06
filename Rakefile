@@ -101,8 +101,13 @@ task :createvm, [:vmtype,:mem] do |t,args|
     unless File.directory?(dir)
       FileUtils.mkdir_p(dir)
     end
+
+    case $settings[:vmtype]
+    when /('Centos'|'Redhat')/
+      ostype = 'RedHat'
+    end
     cputs "Creating VM '#{$settings[:vmname]}' in #{dir} ..."
-    system("VBoxManage createvm --name '#{$settings[:vmname]}' --basefolder '#{dir}' --register --ostype #{$settings[:vmtype]}")
+    system("VBoxManage createvm --name '#{$settings[:vmname]}' --basefolder '#{dir}' --register --ostype #{ostype}")
     Dir.chdir("#{dir}/#{$settings[:vmname]}")
     cputs "Configuring VM settings..."
     system("VBoxManage modifyvm '#{$settings[:vmname]}' --memory #{args.mem} --nic1 nat --usb off --audio none")
