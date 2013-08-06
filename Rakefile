@@ -103,7 +103,7 @@ task :createvm, [:vmtype,:mem] do |t,args|
     end
 
     case $settings[:vmtype]
-    when /('Centos'|'Redhat')/
+    when /(Centos|Redhat)/
       ostype = 'RedHat'
     end
     cputs "Creating VM '#{$settings[:vmname]}' in #{dir} ..."
