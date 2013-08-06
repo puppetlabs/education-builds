@@ -1,5 +1,6 @@
 # Main class applied to classroom
 class advanced::classroom {
+  include kickstand
   include advanced::classroom::fileserver
   # These are the files that we manage with this class
   $managed_files = [
@@ -20,15 +21,6 @@ class advanced::classroom {
   file { '/etc/puppetlabs/puppet/.mcollective_advanced_class':
     mode   => '0666',
     source => '/var/lib/peadmin/.mcollective',
-  }
-
-
-  # Enable autosigning to simplify exercises
-
-  $autosign_file = '/etc/puppetlabs/puppet/autosign.conf'
-  file { $autosign_file:
-    ensure  => file,
-    content => template("${module_name}${autosign_file}.erb"),
   }
 
   # Setup the wordpress class for exercise 2.2

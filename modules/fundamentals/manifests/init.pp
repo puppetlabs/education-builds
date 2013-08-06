@@ -1,71 +1,38 @@
+# Configure the Fundamentals classroom environment.
+#
+# fundamentals::agent
+#   * set up the agent with an sshkey for root
+#   * set up a git working directory for the user
+#   * point a git remote to the repo on the puppet master
+#   * export a fundamentals::user account
+#       * this depends on a root_ssh_key fact so this user
+#         account won't be exported properly on first run
+#
+# fundamentals::master
+#   * prepares the master's environment
+#   * creates a git repository root
+#   * creates an environment root for checking out working copies
+#   * instantiate all exported fundamentals::users
+#       * creates a shell user with ssh key
+#       * creates a puppet.conf environment fragment
+#       * creates a bare repository in repo root
+#       * checks out a working copy in the environments root
+#
 class fundamentals {
 
-  include concat::setup
+  if $::fact_is_puppetmaster == 'true' {
 
-  # Convert facter strings to booleans
-  $is_puppetmaster = $::fact_is_puppetmaster ? { 'true'  => true, 'false' => false }
-  $is_puppetca = $::fact_is_puppetca ? { 'true'  => true, 'false' => false }
-  $is_puppetconsole = $::fact_is_puppetconsole ? { 'true'  => true, 'false' => false }
-  $is_puppetagent = $::fact_is_puppetagent ? { 'true'  => true, 'false' => false }
-
-
-  if $is_puppetmaster {
-
-    concat{ 'puppet_conf_concat':
-      name  => '/etc/puppetlabs/puppet/puppet.conf',
-      owner => 'pe-puppet',
-      group => 'pe-puppet',
-      mode  => '0600',
+    # define a list of classes that should be available in the console
+    class { 'fundamentals::master':
+      classes => [ 'users', 'apache' ]
     }
-
-    concat::fragment{ 'puppet_conf':
-      target  => '/etc/puppetlabs/puppet/puppet.conf',
-      source  => '/root/puppet.conf',
-      order   => 01,
-    }
-
-    exec { 'cp_puppet_conf':
-      command => '/bin/cp /etc/puppetlabs/puppet/puppet.conf /root/puppet.conf',
-      unless  => '/usr/bin/test -f /root/puppet.conf',
-      before  => Concat::Fragment['puppet_conf'],
-    }
-
-    $student_normalized = regsubst($::students,'\s', '', G)
-    $student_array = split($student_normalized, ',')
-    fundamentals::user { $student_array: }
-
-    $class_array = split($::classes, ',')
-    fundamentals::console_class { $class_array: }
+  }
+  else {
+    include fundamentals::agent
   }
 
-  if $is_puppetagent and ! $is_puppetmaster {
-
-    # Configure the NFS Mount
-    # Updated to skip our ubuntu demo boxen
-    case $::osfamily {
-      'RedHat': {
-        $configure_nfs = true
-      }
-      'Debian': {
-        $configure_nfs = false
-      }
-    }
-    if $configure_nfs {
-      include fundamentals::nfs::client
-    }
-    # A little hack to make the remote mount behave as
-    # part of the users local modulepath, useful for apply
-    file { '/etc/puppetlabs/puppet/modules':
-      ensure => 'symlink',
-      target => '/root/master_home/modules',
-    }
-    # /etc/puppet/ssl is confusing to have around. Sloppy. Kill.
-    file {'/etc/puppet':
-      ensure  => absent,
-      recurse => true,
-      force   => true,
-    }
-
-  }
+  # unconditionally configure Hiera for all nodes. The master will get
+  # additional configuration for the capstone lab.
+  include fundamentals::hiera
 
 }
