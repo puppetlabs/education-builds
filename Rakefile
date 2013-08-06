@@ -409,7 +409,7 @@ def prompt_vmtype(type=nil)
     end
   end unless type
   $settings[:vmtype] = type
-  $settings[:vmname] = "#{type}-pe-#{PEVERSION}"
+  $settings[:vmname] = "#{type}-pe-#{PEVERSION}".downcase
 end
 
 def build_file(filename)
