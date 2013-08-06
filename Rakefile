@@ -13,7 +13,7 @@ VAGRANTDIR = "#{BUILDDIR}/vagrant"
 OVFDIR = "#{BUILDDIR}/ovf"
 VMWAREDIR = "#{BUILDDIR}/vmware"
 VBOXDIR = "#{BUILDDIR}/vbox"
-PEVERSION = '2.7.0'
+PEVERSION = '3.0.0'
 PE_RELEASE_URL = "https://s3.amazonaws.com/pe-builds/released/#{PEVERSION}"
 $settings = Hash.new
 
@@ -184,7 +184,15 @@ task :createiso, [:vmtype] do |t,args|
       iso_glob = 'CentOS-*'
       iso_url = 'http://mirror.tocici.com/centos/6.3/isos/i386/CentOS-6.3-i386-bin-DVD1.iso'
     end
+
+
     iso_file = Dir.glob("#{CACHEDIR}/#{iso_glob}").first
+
+    # Extract the OS version from the iso filename as debian and centos are the
+    # same basic format and get caught by the match group below
+    iso_version = iso_file[/^.*-(\d+\.\d\.?\d?)-.*\.iso$/,1]
+    $settings[:vmname] = "#{settings[:vmtype]}-#{iso_version}-pe-#{PEVERSION}".downcase
+
     if ! iso_file
       iso_default = iso_url
     else
@@ -414,7 +422,6 @@ def prompt_vmtype(type=nil)
     end
   end unless type
   $settings[:vmtype] = type
-  $settings[:vmname] = "#{type}-pe-#{PEVERSION}".downcase
 end
 
 def build_file(filename)
