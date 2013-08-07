@@ -12,7 +12,7 @@ class vagrant {
 
   ssh_authorized_key { 'vagrant public key':
     ensure => present,
-    key    => $vagrant_key,
+    key    => $pub_key,
     name   => 'vagrant insecure public key',
     user   => 'vagrant',
     type   => 'ssh-rsa',
