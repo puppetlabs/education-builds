@@ -5,6 +5,8 @@ node default {
 
   include localrepo
   include training
+
+  include vagrant
 }
 
 node /learn/ {
