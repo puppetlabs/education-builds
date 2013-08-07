@@ -19,7 +19,7 @@ module Puppet::Parser::Functions
     # teams.select { |name, members| members.include? user }.keys
     if ! teams.emtpy?
       teams = Hash[teams.select { |name, members| members.include? user }].keys
-    done
+    end
     return teams if ! teams.empty?
     return ''
   end
