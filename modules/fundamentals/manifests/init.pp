@@ -20,7 +20,7 @@
 #
 class fundamentals {
 
-  if ${::hostname} == 'master' {
+  if $::hostname == 'master' {
 
     # define a list of classes that should be available in the console
     class { 'fundamentals::master':
