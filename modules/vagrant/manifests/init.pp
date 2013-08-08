@@ -4,7 +4,7 @@ class vagrant {
     ensure   => file,
     mode     => '0440',
     owner    => 'root',
-    content  => 'vagrant ALL=(ALL) ALL',
+    content  => "vagrant ALL=(ALL) ALL\nDefaults  !reqiretty\n",
     require  => User['vagrant'],
   }
 
