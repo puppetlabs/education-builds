@@ -63,6 +63,9 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'puppetlabs-postgresql': 
     version => '2.3.0',
   }
+  bootstrap::forge { 'puppetlabs-pe_gem': 
+    version => '0.0.1',
+  }
   
 
   # These are the additional modules needed by the extending puppet using ruby course
