@@ -136,54 +136,31 @@ task :createiso, [:vmtype] do |t,args|
     # Uses hostname, pe_install_suffix
     build_file('preseed.cfg')
 
-      # Define ISO file targets
-      files = {
-        "#{BUILDDIR}/Debian/isolinux.cfg"               => '/isolinux/isolinux.cfg',
-        "#{BUILDDIR}/Debian/preseed.cfg"                => '/puppet/preseed.cfg',
-        "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
-        "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
-        "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
-        "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
-      }
-      iso_glob = 'debian-*'
-      iso_url = 'http://hammurabi.acc.umu.se/debian-cd/6.0.6/i386/iso-cd/debian-6.0.6-i386-CD-1.iso'
-    when 'RedHat'
-      # Parse templates and output in BUILDDIR
-      $settings[:pe_install_suffix] = '-el-6-i386'
-      $settings[:hostname] = "training.puppetlabs.vm"
-      $settings[:pe_tarball] = "puppet-enterprise-#{PEVERSION}#{$settings[:pe_install_suffix]}.tar.gz"
-      $settings[:old_pe_tarball] = "puppet-enterprise-#{OLDPEVERSION}#{$settings[:pe_install_suffix]}.tar.gz"
-      # No variables
-      build_file('isolinux.cfg')
-      # Uses hostname, pe_install_suffix
-      build_file('ks.cfg')
+    # Define ISO file targets
+    files = {
+      "#{BUILDDIR}/Debian/isolinux.cfg"               => '/isolinux/isolinux.cfg',
+      "#{BUILDDIR}/Debian/preseed.cfg"                => '/puppet/preseed.cfg',
+      "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
+      "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
+      "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
+      "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
+    }
+    iso_glob = 'debian-*'
+    iso_url = 'http://hammurabi.acc.umu.se/debian-cd/6.0.6/i386/iso-cd/debian-6.0.6-i386-CD-1.iso'
+  when 'Centos'
+    # Parse templates and output in BUILDDIR
+    $settings[:pe_install_suffix] = '-el-6-i386'
+    $settings[:hostname] = "training.puppetlabs.vm"
+    $settings[:pe_tarball] = "puppet-enterprise-#{PEVERSION}#{$settings[:pe_install_suffix]}.tar.gz"
+    # No variables
+    build_file('isolinux.cfg')
+    # Uses hostname, pe_install_suffix
+    build_file('ks.cfg')
 
-      unless File.exist?("#{CACHEDIR}/epel-release.rpm")
-        cputs "Downloading EPEL rpm"
-        #download "http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
-        download "http://mirrors.cat.pdx.edu/epel/6/i386/epel-release-6-8.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
-      end
-      
-      unless File.exist?("#{CACHEDIR}/puppetlabs-enterprise-release-extras.rpm")
-        cputs "Downloading Puppet Enterprise Extras rpm"
-        #download "http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
-      download "http://yum-enterprise.puppetlabs.com/el/6/extras/i386/puppetlabs-enterprise-release-extras-6-2.noarch.rpm", "#{CACHEDIR}/puppetlabs-enterprise-release-extras.rpm"
-      end
-
-      # Define ISO file targets
-      files = {
-        "#{BUILDDIR}/RedHat/isolinux.cfg"               => '/isolinux/isolinux.cfg',
-        "#{BUILDDIR}/RedHat/ks.cfg"                     => '/puppet/ks.cfg',
-        "#{CACHEDIR}/epel-release.rpm"                  => '/puppet/epel-release.rpm',
-        "#{CACHEDIR}/puppetlabs-enterprise-release-extras.rpm"  => '/puppet/puppetlabs-enterprise-release-extras.rpm',
-        "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
-        "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
-        "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
-        "#{CACHEDIR}/#{$settings[:pe_tarball]}"         => "/puppet/#{$settings[:pe_tarball]}",
-        "#{CACHEDIR}/#{$settings[:old_pe_tarball]}"     => "/puppet/#{$settings[:old_pe_tarball]}",
-      }
-      iso_glob = 'CentOS-*'
-      iso_url = 'http://mirror.tocici.com/centos/6.3/isos/i386/CentOS-6.3-i386-bin-DVD1.iso'
+    unless File.exist?("#{CACHEDIR}/epel-release.rpm")
+      cputs "Downloading EPEL rpm"
+      #download "http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
+      download "http://mirrors.cat.pdx.edu/epel/6/i386/epel-release-6-8.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
     end
     
     unless File.exist?("#{CACHEDIR}/puppetlabs-enterprise-release-extras.rpm")
@@ -449,7 +426,6 @@ def prompt_vmtype(type=nil)
     end
   end unless type
   $settings[:vmtype] = type
-  $settings[:vmname] = "centos-6.3-pe-3.0.0"
 end
 
 def build_file(filename)
