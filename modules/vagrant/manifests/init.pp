@@ -5,7 +5,7 @@ class vagrant {
     mode     => '0440',
     owner    => 'root',
     content  => 'vagrant ALL=(ALL) ALL',
-    requirei => User['vagrant'],
+    require  => User['vagrant'],
   }
 
   # Vagrant public key
