@@ -20,7 +20,7 @@
 #
 class fundamentals {
 
-  if $::hostname == 'master' {
+  if $::fact_is_puppetmaster == 'true' {
 
     # define a list of classes that should be available in the console
     class { 'fundamentals::master':
@@ -30,9 +30,5 @@ class fundamentals {
   else {
     include fundamentals::agent
   }
-
-  # unconditionally configure Hiera for all nodes. The master will get
-  # additional configuration for the capstone lab.
-  include fundamentals::hiera
 
 }

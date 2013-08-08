@@ -7,18 +7,6 @@ define fundamentals::master::repository (
   $root    = '/var/repositories',
   $envroot = '/etc/puppetlabs/puppet/environments',
 ) {
-
-  if !( $ensure in ['present','absent'] ) {
-    fail("fundamentals::master::repository ensure parameter must be 'present' or 'absent'")
-  } 
-
-  validate_absolute_path("$root")
-  validate_absolute_path("$envroot")
-
-  # A valid hostname is not necessarily a valid Puppet environment name!
-  # Check for valid Puppet environment name.
-  validate_re($name, '^[a-zA-Z0-9_]+$')
-
   File {
     owner => $name,
     group => 'pe-puppet',

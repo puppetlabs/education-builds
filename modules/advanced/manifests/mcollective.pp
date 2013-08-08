@@ -23,10 +23,8 @@ class advanced::mcollective {
     command     => "rake nodegroup:parameters name=default parameters=stomp_password=${stomp_password}",
   }
 
-  if versioncmp($::pe_version, '3.0.0') < 0 {
-    exec { 'node:parameters:fact_is_puppetmaster':
-      command     => "rake nodegroup:parameters name=default parameters=fact_is_puppetmaster='false'",
-    }
+  exec { 'node:parameters:fact_is_puppetmaster':
+    command     => "rake nodegroup:parameters name=default parameters=fact_is_puppetmaster='false'",
   }
 
 }

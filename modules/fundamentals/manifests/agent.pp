@@ -4,8 +4,7 @@
 #  * git pre-commit hook
 class fundamentals::agent ( $workdir = 'puppetcode' ) {
   Exec {
-    environment => 'HOME=/root',
-    path        => '/usr/bin:/bin:/user/sbin:/usr/sbin',
+    path => '/usr/bin:/bin:/user/sbin:/usr/sbin',
   }
 
   package { 'git':

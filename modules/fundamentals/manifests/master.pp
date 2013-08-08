@@ -1,8 +1,5 @@
 # Set up the master with user accounts, environments, etc
 class fundamentals::master ( $classes = [] ) {
-  if versioncmp($::pe_version, '3.0.0') >= 0 {
-    class { 'fundamentals::master::console': }
-  }
   File {
     owner => 'root',
     group => 'root',

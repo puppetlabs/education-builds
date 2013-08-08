@@ -17,7 +17,6 @@ define advanced::copy(
       file { "${dir_path}/${to_copy}" :
         ensure => file,
         source => "${filesource}/${to_copy}",
-        owner  => 'pe-puppet',
       }
     }
 }
