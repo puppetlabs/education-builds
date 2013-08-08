@@ -340,7 +340,12 @@ task :createvbox, [:vmtype] do |t,args|
 end
 
 task :vagrantize, [:vmtype] do |t,args|
-  cputs "Vagrantizing VM not yet implemented"
+  args.with_defaults(:vmtype => $settings[:vmtype])
+  prompt_vmtype(args.vmtype)
+
+  cputs "Vagrantizing VM..."
+  system("vagrant package --base '#{$settings[:vmname]}' --output '#{VAGRANTDIR}/#{$settings[:vmname]}.box'")
+  FileUtils.ln_sf("#{VAGRANTDIR}/#{$settings[:vmname]}.box", "#{VAGRANTDIR}/#{$settings[:vmtype].downcase}-latest.box")
 end
 
 desc "Zip up the VMs (unimplemented)"

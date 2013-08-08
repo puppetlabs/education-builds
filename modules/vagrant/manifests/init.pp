@@ -1,4 +1,13 @@
 class vagrant {
+
+  file { '/etc/sudoers.d/vagrant':
+    ensure   => file,
+    mode     => '0440',
+    owner    => 'root',
+    content  => 'vagrant ALL=(ALL) ALL',
+    requirei => User['vagrant'],
+  }
+
   # Vagrant public key
   # https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub
 
