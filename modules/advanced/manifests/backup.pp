@@ -1,12 +1,17 @@
 # This is a helper class used with advanced::template
 define advanced::backup(
-  $path_to_move = $title,
+  $path_to_copy = $title,
+  $delete = true,
 ){
-
-  # Idempotence is accomlished via the .old file extance
-  exec { "mv -f ${path_to_move} ${path_to_move}.old" :
+  if $delete {
+    $cmd = 'mv -f'
+  } else {
+    $cmd = 'cp -a'
+  }
+  # Idempotence is accomlished via the .old file 
+  exec { "${cmd} ${path_to_copy} ${path_to_copy}.old" :
     path    => '/bin:/usr/bin',
-    creates => "${path_to_move}.old",
+    creates => "${path_to_copy}.old",
   }
 
 }

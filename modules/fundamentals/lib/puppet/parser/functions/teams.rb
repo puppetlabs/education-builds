@@ -17,8 +17,10 @@ module Puppet::Parser::Functions
 
     #  Ruby 1.8, why must you vex me so?
     # teams.select { |name, members| members.include? user }.keys
-    teams = Hash[teams.select { |name, members| members.include? user }].keys
-    return teams if teams != []
+    if ! teams.empty?
+      teams = Hash[teams.select { |name, members| members.include? user }].keys
+    end
+    return teams if ! teams.empty?
     return ''
   end
 end
