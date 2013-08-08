@@ -58,4 +58,7 @@ export q_run_updtvpkg=n
 export q_vendor_packages_install=y
 
 # Run the master installation with an empty file given the exports above
-exec /root/puppet-enterprise/puppet-enterprise-installer -a /etc/motd
+/root/puppet-enterprise/puppet-enterprise-installer -a /etc/motd
+
+cd /opt/puppet/share/puppet-dashboard
+/opt/puppet/bin/bundle exec rake node:addclassparam name=$MASTER_HOSTNAME class=pe_puppetdb param=ssl_listen_address value='0.0.0.0'
