@@ -1,4 +1,3 @@
-$pe_version = '3.0.1'
 node default {
   include bootstrap
   include localrepo
