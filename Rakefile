@@ -218,7 +218,11 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   # Extract the OS version from the iso filename as debian and centos are the
   # same basic format and get caught by the match group below
   iso_version = iso_url[/^.*-(\d+\.\d\.?\d?)-.*\.iso$/,1]
-  $settings[:vmname] = "#{$settings[:vmos]}-#{iso_version}-pe-#{PEVERSION}".downcase
+  if $settings[:vmtype] == 'training'
+    $settings[:vmname] = "#{$settings[:vmos]}-#{iso_version}-pe-#{PEVERSION}".downcase
+  else
+    $settings[:vmname] = "learn_puppet_#{$settings[:vmos]}-#{iso_version}-pe-#{PEVERSION}".downcase
+  end
 end
 
 task :mountiso, [:vmos] => [:createiso] do |t,args|
