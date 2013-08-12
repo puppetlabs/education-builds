@@ -59,8 +59,8 @@ class bootstrap {
     hasstatus  => true,
     hasrestart => true,
   }
-  # Ensure nfs-utils and tree are installed for fundamentals
-  package { [ 'nfs-utils', 'tree' ] :
+  # Ensure tree is installed for fundamentals
+  package { 'tree' :
     ensure  => present,
     require => Class['localrepo'],
   }
