@@ -1,4 +1,4 @@
-$pe_version = '2.6.1'
+$pe_version = '3.0.1'
 node default {
   include bootstrap
   include pebase
@@ -10,7 +10,7 @@ node default {
 }
 
 node /learn/ {
-  include bootstrap
+  class { 'bootstrap': print_console_login => true, }
   include pebase
 
   include learning
