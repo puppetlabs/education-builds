@@ -156,7 +156,12 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   when 'Centos'
     # Parse templates and output in BUILDDIR
     $settings[:pe_install_suffix] = '-el-6-i386'
-    $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
+    if $settings[:vmtype] == 'training'
+      $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
+    else
+      $settings[:hostname] = "learn.localdomain"
+    end
+
     $settings[:pe_tarball] = "puppet-enterprise-#{PEVERSION}#{$settings[:pe_install_suffix]}.tar.gz"
     # No variables
     build_file('isolinux.cfg')
