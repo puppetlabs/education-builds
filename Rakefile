@@ -13,7 +13,7 @@ VAGRANTDIR = "#{BUILDDIR}/vagrant"
 OVFDIR = "#{BUILDDIR}/ovf"
 VMWAREDIR = "#{BUILDDIR}/vmware"
 VBOXDIR = "#{BUILDDIR}/vbox"
-PEVERSION = '3.0.0'
+PEVERSION = '3.0.1-rc0-52-g0f000d8'
 PE_RELEASE_URL = "https://s3.amazonaws.com/pe-builds/released/#{PEVERSION}"
 $settings = Hash.new
 
@@ -26,8 +26,8 @@ task :init do
     end
   end
 
-  ['Debian','Centos'].each do |vmtype|
-    case vmtype
+  ['Debian','Centos'].each do |vmos|
+    case vmos
     when 'Debian'
       pe_install_suffix = '-debian-6-i386'
     when 'Centos'
@@ -35,7 +35,7 @@ task :init do
     end
     pe_tarball = "puppet-enterprise-#{PEVERSION}#{pe_install_suffix}.tar.gz"
     unless File.exist?("#{CACHEDIR}/#{pe_tarball}")
-      cputs "Downloading #{vmtype} PE tarball #{PEVERSION}..."
+      cputs "Downloading #{vmos} PE tarball #{PEVERSION}..."
       download "#{PE_RELEASE_URL}/#{pe_tarball}", "#{CACHEDIR}/#{pe_tarball}"
     end
   end
@@ -82,9 +82,9 @@ task :init do
 end
 
 desc "Destroy VirtualBox instance"
-task :destroyvm, [:vmtype] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
+task :destroyvm, [:vmos] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
   if %x{VBoxManage list vms}.match /("#{$settings[:vmname]}")/
     cputs "Destroying VM #{$settings[:vmname]}..."
     system("VBoxManage unregistervm '#{$settings[:vmname]}' --delete")
@@ -92,17 +92,18 @@ task :destroyvm, [:vmtype] do |t,args|
 end
 
 desc "Create a new vmware instance for kickstarting"
-task :createvm, [:vmtype,:mem] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype],:mem => (ENV['mem']||'1024'))
+task :createvm, [:vmos,:vmtype,:mem] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos],:vmtype => $settings[:vmtype],:mem => (ENV['mem']||'1024'))
   begin
-    prompt_vmtype(args.vmtype)
-    Rake::Task[:destroyvm].invoke($settings[:vmtype])
+    prompt_vmos(args.vmos)
+
+    Rake::Task[:destroyvm].invoke($settings[:vmos])
     dir = "#{BUILDDIR}/vagrant"
     unless File.directory?(dir)
       FileUtils.mkdir_p(dir)
     end
 
-    case $settings[:vmtype]
+    case $settings[:vmos]
     when /(Centos|Redhat)/
       ostype = 'RedHat'
     end
@@ -121,18 +122,23 @@ task :createvm, [:vmtype,:mem] do |t,args|
 end
 
 desc "Creates a modified ISO with preseed/kickstart"
-task :createiso, [:vmtype] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
+task :createiso, [:vmos,:vmtype] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos], :vmtype => $settings[:vmtype])
+  prompt_vmos(args.vmos)
   prompt_vmtype(args.vmtype)
-  case $settings[:vmtype]
+  case $settings[:vmos]
   when 'Debian'
     # Parse templates and output in BUILDDIR
     $settings[:pe_install_suffix] = '-debian-6-i386'
-    $settings[:hostname] = "training.puppetlabs.vm"
+    if $settings[:vmtype] == 'training'
+      $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
+    else
+      $settings[:hostname] = "learn.localdomain"
+    end
     $settings[:pe_tarball] = "puppet-enterprise-#{PEVERSION}#{$settings[:pe_install_suffix]}.tar.gz"
     # No variables
     build_file('isolinux.cfg')
-    #template_path = "#{BASEDIR}/#{$settings[:vmtype]}/#{filename}.erb"
+    #template_path = "#{BASEDIR}/#{$settings[:vmos]}/#{filename}.erb"
     # Uses hostname, pe_install_suffix
     build_file('preseed.cfg')
 
@@ -150,7 +156,12 @@ task :createiso, [:vmtype] do |t,args|
   when 'Centos'
     # Parse templates and output in BUILDDIR
     $settings[:pe_install_suffix] = '-el-6-i386'
-    $settings[:hostname] = "training.puppetlabs.vm"
+    if $settings[:vmtype] == 'training'
+      $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
+    else
+      $settings[:hostname] = "learn.localdomain"
+    end
+
     $settings[:pe_tarball] = "puppet-enterprise-#{PEVERSION}#{$settings[:pe_install_suffix]}.tar.gz"
     # No variables
     build_file('isolinux.cfg')
@@ -192,8 +203,8 @@ task :createiso, [:vmtype] do |t,args|
   else
     iso_default = iso_file
   end
-  if ! File.exist?("#{KSISODIR}/#{$settings[:vmtype]}.iso")
-    cprint "Please specify #{$settings[:vmtype]} ISO path or url [#{iso_default}]: "
+  if ! File.exist?("#{KSISODIR}/#{$settings[:vmos]}.iso")
+    cprint "Please specify #{$settings[:vmos]} ISO path or url [#{iso_default}]: "
     iso_uri = STDIN.gets.chomp.rstrip
     iso_uri = iso_default if iso_uri.empty?
     if iso_uri != iso_file
@@ -209,27 +220,31 @@ task :createiso, [:vmtype] do |t,args|
       iso_file = Dir.glob("#{CACHEDIR}/#{iso_glob}").first
     end
     cputs "Mapping files from #{BUILDDIR} into ISO..."
-    map_iso(iso_file, "#{KSISODIR}/#{$settings[:vmtype]}.iso", files)
+    map_iso(iso_file, "#{KSISODIR}/#{$settings[:vmos]}.iso", files)
   else
-    cputs "Image #{KSISODIR}/#{$settings[:vmtype]}.iso is already created; skipping"
+    cputs "Image #{KSISODIR}/#{$settings[:vmos]}.iso is already created; skipping"
   end
   # Extract the OS version from the iso filename as debian and centos are the
   # same basic format and get caught by the match group below
   iso_version = iso_url[/^.*-(\d+\.\d\.?\d?)-.*\.iso$/,1]
-  $settings[:vmname] = "#{$settings[:vmtype]}-#{iso_version}-pe-#{PEVERSION}".downcase
+  if $settings[:vmtype] == 'training'
+    $settings[:vmname] = "#{$settings[:vmos]}-#{iso_version}-pe-#{PEVERSION}".downcase
+  else
+    $settings[:vmname] = "learn_puppet_#{$settings[:vmos]}-#{iso_version}-pe-#{PEVERSION}".downcase
+  end
 end
 
-task :mountiso, [:vmtype] => [:createiso] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
-  cputs "Mounting #{$settings[:vmtype]} on #{$settings[:vmname]}"
-  system("VBoxManage storageattach '#{$settings[:vmname]}' --storagectl 'IDE Controller' --port 1 --device 0 --type dvddrive --medium '#{KSISODIR}/#{$settings[:vmtype]}.iso'")
+task :mountiso, [:vmos] => [:createiso] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
+  cputs "Mounting #{$settings[:vmos]} on #{$settings[:vmname]}"
+  system("VBoxManage storageattach '#{$settings[:vmname]}' --storagectl 'IDE Controller' --port 1 --device 0 --type dvddrive --medium '#{KSISODIR}/#{$settings[:vmos]}.iso'")
   Rake::Task[:unmountiso].reenable
 end
 
-task :unmountiso, [:vmtype] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
+task :unmountiso, [:vmos] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
 
   sleeptotal = 0
   while %x{VBoxManage list runningvms}.match /("#{$settings[:vmname]}")/
@@ -237,85 +252,85 @@ task :unmountiso, [:vmtype] do |t,args|
     sleep 5
     sleeptotal += 5
   end
-  cputs "Unmounting #{$settings[:vmtype]} on #{$settings[:vmname]}"
+  cputs "Unmounting #{$settings[:vmos]} on #{$settings[:vmname]}"
   system("VBoxManage storageattach '#{$settings[:vmname]}' --storagectl 'IDE Controller' --port 1 --device 0 --type dvddrive --medium none")
   Rake::Task[:mountiso].reenable
 end
 
 desc "Remove the dynamically created ISO"
-task :destroyiso, [:vmtype] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
+task :destroyiso, [:vmos] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
 
-  if File.exists?("#{KSISODIR}/#{$settings[:vmtype]}.iso")
+  if File.exists?("#{KSISODIR}/#{$settings[:vmos]}.iso")
     cputs "Removing ISO..."
-    File.delete("#{KSISODIR}/#{$settings[:vmtype]}.iso")
+    File.delete("#{KSISODIR}/#{$settings[:vmos]}.iso")
   else
     cputs "No ISO found"
   end
 end
 
 desc "Start the VM"
-task :startvm, [:vmtype] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
+task :startvm, [:vmos] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
 
   cputs "Starting #{$settings[:vmname]}"
   system("VBoxManage startvm '#{$settings[:vmname]}'")
 end
 
 desc "Reload the VM"
-task :reloadvm, [:vmtype] => [:createvm, :mountiso, :startvm] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
-  Rake::Task[:unmountiso].invoke($settings[:vmtype])
+task :reloadvm, [:vmos] => [:createvm, :mountiso, :startvm] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
+  Rake::Task[:unmountiso].invoke($settings[:vmos])
 end
 
 desc "Do everything!"
-task :everything, [:vmtype] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
+task :everything, [:vmos] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
 
   Rake::Task[:init].invoke
-  Rake::Task[:createiso].invoke($settings[:vmtype])
-  Rake::Task[:createvm].invoke($settings[:vmtype])
-  Rake::Task[:mountiso].invoke($settings[:vmtype])
-  Rake::Task[:startvm].invoke($settings[:vmtype])
-  Rake::Task[:unmountiso].invoke($settings[:vmtype])
-  Rake::Task[:createovf].invoke($settings[:vmtype])
-  Rake::Task[:createvmx].invoke($settings[:vmtype])
-  Rake::Task[:createvbox].invoke($settings[:vmtype])
-  Rake::Task[:vagrantize].invoke($settings[:vmtype])
-  Rake::Task[:packagevm].invoke($settings[:vmtype])
+  Rake::Task[:createiso].invoke($settings[:vmos])
+  Rake::Task[:createvm].invoke($settings[:vmos])
+  Rake::Task[:mountiso].invoke($settings[:vmos])
+  Rake::Task[:startvm].invoke($settings[:vmos])
+  Rake::Task[:unmountiso].invoke($settings[:vmos])
+  Rake::Task[:createovf].invoke($settings[:vmos])
+  Rake::Task[:createvmx].invoke($settings[:vmos])
+  Rake::Task[:createvbox].invoke($settings[:vmos])
+  Rake::Task[:vagrantize].invoke($settings[:vmos])
+  Rake::Task[:packagevm].invoke($settings[:vmos])
 end
 
 desc "Force-stop the VM"
-task :stopvm, [:vmtype] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
+task :stopvm, [:vmos] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
   if %x{VBoxManage list runningvms}.match /("#{$settings[:vmname]}")/
     cputs "Stopping #{$settings[:vmname]}"
     system("VBoxManage controlvm '#{$settings[:vmname]}' poweroff")
   end
 end
 
-task :createovf, [:vmtype] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
+task :createovf, [:vmos] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
 
-  Rake::Task[:unmountiso].invoke($settings[:vmtype])
+  Rake::Task[:unmountiso].invoke($settings[:vmos])
   cputs "Converting Original .vbox to OVF..."
   FileUtils.rm_rf("#{OVFDIR}/#{$settings[:vmname]}-ovf") if File.directory?("#{OVFDIR}/#{$settings[:vmname]}-ovf")
   FileUtils.mkdir_p("#{OVFDIR}/#{$settings[:vmname]}-ovf")
   system("VBoxManage export '#{$settings[:vmname]}' -o '#{OVFDIR}/#{$settings[:vmname]}-ovf/#{$settings[:vmname]}.ovf'")
 end
 
-task :createvmx, [:vmtype] => [:createovf] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
+task :createvmx, [:vmos] => [:createovf] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
   ovftool_default = '/Applications/VMware OVF Tool/ovftool' #XXX Dynamicize this
 
-  Rake::Task[:unmountiso].invoke($settings[:vmtype])
+  Rake::Task[:unmountiso].invoke($settings[:vmos])
   cputs "Converting OVF to VMX..."
   FileUtils.rm_rf("#{VMWAREDIR}/#{$settings[:vmname]}-vmware") if File.directory?("#{VMWAREDIR}/#{$settings[:vmname]}-vmware")
   FileUtils.mkdir_p("#{VMWAREDIR}/#{$settings[:vmname]}-vmware")
@@ -328,9 +343,9 @@ task :createvmx, [:vmtype] => [:createovf] do |t,args|
   File.open(vmxpath, 'w') { |f| f.puts content }
 end
 
-task :createvbox, [:vmtype] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
+task :createvbox, [:vmos] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
 
   ovftool_default = '/Applications/VMware OVF Tool/ovftool' #XXX Dynamicize this
   cputs "Making copy of VM for VBOX..."
@@ -339,19 +354,19 @@ task :createvbox, [:vmtype] do |t,args|
   system("rsync -a '#{VAGRANTDIR}/#{$settings[:vmname]}/' '#{VBOXDIR}/#{$settings[:vmname]}-vbox'")
 end
 
-task :vagrantize, [:vmtype] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
+task :vagrantize, [:vmos] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
 
   cputs "Vagrantizing VM..."
   system("vagrant package --base '#{$settings[:vmname]}' --output '#{VAGRANTDIR}/#{$settings[:vmname]}.box'")
-  FileUtils.ln_sf("#{VAGRANTDIR}/#{$settings[:vmname]}.box", "#{VAGRANTDIR}/#{$settings[:vmtype].downcase}-latest.box")
+  FileUtils.ln_sf("#{VAGRANTDIR}/#{$settings[:vmname]}.box", "#{VAGRANTDIR}/#{$settings[:vmos].downcase}-latest.box")
 end
 
 desc "Zip up the VMs (unimplemented)"
-task :packagevm, [:vmtype] do |t,args|
-  args.with_defaults(:vmtype => $settings[:vmtype])
-  prompt_vmtype(args.vmtype)
+task :packagevm, [:vmos] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
 
   system("zip -rj '#{CACHEDIR}/#{$settings[:vmname]}-ovf.zip' '#{OVFDIR}/#{$settings[:vmname]}-ovf'")
   system("zip -rj '#{CACHEDIR}/#{$settings[:vmname]}-vmware.zip' '#{VMWAREDIR}/#{$settings[:vmname]}-vmware'")
@@ -413,14 +428,29 @@ def gitclone(source,destination,branch)
   end
 end
 
+def prompt_vmos(osname=nil)
+  osname = osname || ENV['vmos']
+  loop do
+    cprint "Please choose an OS type of 'Centos' or 'Debian' [Centos]: "
+    osname = STDIN.gets.chomp
+    osname = 'Centos' if osname.empty?
+    if osname !~ /(Debian|Centos)/
+      cputs "Incorrect/unknown OS: #{osname}"
+    else
+      break #loop
+    end
+  end unless osname
+  $settings[:vmos] = osname
+end
+
 def prompt_vmtype(type=nil)
   type = type || ENV['vmtype']
   loop do
-    cprint "Please choose an OS type of 'Centos' or 'Debian' [Centos]: "
+    cprint "Please choose the type of VM - one of 'training' or 'learning' [training]: "
     type = STDIN.gets.chomp
-    type = 'Centos' if type.empty?
-    if type !~ /(Debian|Centos)/
-      cputs "Incorrect/unknown OS type: #{type}"
+    type = 'training' if type.empty?
+    if type !~ /(training|learning)/
+      cputs "Incorrect/unknown type of VM: #{type}"
     else
       break #loop
     end
@@ -429,8 +459,8 @@ def prompt_vmtype(type=nil)
 end
 
 def build_file(filename)
-  template_path = "#{BASEDIR}/files/#{$settings[:vmtype]}/#{filename}.erb"
-  target_dir = "#{BUILDDIR}/#{$settings[:vmtype]}"
+  template_path = "#{BASEDIR}/files/#{$settings[:vmos]}/#{filename}.erb"
+  target_dir = "#{BUILDDIR}/#{$settings[:vmos]}"
   target_path = "#{target_dir}/#{filename}"
   FileUtils.mkdir(target_dir) unless File.directory?(target_dir)
   if File.file?(template_path)
