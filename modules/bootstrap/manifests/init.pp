@@ -1,4 +1,4 @@
-class bootstrap {
+class bootstrap ($print_console_login = false) {
   File {
     owner => 'root',
     group => 'root',
@@ -36,10 +36,12 @@ class bootstrap {
     mode   => 0755,
   }
   # This script generates the initial root SSH key for the fundamentals git workflow
-  file { '/root/.ssh_keygen.sh':
-    ensure => file,
-    source => 'puppet:///modules/bootstrap/ssh_keygen.sh',
-    mode   => 0755,
+  if $print_console_login == false {
+    file { '/root/.ssh_keygen.sh':
+      ensure => file,
+      source => 'puppet:///modules/bootstrap/ssh_keygen.sh',
+      mode   => 0755,
+    }
   }
   # This shouldn't change anything, but want to make sure it actually IS laid out the way I expect.
   file {'/etc/rc.local':
@@ -49,9 +51,9 @@ class bootstrap {
   }
   # Make sure we run the ip_info script.
   file {'/etc/rc.d/rc.local':
-    ensure => file,
-    source => 'puppet:///modules/bootstrap/rc.local',
-    mode   => 0755,
+    ensure  => file,
+    content => template('bootstrap/rc.local.erb'),
+    mode    => 0755,
   }
   service { 'sshd':
     ensure     => running,
@@ -59,8 +61,8 @@ class bootstrap {
     hasstatus  => true,
     hasrestart => true,
   }
-  # Ensure nfs-utils and tree are installed for fundamentals
-  package { [ 'nfs-utils', 'tree' ] :
+  # Ensure tree is installed for fundamentals
+  package { 'tree' :
     ensure  => present,
     require => Class['localrepo'],
   }
@@ -97,8 +99,4 @@ class bootstrap {
   # Cache forge modules locally in the vm:
   class { 'bootstrap::cache_modules': cache_dir => '/usr/src/forge' }
   
-  # An array of modules to copy from /usr/src to PE /opt/puppet
-  #bootstrap::copymod{ ['fundamentals','concat']:
-  #  require => Class['pebase'],
-  #}
 }

@@ -5,5 +5,9 @@
 # want to do the full Sys V style init stuff.
 
 touch /var/lock/subsys/local
-/root/.ssh_keygen.sh &
 /root/.ip_info.sh &
+<% if print_console_login == true -%>
+  /root/.console_login.sh & 
+<% else -%>
+  /root/.ssh_keygen.sh &
+<% end -%>
