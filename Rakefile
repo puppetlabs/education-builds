@@ -13,7 +13,7 @@ VAGRANTDIR = "#{BUILDDIR}/vagrant"
 OVFDIR = "#{BUILDDIR}/ovf"
 VMWAREDIR = "#{BUILDDIR}/vmware"
 VBOXDIR = "#{BUILDDIR}/vbox"
-PEVERSION = '3.0.0'
+PEVERSION = '3.0.1-rc0-52-g0f000d8'
 PE_RELEASE_URL = "https://s3.amazonaws.com/pe-builds/released/#{PEVERSION}"
 $settings = Hash.new
 
@@ -130,7 +130,11 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   when 'Debian'
     # Parse templates and output in BUILDDIR
     $settings[:pe_install_suffix] = '-debian-6-i386'
-    $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
+    if $settings[:vmtype] == 'training'
+      $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
+    else
+      $settings[:hostname] = "learn.localdomain"
+    end
     $settings[:pe_tarball] = "puppet-enterprise-#{PEVERSION}#{$settings[:pe_install_suffix]}.tar.gz"
     # No variables
     build_file('isolinux.cfg')
