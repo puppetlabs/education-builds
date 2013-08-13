@@ -13,7 +13,14 @@ VAGRANTDIR = "#{BUILDDIR}/vagrant"
 OVFDIR = "#{BUILDDIR}/ovf"
 VMWAREDIR = "#{BUILDDIR}/vmware"
 VBOXDIR = "#{BUILDDIR}/vbox"
-PEVERSION = '3.0.1-rc0-52-g0f000d8'
+# To build test VMs from CI builds,
+# Download the PE installer (tar.gz) from the appropriate place:
+# eg: http://neptune.puppetlabs.lan/3.0/ci-ready/
+# to ~/Sites/cache/
+# then,
+# Edit the PEVERSION to something like:
+# PEVERSION = '3.0.1-rc0-58-g9275a0f'
+PEVERSION = '3.0.0'
 PE_RELEASE_URL = "https://s3.amazonaws.com/pe-builds/released/#{PEVERSION}"
 $settings = Hash.new
 
