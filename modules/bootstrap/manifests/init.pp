@@ -96,6 +96,12 @@ class bootstrap ($print_console_login = false) {
     force   => true,
   }
 
+  # Disable GSS-API for SSH to speed up log in
+  augeas { "GSSAPI_disable":
+    context => '/files/etc/ssh/sshd_config',
+    changes => 'set GSSAPIAuthentication no',
+  }
+
   # Cache forge modules locally in the vm:
   class { 'bootstrap::cache_modules': cache_dir => '/usr/src/forge' }
   
