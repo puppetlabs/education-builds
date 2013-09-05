@@ -62,6 +62,9 @@ task :init do
 
   cputs "Cloning facter..."
   gitclone 'git://github.com/puppetlabs/facter.git', "#{CACHEDIR}/facter.git", 'master'
+  
+  cputs "Cloning hiera..."
+  gitclone 'git://github.com/puppetlabs/hiera.git', "#{CACHEDIR}/hiera.git", 'master'
 
   ptbrepo_destination = "#{CACHEDIR}/puppetlabs-training-bootstrap.git"
 
@@ -165,6 +168,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       "#{BUILDDIR}/Debian/preseed.cfg"                => '/puppet/preseed.cfg',
       "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
       "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
+      "#{CACHEDIR}/hiera.git"                         => '/puppet/hiera.git',
       "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
       "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
     }
