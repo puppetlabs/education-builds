@@ -37,7 +37,8 @@ class advanced::agent::mcofiles {
   
   advanced::copy { $peadmin_mco_certs :
     dir_path => $peadmin_certs_dir,
-    agent   => true,
+    agent    => true,
+    owner    => 'peadmin',
   }
 
 }

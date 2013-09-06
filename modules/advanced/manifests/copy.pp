@@ -4,6 +4,7 @@ define advanced::copy(
   $is_dir = false,
   $agent = false,
   $source_dir = $::settings::ssldir,
+  $owner = 'pe-puppet',
 ){
   $filesource = $agent ? {
     true    => 'puppet://classroom.puppetlabs.vm/ssl',
@@ -18,7 +19,7 @@ define advanced::copy(
       file { "${dir_path}/${to_copy}" :
         ensure => file,
         source => "${filesource}/${to_copy}",
-        owner  => 'pe-puppet',
+        owner  => $owner,
       }
     }
 }
