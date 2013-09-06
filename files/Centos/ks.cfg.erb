@@ -88,12 +88,14 @@ yum -y install git
 #yum -y upgrade #This takes a while
 cd /usr/src
 git clone /mnt/puppet/puppet.git
-cd puppet && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/puppet.git && git fetch origin && git branch --set-upstream master origin/master && git checkout 2.7.19 ; cd /usr/src
+cd puppet && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/puppet.git && git fetch origin && git branch --set-upstream master origin/master && git checkout 3.2.4 ; cd /usr/src
 git clone /mnt/puppet/facter.git
-cd facter && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/facter.git && git fetch origin && git branch --set-upstream master origin/master && git checkout 1.6.14 ; cd /usr/src
+cd facter && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/facter.git && git fetch origin && git branch --set-upstream master origin/master && git checkout 1.7.1 ; cd /usr/src
+git clone /mnt/puppet/hiera.git
+cd hiera && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/hiera.git && git fetch origin && git branch --set-upstream master origin/master && git checkout 1.2.1 ; cd /usr/src
 git clone /mnt/puppet/puppetlabs-training-bootstrap.git
 cd /root
-RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
+RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib
 export RUBYLIB
 /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp
 # Cleanup from the puppet run
