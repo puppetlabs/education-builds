@@ -10,6 +10,12 @@ class kickstand {
     source  => 'puppet:///modules/kickstand/kickstand',
   }
 
+  file { '/opt/kickstand/share/public/yum':
+    ensure  => link,
+    target  => '/var/yum/mirror',
+    require => File['/opt/kickstand'],
+  }
+
   file { ['/opt/kickstand/bin/kickstand', '/opt/kickstand/bin/kickstand.init']:
     ensure => file,
     mode   => '0744',
@@ -19,12 +25,6 @@ class kickstand {
     ensure  => link,
     target  => '/opt/kickstand/bin/kickstand.init',
     require => File['/opt/kickstand/bin/kickstand.init'],
-  }
-
-  file { '/etc/init.d/kickstand':
-    ensure  => link,
-    target  => '/opt/kickstand/bin/kickstand.init',
-    require => File['/opt/kickstand'],
   }
 
   service { 'kickstand':
