@@ -2,6 +2,8 @@ require 'erb'
 require 'uri'
 require 'net/http'
 require 'net/https'
+require 'rubygems'
+require 'gpgme'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
@@ -20,7 +22,7 @@ VBOXDIR = "#{BUILDDIR}/vbox"
 # then,
 # Edit the PEVERSION to something like:
 # PEVERSION = '3.0.1-rc0-58-g9275a0f'
-PEVERSION = '3.0.0'
+PEVERSION = '3.0.1'
 PE_RELEASE_URL = "https://s3.amazonaws.com/pe-builds/released/#{PEVERSION}"
 $settings = Hash.new
 
@@ -41,10 +43,18 @@ task :init do
       pe_install_suffix = '-el-6-i386'
     end
     pe_tarball = "puppet-enterprise-#{PEVERSION}#{pe_install_suffix}.tar.gz"
-    unless File.exist?("#{CACHEDIR}/#{pe_tarball}")
+    installer = "#{CACHEDIR}/#{pe_tarball}"
+    unless File.exist?(installer)
       cputs "Downloading #{vmos} PE tarball #{PEVERSION}..."
-      download "#{PE_RELEASE_URL}/#{pe_tarball}", "#{CACHEDIR}/#{pe_tarball}"
+      download "#{PE_RELEASE_URL}/#{pe_tarball}", installer
     end
+    unless File.exist?("#{installer}.asc")
+      cputs "Downloading #{vmos} PE signature asc file for #{PEVERSION}..."
+      download "#{PE_RELEASE_URL}/#{pe_tarball}.asc", "#{CACHEDIR}/#{pe_tarball}.asc"
+    end
+    cputs "Verifying signature"
+    system("gpg --verify --always-trust #{installer}.asc #{installer}")
+    puts $?
   end
 
   cputs "Cloning puppet..."
@@ -52,6 +62,9 @@ task :init do
 
   cputs "Cloning facter..."
   gitclone 'git://github.com/puppetlabs/facter.git', "#{CACHEDIR}/facter.git", 'master'
+  
+  cputs "Cloning hiera..."
+  gitclone 'git://github.com/puppetlabs/hiera.git', "#{CACHEDIR}/hiera.git", 'master'
 
   ptbrepo_destination = "#{CACHEDIR}/puppetlabs-training-bootstrap.git"
 
@@ -155,6 +168,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       "#{BUILDDIR}/Debian/preseed.cfg"                => '/puppet/preseed.cfg',
       "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
       "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
+      "#{CACHEDIR}/hiera.git"                         => '/puppet/hiera.git',
       "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
       "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
     }
@@ -195,6 +209,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       "#{CACHEDIR}/puppetlabs-enterprise-release-extras.rpm"  => '/puppet/puppetlabs-enterprise-release-extras.rpm',
       "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
       "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
+      "#{CACHEDIR}/hiera.git"                        => '/puppet/hiera.git',
       "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
       "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
     }
@@ -385,7 +400,10 @@ task :packagevm, [:vmos] do |t,args|
 end
 
 desc "Unmount the ISO and remove kickstart files and repos"
-task :clean do
+task :clean, [:del] do |t,args|
+  args.with_defaults(:del => $settings[:del])
+  prompt_del(args.del)
+
   cputs "Destroying vms"
   ['Debian','Centos'].each do |os|
     Rake::Task[:destroyvm].invoke(os)
@@ -393,11 +411,10 @@ task :clean do
   end
   cputs "Removing #{BUILDDIR}"
   FileUtils.rm_rf(BUILDDIR) if File.directory?(BUILDDIR)
-  #FileUtils.rm_rf(KSISODIR) if File.directory?(KSISODIR)
-  #FileUtils.rm_rf(VAGRANTDIR) if File.directory?(VAGRANTDIR)
-  #FileUtils.rm_rf(VMWAREDIR) if File.directory?(VMWAREDIR)
-  #FileUtils.rm_rf(OVFDIR) if File.directory?(OVFDIR)
-  #FileUtils.rm_rf(VBOXDIR) if File.directory?(VBOXDIR)
+  if $settings[:del] == 'yes'
+    cputs "Removing packaged VMs"
+    FileUtils.rm Dir.glob("#{CACHEDIR}/*-pe-#{PEVERSION}*.zip*")
+  end
 end
 
 def download(url,path)
@@ -432,6 +449,26 @@ def gitclone(source,destination,branch)
     system("cd #{destination} && (git fetch origin '+refs/heads/*:refs/heads/*' && git update-server-info && git symbolic-ref HEAD refs/heads/#{branch})") or raise(Error, "Cannot pull ${source}")
   else
     system("git clone --bare #{source} #{destination} && cd #{destination} && git update-server-info && git symbolic-ref HEAD refs/heads/#{branch}") or raise(Error, "Cannot clone #{source}")
+  end
+end
+
+def prompt_del(del=nil)
+  del = del || ENV['del']
+  loop do
+    cprint "Do you want to delete the packaged VMs in #{CACHEDIR}? [no]: "
+    del = STDIN.gets.chomp.downcase
+    del = 'no' if del.empty?
+    puts del
+    if del !~ /(y|n|yes|no)/
+      cputs "Please answer with yes or no (y/n)."
+    else
+      break #loop
+    end
+  end unless del
+  if del =~ /(y|yes)/
+    $settings[:del] = 'yes'
+  else
+    $settings[:del] = 'no'
   end
 end
 
@@ -486,6 +523,15 @@ def map_iso(indev,outdev,paths)
     "-map '#{frompath}' '#{topath}'"
   end.join(' ')
   system("xorriso -osirrox on -boot_image any patch -indev #{indev} -outdev #{outdev} #{maps}")
+end
+
+def verify_download(download, signature)
+  crypto = GPGME::Crypto.new
+  sign = GPGME::Data.new(File.open(signature))
+  file_to_check = GPGME::Data.new(File.open(download))
+  crypto.verify(sign, :signed_text => file_to_check, :always_trust => true) do |signature|
+   puts "Valid!" if signature.valid?
+  end
 end
 
 def cputs(string)

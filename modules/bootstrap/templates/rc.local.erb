@@ -6,7 +6,7 @@
 
 touch /var/lock/subsys/local
 /root/.ip_info.sh &
-<% if print_console_login == true -%>
+<% if @print_console_login == true -%>
   /root/.console_login.sh & 
 <% else -%>
   /root/.ssh_keygen.sh &

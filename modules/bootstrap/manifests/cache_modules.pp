@@ -15,28 +15,28 @@ class bootstrap::cache_modules(
     version => '0.1.0',
   }
   bootstrap::forge { 'domcleal-augeasproviders': 
-    version => '0.7.0',
+    version => '1.0.0',
   }
   bootstrap::forge { 'cprice404-inifile': 
-    version => '0.10.3',
+    version => '0.10.4',
   }
   bootstrap::forge { 'razorsedge-vmwaretools': 
     version => '4.4.1',
   }
   bootstrap::forge { 'hunner-wordpress': 
-    version => '0.3.0',
+    version => '0.4.0',
   }
   bootstrap::forge { 'puppetlabs-mysql': 
-    version => '0.6.1',
+    version => '0.9.0',
   }
   bootstrap::forge { 'puppetlabs-apache': 
-    version => '0.6.0',
+    version => '0.8.1',
   }
   bootstrap::forge { 'thias-vsftpd': 
     version => '0.1.2',
   }
   bootstrap::forge { 'puppetlabs-firewall': 
-    version => '0.3.1',
+    version => '0.4.1',
   }
   #  bootstrap::forge { 'saz-sudo': 
   # version => '2.2.0',
@@ -56,12 +56,14 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'hunner-charybdis': 
     version => '0.2.0',
   }
-  bootstrap::forge { 'puppetlabs-puppetdb': }
+  bootstrap::forge { 'puppetlabs-puppetdb': 
+    version => '1.6.0',
+  }
   bootstrap::forge { 'puppetlabs-apt': 
-    version => '1.1.0',
+    version => '1.2.0',
   }
   bootstrap::forge { 'puppetlabs-postgresql': 
-    version => '2.3.0',
+    version => '2.4.1',
   }
   bootstrap::forge { 'puppetlabs-pe_gem': 
     version => '0.0.1',
