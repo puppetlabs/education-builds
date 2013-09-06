@@ -16,10 +16,15 @@ class kickstand {
     require => File['/opt/kickstand'],
   }
 
+  file { ['/opt/kickstand/bin/kickstand', '/opt/kickstand/bin/kickstand.init']:
+    ensure => file,
+    mode   => '0744',
+  }
+
   file { '/etc/init.d/kickstand':
     ensure  => link,
     target  => '/opt/kickstand/bin/kickstand.init',
-    require => File['/opt/kickstand'],
+    require => File['/opt/kickstand/bin/kickstand.init'],
   }
 
   service { 'kickstand':
