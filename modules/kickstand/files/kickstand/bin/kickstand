@@ -27,7 +27,6 @@ opts = {
 }
 
 class Server < Sinatra::Base
-  set :public_folder, 'public'
   set :root,   DOCROOT
 
   configure :production, :development do
