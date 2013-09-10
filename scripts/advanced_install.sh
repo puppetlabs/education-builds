@@ -17,7 +17,7 @@ export RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
 # Might switch to this https://github.com/adrienthebo/vagrant-hosts
 /usr/src/puppet/bin/puppet resource host $CLASSROOM_HOSTNAME \
       ensure=present \
-      host_aliases="${CLASSROOM_HOSTNAME/.*/},puppet" \
+      host_aliases="${CLASSROOM_HOSTNAME/.*/} puppet" \
       ip='10.0.0.201'
 
 unset RUBYLIB

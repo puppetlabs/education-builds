@@ -17,6 +17,14 @@ class advanced::classroom::fileserver {
     'public_keys/pe-internal-puppet-console-mcollective-client.pem',
   ]
   
+  $peadmin_cert_files = [
+    'peadmin-private.pem',
+    'peadmin-public.pem',
+    'mcollective-public.pem',
+    'peadmin-cacert.pem',
+    'peadmin-cert.pem',
+  ]
+
   # copy the credentials file too:
   file { "${ssl_mco_files}/credentials" :
     source => '/etc/puppetlabs/mcollective/credentials',
@@ -40,5 +48,10 @@ class advanced::classroom::fileserver {
   # Copy over the required certs and credential file to the mountpoint
   advanced::copy { $mcofiles :
     dir_path => $ssl_mco_files,
+  }
+
+  advanced::copy { $peadmin_cert_files :
+    dir_path   => $ssl_mco_files,
+    source_dir => '/var/lib/peadmin/.mcollective.d',
   }
 }
