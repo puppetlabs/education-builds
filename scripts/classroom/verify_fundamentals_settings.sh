@@ -8,7 +8,7 @@ check "[ '`hostname`' == '${NAME}.puppetlabs.vm' ]"                 \
       "Checking hostname"                                           \
       "You should set the hostname to ${NAME}.puppetlabs.vm"
 
-check "[[ '`hostname`'' =~ ^[a-zA-Z0-9_]+$ ]]"                      \
+check "[[ '`hostname`' =~ ^[a-zA-Z0-9_.]+$ ]]"                      \
       "Checking hostname validity"                                  \
       "The classroom environment supports alphanumeric hostnames only."
 
