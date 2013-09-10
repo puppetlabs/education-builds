@@ -12,7 +12,7 @@ define fundamentals::user (
   }
 
   # A valid hostname is not necessarily a valid Puppet environment name!
-  validate_re($name, '^[a-zA-Z0-9_]+$', 'The classroom environment does not support hostnames containing dashes or other special characters. Please ask your instructor for assistance.')
+  validate_re($name, '^[a-zA-Z0-9_]+$', 'The classroom environment supports alphanumeric hostnames only. Please ask your instructor for assistance.')
 
   user { $name:
     ensure   => present,
