@@ -48,6 +48,11 @@ auth any
 method find, save
 allow *
 
+path  /certificate_status
+method find, search, save, destroy
+auth yes
+allow pe-internal-dashboard
+
 path /facts
 auth yes
 method find, search
