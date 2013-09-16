@@ -16,9 +16,16 @@ class kickstand {
     require => File['/opt/kickstand'],
   }
 
-  file { ['/opt/kickstand/bin/kickstand', '/opt/kickstand/bin/kickstand.init']:
+  file { '/opt/kickstand/bin/kickstand':
     ensure => file,
     mode   => '0744',
+    source => 'puppet:///modules/kickstand/kickstand/bin/kickstand',
+  }
+
+  file { '/opt/kickstand/bin/kickstand.init':
+    ensure => file,
+    mode   => '0744',
+    source => 'puppet:///modules/kickstand/kickstand/bin/kickstand.init',
   }
 
   file { '/etc/init.d/kickstand':
