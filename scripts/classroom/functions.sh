@@ -29,7 +29,7 @@ function check ()
   MESSAGE="$2"
   RESOLUTION="$3"
 
-  $COMMAND > /dev/null 2>&1
+  eval "$COMMAND" > /dev/null 2>&1
 
   if [ $? -eq 0 ]
   then
