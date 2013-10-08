@@ -1,16 +1,16 @@
-# This is the class applied to all systems
 class advanced {
-  if  $::hostname == 'classroom' {
-    if versioncmp($::pe_version, '2.7.1') < 0 {
-      fail ("The version of PE installed on ${::fqdn} is ${::pe_version}. You need PE >= 2.7.1 installed on ${::fqdn}!")
-    } else {
-      include advanced::classroom
+  if versioncmp($::pe_version, '3.0.0') < 0 {
+    if $::hostname == 'classroom' {
+      fail ("The classroom master requires PE >= 3.0.")
+    }
+    else {
+      fail ("The version of Puppet Enterprise installed is ${::pe_version}. This course is designed for PE >= 3.0 and parts of the class, including Live Management and Scaling, will not behave as expected. Please request a current VM from your instructor.")
     }
   }
-  elsif $::hostname == 'proxy' {
-    include advanced::proxy
-  }
-  else {
-    include advanced::agent
+
+  case $::hostname {
+    'classroom': { include advanced::classroom }
+    'proxy'    : { include advanced::proxy     }
+    default    : { include advanced::agent     }
   }
 }
