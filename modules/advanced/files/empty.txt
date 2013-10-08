@@ -1,0 +1,2 @@
+# This file is just a placeholder for files that are intended to be
+# synced from the master but haven't been cached yet.
