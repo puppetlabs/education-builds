@@ -2,6 +2,7 @@ class advanced::mcollective::master {
   # Ensure the existence of files in the cache directory so clients can download them
   # Make sure any arrays in config.pp are added to the $files calculation
   include advanced::mcollective::config
+  include pe_mcollective
 
   $files = flatten([
     $advanced::mcollective::config::ssl_certs,
@@ -28,4 +29,29 @@ class advanced::mcollective::master {
   advanced::mcollective::cache { $files:
     ensure => present,
   }
+
+  # We need to set the following console parameters so that the student machines
+  # will be configured to talk to the classroom ActiveMQ queue, even when running
+  # against their own masters.
+  # The susbcribe is to ensure it only runs once after classifying classroom
+  $stomp_server   = $advanced::mcollective::config::stomp_server
+  $stomp_password = chomp(file("${pe_mcollective::params::mco_etc}/credentials"))
+
+  Exec {
+    path        => '/opt/puppet/bin:/bin',
+    cwd         => '/opt/puppet/share/puppet-dashboard',
+    environment => 'RAILS_ENV=production',
+    returns     => '0',
+    subscribe   => File[$advanced::mcollective::config::cachedir],
+    refreshonly => true,
+  }
+
+  exec { 'node:parameters:fact_stomp_server':
+    command     => "rake nodegroup:parameters name=default parameters=fact_stomp_server=${stomp_server}",
+  }
+
+  exec { 'node:parameters:stomp_password':
+    command     => "rake nodegroup:parameters name=default parameters=stomp_password=${stomp_password}",
+  }
+
 }
