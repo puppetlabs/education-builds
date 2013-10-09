@@ -22,11 +22,12 @@ define fundamentals::console::user ( $password ) {
    }
 
   exec { "add_console_user_${name}":
-    path    => '/opt/puppet/bin:/usr/bin',
-    cwd     => $current_dir,
-    command => "${execute_me} ${userstring}=${name}@puppetlabs.com PASSWORD=${password} ROLE=Read-Write",
-    unless  => "test -d /home/${name}",
-    before  => File["/home/${name}"],
+    path        => '/opt/puppet/bin:/usr/bin',
+    cwd         => $current_dir,
+    environment => 'RAILS_ENV=production',
+    command     => "${execute_me} ${userstring}=${name}@puppetlabs.com PASSWORD=${password} ROLE=Read-Write",
+    unless      => "test -d /home/${name}",
+    before      => File["/home/${name}"],
   }
 
 }
