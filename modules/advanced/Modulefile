@@ -10,7 +10,7 @@ description 'Important! This is not the module you are looking for
 project_page 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/advanced'
 
 dependency 'puppetlabs/pe_gem', '>=0.0.1'
+dependency 'puppetlabs/haproxy', '>= 0.2.0'
 dependency 'pltraining/kickstand', '>= 0.0.1'
 dependency 'hunner/charybdis', '>= 0.2.0'
 dependency 'jamtur01/irc', '>= 0.0.4'
-dependency 'zack/haproxy', '>= 0.2.0'
