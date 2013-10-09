@@ -7,4 +7,10 @@ class advanced::classroom {
 
   # console fixes for Safari
   include advanced::classroom::console
+
+  package { 'sinatra':
+    ensure   => present,
+    provider => pe_gem,
+    before   => Class['kickstand'],
+  }
 }
