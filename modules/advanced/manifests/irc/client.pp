@@ -1,4 +1,19 @@
 class advanced::irc::client {
+  # prepare a config file for the report handler
+  $nick = "puppetmaster-${::hostname}"
+
+  file { '/etc/puppetlabs/puppet/irc.yaml':
+    ensure  => present,
+    content => template('advanced/irc.yaml.erb'),
+  }
+
+  # gems used by the irc report handler.
+  package { 'carrier-pigeon':
+    ensure   => present,
+    provider => pe_gem,
+  }
+
+  # configure the client connection to the irc server
   package { 'irssi':
     ensure => present,
   }

@@ -5,7 +5,6 @@ class advanced::proxy::hostname {
     ensure       => present,
     host_aliases => [$::hostname,'irc.puppetlabs.vm'],
     ip           => $::ipaddress,
-    target       => '/etc/hosts',
     tag          => 'classroom'
   }
 }

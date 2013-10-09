@@ -1,6 +1,4 @@
 class advanced::irc::server {
-  # This is our report processor .... should this be on the... master?
-  include irc
   include charybdis::default
 
   # TODO: no more evilness!

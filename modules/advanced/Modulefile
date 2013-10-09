@@ -9,9 +9,8 @@ description 'Important! This is not the module you are looking for
     - Configures and sets up classroom environment for Advanced Puppet trainings.'
 project_page 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/advanced'
 
-dependency 'puppetlabs/puppetdb', '>= 1.1.4'
-dependency 'zack/haproxy', '>= 0.2.0'
-dependency 'hunner/charybdis', '>= 0.2.0'
-dependency 'zack/irc', '>= 0.0.4'
-dependency 'pltraining/kickstand', '>= 0.0.1'
 dependency 'puppetlabs/pe_gem', '>=0.0.1'
+dependency 'pltraining/kickstand', '>= 0.0.1'
+dependency 'hunner/charybdis', '>= 0.2.0'
+dependency 'jamtur01/irc', '>= 0.0.4'
+dependency 'zack/haproxy', '>= 0.2.0'
