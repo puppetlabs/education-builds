@@ -95,7 +95,7 @@ class bootstrap ($print_console_login = false) {
     recurse => true,
     force   => true,
   }
-  
+
   # Disable GSS-API for SSH to speed up log in
   $ruby_aug_package = $::osfamily ? {
     'RedHat' => 'ruby-augeas',
@@ -106,7 +106,7 @@ class bootstrap ($print_console_login = false) {
     ensure => 'present',
     name   => $ruby_aug_package,
   }
-      
+
   augeas { "GSSAPI_disable":
     context => '/files/etc/ssh/sshd_config',
     changes => 'set GSSAPIAuthentication no',
@@ -114,5 +114,8 @@ class bootstrap ($print_console_login = false) {
 
   # Cache forge modules locally in the vm:
   class { 'bootstrap::cache_modules': cache_dir => '/usr/src/forge' }
-  
+
+  # Cache gems locally in the vm:
+  class { 'bootstrap::cache_gems': cache_dir => '/var/cache/gems' }
+
 }
