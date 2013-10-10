@@ -1,7 +1,8 @@
 class kickstand {
   File {
-    owner => 'root',
-    group => 'root',
+    owner  => 'root',
+    group  => 'root',
+    before => Service['kickstand'],
   }
 
   file { '/opt/kickstand':
