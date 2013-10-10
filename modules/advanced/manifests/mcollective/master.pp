@@ -31,7 +31,7 @@ class advanced::mcollective::master {
   }
 
   # We need to set the following console parameters so that the student machines
-  # will be configured to talk to the classroom ActiveMQ queue, even when running
+  # will be configured to talk to the classroom ActiveMQ server, even when running
   # against their own masters.
   # The susbcribe is to ensure it only runs once after classifying classroom
   $stomp_server   = $advanced::mcollective::config::stomp_server
