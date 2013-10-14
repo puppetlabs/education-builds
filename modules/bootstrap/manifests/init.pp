@@ -66,6 +66,14 @@ class bootstrap ($print_console_login = false) {
     ensure  => present,
     require => Class['localrepo'],
   }
+  
+  # need rubygems to cache rubygems
+  package { 'rubygems' :
+    ensure  => present,
+    require => Class['localrepo'],
+    before  => Class['bootstrap::cache_gems'],
+  }
+
   # Hostname setup:
   # 1. Make sure our own hostname resolves.
   # 2. If our hostname isn't localhost.localdomain, then we had to contaminate
