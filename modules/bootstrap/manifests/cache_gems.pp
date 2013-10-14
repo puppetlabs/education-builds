@@ -9,6 +9,12 @@ class bootstrap::cache_gems (
     ensure => directory,
   }
 
+  package { 'builder':
+    ensure   => present,
+    provider => 'gem',
+    require  => Package['rubygems'],
+  }
+
   exec { 'rebuild_gem_cache':
     command     => "gem generate_index -d ${cache_dir}",
     path        => '/opt/puppet/bin:/usr/local/bin:/usr/bin:/bin',
