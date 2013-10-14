@@ -41,4 +41,6 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'metaclass':              }
   bootstrap::gem { 'puppetlabs_spec_helper': }
 
+  Bootstrap::Gem <| |> -> File['/root/.gemrc']
+
 }
