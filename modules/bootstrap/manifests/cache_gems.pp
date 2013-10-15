@@ -29,6 +29,9 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'rack-protection': }
   bootstrap::gem { 'sinatra':         }
   bootstrap::gem { 'tilt':            }
+  bootstrap::gem { 'net-ssh':         }
+  bootstrap::gem { 'highline':        }
+  bootstrap::gem { 'serverspec':      }
 
   # These are the gems needed by the extending puppet using ruby course
   bootstrap::gem { 'rspec':                  }
