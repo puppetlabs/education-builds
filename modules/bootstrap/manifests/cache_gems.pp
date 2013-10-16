@@ -1,12 +1,18 @@
 class bootstrap::cache_gems (
-  $cache_dir = '/var/cache/gems'
+  $cache_dir = '/var/cache/rubygems'
 ) {
   Bootstrap::Gem {
-    cache_dir => $cache_dir,
+    cache_dir => "${cache_dir}/gems",
   }
 
-  file { $cache_dir:
+  file { [ $cache_dir, "${cache_dir}/gems" ]:
     ensure => directory,
+  }
+
+  package { 'builder':
+    ensure   => present,
+    provider => 'gem',
+    require  => Package['rubygems'],
   }
 
   exec { 'rebuild_gem_cache':
@@ -43,5 +49,10 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'mocha':                  }
   bootstrap::gem { 'metaclass':              }
   bootstrap::gem { 'puppetlabs_spec_helper': }
+
+  # And this gem is required for gem generate_index to work
+  bootstrap::gem { 'builder': }
+
+  Bootstrap::Gem <| |> -> File['/root/.gemrc']
 
 }

@@ -66,6 +66,14 @@ class bootstrap ($print_console_login = false) {
     ensure  => present,
     require => Class['localrepo'],
   }
+  
+  # need rubygems to cache rubygems
+  package { 'rubygems' :
+    ensure  => present,
+    require => Class['localrepo'],
+    before  => Class['bootstrap::cache_gems'],
+  }
+
   # Hostname setup:
   # 1. Make sure our own hostname resolves.
   # 2. If our hostname isn't localhost.localdomain, then we had to contaminate
@@ -116,6 +124,6 @@ class bootstrap ($print_console_login = false) {
   class { 'bootstrap::cache_modules': cache_dir => '/usr/src/forge' }
 
   # Cache gems locally in the vm:
-  class { 'bootstrap::cache_gems': cache_dir => '/var/cache/gems' }
+  class { 'bootstrap::cache_gems': }
 
 }
