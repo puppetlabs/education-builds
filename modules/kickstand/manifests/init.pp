@@ -5,6 +5,14 @@ class kickstand {
     before => Service['kickstand'],
   }
 
+  # manage this file so kickstand doesn't break the master with ownership issues
+  file { '/etc/puppetlabs/puppet/autosign.conf':
+    ensure => file,
+    owner  => 'pe-puppet',
+    group  => 'pe-puppet',
+    mode   => '0644',
+  }
+
   file { '/opt/kickstand':
     ensure  => directory,
     recurse => true,

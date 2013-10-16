@@ -1,15 +1,7 @@
-# This class configures our irc server
 class advanced::irc::server {
-  package {'pe-rubygem-json':
-    ensure => present,
-  }
-
-  # This is our report processor
-  class {'irc':
-    require => Package['pe-rubygem-json'],
-  }
   include charybdis::default
 
+  # TODO: no more evilness!
   Charybdis::General <| title == 'default_ident_timeout' |> {
     value => '0',
   }
@@ -30,6 +22,7 @@ class advanced::irc::server {
       'wallop',
     ],
   }
+
   # This is our irssi client configuration
   include advanced::irc::client
 }
