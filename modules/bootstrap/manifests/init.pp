@@ -66,6 +66,14 @@ class bootstrap ($print_console_login = false) {
     ensure  => present,
     require => Class['localrepo'],
   }
+  
+  # need rubygems to cache rubygems
+  package { 'rubygems' :
+    ensure  => present,
+    require => Class['localrepo'],
+    before  => Class['bootstrap::cache_gems'],
+  }
+
   # Hostname setup:
   # 1. Make sure our own hostname resolves.
   # 2. If our hostname isn't localhost.localdomain, then we had to contaminate
@@ -95,7 +103,7 @@ class bootstrap ($print_console_login = false) {
     recurse => true,
     force   => true,
   }
-  
+
   # Disable GSS-API for SSH to speed up log in
   $ruby_aug_package = $::osfamily ? {
     'RedHat' => 'ruby-augeas',
@@ -106,7 +114,7 @@ class bootstrap ($print_console_login = false) {
     ensure => 'present',
     name   => $ruby_aug_package,
   }
-      
+
   augeas { "GSSAPI_disable":
     context => '/files/etc/ssh/sshd_config',
     changes => 'set GSSAPIAuthentication no',
@@ -114,5 +122,8 @@ class bootstrap ($print_console_login = false) {
 
   # Cache forge modules locally in the vm:
   class { 'bootstrap::cache_modules': cache_dir => '/usr/src/forge' }
-  
+
+  # Cache gems locally in the vm:
+  class { 'bootstrap::cache_gems': }
+
 }
