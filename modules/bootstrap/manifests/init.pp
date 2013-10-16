@@ -124,6 +124,6 @@ class bootstrap ($print_console_login = false) {
   class { 'bootstrap::cache_modules': cache_dir => '/usr/src/forge' }
 
   # Cache gems locally in the vm:
-  class { 'bootstrap::cache_gems': cache_dir => '/var/cache/gems' }
+  class { 'bootstrap::cache_gems': }
 
 }
