@@ -14,6 +14,7 @@ class advanced::irc::server {
     flags    => [
       '~encrypted',
       '~need_ssl',
+      '~need_ident',
     ],
     umodes   => [
       'locops',
