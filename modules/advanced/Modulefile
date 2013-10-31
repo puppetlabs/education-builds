@@ -1,5 +1,5 @@
 name    'pltraining-advanced'
-version '1.4.0'
+version '1.4.1'
 source 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/advanced'
 author 'pltraining'
 license 'Apache License, Version 2.0'
