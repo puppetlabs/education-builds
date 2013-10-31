@@ -8,9 +8,12 @@ class advanced {
     }
   }
 
-  case $::hostname {
-    'classroom': { include advanced::classroom }
-    'proxy'    : { include advanced::proxy     }
-    default    : { include advanced::agent     }
+  # Ignore the machines spun up for the provisioning & capstone labs
+  if $::domain == 'puppetlabs.vm' {
+    case $::hostname {
+      'classroom': { include advanced::classroom }
+      'proxy'    : { include advanced::proxy     }
+      default    : { include advanced::agent     }
+    }
   }
 }
