@@ -6,7 +6,7 @@
 - Download full CentOS DVD ISOs to anywhere
     - You only need the `1 of 2` ISO, but the torrent comes with 2
     - If you put the iso file in ~/Sites/cache/ this Rakefile will autodetect and use it!
-- Install [OVF Tool](http://www.vmware.com/resources/techresources/1013) from VMware's website
+- Install [OVF Tool](https://communities.vmware.com/community/vmtn/automationtools/ovf) from VMware's website
 
 ## Usage (what a human has to do):
 
