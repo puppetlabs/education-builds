@@ -1,5 +1,5 @@
 name    'pltraining-fundamentals'
-version '1.4.1'
+version '1.4.2'
 source 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/fundamentals'
 author 'pltraining'
 license 'Apache License, Version 2.0'
@@ -9,5 +9,5 @@ description 'Important! This is not the module you are looking for
     - Configures and sets up classroom environment for Puppet Fundamentals trainings.'
 project_page 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/fundamentals'
 
-dependency 'ripienaar/concat', '>= 0.1.0'
+dependency 'puppetlabs/concat', '>= 0.1.0'
 dependency 'puppetlabs/vcsrepo', '>= 0.1.2'
