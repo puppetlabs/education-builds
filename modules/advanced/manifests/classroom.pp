@@ -8,12 +8,6 @@ class advanced::classroom {
   # console fixes for Safari
   include advanced::classroom::console
 
-  # Write out our edu license file to prevent console noise
-  file { '/etc/puppetlabs/license.key':
-    ensure => file,
-    source => 'puppet:///modules/advanced/license.key',
-  }
-
   package { 'rubygem-sinatra':
     ensure   => present,
     before   => Class['kickstand'],
