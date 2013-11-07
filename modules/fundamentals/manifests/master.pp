@@ -14,12 +14,6 @@ class fundamentals::master ( $classes = [] ) {
     require => Service['pe-httpd'],
   }
 
-  # Write out our edu license file to prevent console noise
-  file { '/etc/puppetlabs/license.key':
-    ensure => file,
-    source => 'puppet:///modules/fundamentals/license.key',
-  }
-
   package { 'git':
     ensure => present,
   }
