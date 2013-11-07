@@ -7,6 +7,7 @@
     - You only need the `1 of 2` ISO, but the torrent comes with 2
     - If you put the iso file in ~/Sites/cache/ this Rakefile will autodetect and use it!
 - Install [OVF Tool](https://communities.vmware.com/community/vmtn/automationtools/ovf) from VMware's website
+- Ensure you have all the Rakefile's required gems.  (e.g. `sudo gem install gpgme`)
 
 ## Usage (what a human has to do):
 
