@@ -173,7 +173,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
     }
     iso_glob = 'debian-*'
-    iso_url = 'http://mirror.tocici.com/centos/6/isos/i386/CentOS-6.4-i386-bin-DVD1.iso'
+    iso_url = 'http://hammurabi.acc.umu.se/debian-cd/6.0.6/i386/iso-cd/debian-6.0.6-i386-CD-1.iso'
   when 'Centos'
     # Parse templates and output in BUILDDIR
     $settings[:pe_install_suffix] = '-el-6-i386'
@@ -214,7 +214,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
     }
     iso_glob = 'CentOS-*'
-    iso_url = 'http://mirror.chpc.utah.edu/pub/centos/6.4/isos/i386/CentOS-6.4-i386-bin-DVD1.iso'
+    iso_url = 'http://mirror.tocici.com/centos/6/isos/i386/CentOS-6.4-i386-bin-DVD1.iso'
   end
 
 
