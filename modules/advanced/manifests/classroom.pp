@@ -8,10 +8,14 @@ class advanced::classroom {
   # console fixes for Safari
   include advanced::classroom::console
 
-  # Write out our edu license file to prevent console noise
-  file { '/etc/puppetlabs/license.key':
-    ensure => file,
-    source => 'puppet:///modules/advanced/license.key',
+  # This wonkiness is due to the fact that puppet_enterprise::license class
+  # manages this file only if it exists on the master. So we do the opposite.
+  if ( file('/etc/puppetlabs/license.key', '/dev/null') == undef ) {
+    # Write out our edu license file to prevent console noise
+    file { '/etc/puppetlabs/license.key':
+      ensure => file,
+      source => 'puppet:///modules/advanced/license.key',
+    }
   }
 
   package { 'rubygem-sinatra':
