@@ -5,7 +5,7 @@
 # ### This is not idempotent, so don't classify the master
 #
 class fundamentals::master::hiera {
-  file { '/etc/puppetlabs/puppet/hieradata/master.puppetlabs.vm.yaml':
+  file { '/etc/puppetlabs/puppet/hieradata/defaults.yaml':
     ensure  => file,
     owner   => 'root',
     group   => 'root',
