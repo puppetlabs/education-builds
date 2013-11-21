@@ -57,7 +57,7 @@ curl
 tar
 ruby
 
-%post --erroronfail
+%post
 exec < /dev/tty3 > /dev/tty3
 chvt 3
 (
@@ -76,8 +76,16 @@ hostname <%= $settings[:hostname] %>
 
 sed -i 's/127\.0\.0\.1.*/\0 <%= $settings[:hostname] %> <%= $settings[:hostname].split('.')[0] %>/' /etc/hosts
 cp /mnt/puppet/<%= $settings[:pe_tarball] %> /root/
-tar zxf /root/<%= $settings[:pe_tarball] %>
-ln -s /root/puppet-enterprise-<%= PEVERSION + $settings[:pe_install_suffix] %> /root/puppet-enterprise
+<% if File.extname($settings[:pe_tarball]) == ".gz" %>
+tar zmxf /root/<%= $settings[:pe_tarball] %>
+<% tname = File.basename($settings[:pe_tarball], ".gz") %>
+<% fname = File.basename(tname, ".tar") %>
+<% elsif File.extname($settings[:pe_tarball]) == ".tar" %>
+tar mxf /root/<%= $settings[:pe_tarball] %>
+<% fname = File.basename($settings[:pe_tarball], ".tar") %>
+<% else abort("Not sure what type of file #{$settings[:pe_tarball]} is") %>
+<% end %>
+ln -s /root/<%= fname %> /root/puppet-enterprise
 
 # put verification script links in personal bin directory
 ln -s /usr/src/puppetlabs-training-bootstrap/scripts/classroom /root/bin
@@ -94,16 +102,19 @@ cd facter && git remote rename origin ks && git remote add origin git://github.c
 git clone /mnt/puppet/hiera.git
 cd hiera && git remote rename origin ks && git remote add origin git://github.com/puppetlabs/hiera.git && git fetch origin && git branch --set-upstream master origin/master && git checkout 1.2.1 ; cd /usr/src
 git clone /mnt/puppet/puppetlabs-training-bootstrap.git
+cd puppetlabs-training-bootstrap && git checkout <%= @ptbbranch %>
 cd /root
 RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib
 export RUBYLIB
-/usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp
+/usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp || /usr/bin/true
 # Cleanup from the puppet run
 rm -rf /var/lib/puppet
 # Ensure ethernet interface is still eth0
 rm -rf /etc/udev/rules.d/70-persistent-net.rules
 sed -i -e '/^HWADDR.*/d' /etc/sysconfig/network-scripts/ifcfg-eth0
+cp /usr/src/puppetlabs-training-bootstrap/files/registerdns.sh /etc/rc3.d/S16registerdns.sh
 #/bin/sh
 #echo 'Hello, World!'
 ) 2>&1 | /usr/bin/tee /root/post.log
+cp /root/post.log /boot
 chvt 1

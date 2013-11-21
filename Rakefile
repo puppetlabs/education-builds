@@ -7,7 +7,7 @@ require 'gpgme'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
-SITESDIR = ENV['HOME'] + "/Sites"
+SITESDIR = ENV['sitesdir'] || ENV['HOME'] + "/Sites"
 BUILDDIR = "#{SITESDIR}/build"
 CACHEDIR = "#{SITESDIR}/cache"
 KSISODIR = "#{BUILDDIR}/isos"
@@ -22,9 +22,20 @@ VBOXDIR = "#{BUILDDIR}/vbox"
 # then,
 # Edit the PEVERSION to something like:
 # PEVERSION = '3.0.1-rc0-58-g9275a0f'
-PEVERSION = '3.1.0'
-PE_RELEASE_URL = "https://s3.amazonaws.com/pe-builds/released/#{PEVERSION}"
+PEVERSION = ENV['PEVERSION'] || '3.1.0'
+PESTATUS = ENV['PESTATUS'] || 'release'
 $settings = Hash.new
+
+hostos = `uname -s`
+if hostos =~ /Darwin/
+  @ovftool_default = '/Applications/VMware OVF Tool/ovftool'
+  @md5 = '/sbin/md5'
+elsif hostos =~ /Linux/
+  @ovftool_default = '/usr/bin/ovftool'
+  @md5 = '/usr/bin/md5sum'
+else
+  abort("Not tested for this platform: #{hostos}")
+end
 
 desc "Build and populate data directory"
 task :init do
@@ -42,19 +53,8 @@ task :init do
     when 'Centos'
       pe_install_suffix = '-el-6-i386'
     end
-    pe_tarball = "puppet-enterprise-#{PEVERSION}#{pe_install_suffix}.tar.gz"
-    installer = "#{CACHEDIR}/#{pe_tarball}"
-    unless File.exist?(installer)
-      cputs "Downloading #{vmos} PE tarball #{PEVERSION}..."
-      download "#{PE_RELEASE_URL}/#{pe_tarball}", installer
-    end
-    unless File.exist?("#{installer}.asc")
-      cputs "Downloading #{vmos} PE signature asc file for #{PEVERSION}..."
-      download "#{PE_RELEASE_URL}/#{pe_tarball}.asc", "#{CACHEDIR}/#{pe_tarball}.asc"
-    end
-    cputs "Verifying signature"
-    system("gpg --verify --always-trust #{installer}.asc #{installer}")
-    puts $?
+    cputs "Getting PE tarball for #{vmos}"
+    @pe_tarball = get_pe(pe_install_suffix)
   end
 
   cputs "Cloning puppet..."
@@ -72,20 +72,22 @@ task :init do
   STDOUT.flush
 
   # Set PTB repo
-  if File.exist?("#{ptbrepo_destination}/config")
-    ptbrepo_default = File.read("#{ptbrepo_destination}/config").match(/url = (\S+)/)[1]
-    ptbrepo = ptbrepo_default
-    cputs "Current repo url: #{ptbrepo} (`rm` local repo to reset)"
-  else
-    # Set PTB user
-    cprint "Please choose a github user for puppetlabs-training-bootstrap [puppetlabs]: "
-    ptbuser = STDIN.gets.chomp
-    ptbuser = 'puppetlabs' if ptbuser.empty?
-
-    ptbrepo_default = "git@github.com:#{ptbuser}/puppetlabs-training-bootstrap.git"
-    cprint "Please choose a repo url [#{ptbrepo_default}]: "
-    ptbrepo = STDIN.gets.chomp
-    ptbrepo = ptbrepo_default if ptbrepo.empty?
+  ptbrepo = nil || ENV['ptbrepo']
+  unless ptbrepo
+    if File.exist?("#{ptbrepo_destination}/config")
+      ptbrepo_default = File.read("#{ptbrepo_destination}/config").match(/url = (\S+)/)[1]
+      ptbrepo = ptbrepo_default
+      cputs "Current repo url: #{ptbrepo} (`rm` local repo to reset)"
+    else
+      # Set PTB user
+      cprint "Please choose a github user for puppetlabs-training-bootstrap [puppetlabs]: "
+      ptbuser = STDIN.gets.chomp
+      ptbuser = 'puppetlabs' if ptbuser.empty?
+      ptbrepo_default = "git@github.com:#{ptbuser}/puppetlabs-training-bootstrap.git"
+      cprint "Please choose a repo url [#{ptbrepo_default}]: "
+      ptbrepo = STDIN.gets.chomp
+      ptbrepo = ptbrepo_default if ptbrepo.empty?
+    end
   end
 
   # Set PTB branch
@@ -94,11 +96,16 @@ task :init do
   else
     ptbbranch_default = 'master'
   end
-  cprint "Please choose a branch to use for puppetlabs-training-bootstrap [#{ptbbranch_default}]: "
-  ptbbranch = STDIN.gets.chomp
-  ptbbranch = ptbbranch_default if ptbbranch.empty?
-  cputs "Cloning ptb..."
-  gitclone ptbrepo, ptbrepo_destination, ptbbranch
+  ptbbranch_override = nil || ENV['ptbbranch']
+  unless ptbbranch_override
+    cprint "Please choose a branch to use for puppetlabs-training-bootstrap [#{ptbbranch_default}]: "
+    @ptbbranch = STDIN.gets.chomp
+    @ptbbranch = ptbbranch_default if @ptbbranch.empty?
+  else
+    @ptbbranch = ptbbranch_override
+  end
+  cputs "Cloning ptb: #{ptbrepo}, #{ptbrepo_destination}, #{@ptbbranch}"
+  gitclone ptbrepo, ptbrepo_destination, @ptbbranch
 end
 
 desc "Destroy VirtualBox instance"
@@ -155,7 +162,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
     else
       $settings[:hostname] = "learn.localdomain"
     end
-    $settings[:pe_tarball] = "puppet-enterprise-#{PEVERSION}#{$settings[:pe_install_suffix]}.tar.gz"
+    $settings[:pe_tarball] = @pe_tarball
     # No variables
     build_file('isolinux.cfg')
     #template_path = "#{BASEDIR}/#{$settings[:vmos]}/#{filename}.erb"
@@ -183,7 +190,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       $settings[:hostname] = "learn.localdomain"
     end
 
-    $settings[:pe_tarball] = "puppet-enterprise-#{PEVERSION}#{$settings[:pe_install_suffix]}.tar.gz"
+    $settings[:pe_tarball] = @pe_tarball
     # No variables
     build_file('isolinux.cfg')
     # Uses hostname, pe_install_suffix
@@ -218,28 +225,29 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   end
 
 
-  iso_file = Dir.glob("#{CACHEDIR}/#{iso_glob}").first
+  iso_file = Dir.glob("#{CACHEDIR}/#{iso_glob}").first || ENV['iso_file']
 
   if ! iso_file
     iso_default = iso_url
   else
     iso_default = iso_file
   end
-  if ! File.exist?("#{KSISODIR}/#{$settings[:vmos]}.iso")
-    cprint "Please specify #{$settings[:vmos]} ISO path or url [#{iso_default}]: "
-    iso_uri = STDIN.gets.chomp.rstrip
-    iso_uri = iso_default if iso_uri.empty?
-    if iso_uri != iso_file
-      case iso_uri
-      when /^(http|https):\/\//
-        iso_file = File.basename(iso_uri)
-        cputs "Downloading ISO to #{CACHEDIR}/#{iso_file}..."
-        download iso_uri, "#{CACHEDIR}/#{iso_file}"
-      else
-        cputs "Copying ISO to #{CACHEDIR}..."
-        FileUtils.cp iso_uri, CACHEDIR
+  if ! File.exist?("#{CACHEDIR}/#{$settings[:vmos]}.iso")
+    unless iso_file
+      cprint "Please specify #{$settings[:vmos]} ISO path or url [#{iso_default}]: "
+      iso_uri = STDIN.gets.chomp.rstrip
+      iso_uri = iso_default if iso_uri.empty?
+      if iso_uri != iso_file
+        case iso_uri
+        when /^(http|https):\/\//
+          iso_file = File.basename(iso_uri)
+          cputs "Downloading ISO to #{CACHEDIR}/#{iso_file}..."
+          download iso_uri, "#{CACHEDIR}/#{iso_file}"
+        else
+          cputs "Copying ISO to #{CACHEDIR}..."
+          FileUtils.cp iso_uri, CACHEDIR
+        end
       end
-      iso_file = Dir.glob("#{CACHEDIR}/#{iso_glob}").first
     end
     cputs "Mapping files from #{BUILDDIR} into ISO..."
     map_iso(iso_file, "#{KSISODIR}/#{$settings[:vmos]}.iso", files)
@@ -248,11 +256,11 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   end
   # Extract the OS version from the iso filename as debian and centos are the
   # same basic format and get caught by the match group below
-  iso_version = iso_url[/^.*-(\d+\.\d\.?\d?)-.*\.iso$/,1]
+  iso_version = iso_file[/^.*-(\d+\.\d\.?\d?)-.*\.iso$/,1]
   if $settings[:vmtype] == 'training'
-    $settings[:vmname] = "#{$settings[:vmos]}-#{iso_version}-pe-#{PEVERSION}".downcase
+    $settings[:vmname] = "#{$settings[:vmos]}-#{iso_version}-pe-#{@real_pe_ver}".downcase
   else
-    $settings[:vmname] = "learn_puppet_#{$settings[:vmos]}-#{iso_version}-pe-#{PEVERSION}".downcase
+    $settings[:vmname] = "learn_puppet_#{$settings[:vmos]}-#{iso_version}-pe-#{@real_pe_ver}".downcase
   end
 end
 
@@ -274,6 +282,8 @@ task :unmountiso, [:vmos] do |t,args|
     sleep 5
     sleeptotal += 5
   end
+  # Set higher for install, reduce it here for packaging
+  system("VBoxManage modifyvm '#{$settings[:vmname]}' --memory 1024")
   cputs "Unmounting #{$settings[:vmos]} on #{$settings[:vmname]}"
   system("VBoxManage storageattach '#{$settings[:vmname]}' --storagectl 'IDE Controller' --port 1 --device 0 --type dvddrive --medium none")
   Rake::Task[:mountiso].reenable
@@ -294,11 +304,15 @@ end
 
 desc "Start the VM"
 task :startvm, [:vmos] do |t,args|
+  headless = nil || ENV['vboxheadless']
   args.with_defaults(:vmos => $settings[:vmos])
   prompt_vmos(args.vmos)
-
   cputs "Starting #{$settings[:vmname]}"
-  system("VBoxManage startvm '#{$settings[:vmname]}'")
+  if headless
+    system("VBoxHeadless --startvm '#{$settings[:vmname]}'")
+  else
+    system("VBoxManage startvm '#{$settings[:vmname]}'")
+  end
 end
 
 desc "Reload the VM"
@@ -326,6 +340,25 @@ task :everything, [:vmos] do |t,args|
   Rake::Task[:packagevm].invoke($settings[:vmos])
 end
 
+task :jenkins_everything, [:vmos] do |t,args|
+  args.with_defaults(:vmos => $settings[:vmos])
+  prompt_vmos(args.vmos)
+
+  Rake::Task[:init].invoke
+  Rake::Task[:createiso].invoke($settings[:vmos])
+  Rake::Task[:createvm].invoke($settings[:vmos])
+  Rake::Task[:mountiso].invoke($settings[:vmos])
+  Rake::Task[:startvm].invoke($settings[:vmos])
+  Rake::Task[:unmountiso].invoke($settings[:vmos])
+  Rake::Task[:createovf].invoke($settings[:vmos])
+  Rake::Task[:createvmx].invoke($settings[:vmos])
+  Rake::Task[:createvbox].invoke($settings[:vmos])
+  Rake::Task[:vagrantize].invoke($settings[:vmos])
+  Rake::Task[:packagevm].invoke($settings[:vmos])
+  Rake::Task[:shipvm].invoke
+  Rake::Task[:publishvm].invoke
+end
+
 desc "Force-stop the VM"
 task :stopvm, [:vmos] do |t,args|
   args.with_defaults(:vmos => $settings[:vmos])
@@ -350,26 +383,28 @@ end
 task :createvmx, [:vmos] => [:createovf] do |t,args|
   args.with_defaults(:vmos => $settings[:vmos])
   prompt_vmos(args.vmos)
-  ovftool_default = '/Applications/VMware OVF Tool/ovftool' #XXX Dynamicize this
 
   Rake::Task[:unmountiso].invoke($settings[:vmos])
   cputs "Converting OVF to VMX..."
   FileUtils.rm_rf("#{VMWAREDIR}/#{$settings[:vmname]}-vmware") if File.directory?("#{VMWAREDIR}/#{$settings[:vmname]}-vmware")
   FileUtils.mkdir_p("#{VMWAREDIR}/#{$settings[:vmname]}-vmware")
-  system("'#{ovftool_default}' --lax --compress=9 --targetType=VMX '#{OVFDIR}/#{$settings[:vmname]}-ovf/#{$settings[:vmname]}.ovf' '#{VMWAREDIR}/#{$settings[:vmname]}-vmware'")
+  system("'#{@ovftool_default}' --lax --compress=9 --targetType=VMX '#{OVFDIR}/#{$settings[:vmname]}-ovf/#{$settings[:vmname]}.ovf' '#{VMWAREDIR}/#{$settings[:vmname]}-vmware'")
 
-  cputs 'Changing virtualhw.version = "9" to "8"'
-  vmxpath = "#{VMWAREDIR}/#{$settings[:vmname]}-vmware/#{$settings[:vmname]}.vmwarevm/#{$settings[:vmname]}.vmx"
-  content = File.read(vmxpath)
-  content = content.gsub(/^virtualhw\.version = "9"$/, 'virtualhw.version = "8"')
-  File.open(vmxpath, 'w') { |f| f.puts content }
+  cputs 'Changing virtualhw.version = to "8"'
+  # this path is different on OSX
+  if hostos =~ /Darwin/
+    @vmxpath = "#{VMWAREDIR}/#{$settings[:vmname]}-vmware/#{$settings[:vmname]}.vmwarevm/#{$settings[:vmname]}.vmx"
+  else
+    @vmxpath = "#{VMWAREDIR}/#{$settings[:vmname]}-vmware/#{$settings[:vmname]}/#{$settings[:vmname]}.vmx"
+  end
+  content = File.read(@vmxpath)
+  content = content.gsub(/^virtualhw\.version = "\d+"$/, 'virtualhw.version = "8"')
+  File.open(@vmxpath, 'w') { |f| f.puts content }
 end
 
 task :createvbox, [:vmos] do |t,args|
   args.with_defaults(:vmos => $settings[:vmos])
   prompt_vmos(args.vmos)
-
-  ovftool_default = '/Applications/VMware OVF Tool/ovftool' #XXX Dynamicize this
   cputs "Making copy of VM for VBOX..."
   FileUtils.rm_rf("#{VBOXDIR}/#{$settings[:vmname]}-vbox") if File.directory?("#{VBOXDIR}/#{$settings[:vmname]}-vbox")
   FileUtils.mkdir_p("#{VBOXDIR}/#{$settings[:vmname]}-vbox")
@@ -379,7 +414,6 @@ end
 task :vagrantize, [:vmos] do |t,args|
   args.with_defaults(:vmos => $settings[:vmos])
   prompt_vmos(args.vmos)
-
   cputs "Vagrantizing VM..."
   system("vagrant package --base '#{$settings[:vmname]}' --output '#{VAGRANTDIR}/#{$settings[:vmname]}.box'")
   FileUtils.ln_sf("#{VAGRANTDIR}/#{$settings[:vmname]}.box", "#{VAGRANTDIR}/#{$settings[:vmos].downcase}-latest.box")
@@ -389,13 +423,12 @@ desc "Zip up the VMs (unimplemented)"
 task :packagevm, [:vmos] do |t,args|
   args.with_defaults(:vmos => $settings[:vmos])
   prompt_vmos(args.vmos)
-
   system("zip -rj '#{CACHEDIR}/#{$settings[:vmname]}-ovf.zip' '#{OVFDIR}/#{$settings[:vmname]}-ovf'")
   system("zip -rj '#{CACHEDIR}/#{$settings[:vmname]}-vmware.zip' '#{VMWAREDIR}/#{$settings[:vmname]}-vmware'")
   system("zip -rj '#{CACHEDIR}/#{$settings[:vmname]}-vbox.zip' '#{VBOXDIR}/#{$settings[:vmname]}-vbox'")
-  system("md5 '#{CACHEDIR}/#{$settings[:vmname]}-ovf.zip' > '#{CACHEDIR}/#{$settings[:vmname]}-ovf.zip.md5'")
-  system("md5 '#{CACHEDIR}/#{$settings[:vmname]}-vmware.zip' > '#{CACHEDIR}/#{$settings[:vmname]}-vmware.zip.md5'")
-  system("md5 '#{CACHEDIR}/#{$settings[:vmname]}-vbox.zip' > '#{CACHEDIR}/#{$settings[:vmname]}-vbox.zip.md5'")
+  system("#{@md5} '#{CACHEDIR}/#{$settings[:vmname]}-ovf.zip' > '#{CACHEDIR}/#{$settings[:vmname]}-ovf.zip.md5'")
+  system("#{@md5} '#{CACHEDIR}/#{$settings[:vmname]}-vmware.zip' > '#{CACHEDIR}/#{$settings[:vmname]}-vmware.zip.md5'")
+  system("#{@md5} '#{CACHEDIR}/#{$settings[:vmname]}-vbox.zip' > '#{CACHEDIR}/#{$settings[:vmname]}-vbox.zip.md5'")
   # zip & md5 vagrant
 end
 
@@ -403,7 +436,6 @@ desc "Unmount the ISO and remove kickstart files and repos"
 task :clean, [:del] do |t,args|
   args.with_defaults(:del => $settings[:del])
   prompt_del(args.del)
-
   cputs "Destroying vms"
   ['Debian','Centos'].each do |os|
     Rake::Task[:destroyvm].invoke(os)
@@ -413,8 +445,53 @@ task :clean, [:del] do |t,args|
   FileUtils.rm_rf(BUILDDIR) if File.directory?(BUILDDIR)
   if $settings[:del] == 'yes'
     cputs "Removing packaged VMs"
-    FileUtils.rm Dir.glob("#{CACHEDIR}/*-pe-#{PEVERSION}*.zip*")
+    FileUtils.rm Dir.glob("#{CACHEDIR}/*-pe-#{@real_pe_ver}*.zip*")
+    FileUtils.rm Dir.glob("#{CACHEDIR}/puppet-enterprise-*.tar*")
   end
+end
+
+## Ship the VMs somewhere. These dirs are NFS exports mounted on the builder, so really only
+## applicable to the Jenkins builds.
+task :shipvm do
+  # These currently map to int-resources.ops.puppetlabs.net
+  case $settings[:vmtype]
+  when /training/
+    destdir = "/mnt/nfs/Training\ VM/"
+  when /learning/
+    destdir = "/mnt/nfs/Learning\ Puppet\ VM/"
+  end
+  FileUtils.cp_r Dir.glob("#{CACHEDIR}/#{$settings[:vmname]}*"), destdir, :verbose => true
+end
+
+## Publish to VMware
+task :publishvm do
+  if $settings[:vmtype] == 'learning'
+    # Should probably move most of this to a method
+    require 'yaml'
+    # Make a local config file with vcenter/auth info.
+    # Put a script on the vmdk to set the dhcp/dns for our internal vmware network. Put an init script in the kickstart
+    # that will execute the above config, if it exists, and delete itself if it doesn't to keep the end-user
+    # vm pristine
+    sh "/bin/sudo /bin/vmware-mount #{VMWAREDIR}/#{$settings[:vmname]}-vmware/#{$settings[:vmname]}/#{$settings[:vmname]}-disk1.vmdk /mnt/vmdk"
+    sh "/bin/sudo /bin/cp files/dnsconfig.sh /mnt/vmdk"
+    if File.exist?("/mnt/vmdk/post.log")
+      sh "/bin/sudo /bin/cp /mnt/vmdk/post.log ."
+    end
+    sh "/bin/sudo /bin/vmware-mount -d /mnt/vmdk"
+    # Set the MAC address to avoid issues with loising the DNS record. These overwrit each other so there should never be a conflict.
+    # This should probably be parameterized at some point, but the host name is fixed due to the certs.
+    cputs "Setting MAC address"
+    content = File.read(@vmxpath)
+    content = content.gsub(/^ethernet0.addressType = "generated"/, "ethernet0.addressType = \"static\"\nethernet0.address = \"00:50:56:9B:E8:3A\"")
+    File.open(@vmxpath, 'w') { |f| f.puts content }
+    # Manually place a file with the VMware credentials in #{CACHEDIR}
+    vcenter_settings = YAML::load(File.open("#{CACHEDIR}/.vmwarecfg.yml"))
+    # Do the thing here
+    cputs "Publishing to vSphere"
+    sh "/usr/bin/ovftool --noSSLVerify --network='delivery.puppetlabs.net' -dm=thin --datastore='general (data2)' -o --powerOffTarget --powerOn -n=learn #{VMWAREDIR}/#{$settings[:vmname]}-vmware/#{$settings[:vmname]}/#{$settings[:vmname]}.vmx vi://#{vcenter_settings["username"]}\@puppetlabs.com:#{vcenter_settings["password"]}@vcenter.ops.puppetlabs.net/pdx_office/host/delivery"
+  else
+    cputs "Skipping - only publish the learning VM"
+  end 
 end
 
 def download(url,path)
@@ -540,5 +617,41 @@ end
 
 def cprint(string)
   print "\033[1m#{string}\033[0m"
+end
+
+# If we want a test version, figure out the latest in the series and download it, otherwise get the release version
+def get_pe(pe_install_suffix)
+  if PESTATUS =~ /latest/
+    perelease=PEVERSION.split('.')
+    @real_pe_ver=`curl http://neptune.delivery.puppetlabs.net/#{perelease[0]}.#{perelease[1]}/ci-ready/LATEST`.chomp
+  else
+    @real_pe_ver=PEVERSION
+  end
+  cputs "Actual PE version is #{@real_pe_ver}"
+  perelease = @real_pe_ver.split('.')
+  if PESTATUS =~ /latest/
+    url_prefix = "http://neptune.delivery.puppetlabs.net/#{perelease[0]}.#{perelease[1]}/ci-ready"
+    pe_tarball = "puppet-enterprise-#{@real_pe_ver}#{pe_install_suffix}.tar"
+  elsif PESTATUS =~ /release/
+    url_prefix = "https://s3.amazonaws.com/pe-builds/released"
+    pe_tarball = "puppet-enterprise-#{@real_pe_ver}#{pe_install_suffix}.tar.gz"
+  else 
+    abort("Status: #{PESTATUS} not valid - use 'release' or 'latest'.")
+  end
+  installer = "#{CACHEDIR}/#{pe_tarball}"
+  unless File.exist?(installer)
+    cputs "Downloading PE tarball #{@real_pe_ver}..."
+    download("#{url_prefix}/#{pe_tarball}", installer)
+  end
+  if PESTATUS =~ /release/
+    unless File.exist?("#{installer}.asc")
+      cputs "Downloading PE signature asc file for #{@real_pe_ver}..."
+      download "#{url_prefix}/#{pe_tarball}.asc", "#{CACHEDIR}/#{pe_tarball}.asc"
+      cputs "Verifying signature"
+      system("gpg --verify --always-trust #{installer}.asc #{installer}")
+      puts $?
+    end
+  end
+  return pe_tarball
 end
 # vim: set sw=2 sts=2 et tw=80 :
