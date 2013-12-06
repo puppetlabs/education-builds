@@ -22,7 +22,7 @@ VBOXDIR = "#{BUILDDIR}/vbox"
 # then,
 # Edit the PEVERSION to something like:
 # PEVERSION = '3.0.1-rc0-58-g9275a0f'
-PEVERSION = '3.0.1'
+PEVERSION = '3.1.0'
 PE_RELEASE_URL = "https://s3.amazonaws.com/pe-builds/released/#{PEVERSION}"
 $settings = Hash.new
 
@@ -214,7 +214,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
     }
     iso_glob = 'CentOS-*'
-    iso_url = 'http://mirror.tocici.com/centos/6.3/isos/i386/CentOS-6.3-i386-bin-DVD1.iso'
+    iso_url = 'http://mirror.tocici.com/centos/6/isos/i386/CentOS-6.4-i386-bin-DVD1.iso'
   end
 
 
