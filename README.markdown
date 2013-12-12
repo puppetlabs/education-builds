@@ -10,7 +10,7 @@
 - Install [OVF Tool](https://communities.vmware.com/community/vmtn/automationtools/ovf) from VMware's website
 - Install [virtualbox](https://www.virtualbox.org/wiki/Downloads)
     - The bootstrap uses virtualbox to create the initial VM, so you need it even if you don't intend to run VMs in virtualbox
-- Download and build [xorriso](http://freecode.com/projects/gnu-xorriso) from freecode.com.
+- Download and build [xorriso](http://freecode.com/projects/gnu-xorriso) from freecode.com
     - Follow the instructions in INSTALL to build and install xorriso
 - Ensure you have all the Rakefile's required gems.  (e.g. `sudo gem install gpgme`)
 
