@@ -29,13 +29,12 @@ their changes will be incorporated into the puppet managed motd.
 <pre>
 # class to setup basic motd, include on all nodes
 class motd {
-   include concat::setup
    $motd = "/etc/motd"
 
    concat{$motd:
       owner => root,
       group => root,
-      mode  => 644
+      mode  => '0644',
    }
 
    concat::fragment{"motd_header":
@@ -75,12 +74,18 @@ class apache {
 }
 </pre>
 
+Detailed documentation of the class options can be found in the
+manifest files.
+
 Known Issues:
 -------------
-* In 0.24.8 you will see inintended notifies, if you build a file
-  in a run, the next run will also see it as changed.  This is due
-  to how 0.24.8 does the purging of unhandled files, this is improved
-  in 0.25.x and we cannot work around it in our code.
+* Since puppet-concat now relies on a fact for the concat directory,
+  you will need to set up pluginsync = true on the [master] section of your
+  node's '/etc/puppet/puppet.conf' for at least the first run.
+  You have this issue if puppet fails to run on the client and you have
+  a message similar to
+  "err: Failed to apply catalog: Parameter path failed: File
+  paths must be fully qualified, not 'undef' at [...]/concat/manifests/setup.pp:44".
 
 Contributors:
 -------------
@@ -98,6 +103,52 @@ Contributors:
  * Patch to remove hard coded paths relying on OS path
  * Patch to use file{} to copy the resulting file to the final destination.  This means Puppet client will show diffs and that hopefully we can change file ownerships now
 
+**Peter Meier**
+
+ * Basedir as a fact
+ * Unprivileged user support
+
+**Sharif Nassar**
+
+ * Solaris/Nexenta support
+ * Better error reporting
+
+**Christian G. Warden**
+
+ * Style improvements
+
+**Reid Vandewiele**
+
+ * Support non GNU systems by default
+
+**Erik Dalén**
+
+ * Style improvements
+
+**Gildas Le Nadan**
+
+ * Documentation improvements
+
+**Paul Belanger**
+
+ * Testing improvements and Travis support
+
+**Branan Purvine-Riley**
+
+ * Support Puppet Module Tool better
+
+**Dustin J. Mitchell**
+
+ * Always include setup when using the concat define
+
+**Andreas Jaggi**
+
+ * Puppet Lint support
+
+**Jan Vansteenkiste**
+
+ * Configurable paths
+
 Contact:
 --------
-You can contact me on rip@devco.net or follow my blog at http://www.devco.net I am also on twitter as ripienaar
+puppet-users@ mailing list.
