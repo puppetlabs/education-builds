@@ -1,1 +1,1 @@
-fundamentals::user { ['ryan', 'ben', 'ralph']: }
+include fundamentals
