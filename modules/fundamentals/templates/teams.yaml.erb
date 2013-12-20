@@ -10,7 +10,7 @@
   #   2) this will only work one time, because each group will get its
   #      own user. (We could "fix" that if we wanted to.)
   students = Dir.glob('/home/*')
-  groupnum = students.size/(maxsize - 1)
+  groupnum = (students.size < maxsize) ? 1 : (students.size.to_f/maxsize).ceil
 
   # Populate our groups hash with the group names
   groups = {}
