@@ -12,10 +12,10 @@ class fundamentals::hiera {
     ensure => directory,
   }
 
-  file { '/etc/puppetlabs/puppet/hiera.yaml':
-    ensure  => file,
-    source  => 'puppet:///modules/fundamentals/hiera.yaml',
-    replace => false,
+  file_line { 'hiera_datadir':
+    path  => '/etc/puppetlabs/puppet/hiera.yaml',
+    match => '^\s{2}:datadir:',
+    line  => '  :datadir: /etc/puppetlabs/puppet/hieradata',
   }
 
   file { '/etc/puppetlabs/puppet/hieradata/global.yaml':
