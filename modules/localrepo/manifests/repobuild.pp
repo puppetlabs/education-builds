@@ -26,7 +26,6 @@
 #   }
 
 define localrepo::repobuild ($repopath, $repoer = "createrepo", $repoops = "-C -p") {
-
   exec { "${name}_build":
     command     => "${repoer} ${repoops} ${repopath}",
     user        => root,
@@ -34,10 +33,12 @@ define localrepo::repobuild ($repopath, $repoer = "createrepo", $repoops = "-C -
     path        => "/usr/bin:/bin",
     refreshonly => true,
   }
-
-  file { "/etc/yum.repos.d/${name}.repo":
-    content => "[${name}]\nname=Locally stored packages for ${name}\nbaseurl=file://${repopath}\nenabled=1\ngpgcheck=0",
+  yumrepo { $name:
+    descr    => "Locally stored packages for ${name}",
+    enabled  => '1',
+    baseurl  => "file://${repopath}",
+    gpgcheck => '0',
+    priority => '10',
     require => Exec["${name}_build"],
   }
-
 }

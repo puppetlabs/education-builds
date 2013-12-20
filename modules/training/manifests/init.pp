@@ -1,25 +1,20 @@
 class training {
-  # puppetmaster bluetooth training
-  service { 'hidd':
-    ensure => stopped,
-    enable => false,
-    # hasstatus => broken
-  } ->
-  package { 'bluez-utils':
-    ensure => absent,
-  } ->
-  package { 'bluez-libs':
-    ensure => absent,
-  }
-
   # training repos
   yumrepo { 'puppetlabs':
     baseurl  => 'http://yum.puppetlabs.com/base/',
-    enabled  => '0',
+    enabled  => '1',
+    priority => '99',
     gpgcheck => '0',
     descr    => 'Puppetlabs yum repo'
   }
+  augeaus { 'enable_yum_priorities':
+    context => '/files/etc/yum/pluginconf.d/priorities.conf/main',
+    changes => [
+      "set enabled 1",
+    ],
+  }
   yumrepo { ['epel', 'updates', 'base', 'extras']:
-    enabled => 0,
+    enabled  => '1',
+    priority => '99',
   }
 }
