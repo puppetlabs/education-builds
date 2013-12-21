@@ -61,8 +61,8 @@ class bootstrap ($print_console_login = false) {
     hasstatus  => true,
     hasrestart => true,
   }
-  # Ensure tree is installed for fundamentals
-  package { 'tree' :
+  # Ensure tree and telnet are installed for convenience
+  package { ['tree', 'telnet'] :
     ensure  => present,
     require => Class['localrepo'],
   }
