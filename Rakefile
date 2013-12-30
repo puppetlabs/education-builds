@@ -62,7 +62,7 @@ task :init do
 
   cputs "Cloning facter..."
   gitclone 'git://github.com/puppetlabs/facter.git', "#{CACHEDIR}/facter.git", 'master'
-  
+
   cputs "Cloning hiera..."
   gitclone 'git://github.com/puppetlabs/hiera.git', "#{CACHEDIR}/hiera.git", 'master'
 
@@ -201,7 +201,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       #download "http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
       download "http://mirrors.cat.pdx.edu/epel/6/i386/epel-release-6-8.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
     end
-    
+
     unless File.exist?("#{CACHEDIR}/puppetlabs-enterprise-release-extras.rpm")
       cputs "Downloading Puppet Enterprise Extras rpm"
       #download "http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
@@ -491,7 +491,7 @@ task :publishvm do
     sh "/usr/bin/ovftool --noSSLVerify --network='delivery.puppetlabs.net' -dm=thin --datastore='general (data2)' -o --powerOffTarget --powerOn -n=learn #{VMWAREDIR}/#{$settings[:vmname]}-vmware/#{$settings[:vmname]}/#{$settings[:vmname]}.vmx vi://#{vcenter_settings["username"]}\@puppetlabs.com:#{vcenter_settings["password"]}@vcenter.ops.puppetlabs.net/pdx_office/host/delivery"
   else
     cputs "Skipping - only publish the learning VM"
-  end 
+  end
 end
 
 def download(url,path)
@@ -633,9 +633,9 @@ def get_pe(pe_install_suffix)
     url_prefix = "http://neptune.delivery.puppetlabs.net/#{perelease[0]}.#{perelease[1]}/ci-ready"
     pe_tarball = "puppet-enterprise-#{@real_pe_ver}#{pe_install_suffix}.tar"
   elsif PESTATUS =~ /release/
-    url_prefix = "https://s3.amazonaws.com/pe-builds/released"
+    url_prefix = "https://s3.amazonaws.com/pe-builds/released/#{@real_pe_ver}"
     pe_tarball = "puppet-enterprise-#{@real_pe_ver}#{pe_install_suffix}.tar.gz"
-  else 
+  else
     abort("Status: #{PESTATUS} not valid - use 'release' or 'latest'.")
   end
   installer = "#{CACHEDIR}/#{pe_tarball}"
