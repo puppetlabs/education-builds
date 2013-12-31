@@ -10,6 +10,7 @@
 - Install [OVF Tool](https://communities.vmware.com/community/vmtn/automationtools/ovf) from VMware's website
 - Install [virtualbox](https://www.virtualbox.org/wiki/Downloads)
     - The bootstrap uses virtualbox to create the initial VM, so you need it even if you don't intend to run VMs in virtualbox
+- Install [vagrant](http://www.vagrantup.com/downloads.html)
 - Download and build [xorriso](http://freecode.com/projects/gnu-xorriso) from freecode.com
     - Follow the instructions in INSTALL to build and install xorriso
     - You can also install xorriso using homebrew: `brew install xorriso`
