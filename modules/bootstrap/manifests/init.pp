@@ -61,12 +61,12 @@ class bootstrap ($print_console_login = false) {
     hasstatus  => true,
     hasrestart => true,
   }
-  # Ensure tree and telnet are installed for convenience
-  package { ['tree', 'telnet'] :
+  # Add a few extra packages for convenience
+  package { ['screen', 'telnet', 'tree', 'zsh'] :
     ensure  => present,
     require => Class['localrepo'],
   }
-  
+
   # need rubygems to cache rubygems
   package { 'rubygems' :
     ensure  => present,
