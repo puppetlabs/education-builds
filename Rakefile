@@ -37,6 +37,16 @@ else
   abort("Not tested for this platform: #{hostos}")
 end
 
+# Bail politely when handed a 'vmos' that's not supported.
+if ENV['vmos'] !~ /^(Centos|Debian)$/
+  abort("ERROR: Unrecognized vmos parameter: #{ENV['vmos']}")
+end
+
+# Bail if handed a 'vmtype' that's not supported.
+if ENV['vmtype'] !~ /^(training|learning)$/
+  abort("ERROR: Unrecognized vmtype parameter: #{ENV['vmtype']}")
+end
+
 desc "Build and populate data directory"
 task :init do
   [BUILDDIR, KSISODIR, CACHEDIR].each do |dir|
