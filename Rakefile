@@ -38,12 +38,12 @@ else
 end
 
 # Bail politely when handed a 'vmos' that's not supported.
-if ENV['vmos'] !~ /^(Centos|Debian)$/
+if ENV['vmos'] && ENV['vmos'] !~ /^(Centos|Debian)$/
   abort("ERROR: Unrecognized vmos parameter: #{ENV['vmos']}")
 end
 
 # Bail if handed a 'vmtype' that's not supported.
-if ENV['vmtype'] !~ /^(training|learning)$/
+if ENV['vmtype'] && ENV['vmtype'] !~ /^(training|learning)$/
   abort("ERROR: Unrecognized vmtype parameter: #{ENV['vmtype']}")
 end
 
