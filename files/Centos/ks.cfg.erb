@@ -106,7 +106,7 @@ cd puppetlabs-training-bootstrap && git checkout <%= @ptbbranch %>
 cd /root
 RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib
 export RUBYLIB
-/usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp || /usr/bin/true
+/usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp || /bin/true
 # Cleanup from the puppet run
 rm -rf /var/lib/puppet
 # Ensure ethernet interface is still eth0
