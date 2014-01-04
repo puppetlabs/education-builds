@@ -7,7 +7,7 @@ class training {
     gpgcheck => '0',
     descr    => 'Puppetlabs yum repo'
   }
-  augeaus { 'enable_yum_priorities':
+  augeas { 'enable_yum_priorities':
     context => '/files/etc/yum/pluginconf.d/priorities.conf/main',
     changes => [
       "set enabled 1",
