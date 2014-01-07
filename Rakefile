@@ -456,7 +456,6 @@ task :clean, [:del] do |t,args|
   if $settings[:del] == 'yes'
     cputs "Removing packaged VMs"
     FileUtils.rm Dir.glob("#{CACHEDIR}/*-pe-#{@real_pe_ver}*.zip*")
-    FileUtils.rm Dir.glob("#{CACHEDIR}/puppet-enterprise-*.tar*")
   end
 end
 
