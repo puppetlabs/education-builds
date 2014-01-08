@@ -1,5 +1,5 @@
 # Author: Cody Herriges
-# Pulls a selection of packages from a full Centos 5 mirror and
+# Pulls a selection of packages from a full Centos mirror and
 # drops the packages into a requested location on the local machine
 # if any packages are updated it then runs createrepo to generate
 # a local yum repo.  The local repos are meant to allow PuppetMaster
