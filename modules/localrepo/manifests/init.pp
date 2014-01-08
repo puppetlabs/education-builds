@@ -1,5 +1,5 @@
 # Author: Cody Herriges
-# Pulls a selection of packages from a full Centos 6 mirror and
+# Pulls a selection of packages from a full Centos mirror and
 # drops the packages into a requested location on the local machine
 # if any packages are updated it then runs createrepo to generate
 # a local yum repo.  The local repos are meant to allow PuppetMaster
@@ -37,13 +37,7 @@ class localrepo {
                    "${base}/mirror/centos",
                    "${base}/mirror/centos/6",
                    "${base}/mirror/centos/6/os",
-                   "${base}/mirror/centos/6/updates",
-                   "${base}/mirror/puppetlabs",
-                   "${base}/mirror/puppetlabs/local",
-                   "${base}/mirror/puppetlabs/local/base",
-                   "${base}/mirror/puppetlabs-enterprise-extras",
-                   "${base}/mirror/puppetlabs-enterprise-extras/6",
-                   "${base}/mirror/puppetlabs-enterprise-extras/6/local" ]
+                   "${base}/mirror/centos/6/updates", ]
 
   File { mode => 644, owner => root, group => root }
 
@@ -71,20 +65,6 @@ class localrepo {
     notify   => Exec["makecache"],
   }
 
-  ## Build the "updates" repo
-  #localrepo::pkgsync { "updates_pkgs":
-  #  pkglist  => template("localrepo/updates_pkgs.erb"),
-  #  repopath => "${base}/mirror/centos/6/updates/i386",
-  #  source   => "::centos/6/updates/i386/RPMS/",
-  #  notify   => Repobuild["updates_local"]
-  #}
-
-  #localrepo::repobuild { "updates_local":
-  #  repopath => "${base}/mirror/centos/6/updates/i386",
-  #  require  => Package["createrepo"],
-  #  notify   => Exec["makecache"],
-  #}
-
   ## Build the "epel" repo
   localrepo::pkgsync { "epel_pkgs":
     pkglist  => template("localrepo/epel_pkgs.erb"),
@@ -96,21 +76,6 @@ class localrepo {
 
   localrepo::repobuild { "epel_local":
     repopath => "${base}/mirror/epel/6/local/i386",
-    require  => Package["createrepo"],
-    notify   => Exec["makecache"],
-  }
-
-  # Build the "puppetlabs-enterprise-extras" repo
-  localrepo::pkgsync { "puppetlabs-enterprise-extras_pkgs":
-    pkglist  => template("localrepo/puppetlabs-enterprise-extras_pkgs.erb"),
-    repopath => "${base}/mirror/puppetlabs-enterprise-extras/6/local/i386",
-    syncer   => "yumdownloader",
-    source   => "puppetlabs-enterprise-extras",
-    notify   => Repobuild["puppetlabs-enterprise-extras_local"],
-  }
-
-  localrepo::repobuild { "puppetlabs-enterprise-extras_local":
-    repopath => "${base}/mirror/puppetlabs-enterprise-extras/6/local/i386",
     require  => Package["createrepo"],
     notify   => Exec["makecache"],
   }

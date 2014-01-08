@@ -2,7 +2,7 @@ class training {
   # training repos
   yumrepo { 'puppetlabs':
     baseurl  => 'http://yum.puppetlabs.com/el/6/products/$basearch/',
-    enabled  => '1',
+    enabled  => '0',
     priority => '99',
     gpgcheck => '0',
     descr    => 'Puppetlabs yum repo'
