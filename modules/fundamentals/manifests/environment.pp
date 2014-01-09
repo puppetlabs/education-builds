@@ -11,18 +11,22 @@ class fundamentals::environment (
   $shell  = undef,
 ) {
 
-  if $editor in [ 'vim', 'emacs', 'nano' ] {
-    include "fundamentals::environment::${editor}"
-  }
-  elsif $editor != undef {
-    notify { "The editor ${editor} is unsupported": }
+  if $editor {
+    if $editor in ['vim', 'emacs', 'nano'] {
+      include "fundamentals::environment::${editor}"
+    }
+    else {
+      fail("The editor ${editor} is unsupported")
+    }
   }
 
-  if $shell in [ 'zsh', 'bash' ] {
-    include "fundamentals::environment::${shell}"
-  }
-  elsif $shell != undef {
-    notify { "The shell ${shell} is unsupported": }
+  if $shell {
+    if $shell in ['bash', 'zsh'] {
+      include "fundamentals::environment::${shell}"
+    }
+    else {
+      fail("The shell ${shell} is unsupported")
+    }
   }
 
 }
