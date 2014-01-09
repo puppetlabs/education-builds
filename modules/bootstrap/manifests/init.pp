@@ -11,24 +11,7 @@ class bootstrap ($print_console_login = false) {
     source => 'puppet:///modules/bootstrap/envpuppet',
     mode   => '0755',
   }
-  file { '/root/.bashrc':
-    source => 'puppet:///modules/bootstrap/bashrc',
-  }
-  file { '/root/.emacs':
-    source => 'puppet:///modules/bootstrap/emacs',
-  }
-  file { '/root/.emacs.d':
-    source  => 'puppet:///modules/bootstrap/emacs.d',
-    recurse => true,
-  }
-  file { '/root/.vim':
-    ensure  => 'directory',
-    source  => "/usr/src/puppet/ext/vim",
-    recurse => true,
-  }
-  file { '/root/.vimrc':
-    source => 'puppet:///modules/bootstrap/vimrc',
-  }
+
   # This is the thing Dom came up with to print the IP to the TTY
   file {'/root/.ip_info.sh':
     ensure => file,
@@ -62,7 +45,7 @@ class bootstrap ($print_console_login = false) {
     hasrestart => true,
   }
   # Add a few extra packages for convenience
-  package { ['screen', 'telnet', 'tree', 'zsh'] :
+  package { ['screen', 'telnet', 'tree'] :
     ensure  => present,
     require => Class['localrepo'],
   }
