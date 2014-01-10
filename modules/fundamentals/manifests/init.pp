@@ -18,10 +18,7 @@
 #       * creates a bare repository in repo root
 #       * checks out a working copy in the environments root
 #
-class fundamentals (
-  $editor = undef,
-  $shell  = undef,
-) {
+class fundamentals {
 
   if $::hostname == 'master' {
 
