@@ -1,20 +1,20 @@
-class fundamentals::environment::vim {
+class environment::vim {
   package { 'vim-enhanced':
     ensure => present,
   }
 
   file { '/root/.vim':
     ensure  => 'directory',
-    source  => 'puppet:///modules/fundamentals/environment/vim/vim',
+    source  => 'puppet:///modules/environment/vim/vim',
     recurse => true,
   }
 
   file { '/root/.vimrc':
-    source => 'puppet:///modules/fundamentals/environment/vim/vimrc',
+    source => 'puppet:///modules/environment/vim/vimrc',
   }
 
   file_line { 'default editor':
-    path    => '/root/.bash_profile',
+    path    => '/root/.profile',
     line    => 'export EDITOR=vim',
     match   => "EDITOR=",
     require => Package['vim-enhanced'],

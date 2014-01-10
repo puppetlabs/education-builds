@@ -109,4 +109,10 @@ class bootstrap ($print_console_login = false) {
   # Cache gems locally in the vm:
   class { 'bootstrap::cache_gems': }
 
+  # configure user environment
+  class { 'environment':
+    shell  => 'bash',
+    editor => 'vim',
+  }
+
 }

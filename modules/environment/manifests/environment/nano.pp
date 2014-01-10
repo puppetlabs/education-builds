@@ -1,11 +1,11 @@
-class fundamentals::environment::nano {
+class environment::nano {
   package { 'nano':
     ensure => present,
   }
 
   file { '/root/.nanorc':
     ensure  => 'file',
-    source  => 'puppet:///modules/fundamentals/environment/nano/nanorc',
+    source  => 'puppet:///modules/environment/nano/nanorc',
   }
 
   file { '/root/.nano.d':
@@ -14,11 +14,11 @@ class fundamentals::environment::nano {
 
   file { '/root/.nano.d/puppet.nanorc':
     ensure  => 'file',
-    source  => 'puppet:///modules/fundamentals/environment/nano/puppet.nanorc',
+    source  => 'puppet:///modules/environment/nano/puppet.nanorc',
   }
 
   file_line { 'default editor':
-    path    => '/root/.bash_profile',
+    path    => '/root/.profile',
     line    => 'export EDITOR=nano',
     match   => "EDITOR=",
     require => Package['nano'],

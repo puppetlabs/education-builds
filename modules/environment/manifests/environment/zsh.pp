@@ -1,10 +1,11 @@
-class fundamentals::environment::zsh {
+class environment::zsh {
   package { 'zsh':
     ensure => present,
   }
 
-  file { '/root/.zshrc':
-    source => 'puppet:///modules/fundamentals/environment/zsh/zshrc',
+  file { '/root/.zprofile':
+    ensure => link,
+    target => '/root/.profile',
   }
 
   user { 'root':

@@ -1,11 +1,11 @@
-class fundamentals::environment::emacs {
+class environment::emacs {
   package { 'emacs':
     ensure => present,
   }
 
   file { '/root/.emacs':
     ensure  => 'file',
-    source  => 'puppet:///modules/fundamentals/environment/emacs/emacs',
+    source  => 'puppet:///modules/environment/emacs/emacs',
   }
 
   file { '/root/.emacs.d':
@@ -14,11 +14,11 @@ class fundamentals::environment::emacs {
 
   file { '/root/.emacs.d/puppet-mode.el':
     ensure  => 'file',
-    source  => 'puppet:///modules/fundamentals/environment/emacs/puppet-mode.el',
+    source  => 'puppet:///modules/environment/emacs/puppet-mode.el',
   }
 
   file_line { 'default editor':
-    path    => '/root/.bash_profile',
+    path    => '/root/.profile',
     line    => 'export EDITOR=emacs',
     match   => "EDITOR=",
     require => Package['emacs'],

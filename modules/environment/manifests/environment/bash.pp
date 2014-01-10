@@ -1,10 +1,6 @@
-class fundamentals::environment::bash {
+class environment::bash {
   package { 'bash':
     ensure => present,
-  }
-
-  file { '/root/.bashrc':
-    source => 'puppet:///modules/fundamentals/environment/bash/bashrc',
   }
 
   user { 'root':
