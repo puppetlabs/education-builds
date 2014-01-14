@@ -417,7 +417,7 @@ task :createvbox, [:vmos] do |t,args|
   system("cp -a '#{orig}' '#{orig}.backup'")
   xml_file = File.read(orig)
   @doc = Nokogiri::XML(xml_file)
-  adapters = @doc.xpath("//vm:Adapter", 'vm' =>'httpd://www.innotek.de/VirtualBox-settings')
+  adapters = @doc.xpath("//vm:Adapter", 'vm' =>'http://www.innotek.de/VirtualBox-settings')
   adapters.each do |adapter|
     adapter['MACAddress'] = ''
   end
