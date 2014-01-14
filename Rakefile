@@ -414,10 +414,10 @@ task :createvbox, [:vmos] do |t,args|
   FileUtils.mkdir_p("#{VBOXDIR}/#{$settings[:vmname]}-vbox")
   system("rsync -a '#{VAGRANTDIR}/#{$settings[:vmname]}/' '#{VBOXDIR}/#{$settings[:vmname]}-vbox'")
   orig = "#{VBOXDIR}/#{$settings[:vmname]}-vbox/#{$settings[:vmname]}.vbox"
-  system("cp -a '#{orig}' '#{orig}.backup'")
+  FileUtils.cp orig, "#{orig}.backup", :preserve => true
   xml_file = File.read(orig)
-  @doc = Nokogiri::XML(xml_file)
-  adapters = @doc.xpath("//vm:Adapter", 'vm' =>'http://www.innotek.de/VirtualBox-settings')
+  doc = Nokogiri::XML(xml_file)
+  adapters = doc.xpath("//vm:Adapter", 'vm' =>'http://www.innotek.de/VirtualBox-settings')
   adapters.each do |adapter|
     adapter['MACAddress'] = ''
   end
