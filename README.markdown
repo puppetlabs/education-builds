@@ -14,7 +14,9 @@
 - Download and build [xorriso](http://freecode.com/projects/gnu-xorriso) from freecode.com
     - Follow the instructions in INSTALL to build and install xorriso
     - You can also install xorriso using homebrew: `brew install xorriso`
-- Ensure you have all the Rakefile's required gems.  (e.g. `sudo gem install gpgme`)
+- Ensure you have all the Rakefile's required gems. 
+    - At this time, the list include gpgme and nokogiri
+    - (e.g. `sudo gem install gpgme`)
 
 ## Usage (what a human has to do):
 

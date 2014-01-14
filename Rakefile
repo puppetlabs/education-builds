@@ -4,6 +4,7 @@ require 'net/http'
 require 'net/https'
 require 'rubygems'
 require 'gpgme'
+require 'nokogiri'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
@@ -223,7 +224,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
       "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
     }
-    iso_glob = 'CentOS-*'
+    iso_glob = 'CentOS-6.5-*'
     iso_url = 'http://mirror.tocici.com/centos/6/isos/i386/CentOS-6.5-i386-bin-DVD1.iso'
   end
 
@@ -412,6 +413,15 @@ task :createvbox, [:vmos] do |t,args|
   FileUtils.rm_rf("#{VBOXDIR}/#{$settings[:vmname]}-vbox") if File.directory?("#{VBOXDIR}/#{$settings[:vmname]}-vbox")
   FileUtils.mkdir_p("#{VBOXDIR}/#{$settings[:vmname]}-vbox")
   system("rsync -a '#{VAGRANTDIR}/#{$settings[:vmname]}/' '#{VBOXDIR}/#{$settings[:vmname]}-vbox'")
+  orig = "#{VBOXDIR}/#{$settings[:vmname]}-vbox/#{$settings[:vmname]}.vbox"
+  FileUtils.cp orig, "#{orig}.backup", :preserve => true
+  xml_file = File.read(orig)
+  doc = Nokogiri::XML(xml_file)
+  adapters = doc.xpath("//vm:Adapter", 'vm' =>'http://www.innotek.de/VirtualBox-settings')
+  adapters.each do |adapter|
+    adapter['MACAddress'] = ''
+  end
+  File.open(orig, 'w') {|f| f.puts @doc.to_xml }
 end
 
 task :vagrantize, [:vmos] do |t,args|
