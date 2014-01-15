@@ -421,7 +421,7 @@ task :createvbox, [:vmos] do |t,args|
   adapters.each do |adapter|
     adapter['MACAddress'] = ''
   end
-  File.open(orig, 'w') {|f| f.puts @doc.to_xml }
+  File.open(orig, 'w') {|f| f.puts doc.to_xml }
 end
 
 task :vagrantize, [:vmos] do |t,args|
