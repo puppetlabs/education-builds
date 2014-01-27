@@ -3,6 +3,8 @@ node default {
   include localrepo
   include training
   include vagrant
+
+  include environment::defaults
 }
 
 node /learn/ {
@@ -11,4 +13,6 @@ node /learn/ {
   include learning
   stage { 'pe_install': require => Stage['main'], }
   class { 'learning::install': stage => pe_install, }
+
+  include environment::defaults
 }

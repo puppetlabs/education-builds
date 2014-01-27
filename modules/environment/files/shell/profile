@@ -1,5 +1,3 @@
-# .bashrc
-
 # User specific aliases and functions
 
 alias rm='rm -i'
@@ -15,9 +13,3 @@ validate_yaml() {
 validate_erb() {
   erb -P -x -T '-' $1 | ruby -c
 }
-
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-  . /etc/bashrc
-fi
-
