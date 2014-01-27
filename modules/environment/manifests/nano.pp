@@ -1,4 +1,6 @@
-class environment::nano {
+class environment::nano (
+  $default = true,
+) {
   package { 'nano':
     ensure => present,
   }
@@ -17,10 +19,12 @@ class environment::nano {
     source  => 'puppet:///modules/environment/nano/puppet.nanorc',
   }
 
-  file_line { 'default editor':
-    path    => '/root/.profile',
-    line    => 'export EDITOR=nano',
-    match   => "EDITOR=",
-    require => Package['nano'],
+  if $default {
+    file_line { 'default editor':
+      path    => '/root/.profile',
+      line    => 'export EDITOR=nano',
+      match   => "EDITOR=",
+      require => Package['nano'],
+    }
   }
 }

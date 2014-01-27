@@ -1,4 +1,6 @@
-class environment::emacs {
+class environment::emacs (
+  $default = true,
+) {
   package { 'emacs':
     ensure => present,
   }
@@ -17,10 +19,12 @@ class environment::emacs {
     source  => 'puppet:///modules/environment/emacs/puppet-mode.el',
   }
 
-  file_line { 'default editor':
-    path    => '/root/.profile',
-    line    => 'export EDITOR=emacs',
-    match   => "EDITOR=",
-    require => Package['emacs'],
+  if $default {
+    file_line { 'default editor':
+      path    => '/root/.profile',
+      line    => 'export EDITOR=emacs',
+      match   => "EDITOR=",
+      require => Package['emacs'],
+    }
   }
 }

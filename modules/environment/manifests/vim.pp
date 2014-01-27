@@ -1,4 +1,6 @@
-class environment::vim {
+class environment::vim (
+  $default = true,
+) {
   package { 'vim-enhanced':
     ensure => present,
   }
@@ -13,10 +15,12 @@ class environment::vim {
     source => 'puppet:///modules/environment/vim/vimrc',
   }
 
-  file_line { 'default editor':
-    path    => '/root/.profile',
-    line    => 'export EDITOR=vim',
-    match   => "EDITOR=",
-    require => Package['vim-enhanced'],
+  if $default {
+    file_line { 'default editor':
+      path    => '/root/.profile',
+      line    => 'export EDITOR=vim',
+      match   => "EDITOR=",
+      require => Package['vim-enhanced'],
+    }
   }
 }
