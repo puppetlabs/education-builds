@@ -7,7 +7,7 @@ export MASTER_HOSTNAME='master.puppetlabs.vm'
 export RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
 /usr/src/puppet/bin/puppet resource host "$AGENT_HOSTNAME" \
   ensure=present \
-  host_aliases="${AGENT_HOSTNAME/.*/}" \
+  host_aliases="${AGENT_HOSTNAME/.*/}"\
   ip=`/usr/src/facter/bin/facter ipaddress`
 
 /bin/sed -i "s/HOSTNAME.*/HOSTNAME=$AGENT_HOSTNAME/" /etc/sysconfig/network
@@ -17,7 +17,7 @@ export RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
 # Might switch to this https://github.com/adrienthebo/vagrant-hosts
 /usr/src/puppet/bin/puppet resource host $MASTER_HOSTNAME \
     ensure=present \
-    host_aliases="${MASTER_HOSTNAME/.*/} puppet" \
+    host_aliases="['${MASTER_HOSTNAME/.*/}','master','puppet']" \
     ip='10.0.0.101'
 
 unset RUBYLIB
