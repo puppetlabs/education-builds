@@ -35,4 +35,9 @@ class fundamentals {
   # additional configuration for the capstone lab.
   include fundamentals::hiera
 
+  # also unconditionally attempt to fix time.
+  # for offline training, add the following class to the console 
+  # for all nodes with the parameter 'offline' set to 'true'
+  include fundamentals::time
+
 }
