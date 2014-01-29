@@ -25,13 +25,13 @@
 
 class fundamentals::time ( $offline = 'false' ) {
   if $offline == 'true' {
-    $time_servers = ['master.puppetlabs.vm']
+    $time_servers = $::servername
   }
   else {
     $time_servers = ['0.pool.ntp.org iburst', '1.pool.ntp.org iburst', '2.pool.ntp.org iburst', '3.pool.ntp.org']
   }
 
-  if $::hostname == 'master' {
+  if $::fqdn == $::servername {
     class { '::ntp':
        servers => $time_servers,
        panic   => false,
@@ -61,7 +61,7 @@ class fundamentals::time ( $offline = 'false' ) {
     }
     # For agents, *always* stay true to the time on on the master
     cron { 'synctime':
-      command => '/usr/sbin/ntpdate -s master.puppetlabs.vm',
+      command => "/usr/sbin/ntpdate -s $::servername",
       minute  => '*/5',
     }
   }
