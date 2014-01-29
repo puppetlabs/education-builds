@@ -51,7 +51,7 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'puppetlabs-vcsrepo':
     version => '0.1.2',
   }
-  boostrarp::forge { 'puppetlabs-ntp':
+  bootstrap::forge { 'puppetlabs-ntp':
     version => '3.0.1',
   }
 
