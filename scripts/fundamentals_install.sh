@@ -5,20 +5,23 @@ export MASTER_HOSTNAME='master.puppetlabs.vm'
 
 # Setup the hostname for the system
 export RUBYLIB=/usr/src/puppet/lib:/usr/src/facter/lib
-/usr/src/puppet/bin/puppet resource host "$AGENT_HOSTNAME" \
-  ensure=present \
-  host_aliases="${AGENT_HOSTNAME/.*/}"\
-  ip=`/usr/src/facter/bin/facter ipaddress`
+/usr/src/puppet/bin/puppet apply -e "\
+  host { '"$AGENT_HOSTNAME"': \
+    ensure => present,\
+    host_aliases => '"${AGENT_HOSTNAME/.*/}"',\
+    ip => '`/usr/src/facter/bin/facter ipaddress`', }"
 
 /bin/sed -i "s/HOSTNAME.*/HOSTNAME=$AGENT_HOSTNAME/" /etc/sysconfig/network
 /bin/hostname "$AGENT_HOSTNAME"
 
 # Setup master hostname
 # Might switch to this https://github.com/adrienthebo/vagrant-hosts
-/usr/src/puppet/bin/puppet resource host $MASTER_HOSTNAME \
-    ensure=present \
-    host_aliases="['${MASTER_HOSTNAME/.*/}','master','puppet']" \
-    ip='10.0.0.101'
+/usr/src/puppet/bin/puppet apply -e "\
+  host { '"$MASTER_HOSTNAME"': \
+    ensure => present,\
+    host_aliases => ['"${MASTER_HOSTNAME/.*/}"','puppet'],\
+    ip => '10.0.0.101',\
+  }"
 
 unset RUBYLIB
 export q_all_in_one_install=n
