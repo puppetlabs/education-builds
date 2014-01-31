@@ -11,3 +11,4 @@ project_page 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/m
 
 dependency 'ripienaar/concat', '>= 0.1.0'
 dependency 'puppetlabs/vcsrepo', '>= 0.1.2'
+dependency 'pltraining/environment'
