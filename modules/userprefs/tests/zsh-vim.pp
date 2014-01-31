@@ -1,4 +1,4 @@
-class { 'environment':
+class { 'userprefs':
   shell  => 'zsh',
   editor => 'vim',
 }

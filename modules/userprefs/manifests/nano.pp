@@ -1,4 +1,4 @@
-class environment::nano (
+class userprefs::nano (
   $default = true,
 ) {
   package { 'nano':
@@ -7,7 +7,7 @@ class environment::nano (
 
   file { '/root/.nanorc':
     ensure  => 'file',
-    source  => 'puppet:///modules/environment/nano/nanorc',
+    source  => 'puppet:///modules/userprefs/nano/nanorc',
   }
 
   file { '/root/.nano.d':
@@ -16,7 +16,7 @@ class environment::nano (
 
   file { '/root/.nano.d/puppet.nanorc':
     ensure  => 'file',
-    source  => 'puppet:///modules/environment/nano/puppet.nanorc',
+    source  => 'puppet:///modules/userprefs/nano/puppet.nanorc',
   }
 
   if $default {

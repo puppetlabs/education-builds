@@ -1,4 +1,4 @@
-class environment::vim (
+class userprefs::vim (
   $default = true,
 ) {
   package { 'vim-enhanced':
@@ -7,12 +7,12 @@ class environment::vim (
 
   file { '/root/.vim':
     ensure  => 'directory',
-    source  => 'puppet:///modules/environment/vim/vim',
+    source  => 'puppet:///modules/userprefs/vim/vim',
     recurse => true,
   }
 
   file { '/root/.vimrc':
-    source => 'puppet:///modules/environment/vim/vimrc',
+    source => 'puppet:///modules/userprefs/vim/vimrc',
   }
 
   if $default {

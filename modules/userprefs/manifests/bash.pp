@@ -1,4 +1,4 @@
-class environment::bash (
+class userprefs::bash (
   $default = true,
 ) {
   package { 'bash':

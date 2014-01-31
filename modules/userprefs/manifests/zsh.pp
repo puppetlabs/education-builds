@@ -1,4 +1,4 @@
-class environment::zsh (
+class userprefs::zsh (
   $default = true,
 ) {
   package { 'zsh':
