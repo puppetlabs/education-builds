@@ -51,7 +51,9 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'puppetlabs-vcsrepo':
     version => '0.1.2',
   }
-
+  bootstrap::forge { 'puppetlabs-ntp':
+    version => '3.0.1',
+  }
 
   # These are the additional modules needed by the Advanced course
   # puppetlabs-mysql is also needed
