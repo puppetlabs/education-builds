@@ -4,7 +4,7 @@ node default {
   include training
   include vagrant
 
-  include environment::defaults
+  include userprefs::defaults
 }
 
 node /learn/ {
@@ -14,5 +14,5 @@ node /learn/ {
   stage { 'pe_install': require => Stage['main'], }
   class { 'learning::install': stage => pe_install, }
 
-  include environment::defaults
+  include userprefs::defaults
 }
