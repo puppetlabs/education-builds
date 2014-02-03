@@ -76,6 +76,7 @@ hostname <%= $settings[:hostname] %>
 
 sed -i 's/127\.0\.0\.1.*/\0 <%= $settings[:hostname] %> <%= $settings[:hostname].split('.')[0] %>/' /etc/hosts
 cp /mnt/puppet/<%= $settings[:pe_tarball] %> /root/
+<% if $settings[:vmtype] == "learning" %>
 <% if File.extname($settings[:pe_tarball]) == ".gz" %>
 tar zmxf /root/<%= $settings[:pe_tarball] %>
 <% tname = File.basename($settings[:pe_tarball], ".gz") %>
@@ -86,7 +87,8 @@ tar mxf /root/<%= $settings[:pe_tarball] %>
 <% else abort("Not sure what type of file #{$settings[:pe_tarball]} is") %>
 <% end %>
 ln -s /root/<%= fname %> /root/puppet-enterprise
-
+rm -f /root/<%= $settings[:pe_tarball] %>
+<% end %>
 # put verification script links in personal bin directory
 ln -s /usr/src/puppetlabs-training-bootstrap/scripts/classroom /root/bin
 
