@@ -50,7 +50,10 @@ class fundamentals::master ( $classes = [] ) {
     }
   }
 
-  # if we've gotten to the Capstone, create our teams!
+  # configure Hiera environments for the master
+  include fundamentals::master::hiera
+
+  # if we've gotten to the Capstone and teams are defined, create our teams!
   $teams = hierasafe('teams', undef)
   if $teams {
     $teamnames = keys($teams)
@@ -62,8 +65,7 @@ class fundamentals::master ( $classes = [] ) {
   }
 
   # Add any classes defined to the console
-  # This rake task is currently borken
-  #fundamentals::console::class { $classes: }
+  fundamentals::console::class { $classes: }
 
   # Now create all of the users who've checked in
   Fundamentals::User <<||>>

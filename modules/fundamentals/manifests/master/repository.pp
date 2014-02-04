@@ -10,7 +10,7 @@ define fundamentals::master::repository (
 
   if !( $ensure in ['present','absent'] ) {
     fail("fundamentals::master::repository ensure parameter must be 'present' or 'absent'")
-  } 
+  }
 
   validate_absolute_path("$root")
   validate_absolute_path("$envroot")

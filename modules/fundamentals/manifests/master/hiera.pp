@@ -1,16 +1,49 @@
-# You can use this if you're lazy and/or don't remember
-# the yaml syntax. It's preferred to type it out.
-# Drives the point home how easy it is to configure.
+# Make sure that Hiera is configured for the master so that we
+# enabling the use of Hiera within student environments.
 #
-# ### This is not idempotent, so don't classify the master
+# Paramters:
+# * $autoteam: automatically create simple teams for Capstone. Defaults to false.
 #
-class fundamentals::master::hiera {
+class fundamentals::master::hiera (
+  $autoteam = false,
+) {
+  validate_bool($autoteam)
+
+  File {
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+  }
+
+  file { '/etc/puppetlabs/puppet/hieradata':
+    ensure => directory,
+  }
+
   file { '/etc/puppetlabs/puppet/hieradata/defaults.yaml':
     ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('fundamentals/teams.yaml.erb'),
+    source  => 'puppet:///modules/fundamentals/defaults.yaml',
     replace => false,
+  }
+
+  # place the environments link in place only on the master
+  file { '/etc/puppetlabs/puppet/hieradata/environments':
+    ensure => link,
+    target => '/etc/puppetlabs/puppet/environments',
+  }
+
+  file { '/etc/puppetlabs/puppet/hiera.yaml':
+    ensure => file,
+    source => 'puppet:///modules/fundamentals/hiera.master.yaml',
+  }
+
+  if $autoteam {
+    file { '/etc/puppetlabs/puppet/hieradata/teams.yaml':
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('fundamentals/teams.yaml.erb'),
+      replace => false,
+    }
   }
 }

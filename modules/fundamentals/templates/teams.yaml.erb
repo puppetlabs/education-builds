@@ -14,14 +14,14 @@
 
   # Populate our groups hash with the group names
   groups = {}
-  (1..groupnum).each {|n| groups["Group#{n}"] = [] }
+  (1..groupnum).each {|n| groups["group#{n}"] = [] }
 
   # Iterate through the students, adding an entry to our hash for each
   # student underneath the appropriate group key, round robin style
   count  = 0
   students.each do |name|
     current = (count%groupnum) + 1
-    groups["Group#{current}"] << File.basename(name)
+    groups["group#{current}"] << File.basename(name)
     count += 1
   end
 

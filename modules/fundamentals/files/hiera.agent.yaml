@@ -6,7 +6,5 @@
   :datadir: /etc/puppetlabs/puppet/hieradata
 
 :hierarchy:
-  - defaults
   - "%{clientcert}"
-  - "%{environment}"
-  - global
+  - defaults

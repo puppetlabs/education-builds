@@ -2,6 +2,8 @@
 #  * root sshkey
 #  * git source repository
 #  * git pre-commit hook
+#  * hiera configuration
+
 class fundamentals::agent ( $workdir = 'puppetcode' ) {
   Exec {
     environment => 'HOME=/root',
@@ -39,6 +41,11 @@ class fundamentals::agent ( $workdir = 'puppetcode' ) {
     recurse => true,
     force   => true,
   }
+
+  # Make sure that Hiera is configured for all nodes so that we
+  # can work through the hiera sections without teaching them
+  # how to configure it.
+  include fundamentals::agent::hiera
 
   fundamentals::agent::workdir { $workdir:
     ensure   => present,
