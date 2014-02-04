@@ -24,15 +24,10 @@ class fundamentals {
 
     # define a list of classes that should be available in the console
     class { 'fundamentals::master':
-      classes => [ 'users', 'apache' ]
+      classes => [ 'users', 'apache', 'fundamentals' ]
     }
   }
   else {
     include fundamentals::agent
   }
-
-  # unconditionally configure Hiera for all nodes. The master will get
-  # additional configuration for the capstone lab.
-  include fundamentals::hiera
-
 }

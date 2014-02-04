@@ -21,32 +21,36 @@ define fundamentals::agent::workdir (
     file { $workdir:
       ensure => directory,
     }
-  
+
     if $populate {
       file { "${workdir}/site.pp":
         ensure  => file,
         source  => 'puppet:///modules/fundamentals/site.pp',
         replace => false,
       }
-  
+
       file { "${workdir}/modules":
         ensure => directory,
       }
+
+      file { "${workdir}/hieradata":
+        ensure => directory,
+      }
     }
-  
+
     # Can't use vcsrepo because we cannot clone.
     exec { "initialize ${name} repo":
       command   => "git init ${workdir}",
       creates   => "${workdir}/.git",
       require   => File[$workdir],
     }
-  
+
     exec { "add git remote for ${name}":
       unless  => "git --git-dir ${workdir}/.git config remote.origin.url",
       command => "git --git-dir ${workdir}/.git remote add origin ${username}@master.puppetlabs.vm:/var/repositories/${username}.git",
       require => Exec["initialize ${name} repo"],
     }
-  
+
     file { "${workdir}/.git/hooks/pre-commit":
       ensure  => file,
       source  => 'puppet:///modules/fundamentals/pre-commit',
