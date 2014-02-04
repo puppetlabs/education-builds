@@ -10,6 +10,13 @@ class userprefs::zsh (
     target => '/root/.profile',
   }
 
+  file { '/root/.zshrc':
+    ensure => file,
+    replace => false,
+    source => 'puppet:///modules/userprefs/shell/zshrc',
+    require => Package['zsh'],
+  }
+
   if $default {
     user { 'root':
       ensure  => present,
