@@ -1,4 +1,4 @@
-# environment
+# userprefs 
 
 ## This simply allows users to customize their environment by choosing their editor & shell.
 
@@ -12,7 +12,7 @@ Example usage:
 
 ```puppet
 
-    class { 'environment':
+    class { 'userprefs':
       shell  => 'zsh',  # allowed values: bash/zsh
       editor => 'vim',  # allowed valued: emacs/nano/vim
     }

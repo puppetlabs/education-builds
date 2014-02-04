@@ -6,14 +6,14 @@
 #    shell: Sets the default shell and installs rc files
 #           Accepts zsh/bash
 #
-class environment (
+class userprefs (
   $editor = undef,
   $shell  = undef,
 ) {
 
   if $editor {
     if $editor in ['vim', 'emacs', 'nano'] {
-      include "environment::${editor}"
+      include "userprefs::${editor}"
     }
     else {
       fail("The editor ${editor} is unsupported")
@@ -22,12 +22,12 @@ class environment (
 
   if $shell {
     if $shell in ['bash', 'zsh'] {
-      include "environment::${shell}"
+      include "userprefs::${shell}"
     }
     else {
       fail("The shell ${shell} is unsupported")
     }
   }
 
-  include environment::profile
+  include userprefs::profile
 }

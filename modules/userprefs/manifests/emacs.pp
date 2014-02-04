@@ -1,4 +1,4 @@
-class environment::emacs (
+class userprefs::emacs (
   $default = true,
 ) {
   package { 'emacs':
@@ -7,7 +7,7 @@ class environment::emacs (
 
   file { '/root/.emacs':
     ensure  => 'file',
-    source  => 'puppet:///modules/environment/emacs/emacs',
+    source  => 'puppet:///modules/userprefs/emacs/emacs',
   }
 
   file { '/root/.emacs.d':
@@ -16,7 +16,7 @@ class environment::emacs (
 
   file { '/root/.emacs.d/puppet-mode.el':
     ensure  => 'file',
-    source  => 'puppet:///modules/environment/emacs/puppet-mode.el',
+    source  => 'puppet:///modules/userprefs/emacs/puppet-mode.el',
   }
 
   if $default {

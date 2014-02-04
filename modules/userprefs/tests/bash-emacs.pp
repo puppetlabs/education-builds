@@ -1,4 +1,4 @@
-class { 'environment':
+class { 'userprefs':
   shell  => 'bash',
   editor => 'emacs',
 }

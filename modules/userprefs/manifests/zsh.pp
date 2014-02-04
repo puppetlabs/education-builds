@@ -1,4 +1,4 @@
-class environment::zsh (
+class userprefs::zsh (
   $default = true,
 ) {
   package { 'zsh':
@@ -8,6 +8,13 @@ class environment::zsh (
   file { '/root/.zprofile':
     ensure => link,
     target => '/root/.profile',
+  }
+
+  file { '/root/.zshrc':
+    ensure => file,
+    replace => false,
+    source => 'puppet:///modules/userprefs/shell/zshrc',
+    require => Package['zsh'],
   }
 
   if $default {
