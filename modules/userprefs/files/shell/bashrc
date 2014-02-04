@@ -46,12 +46,16 @@ export WHITE
 export BOLD
 export RESET
 
+function is_on_git() {
+  git rev-parse 2> /dev/null
+}
+
 function parse_git_dirty() {
-  [[ $(git status 2> /dev/null | tail -n1) != *"working directory clean"* ]] && echo "*"
+  [[ $(git status 2> /dev/null | tail -n1) != *"working directory clean"* ]] && echo "±"
 }
 
 function parse_git_branch() {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
 
-export PS1="[\[${BOLD}${MAGENTA}\]\u\[$WHITE\]@\[$WHITE\]\h\[$WHITE\] \[$GREEN\]\w\[$WHITE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \":\")\[$PURPLE\](\$(parse_git_branch))\[$WHITE\]\[$ORANGE\]\[$WHITE\]]# \[$RESET\]"
+export PS1="[\[${BOLD}${MAGENTA}\]\u\[$WHITE\]@\[$WHITE\]\h\[$WHITE\] \[$GREEN\]\w\[$WHITE\]\$(is_on_git && [[ -n \$(git branch 2> /dev/null) ]] && echo \":\")\[$PURPLE\]\$(parse_git_branch)\[$WHITE\]\[$ORANGE\]\[$WHITE\]]# \[$RESET\]"
