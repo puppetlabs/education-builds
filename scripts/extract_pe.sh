@@ -28,7 +28,7 @@ cd '/root'
 installer=$(find /root -maxdepth 1 -type f -name 'puppet-enterprise-*')
 archivefile="${installer##*/}"
 dirname="${archivefile%.tar*}"
-echo $dirname
+
 if [[ ! -z "$installer" ]] && [[ ! -d "/root/$dirname" ]]
   then
     extract $installer
