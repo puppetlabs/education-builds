@@ -1,8 +1,8 @@
-class environment::defaults {
-  include environment::profile
+class userprefs::defaults {
+  include userprefs::profile
 
-  class { 'environment::bash':  default => false }
+  class { 'userprefs::bash':  default => false }
 
-  class { 'environment::emacs': default => false }
-  class { 'environment::vim':   default => false }
+  class { 'userprefs::emacs': default => false }
+  class { 'userprefs::vim':   default => false }
 }
