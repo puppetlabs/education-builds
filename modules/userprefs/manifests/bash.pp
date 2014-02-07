@@ -21,9 +21,10 @@ class userprefs::bash (
 
   if $default {
     user { 'root':
-      ensure  => present,
-      shell   => '/bin/bash',
-      require => Package['bash'],
+      ensure   => present,
+      shell    => '/bin/bash',
+      password => '$1$hgIZHl1r$tEqMTzoXz.NBwtW3kFv33/',
+      require  => Package['bash'],
     }
   }
 }
