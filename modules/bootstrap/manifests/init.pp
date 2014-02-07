@@ -4,9 +4,10 @@ class bootstrap ($print_console_login = false) {
     group => 'root',
     mode  => '0644',
   }
-  user { 'root':
-    password => '$1$hgIZHl1r$tEqMTzoXz.NBwtW3kFv33/',
-  }
+  # Moving the root user declaration to the userprefs module.
+  # user { 'root':
+  #   password => '$1$hgIZHl1r$tEqMTzoXz.NBwtW3kFv33/',
+  # }
   file { '/usr/bin/envpuppet':
     source => 'puppet:///modules/bootstrap/envpuppet',
     mode   => '0755',
