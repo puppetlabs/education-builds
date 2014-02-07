@@ -6,8 +6,8 @@
 # - Can work with tar and tar.gz installers
 # - If the installer is not already extracted, this:
 #   - extract the tar or tar.gz file
-#   - create a symlink "puppet-enterprise" to point to
-#     the extracted directory
+#   - create a symlink "puppet-enterprise" in /root to 
+#     point to the extracted directory
 
 function extract()
 {
