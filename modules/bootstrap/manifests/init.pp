@@ -118,7 +118,7 @@ class bootstrap ($print_console_login = false) {
   class { 'bootstrap::cache_gems': }
 
   # configure user environment
-  class { 'environment':
+  class { 'userprefs':
     shell  => 'bash',
     editor => 'vim',
   }
