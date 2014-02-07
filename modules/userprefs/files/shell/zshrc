@@ -3,6 +3,12 @@
 setopt prompt_subst
 autoload -U colors && colors # Enable colors in prompt
 
+if [[ -e /root/.extendingrc  ]]; then
+  export PATH=/opt/puppet/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+else
+  export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+fi
+
 # Modify the colors and symbols in these variables as desired.
 GIT_PROMPT_SYMBOL="%{$fg[red]%}±"
 GIT_PROMPT_AHEAD="%{$fg[red]%}ANUM%{$reset_color%}"
