@@ -3,6 +3,10 @@
 setopt prompt_subst
 autoload -U colors && colors # Enable colors in prompt
 
+if [[ -e /root/.customzshrc ]]; then
+   source /root/.customzshrc
+fi
+
 if [[ -e /root/.extendingrc  ]]; then
   export PATH=/opt/puppet/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
 else

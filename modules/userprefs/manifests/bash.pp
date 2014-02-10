@@ -7,9 +7,13 @@ class userprefs::bash (
 
   file { '/root/.bashrc':
     ensure  => file,
-    replace => false,
     source  => 'puppet:///modules/userprefs/shell/bashrc',
     require => Package['bash'],
+  }
+  
+  file { '/root/.custombashrc':
+    ensure  => file,
+    require => File['/root/.bashrc'],
   }
 
   file { '/root/.bash_profile':

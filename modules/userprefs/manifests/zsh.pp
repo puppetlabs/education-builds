@@ -11,10 +11,14 @@ class userprefs::zsh (
   }
 
   file { '/root/.zshrc':
-    ensure => file,
-    replace => false,
-    source => 'puppet:///modules/userprefs/shell/zshrc',
+    ensure  => file,
+    source  => 'puppet:///modules/userprefs/shell/zshrc',
     require => Package['zsh'],
+  }
+
+  file { '/root/.customzshrc':
+    ensure  => file,
+    require => File['/root/.zshrc'],
   }
 
   if $default {

@@ -11,6 +11,10 @@ if [ -f /etc/bashrc ]; then
   . /etc/bashrc
 fi
 
+if [ -f /root/.custombashrc ]; then
+  . /root/.custombashrc
+fi
+
 if [ -f /root/.extendingrc ]; then
   export PATH=/opt/puppet/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
 else
