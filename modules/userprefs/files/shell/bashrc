@@ -1,3 +1,7 @@
+# NOTE: This file is managed by Puppet so your changes
+# may be erased. If you'd like to set custom bash functions
+# you can do so in the '.custombashrc' file.
+#
 # User specific aliases and functions
 
 alias rm='rm -i'
