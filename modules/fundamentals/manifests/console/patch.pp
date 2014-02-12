@@ -11,15 +11,12 @@ class fundamentals::console::patch {
     before  => File['/tmp/patches/lock'],
   }
 
-  file { '/tmp/patches':
-    ensure => directory,
-  }
-
+  # each patch to be applied should drop a file in /tmp/patches
   file { '/tmp/patches/selectNone.diff':
     ensure => file,
     source => 'puppet:///modules/fundamentals/selectNone.diff',
   }
-
+  # then apply it
   exec { 'Live Management select none':
     command => 'patch -p0 < /tmp/patches/selectNone.diff',
     require => File['/tmp/patches/selectNone.diff'],
@@ -28,5 +25,8 @@ class fundamentals::console::patch {
   # completion flag
   file { '/tmp/patches/lock':
     ensure => file,
+  }
+  file { '/tmp/patches':
+    ensure => directory,
   }
 }
