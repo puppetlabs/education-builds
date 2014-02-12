@@ -500,7 +500,7 @@ task :publishvm do
     vcenter_settings = YAML::load(File.open("#{CACHEDIR}/.vmwarecfg.yml"))
     # Do the thing here
     cputs "Publishing to vSphere"
-    sh "/usr/bin/ovftool --noSSLVerify --network='delivery.puppetlabs.net' -dm=thin --datastore='general (data2)' -o --powerOffTarget --powerOn -n=learn #{VMWAREDIR}/#{$settings[:vmname]}-vmware/#{$settings[:vmname]}/#{$settings[:vmname]}.vmx vi://#{vcenter_settings["username"]}\@puppetlabs.com:#{vcenter_settings["password"]}@vcenter.ops.puppetlabs.net/pdx_office/host/delivery"
+    sh "/usr/bin/ovftool --noSSLVerify --network='delivery.puppetlabs.net' --datastore='instance1' -o --powerOffTarget --powerOn -n=learn #{VMWAREDIR}/#{$settings[:vmname]}-vmware/#{$settings[:vmname]}/#{$settings[:vmname]}.vmx vi://#{vcenter_settings["username"]}\@puppetlabs.com:#{vcenter_settings["password"]}@vcenter.ops.puppetlabs.net/pdx_office/host/delivery"
   else
     cputs "Skipping - only publish the learning VM"
   end
