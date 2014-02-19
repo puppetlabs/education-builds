@@ -34,6 +34,6 @@ check "[[ '`grep processor /proc/cpuinfo | wc -l`' -gt '1' ]]"      \
       "Checking core count for classroom Master"                    \
       "You should give the virtual machine for the classroom Master at least two cores"
 
-check "[[ \"`awk '/MemTotal/{print $2}' /proc/meminfo`\" -gt '1939084' ]]" \
+check "[[ \"`awk '/MemTotal/{print $2}' /proc/meminfo`\" -ge '1939084' ]]" \
       "Checking available memory for classroom Master"              \
       "You should give the virtual machine for the classroom Master at least 2GB of memory"
