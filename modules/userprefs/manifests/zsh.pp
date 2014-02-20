@@ -1,5 +1,6 @@
 class userprefs::zsh (
-  $default = true,
+  $default  = true,
+  $password = undef,
 ) {
   package { 'zsh':
     ensure => present,
@@ -19,9 +20,10 @@ class userprefs::zsh (
 
   if $default {
     user { 'root':
-      ensure  => present,
-      shell   => '/bin/zsh',
-      require => Package['zsh'],
+      ensure   => present,
+      shell    => '/bin/zsh',
+      password => $password,
+      require  => Package['zsh'],
     }
   }
 }
