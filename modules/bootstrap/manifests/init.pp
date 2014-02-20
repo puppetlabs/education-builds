@@ -103,7 +103,7 @@ class bootstrap ($print_console_login = false) {
     context => '/files/etc/ssh/sshd_config',
     changes => 'set GSSAPIAuthentication no',
   }
-  
+
   # ntp fix - if there is a classroom master VM, sync with it
   # Assumes the master.puppetlabs.vm machine has had an agent run
   # after being classified with the appropriate modules to set up
@@ -119,9 +119,6 @@ class bootstrap ($print_console_login = false) {
   class { 'bootstrap::cache_gems': }
 
   # configure user environment
-  class { 'userprefs':
-    shell  => 'bash',
-    editor => 'vim',
-  }
+  include userprefs::defaults
 
 }

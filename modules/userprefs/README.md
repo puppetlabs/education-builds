@@ -1,14 +1,16 @@
-# userprefs 
-
-## This simply allows users to customize their environment by choosing their editor & shell.
+# userprefs
 
 A simple module that allows users to choose their default editor and default shell.
+
+## About
 
 This will ensure that the proper packages are installed, the configuration files that
 enable syntax highlighting are written, helpful shell aliases are enabled, and the
 default editor and shell are set.
 
-Example usage:
+## Example usage:
+
+Customizing the environment:
 
 ```puppet
 
@@ -16,6 +18,14 @@ Example usage:
       shell  => 'zsh',  # allowed values: bash/zsh
       editor => 'vim',  # allowed valued: emacs/nano/vim
     }
+
+```
+
+Classifying a node with classroom defaults:
+
+```puppet
+
+    include userprefs::defaults
 
 ```
 

@@ -1,5 +1,6 @@
 class userprefs::bash (
-  $default = true,
+  $default  = true,
+  $password = undef,
 ) {
   package { 'bash':
     ensure => present,
@@ -23,7 +24,7 @@ class userprefs::bash (
     user { 'root':
       ensure   => present,
       shell    => '/bin/bash',
-      password => '$1$hgIZHl1r$tEqMTzoXz.NBwtW3kFv33/',
+      password => $password,
       require  => Package['bash'],
     }
   }
