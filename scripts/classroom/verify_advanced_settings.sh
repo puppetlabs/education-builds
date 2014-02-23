@@ -1,4 +1,5 @@
 source functions.sh
+version
 
 echo "Verifying Advanced classroom setup:"
 
