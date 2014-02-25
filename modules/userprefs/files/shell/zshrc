@@ -1,7 +1,15 @@
+# NOTE: This file is managed by Puppet any changes you make
+# to this file may be erased. If you'd like to set custom zsh
+# functions you can do so in the .customzshrc file.
+#
 # Adapted from code found at <https://gist.github.com/1712320>.
 
 setopt prompt_subst
 autoload -U colors && colors # Enable colors in prompt
+
+if [[ -e /root/.customzshrc ]]; then
+   source /root/.customzshrc
+fi
 
 if [[ -e /root/.extendingrc  ]]; then
   export PATH=/opt/puppet/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
