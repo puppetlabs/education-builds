@@ -117,7 +117,7 @@ task :init do
   end
 
   # Calculate the VM version and build numbers used in the kickstart template
-  @ptb_build     = `git rev-parse --short #{@ptbbranch}`
+  @ptb_build     = `git rev-parse --short #{@ptbbranch}`.strip
   @ptb_version ||= '[Testing Build]'
 
   cputs "Cloning ptb: #{ptbrepo}, #{ptbrepo_destination}, #{@ptbbranch}"
