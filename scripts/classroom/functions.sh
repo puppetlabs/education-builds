@@ -38,3 +38,12 @@ function check ()
     fail "$MESSAGE" "$RESOLUTION"
   fi
 }
+
+function version ()
+{
+ if [ -f /etc/puppetlabs-release ]
+ then
+  echo "Version: `cat /etc/puppetlabs-release`"
+  echo
+ fi
+}
