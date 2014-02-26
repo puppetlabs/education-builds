@@ -65,6 +65,21 @@ class localrepo {
     notify   => Exec["makecache"],
   }
 
+  ## Build the "updates" repo
+  localrepo::pkgsync { "updates_pkgs":
+    pkglist  => template("localrepo/updates_pkgs.erb"),
+    repopath => "${base}/mirror/centos/6/updates/i386",
+    syncer   => "yumdownloader",
+    source   => "base",
+    notify   => Repobuild["updates_local"],
+  }
+
+  localrepo::repobuild { "updates_local":
+    repopath => "${base}/mirror/centos/6/updates/i386",
+    require  => Package["createrepo"],
+    notify   => Exec["makecache"],
+  }
+
   ## Build the "epel" repo
   localrepo::pkgsync { "epel_pkgs":
     pkglist  => template("localrepo/epel_pkgs.erb"),
