@@ -1,5 +1,5 @@
 name    'pltraining-fundamentals'
-version '1.4.2'
+version '1.4.3'
 source 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/fundamentals'
 author 'pltraining'
 license 'Apache License, Version 2.0'
