@@ -27,6 +27,32 @@
     - `rake everything vmos=Centos vmtype=learning` will build a learning vm
 - Wait for it to finish, then find zipped-up ready-to-use VMs in ~/Sites/cache/
 
+## Options:
+
+When running the Rakefile to create new VMs, the following ENV vars can be set as needed:
+
+- PEVERSION - eg. 3.2
+- PESTATUS - latest or release
+    - If release it will grab the released 3.2.z PE installer
+    - If latest it will grab the latest build from neptune.puppetlabs.lan - so requires access to PuppetLabs VPN
+- vboxheadless 
+    - If set to 1, you will not see the VirtualBox window when the VM is created
+- vmos - Centos or Debian
+- vmtype - training or learning
+- ptbrepo - URI for the repo with puppetlabs-training-bootstrap
+- ptbbranch_overide
+    - If set to 1 the last used branch (master by default) will be used
+- del - y or n
+    - If yes, the existing VMs in the cache dir will be delete during rake clean
+
+Examples:
+
+To build with the latest (unreleased) PE version installer being currently worked-on:
+`del=y rake clean && PEVERSION=3.2 PESTATUS=latest vboxheadless=1 vmos=Centos vmtype=training ptbbranch_override=1 del=y rake everything` 
+
+To build with the released PE version installer being currently worked-on:
+`del=y rake clean && PEVERSION=3.2 PESTATUS=latest vboxheadless=1 vmos=Centos vmtype=training ptbbranch_override=1 del=y rake everything` 
+
 ## To Do:
 - Support creation of Ubuntu/Debian-based VMs
     - currently one can only build CentOS-based VMs.
