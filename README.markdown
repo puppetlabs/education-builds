@@ -40,10 +40,17 @@ When running the Rakefile to create new VMs, the following ENV vars can be set a
 - vmos - Centos or Debian
 - vmtype - training or learning
 - ptbrepo - URI for the repo with puppetlabs-training-bootstrap
+- iso_file
+    - The path to the OS iso file to use as a base. By default it uses the OS iso in the cache directory
+- ptbbranch
+    - branch for the repo, defaults to master
 - ptbbranch_overide
     - If set to 1 the last used branch (master by default) will be used
 - del - y or n
     - If yes, the existing VMs in the cache dir will be delete during rake clean
+- mem - integer
+    - Memory for the new VM, defaults to 1024
+
 
 Examples:
 
