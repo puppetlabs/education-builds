@@ -270,7 +270,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   end
   # Extract the OS version from the iso filename as ubuntu and centos are the
   # same basic format and get caught by the match group below
-  iso_version = iso_file[/^.*-(\d+\.\d\.?\d?)-.*\.iso$/,1]
+  iso_version = iso_file[/^.*-(\d+\.\d+\.?\d?)-.*\.iso$/,1]
   if $settings[:vmtype] == 'training'
     $settings[:vmname] = "#{$settings[:vmos]}-#{iso_version}-pe-#{@real_pe_ver}".downcase
   else
