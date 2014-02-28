@@ -149,6 +149,8 @@ task :createvm, [:vmos,:vmtype,:mem] do |t,args|
     case $settings[:vmos]
     when /(Centos|Redhat)/
       ostype = 'RedHat'
+    else
+      ostype = $settings[:vmos]
     end
     cputs "Creating VM '#{$settings[:vmname]}' in #{dir} ..."
     system("VBoxManage createvm --name '#{$settings[:vmname]}' --basefolder '#{dir}' --register --ostype #{ostype}")
