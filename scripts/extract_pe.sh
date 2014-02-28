@@ -33,5 +33,4 @@ if [[ ! -z "$installer" ]] && [[ ! -d "/root/$dirname" ]]
   then
     extract $installer
     ln -s $dirname puppet-enterprise
-    rm $installer
 fi
