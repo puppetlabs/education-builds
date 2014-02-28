@@ -180,6 +180,8 @@ task :createiso, [:vmos,:vmtype] do |t,args|
     end
     $settings[:pe_tarball] = @pe_tarball
     # No variables
+    build_file('lang')
+    build_file('txt.cfg')
     build_file('isolinux.cfg')
     #template_path = "#{BASEDIR}/#{$settings[:vmos]}/#{filename}.erb"
     # Uses hostname, pe_install_suffix
