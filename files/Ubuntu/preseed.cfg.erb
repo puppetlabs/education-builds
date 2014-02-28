@@ -92,13 +92,17 @@ apt-cdrom-setup apt-setup/cdrom/set-first boolean false
 apt-mirror-setup apt-setup/use_mirror boolean false
 apt-mirror-setup apt-setup/no_mirror boolean false
 
+# Add repos for packages:
+d-i apt-setup/local0/repository string http://archive.ubuntu.com/ubuntu precise main restricted universe
+d-i apt-setup/local0/comment string Ubuntu Repositories
+d-i apt-setup/local0/source boolean false
 
 # Software
 d-i     base-installer/kernel/override-image    string linux-server
 tasksel tasksel/first multiselect ubuntu-server
 #d-i pkgsel/language-packs multiselect en
 d-i pkgsel/update-policy select none
-d-i pkgsel/include string openssh-server build-essential
+d-i pkgsel/include string openssh-server build-essential charybdis
 d-i pkgsel/install-language-support boolean false
 popularity-contest popularity-contest/participate boolean false
 
@@ -179,4 +183,7 @@ xserver-xorg xserver-xorg/config/monitor/mode-list \
 # packages and run commands in the target system.
 #d-i preseed/late_command string apt-install git ; \
 #  cp -Rv /cdrom/preseed/cloudbox/ /target/ ; in-target /cloudbox/late_command.sh
-
+d-i preseed/late_command string \
+mount /dev/sr0 /mnt;\
+tar zxf /mnt/puppet/<%= $settings[:pe_tarball] %> -C /target/root;\
+ln -s /root/puppet-enterprise-<%= PEVERSION + $settings[:pe_install_suffix] %> /target/root/puppet-enterprise;

@@ -187,11 +187,12 @@ task :createiso, [:vmos,:vmtype] do |t,args|
 
     # Define ISO file targets
     files = {
-      "#{BUILDDIR}/Ubuntu/isolinux.cfg"               => '/isolinux/isolinux.cfg',
-      "#{BUILDDIR}/Ubuntu/preseed.cfg"                => '/puppet/preseed.cfg',
+      "#{BUILDDIR}/Debian/lang"                       => '/isolinux/lang',
+      "#{BUILDDIR}/Debian/txt.cfg"                    => '/isolinux/txt.cfg',
+      "#{BUILDDIR}/Debian/isolinux.cfg"               => '/isolinux/isolinux.cfg',
+      "#{BUILDDIR}/Debian/preseed.cfg"                => '/puppet/preseed.cfg',
       "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
       "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
-      "#{CACHEDIR}/hiera.git"                         => '/puppet/hiera.git',
       "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
       "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
     }
@@ -263,7 +264,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   else
     cputs "Image #{KSISODIR}/#{$settings[:vmos]}.iso is already created; skipping"
   end
-  # Extract the OS version from the iso filename as debian and centos are the
+  # Extract the OS version from the iso filename as ubuntu and centos are the
   # same basic format and get caught by the match group below
   iso_version = iso_file[/^.*-(\d+\.\d\.?\d?)-.*\.iso$/,1]
   if $settings[:vmtype] == 'training'
