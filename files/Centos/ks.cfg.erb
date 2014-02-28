@@ -87,7 +87,7 @@ tar mxf /root/<%= $settings[:pe_tarball] %>
 <% else abort("Not sure what type of file #{$settings[:pe_tarball]} is") %>
 <% end %>
 ln -s /root/<%= fname %> /root/puppet-enterprise
-rm -f /root/<%= $settings[:pe_tarball] %>
+#rm -f /root/<%= $settings[:pe_tarball] %>
 <% end %>
 # put verification script links in personal bin directory
 ln -s /usr/src/puppetlabs-training-bootstrap/scripts/classroom /root/bin
