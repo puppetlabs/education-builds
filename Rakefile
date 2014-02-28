@@ -189,10 +189,10 @@ task :createiso, [:vmos,:vmtype] do |t,args|
 
     # Define ISO file targets
     files = {
-      "#{BUILDDIR}/Debian/lang"                       => '/isolinux/lang',
-      "#{BUILDDIR}/Debian/txt.cfg"                    => '/isolinux/txt.cfg',
-      "#{BUILDDIR}/Debian/isolinux.cfg"               => '/isolinux/isolinux.cfg',
-      "#{BUILDDIR}/Debian/preseed.cfg"                => '/puppet/preseed.cfg',
+      "#{BUILDDIR}/Ubuntu/lang"                       => '/isolinux/lang',
+      "#{BUILDDIR}/Ubuntu/txt.cfg"                    => '/isolinux/txt.cfg',
+      "#{BUILDDIR}/Ubuntu/isolinux.cfg"               => '/isolinux/isolinux.cfg',
+      "#{BUILDDIR}/Ubuntu/preseed.cfg"                => '/puppet/preseed.cfg',
       "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
       "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
       "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
