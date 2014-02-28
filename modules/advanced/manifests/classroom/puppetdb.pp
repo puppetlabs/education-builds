@@ -4,8 +4,8 @@ class advanced::classroom::puppetdb {
     path        => '/opt/puppet/bin:/bin',
     cwd         => '/opt/puppet/share/puppet-dashboard',
     environment => 'RAILS_ENV=production',
-    command     => "rake node:addclassparam name=${::clientcert} class='pe_puppetdb' param='listen_address' value='0.0.0.0'",
-    unless      => "rake node:listclassparams name=${::clientcert} class='pe_puppetdb' | grep -qs '^listen_address'",
+    command     => "rake node:addclassparam name=${::clientcert} class='pe_puppetdb::pe' param='listen_address' value='0.0.0.0'",
+    unless      => "rake node:listclassparams name=${::clientcert} class='pe_puppetdb::pe' | grep -qs '^listen_address'",
     before      => Ini_setting['puppetdb_port'],
     notify      => Service['pe-puppetdb'],
   }
