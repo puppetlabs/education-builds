@@ -185,5 +185,14 @@ xserver-xorg xserver-xorg/config/monitor/mode-list \
 #  cp -Rv /cdrom/preseed/cloudbox/ /target/ ; in-target /cloudbox/late_command.sh
 d-i preseed/late_command string \
 mount /dev/sr0 /mnt;\
-tar zxf /mnt/puppet/<%= $settings[:pe_tarball] %> -C /target/root;\
-ln -s /root/puppet-enterprise-<%= PEVERSION + $settings[:pe_install_suffix] %> /target/root/puppet-enterprise;
+cp /mnt/puppet/<%= $settings[:pe_tarball] %> /root/
+<% if File.extname($settings[:pe_tarball]) == ".gz" %>
+  tar zmxf /root/<%= $settings[:pe_tarball] %>
+  <% tname = File.basename($settings[:pe_tarball], ".gz") %>
+  <% fname = File.basename(tname, ".tar") %>
+<% elsif File.extname($settings[:pe_tarball]) == ".tar" %>
+  tar mxf /root/<%= $settings[:pe_tarball] %>
+  <% fname = File.basename($settings[:pe_tarball], ".tar") %>
+  <% else abort("Not sure what type of file #{$settings[:pe_tarball]} is") %>
+<% end %>
+ln -s /root/<%= fname %> /root/puppet-enterprise
