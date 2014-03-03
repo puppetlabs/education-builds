@@ -21,4 +21,5 @@ CERT_OPTIONS="--cert ${CERT} --cacert ${CACERT} --key ${PRVKEY}"
 
 MASTER="https://$(hostname):443"
 
-curl -k -X GET -H "Accept: text/yaml" "${CERT_OPTIONS} ${MASTER}/nodes/${1}"
+curl -k -X GET -H "Accept: text/yaml" ${CERT_OPTIONS} "${MASTER}/nodes/${1}"
+
