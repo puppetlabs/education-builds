@@ -193,6 +193,6 @@ mount /dev/sr0 /mnt;\
 <% elsif File.extname($settings[:pe_tarball]) == ".tar" %>
   tar mxf /mnt/puppet/<%= $settings[:pe_tarball] %> -C /target/root ;\
   <% fname = File.basename($settings[:pe_tarball], ".tar") %>
-  <% else abort("Not sure what type of file #{$settings[:pe_tarball]} is");\ %>
+  <% else abort("Not sure what type of file #{$settings[:pe_tarball]} is") %>
 <% end %>
 in-target ln -s /root/<%= fname %> /root/puppet-enterprise
