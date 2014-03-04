@@ -46,7 +46,7 @@ class bootstrap ($print_console_login = false) {
     hasrestart => true,
   }
   # Add a few extra packages for convenience
-  package { ['screen', 'telnet', 'tree'] :
+  package { [ 'patch', 'screen', 'telnet', 'tree' ] :
     ensure  => present,
     require => Class['localrepo'],
   }

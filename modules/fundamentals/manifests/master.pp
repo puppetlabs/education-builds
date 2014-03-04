@@ -64,6 +64,9 @@ class fundamentals::master ( $classes = [] ) {
     }
   }
 
+  # unselect all nodes in Live Management by default
+  #include fundamentals::console::patch
+
   # Add any classes defined to the console
   fundamentals::console::class { $classes: }
 
