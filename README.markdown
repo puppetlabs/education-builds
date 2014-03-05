@@ -52,14 +52,13 @@ When running the Rakefile to create new VMs, the following ENV vars can be set a
     - Memory for the new VM, defaults to 1024
 
 
-Examples:
+### Examples:
 
-To build with the latest (unreleased) PE version installer being currently worked-on:
+To build with the (unreleased) PE version undergoing testing installer being currently worked-on:
+
+Note: You will need to connected to the Puppetlabs office network to do this!
+
 `del=y rake clean && PEVERSION=3.2 PESTATUS=latest vboxheadless=1 vmos=Centos vmtype=training ptbbranch_override=1 del=y rake everything` 
 
-To build with the released PE version installer being currently worked-on:
-`del=y rake clean && PEVERSION=3.2 PESTATUS=latest vboxheadless=1 vmos=Centos vmtype=training ptbbranch_override=1 del=y rake everything` 
-
-## To Do:
-- Support creation of Ubuntu/Debian-based VMs
-    - currently one can only build CentOS-based VMs.
+To build with the released PE version installer: 
+`del=y rake clean && PEVERSION=3.2 PESTATUS=release vboxheadless=1 vmos=Centos vmtype=training ptbbranch_override=1 del=y rake everything` 
