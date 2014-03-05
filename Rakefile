@@ -23,7 +23,7 @@ VBOXDIR = "#{BUILDDIR}/vbox"
 # then,
 # Edit the PEVERSION to something like:
 # PEVERSION = '3.0.1-rc0-58-g9275a0f'
-PEVERSION = ENV['PEVERSION'] || '3.1.2'
+PEVERSION = ENV['PEVERSION'] || '3.2.0'
 PESTATUS = ENV['PESTATUS'] || 'release'
 $settings = Hash.new
 
@@ -64,8 +64,8 @@ task :init do
     when 'Centos'
       pe_install_suffix = '-el-6-i386'
     end
-    cputs "Getting PE tarball for #{vmos}"
-    @pe_tarball = get_pe(pe_install_suffix)
+    cputs "Getting PE tarballs for #{vmos}"
+    @pe_tarball, @agent_tarball = get_pe(pe_install_suffix)
   end
 
   cputs "Cloning puppet..."
@@ -206,7 +206,9 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       $settings[:hostname] = "learn.localdomain"
     end
 
-    $settings[:pe_tarball] = @pe_tarball
+    $settings[:pe_tarball]    = @pe_tarball
+    $settings[:agent_tarball] = @agent_tarball
+
     # No variables
     build_file('isolinux.cfg')
     # Uses hostname, pe_install_suffix
@@ -225,9 +227,10 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       "#{CACHEDIR}/epel-release.rpm"                  => '/puppet/epel-release.rpm',
       "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
       "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
-      "#{CACHEDIR}/hiera.git"                        => '/puppet/hiera.git',
+      "#{CACHEDIR}/hiera.git"                         => '/puppet/hiera.git',
       "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
-      "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
+      "#{CACHEDIR}/#{$settings[:pe_tarball]}"         => "/puppet/#{$settings[:pe_tarball]}",
+      "#{CACHEDIR}/#{$settings[:agent_tarball]}"      => "/puppet/#{$settings[:agent_tarball]}",
     }
     iso_glob = 'CentOS-6.5-*'
     iso_url = 'http://mirror.tocici.com/centos/6/isos/i386/CentOS-6.5-i386-bin-DVD1.iso'
@@ -662,28 +665,41 @@ def get_pe(pe_install_suffix)
   cputs "Actual PE version is #{@real_pe_ver}"
   perelease = @real_pe_ver.split('.')
   if PESTATUS =~ /latest/
-    url_prefix = "http://neptune.delivery.puppetlabs.net/#{perelease[0]}.#{perelease[1]}/ci-ready"
-    pe_tarball = "puppet-enterprise-#{@real_pe_ver}#{pe_install_suffix}.tar"
+    url_prefix    = "http://neptune.delivery.puppetlabs.net/#{perelease[0]}.#{perelease[1]}/ci-ready"
+    pe_tarball    = "puppet-enterprise-#{@real_pe_ver}#{pe_install_suffix}.tar"
+    agent_tarball = "puppet-enterprise-#{@real_pe_ver}#{pe_install_suffix}-agent.tar.gz"
   elsif PESTATUS =~ /release/
-    url_prefix = "https://s3.amazonaws.com/pe-builds/released/#{@real_pe_ver}"
-    pe_tarball = "puppet-enterprise-#{@real_pe_ver}#{pe_install_suffix}.tar.gz"
+    url_prefix    = "https://s3.amazonaws.com/pe-builds/released/#{@real_pe_ver}"
+    pe_tarball    = "puppet-enterprise-#{@real_pe_ver}#{pe_install_suffix}.tar.gz"
+    agent_tarball = "puppet-enterprise-#{@real_pe_ver}#{pe_install_suffix}-agent.tar.gz"
   else
     abort("Status: #{PESTATUS} not valid - use 'release' or 'latest'.")
   end
-  installer = "#{CACHEDIR}/#{pe_tarball}"
+  installer       = "#{CACHEDIR}/#{pe_tarball}"
+  agent_installer = "#{CACHEDIR}/#{agent_tarball}"
   unless File.exist?(installer)
     cputs "Downloading PE tarball #{@real_pe_ver}..."
     download("#{url_prefix}/#{pe_tarball}", installer)
+  end
+  unless File.exist?(agent_installer)
+    cputs "Downloading PE agent tarball #{@real_pe_ver}..."
+    download("#{url_prefix}/#{agent_tarball}", agent_installer)
   end
   if PESTATUS =~ /release/
     unless File.exist?("#{installer}.asc")
       cputs "Downloading PE signature asc file for #{@real_pe_ver}..."
       download "#{url_prefix}/#{pe_tarball}.asc", "#{CACHEDIR}/#{pe_tarball}.asc"
-      cputs "Verifying signature"
-      system("gpg --verify --always-trust #{installer}.asc #{installer}")
-      puts $?
     end
+    unless File.exist?("#{agent_installer}.asc")
+      cputs "Downloading PE agent signature asc file for #{@real_pe_ver}..."
+      download "#{url_prefix}/#{agent_tarball}.asc", "#{CACHEDIR}/#{agent_tarball}.asc"
+    end
+
+    cputs "Verifying installer signature"
+    raise ('Installer verification failed') unless system("gpg --verify --always-trust #{installer}.asc #{installer}")
+    cputs "Verifying agent signature"
+    raise ('Agent verification failed') unless  system("gpg --verify --always-trust #{agent_installer}.asc #{agent_installer}")
   end
-  return pe_tarball
+  return [ pe_tarball, agent_tarball ]
 end
 # vim: set sw=2 sts=2 et tw=80 :

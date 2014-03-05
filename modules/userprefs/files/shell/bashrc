@@ -1,13 +1,12 @@
 # Source global definitions
-if [ -f /etc/bashrc ]; then
-  . /etc/bashrc
-fi
+[[ -f /etc/bashrc ]] && source /etc/bashrc
 
 # load customizations, such as the pretty git prompt.
 # comment this out to use your own customizations.
-if [ -f /root/.bashrc.puppet ]; then
-  . /root/.bashrc.puppet
-fi
+[[ -f ~/.bashrc.puppet ]] && source ~/.bashrc.puppet
+
+# Pull in customizations
+[[ -f ~/.profile ]] && source ~/.profile
 
 if [ -f /root/.extendingrc ]; then
   export PATH=/opt/puppet/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
