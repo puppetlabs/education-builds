@@ -39,7 +39,7 @@ else
 end
 
 # Bail politely when handed a 'vmos' that's not supported.
-if ENV['vmos'] && ENV['vmos'] !~ /^(Centos|Debian)$/
+if ENV['vmos'] && ENV['vmos'] !~ /^(Centos|Ubuntu)$/
   abort("ERROR: Unrecognized vmos parameter: #{ENV['vmos']}")
 end
 
@@ -57,10 +57,10 @@ task :init do
     end
   end
 
-  ['Debian','Centos'].each do |vmos|
+  ['Ubuntu','Centos'].each do |vmos|
     case vmos
-    when 'Debian'
-      pe_install_suffix = '-debian-6-i386'
+    when 'Ubuntu'
+      pe_install_suffix = '-ubuntu-12.04-i386'
     when 'Centos'
       pe_install_suffix = '-el-6-i386'
     end
@@ -149,6 +149,8 @@ task :createvm, [:vmos,:vmtype,:mem] do |t,args|
     case $settings[:vmos]
     when /(Centos|Redhat)/
       ostype = 'RedHat'
+    else
+      ostype = $settings[:vmos]
     end
     cputs "Creating VM '#{$settings[:vmname]}' in #{dir} ..."
     system("VBoxManage createvm --name '#{$settings[:vmname]}' --basefolder '#{dir}' --register --ostype #{ostype}")
@@ -170,9 +172,9 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   prompt_vmos(args.vmos)
   prompt_vmtype(args.vmtype)
   case $settings[:vmos]
-  when 'Debian'
+  when 'Ubuntu'
     # Parse templates and output in BUILDDIR
-    $settings[:pe_install_suffix] = '-debian-6-i386'
+    $settings[:pe_install_suffix] = '-ubuntu-12.04-i386'
     if $settings[:vmtype] == 'training'
       $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
     else
@@ -180,6 +182,8 @@ task :createiso, [:vmos,:vmtype] do |t,args|
     end
     $settings[:pe_tarball] = @pe_tarball
     # No variables
+    build_file('lang')
+    build_file('txt.cfg')
     build_file('isolinux.cfg')
     #template_path = "#{BASEDIR}/#{$settings[:vmos]}/#{filename}.erb"
     # Uses hostname, pe_install_suffix
@@ -187,16 +191,17 @@ task :createiso, [:vmos,:vmtype] do |t,args|
 
     # Define ISO file targets
     files = {
-      "#{BUILDDIR}/Debian/isolinux.cfg"               => '/isolinux/isolinux.cfg',
-      "#{BUILDDIR}/Debian/preseed.cfg"                => '/puppet/preseed.cfg',
+      "#{BUILDDIR}/Ubuntu/lang"                       => '/isolinux/lang',
+      "#{BUILDDIR}/Ubuntu/txt.cfg"                    => '/isolinux/txt.cfg',
+      "#{BUILDDIR}/Ubuntu/isolinux.cfg"               => '/isolinux/isolinux.cfg',
+      "#{BUILDDIR}/Ubuntu/preseed.cfg"                => '/puppet/preseed.cfg',
       "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
       "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
-      "#{CACHEDIR}/hiera.git"                         => '/puppet/hiera.git',
       "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
       "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
     }
-    iso_glob = 'debian-*'
-    iso_url = 'http://hammurabi.acc.umu.se/debian-cd/6.0.6/i386/iso-cd/debian-6.0.6-i386-CD-1.iso'
+    iso_glob = 'ubuntu-12.04.4-server*'
+    iso_url = 'http://mirrors.cat.pdx.edu/ubuntu-releases/12.04.4/ubuntu-12.04.4-server-i386.iso'
   when 'Centos'
     # Parse templates and output in BUILDDIR
     $settings[:pe_install_suffix] = '-el-6-i386'
@@ -266,9 +271,9 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   else
     cputs "Image #{KSISODIR}/#{$settings[:vmos]}.iso is already created; skipping"
   end
-  # Extract the OS version from the iso filename as debian and centos are the
+  # Extract the OS version from the iso filename as ubuntu and centos are the
   # same basic format and get caught by the match group below
-  iso_version = iso_file[/^.*-(\d+\.\d\.?\d?)-.*\.iso$/,1]
+  iso_version = iso_file[/^.*-(\d+\.\d+\.?\d?)-.*\.iso$/,1]
   if $settings[:vmtype] == 'training'
     $settings[:vmname] = "#{$settings[:vmos]}-#{iso_version}-pe-#{@real_pe_ver}".downcase
   else
@@ -473,7 +478,7 @@ task :clean, [:del] do |t,args|
   args.with_defaults(:del => $settings[:del])
   prompt_del(args.del)
   cputs "Destroying vms"
-  ['Debian','Centos'].each do |os|
+  ['Ubuntu','Centos'].each do |os|
     Rake::Task[:destroyvm].invoke(os)
     Rake::Task[:destroyvm].reenable
   end
@@ -587,10 +592,10 @@ end
 def prompt_vmos(osname=nil)
   osname = osname || ENV['vmos']
   loop do
-    cprint "Please choose an OS type of 'Centos' or 'Debian' [Centos]: "
+    cprint "Please choose an OS type of 'Centos' or 'Ubuntu' [Centos]: "
     osname = STDIN.gets.chomp
     osname = 'Centos' if osname.empty?
-    if osname !~ /(Debian|Centos)/
+    if osname !~ /(Ubuntu|Centos)/
       cputs "Incorrect/unknown OS: #{osname}"
     else
       break #loop
