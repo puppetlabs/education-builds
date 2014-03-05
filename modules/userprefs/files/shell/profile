@@ -6,6 +6,9 @@ alias mv='mv -i'
 alias vi=vim
 #export TERM=ansi
 
+# Point the PE installer to the cached agent installer
+export q_tarball_server="/usr/src/installer/"
+
 validate_yaml() {
   ruby -ryaml -e "YAML.load_file '$1'"
 }

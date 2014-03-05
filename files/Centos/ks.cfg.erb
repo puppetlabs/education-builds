@@ -89,6 +89,11 @@ tar mxf /root/<%= $settings[:pe_tarball] %>
 ln -s /root/<%= fname %> /root/puppet-enterprise
 rm -f /root/<%= $settings[:pe_tarball] %>
 <% end %>
+
+# Cache agent tarball for pe_repo
+mkdir -p /usr/src/installer
+cp /mnt/puppet/<%= $settings[:agent_tarball] %> /usr/src/installer/
+
 # put verification script links in personal bin directory
 ln -s /usr/src/puppetlabs-training-bootstrap/scripts/classroom /root/bin
 
