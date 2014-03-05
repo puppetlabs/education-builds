@@ -1,5 +1,7 @@
 class learning::install {
   exec {'install-pe':
+    # This is a workaround for PE 3.2.0 offline installations to work"
+    environment => "q_tarball_server=/usr/src/installer/"
     command     => "/root/puppet-enterprise/puppet-enterprise-installer -D -a /root/learning.answers",
     logoutput   => true,
     timeout     => '14400',
