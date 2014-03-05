@@ -9,7 +9,7 @@ class learning::install {
 
   # This rake task exists now! Hurray.
   exec {'reduce-activemq-heap':
-    command     => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile node:variables name="learn.localdomain" variables="activemq_heap_mb=256" RAILS_ENV=production',
+    command     => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile node:variables name="learn.localdomain" variables="activemq_heap_mb=\"256\"" RAILS_ENV=production',
     logoutput   => true,
     environment => "RUBYLIB=''",
     require     => Exec['install-pe'],
