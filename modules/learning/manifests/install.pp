@@ -1,12 +1,11 @@
 class learning::install {
   exec {'install-pe':
     # This is a workaround for PE 3.2.0 offline installations to work"
-    environment => "q_tarball_server=/usr/src/installer/",
+    # If you don't reset the rubylib, it'll inherit the one used during kickstart and the installer will blow up.
+    environment => ["q_tarball_server=/usr/src/installer/","RUBYLIB=''"]
     command     => "/root/puppet-enterprise/puppet-enterprise-installer -D -a /root/learning.answers",
     logoutput   => true,
     timeout     => '14400',
-    environment => "RUBYLIB=''",
-    # If you don't reset the rubylib, it'll inherit the one used during kickstart and the installer will blow up.
   }
 
   # This rake task exists now! Hurray.
