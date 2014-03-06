@@ -339,18 +339,23 @@ task :reloadvm, [:vmos] => [:createvm, :mountiso, :startvm] do |t,args|
   Rake::Task[:unmountiso].invoke($settings[:vmos])
 end
 
-desc "Build a release"
+desc "Build a release VM"
 task :release do
   require 'yaml'
 
-  versions = YAML.load_file('version.yaml')
-  versions[:minor] += 1
+  versions     = YAML.load_file('version.yaml')
   @ptb_version = "#{versions[:major]}.#{versions[:minor]}"
+  cputs "Current release version #{@ptb_version}"
+
+  cprint 'Increment the release version? [Y/n]: '
+  if [ 'y', 'yes', '' ].include? STDIN.gets.strip.downcase
+    versions[:minor] += 1
+    @ptb_version = "#{versions[:major]}.#{versions[:minor]}"
+    File.write('version.yaml', versions.to_yaml)
+    system("git commit version.yaml -m 'Updating for release #{@ptb_version}'")
+  end
+
   cputs "Building release version #{@ptb_version}"
-
-  File.write('version.yaml', versions.to_yaml)
-  system("git commit version.yaml -m 'Updating for release #{@ptb_version}'")
-
   Rake::Task[:everything].invoke
 end
 
