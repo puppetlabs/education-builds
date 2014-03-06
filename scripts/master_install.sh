@@ -56,6 +56,7 @@ export q_puppetmaster_enterpriseconsole_port=443
 export q_puppetmaster_install=y
 export q_run_updtvpkg=n
 export q_vendor_packages_install=y
+export q_tarball_server=/usr/src/installer
 
 # Run the master installation with an empty file given the exports above
 exec /root/puppet-enterprise/puppet-enterprise-installer -a /etc/motd
