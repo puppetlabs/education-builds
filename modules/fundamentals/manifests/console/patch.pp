@@ -5,10 +5,11 @@ class fundamentals::console::patch {
     mode  => '0644',
   }
   Exec {
-    cwd     => '/opt/puppet/share/live-management',
-    path    => '/usr/bin',
-    creates => '/tmp/patches/lock',
-    before  => File['/tmp/patches/lock'],
+    cwd         => '/opt/puppet/share/live-management',
+    path        => '/usr/bin',
+    creates     => '/tmp/patches/lock',
+    before      => File['/tmp/patches/lock'],
+    refreshonly => true,
   }
 
   # each patch to be applied should drop a file in /tmp/patches
@@ -18,8 +19,8 @@ class fundamentals::console::patch {
   }
   # then apply it
   exec { 'Live Management select none':
-    command => 'patch -p0 < /tmp/patches/selectNone.diff',
-    require => File['/tmp/patches/selectNone.diff'],
+    command   => 'patch -p0 < /tmp/patches/selectNone.diff',
+    subscribe => File['/tmp/patches/selectNone.diff'],
   }
 
   # completion flag
