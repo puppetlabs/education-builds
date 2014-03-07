@@ -348,7 +348,7 @@ task :release do
   cputs "Current release version #{@ptb_version}"
 
   release = env_prompt('Increment the release version? [Y/n]: ', 'RELEASE')
-  if [ 'y', 'yes', '' ].include? release
+  if [ 'y', 'yes', '' ].include? release.downcase
     versions[:minor] += 1
     @ptb_version = "#{versions[:major]}.#{versions[:minor]}"
     File.write('version.yaml', versions.to_yaml)
@@ -586,7 +586,7 @@ def env_prompt(message, varname)
     ans = ENV[varname]
   else
     cprint message
-    ans = STDIN.gets.strip.downcase
+    ans = STDIN.gets.strip
   end
   return ans
 end
