@@ -14,7 +14,7 @@
 - Download and build [xorriso](http://freecode.com/projects/gnu-xorriso) from freecode.com
     - Follow the instructions in INSTALL to build and install xorriso
     - You can also install xorriso using homebrew: `brew install xorriso`
-- Ensure you have all the Rakefile's required gems. 
+- Ensure you have all the Rakefile's required gems.
     - At this time, the list include gpgme and nokogiri
     - (e.g. `sudo gem install gpgme`)
 
@@ -27,6 +27,14 @@
     - `rake everything vmos=Centos vmtype=learning` will build a learning vm
 - Wait for it to finish, then find zipped-up ready-to-use VMs in ~/Sites/cache/
 
+### Building a release version:
+
+- `rake release` will build a new released version.
+  - It will ask if you want to increment the release version. If you answer yes,
+    it will bump the release version and git commit the change before building
+    the release.
+  - Pass RELEASE=y/n as an environment variable to bypass this question.
+
 ## Options:
 
 When running the Rakefile to create new VMs, the following ENV vars can be set as needed:
@@ -35,7 +43,7 @@ When running the Rakefile to create new VMs, the following ENV vars can be set a
 - PESTATUS - latest or release
     - If release it will grab the released 3.2.z PE installer
     - If latest it will grab the latest build from neptune.puppetlabs.lan - so requires access to PuppetLabs VPN
-- vboxheadless 
+- vboxheadless
     - If set to 1, you will not see the VirtualBox window when the VM is created
 - vmos - Centos or Debian
 - vmtype - training or learning
@@ -50,7 +58,8 @@ When running the Rakefile to create new VMs, the following ENV vars can be set a
     - If yes, the existing VMs in the cache dir will be delete during rake clean
 - mem - integer
     - Memory for the new VM, defaults to 1024
-
+- RELEASE - y or n
+    - Increment the release before building the VM
 
 ### Examples:
 
@@ -58,7 +67,7 @@ To build with the (unreleased) PE version undergoing testing installer being cur
 
 Note: You will need to connected to the Puppetlabs office network to do this!
 
-`del=y rake clean && PEVERSION=3.2 PESTATUS=latest vboxheadless=1 vmos=Centos vmtype=training ptbbranch_override=1 del=y rake everything` 
+`del=y rake clean && PEVERSION=3.2 PESTATUS=latest vboxheadless=1 vmos=Centos vmtype=training ptbbranch_override=1 del=y rake everything`
 
-To build with the released PE version installer: 
-`del=y rake clean && PEVERSION=3.2 PESTATUS=release vboxheadless=1 vmos=Centos vmtype=training ptbbranch_override=1 del=y rake everything` 
+To build with the released PE version installer:
+`del=y rake clean && PEVERSION=3.2 PESTATUS=release vboxheadless=1 vmos=Centos vmtype=training ptbbranch_override=1 del=y rake everything`
