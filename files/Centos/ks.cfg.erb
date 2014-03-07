@@ -97,9 +97,6 @@ cp /mnt/puppet/<%= $settings[:agent_tarball] %> /usr/src/installer/
 # put verification script links in personal bin directory
 ln -s /usr/src/puppetlabs-training-bootstrap/scripts/classroom /root/bin
 
-# remove default .bashrc and .bash_profile to allow userprefs to work
-rm /root/.bashrc /root/.bash_profile
-
 rpm -Uvh /mnt/puppet/epel-release.rpm
 yum -y install git
 #yum -y upgrade #This takes a while

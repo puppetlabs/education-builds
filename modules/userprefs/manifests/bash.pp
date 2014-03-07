@@ -1,6 +1,7 @@
 class userprefs::bash (
   $default  = true,
   $password = undef,
+  $replace  = false,
 ) {
   package { 'bash':
     ensure => present,
