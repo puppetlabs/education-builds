@@ -339,18 +339,23 @@ task :reloadvm, [:vmos] => [:createvm, :mountiso, :startvm] do |t,args|
   Rake::Task[:unmountiso].invoke($settings[:vmos])
 end
 
-desc "Build a release"
+desc "Build a release VM"
 task :release do
   require 'yaml'
 
-  versions = YAML.load_file('version.yaml')
-  versions[:minor] += 1
+  versions     = YAML.load_file('version.yaml')
   @ptb_version = "#{versions[:major]}.#{versions[:minor]}"
+  cputs "Current release version #{@ptb_version}"
+
+  release = env_prompt('Increment the release version? [Y/n]: ', 'RELEASE')
+  if [ 'y', 'yes', '' ].include? release.downcase
+    versions[:minor] += 1
+    @ptb_version = "#{versions[:major]}.#{versions[:minor]}"
+    File.write('version.yaml', versions.to_yaml)
+    system("git commit version.yaml -m 'Updating for release #{@ptb_version}'")
+  end
+
   cputs "Building release version #{@ptb_version}"
-
-  File.write('version.yaml', versions.to_yaml)
-  system("git commit version.yaml -m 'Updating for release #{@ptb_version}'")
-
   Rake::Task[:everything].invoke
 end
 
@@ -567,6 +572,23 @@ def gitclone(source,destination,branch)
   else
     system("git clone --bare #{source} #{destination} && cd #{destination} && git update-server-info && git symbolic-ref HEAD refs/heads/#{branch}") or raise(Error, "Cannot clone #{source}")
   end
+end
+
+## Prompt for a response if a given ENV variable isn't set.
+#
+# args:
+#   message:  the message you want displayed
+#   varname:  the name of the environment variable to look for
+#
+# usage: update = env_prompt('Increment the release version? [Y/n]: ', 'RELEASE')
+def env_prompt(message, varname)
+  if ENV.include? varname
+    ans = ENV[varname]
+  else
+    cprint message
+    ans = STDIN.gets.strip
+  end
+  return ans
 end
 
 def prompt_del(del=nil)
