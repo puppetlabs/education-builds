@@ -1,6 +1,7 @@
 class userprefs::bash (
   $default  = true,
   $password = undef,
+  $replace  = false,
 ) {
   package { 'bash':
     ensure => present,
@@ -8,14 +9,14 @@ class userprefs::bash (
 
   file { '/root/.bashrc':
     ensure  => file,
-    replace => false,
+    replace => $replace,
     source  => 'puppet:///modules/userprefs/shell/bashrc',
     require => Package['bash'],
   }
 
   file { '/root/.bash_profile':
     ensure  => file,
-    replace => false,
+    replace => $replace,
     source  => 'puppet:///modules/userprefs/shell/bash_profile',
     require => Package['bash'],
   }
