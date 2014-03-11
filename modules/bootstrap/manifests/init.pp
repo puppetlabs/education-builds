@@ -104,14 +104,6 @@ class bootstrap ($print_console_login = false) {
     changes => 'set GSSAPIAuthentication no',
   }
 
-  # ntp fix - if there is a classroom master VM, sync with it
-  # Assumes the master.puppetlabs.vm machine has had an agent run
-  # after being classified with the appropriate modules to set up
-  # an ntp server
-  cron { 'synctime':
-    command => '/usr/sbin/ntpdate -s master.puppetlabs.vm',
-  }
-
   # Cache forge modules locally in the vm:
   class { 'bootstrap::cache_modules': cache_dir => '/usr/src/forge' }
 
