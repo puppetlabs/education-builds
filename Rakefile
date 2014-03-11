@@ -61,11 +61,12 @@ task :init do
     case vmos
     when 'Ubuntu'
       pe_install_suffix = '-ubuntu-12.04-i386'
+      @ubuntu_pe_tarball, @ubuntu_agent_tarball = get_pe(pe_install_suffix)
     when 'Centos'
       pe_install_suffix = '-el-6-i386'
+      @centos_pe_tarball, @centos_agent_tarball = get_pe(pe_install_suffix)
     end
     cputs "Getting PE tarballs for #{vmos}"
-    @pe_tarball, @agent_tarball = get_pe(pe_install_suffix)
   end
 
   cputs "Cloning puppet..."
@@ -180,7 +181,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
     else
       $settings[:hostname] = "learn.localdomain"
     end
-    $settings[:pe_tarball] = @pe_tarball
+    $settings[:pe_tarball] = @ubuntu_pe_tarball
     # No variables
     build_file('lang')
     build_file('txt.cfg')
@@ -211,8 +212,8 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       $settings[:hostname] = "learn.localdomain"
     end
 
-    $settings[:pe_tarball]    = @pe_tarball
-    $settings[:agent_tarball] = @agent_tarball
+    $settings[:pe_tarball]    = @centos_pe_tarball
+    $settings[:agent_tarball] = @centos_agent_tarball
 
     # No variables
     build_file('isolinux.cfg')
