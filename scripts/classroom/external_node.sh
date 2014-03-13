@@ -11,6 +11,13 @@
 # external_node.sh <node name>
 #
 
+if [ "$#" -ne 1 ]
+then
+  echo "Please call this script with the name of a node."
+  echo "  example usage: external_node.sh <node name>"
+  exit 1
+fi
+
 set -e
 set -u
 
@@ -18,8 +25,8 @@ CERT=$(puppet master --configprint hostcert)
 CACERT=$(puppet master --configprint localcacert)
 PRVKEY=$(puppet master --configprint hostprivkey)
 CERT_OPTIONS="--cert ${CERT} --cacert ${CACERT} --key ${PRVKEY}"
-
-MASTER="https://$(hostname):443"
+CONSOLE=$(awk '/server =/{print $NF}' /etc/puppetlabs/puppet/console.conf)
+MASTER="https://${CONSOLE}:443"
 
 curl -k -X GET -H "Accept: text/yaml" ${CERT_OPTIONS} "${MASTER}/nodes/${1}"
 
