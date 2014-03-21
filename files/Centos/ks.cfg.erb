@@ -93,7 +93,7 @@ rm -f /root/<%= $settings[:pe_tarball] %>
 # Cache agent tarball for pe_repo
 mkdir -p /usr/src/installer
 mkdir -p /usr/src/installer/<%= @real_pe_ver %>
-cp -av /mnt/puppet/<%= $settings[:agent_tarball] %> /usr/src/installer/<%= @real_pe_ver %>/
+cp /mnt/puppet/<%= $settings[:agent_tarball] %> /usr/src/installer/<%= @real_pe_ver %>/
 
 # put verification script links in personal bin directory
 ln -s /usr/src/puppetlabs-training-bootstrap/scripts/classroom /root/bin
