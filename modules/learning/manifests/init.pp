@@ -31,5 +31,12 @@ class learning {
     ensure => link,
     target => '/usr/src/puppetlabs-training-bootstrap/scripts/lvm',
   }
+
+  file { '/root/.testing':
+    ensure  => directory,
+    recurse => true,
+    source  => 'puppet:///modules/learning/.testing',
+    replace => false,
+  }
 }
 
