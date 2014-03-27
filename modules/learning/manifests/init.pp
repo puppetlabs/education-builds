@@ -15,7 +15,7 @@ class learning {
     ensure => file,
     owner  => root,
     mode   => 0644,
-    source => 'file:///modules/learning/etc/motd',
+    source => 'puppet:///modules/learning/etc/motd',
   }
 
 }
