@@ -36,6 +36,12 @@ class learning {
     ensure  => directory,
     recurse => true,
     source  => 'puppet:///modules/learning/.testing',
+    ignore  => 'log.yml',
+  }
+  
+  file { '/root/.testing/log.yml':
+    ensure  => file,
+    source  => 'puppet:///modules/learning/.testing/log.yml',
     replace => false,
   }
 }
