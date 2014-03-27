@@ -45,4 +45,17 @@ class learning::install {
     recurse => true,
   }
 
+  # to use pe_gem to install the following gems, we first need pe_gem installed
+  # using execs now till there is a more graceful solution
+  
+  exec { 'install trollop':
+    command => '/opt/puppet/bin/gem install trollop',
+    unless  => '/opt/puppet/bin/gem list trollop -i',
+  }
+  
+  exec { 'install serverspec':
+    command => '/opt/puppet/bin/gem install serverspec',
+    unless  => '/opt/puppet/bin/gem list serverspec -i',
+  }
+
 }
