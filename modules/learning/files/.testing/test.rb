@@ -144,5 +144,9 @@ if successes.length == total then
 end
 
 if opts[:brief]  then
-  STDOUT.puts "#{successes.length}/#{total}"
+  if total == 0 then
+    STDOUT.puts "No"
+  else
+    STDOUT.puts "#{successes.length}/#{total}"
+  end
 end
