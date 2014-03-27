@@ -1,0 +1,12 @@
+Welcome to the Learning Puppet VM! 
+To get started consult the Quest Guide you downloaded with the VM.
+
+To view your current IP address, run `facter ipaddress_eth0`
+
+To log in to the Puppet Enterprise console, go to:
+https://<YOUR IP ADDRESS HERE>
+
+  User: puppet@example.com
+  Password: learningpuppet
+
+

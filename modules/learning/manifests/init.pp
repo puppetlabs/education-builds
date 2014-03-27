@@ -15,18 +15,7 @@ class learning {
     ensure => file,
     owner  => root,
     mode   => 0644,
-    content => "Welcome to the Learning Puppet VM! To learn how to write Puppet code, go to
-http://docs.puppetlabs.com/learning and follow along.
-
-To view your current IP address, run `facter ipaddress_eth0`
-
-To log in to the Puppet Enterprise console, go to:
-https://<YOUR IP ADDRESS HERE>
-
-  User: puppet@example.com
-  Password: learningpuppet
-",
+    source => 'file:///modules/learning/etc/motd',
   }
-
 
 }
