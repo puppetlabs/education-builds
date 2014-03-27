@@ -22,4 +22,8 @@ class learning {
     ensure => present,
   }
 
+  file { '/root/.tmux.conf':
+    ensure => file,
+    source => 'puppet:///modules/learning/tmux.conf',
+  }
 }
