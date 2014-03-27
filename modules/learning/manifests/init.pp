@@ -18,4 +18,8 @@ class learning {
     source => 'puppet:///modules/learning/etc/motd',
   }
 
+  package { 'tmux':
+    ensure => present,
+  }
+
 }
