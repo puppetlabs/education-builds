@@ -23,7 +23,7 @@ class userprefs::bash (
 
   file { '/root/.bashrc.puppet':
     ensure  => file,
-    content => template('userprefs/bashrc.puppet.erb')
+    content => template('userprefs/bashrc.puppet.erb'),
     require => Package['bash'],
   }
 
