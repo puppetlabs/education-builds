@@ -1,5 +1,10 @@
 #!/opt/puppet/bin/ruby
-#  $stderr = File.new('/dev/null', 'w')
+
+class String
+def bold;           "\033[1m#{self}\033[22m" end 
+def cyan;           "\033[36m#{self}\033[0m" end
+def green;          "\033[32m#{self}\033[0m" end
+end
 
 Dir.chdir "/root/.testing"
 require 'rubygems'
@@ -36,7 +41,7 @@ if opts[:completed] then
   end
   exit
 end
-  
+
 if opts[:current] then
   questlog = YAML::load_file('/root/.testing/log.yml')
   puts questlog['current'].capitalize
@@ -76,26 +81,6 @@ RSpec.configure do |c|
     c.sudo_password = ENV['SUDO_PASSWORD']
   end
 
-  #c.before(:all, &:silence_output)
-  #c.after(:all, &:enable_output)
-end
-
-# Redirects stderr and stdout to /dev/null.
-def silence_output
-  #@orig_stderr = $stderr
-  #@orig_stdout = $stdout
-
-  # redirect stderr and stdout to /dev/null
-  #$stderr = File.new('/dev/null', 'w')
-  #$stdout = File.new('/dev/null', 'w')
-end
-
-# Replace stdout and stderr so anything else is output correctly.
-def enable_output
-  $stderr = @orig_stderr
-  $stdout = @orig_stdout
-  @orig_stderr = nil
-  @orig_stdout = nil
 end
 
 config = RSpec.configuration
@@ -120,15 +105,15 @@ end
 total = failures.length + successes.length
 
 if opts[:progress] && !opts[:brief] && !opts[:start] then
-  if failures.length != 0 then 
-    STDOUT.puts "The following tasks were not completed:"
-    failures.each { |x| puts " - #{x}" }
-  end
   if successes.length != 0 then 
-    STDOUT.puts "The following tasks were completed successfully! :"
-    successes.each { |x| puts x }
+    puts "", "The following tasks were completed successfully! :".green.bold
+    successes.each { |x| puts " + #{x}" }
   end
-  STDOUT.puts "You successfully completed #{successes.length} tasks, out of a total of #{total} tasks!"
+  if failures.length != 0 then 
+    puts "", "The following tasks are pending:".bold
+    failures.each { |x| puts " _ #{x}" }
+  end
+  puts "", "You successfully completed #{successes.length} tasks, out of a total of #{total} tasks!".cyan
 end
 
 if successes.length == total then
@@ -145,8 +130,10 @@ end
 
 if opts[:brief]  then
   if total == 0 then
-    STDOUT.puts "No"
+    cputs "No"
   else
-    STDOUT.puts "#{successes.length}/#{total}"
+    puts "#{successes.length}/#{total}"
   end
 end
+
+
