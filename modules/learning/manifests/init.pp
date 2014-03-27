@@ -26,4 +26,10 @@ class learning {
     ensure => file,
     source => 'puppet:///modules/learning/tmux.conf',
   }
+
+  file { '/root/bin':
+    ensure => link,
+    target => '/usr/src/puppetlabs-training-bootstrap/scripts/lvm',
+  }
 }
+
