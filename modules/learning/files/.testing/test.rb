@@ -15,12 +15,13 @@ opts = Trollop::options do
   opt :completed, "Display completed quests"
   opt :showall, "Show all available quests"
   opt :start, "Provide name of the quest to start tracking", :type => :string
+  opt :current, "Name of the quest in progress"
 end
 
 if opts[:showall] then
   puts "The following quests are available: "
   Dir.glob('/root/.testing/spec/localhost/*_spec.rb').each do |f|
-    puts File.basename(f).gsub('_spec.rb','')
+    puts File.basename(f).gsub('_spec.rb','').capitalize
   end
   exit
 end
@@ -30,18 +31,24 @@ if opts[:completed] then
   questlog = YAML::load_file('/root/.testing/log.yml')
   questlog.each do |key, value|
     if value.is_a?(Hash) then
-        puts value['name']
+        puts value['name'].capitalize
     end
   end
   exit
 end
   
+if opts[:current] then
+  questlog = YAML::load_file('/root/.testing/log.yml')
+  puts questlog['current'].capitalize
+  exit
+end
+
 if opts[:start] then
   questlog = YAML::load_file('/root/.testing/log.yml')
   if File.exist?("/root/.testing/spec/localhost/#{opts[:start]}_spec.rb") then
-    questlog['current'] = opts[:start]
+    questlog['current'] = opts[:start].downcase
     File.open('/root/.testing/log.yml', 'w') { |f| f.write questlog.to_yaml }
-    puts "You are starting the #{opts[:start]} quest."
+    puts "You are starting the #{opts[:start].capitalize} quest."
   else
     puts "Please select another quest. The Quest you specified does not exist."
     puts "The command: 'quests --showall' will list all available quests."
