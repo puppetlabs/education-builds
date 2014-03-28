@@ -14,7 +14,7 @@ require 'yaml'
 require 'trollop'
 
 opts = Trollop::options do
-  opt :progress, "Display details of tasks completed", :default => true
+  opt :progress, "Display details of tasks completed"
   opt :brief, "Display number of tasks completed"
   opt :name, "Name of the quest to track", :type => :string
   opt :completed, "Display completed quests"
@@ -23,12 +23,15 @@ opts = Trollop::options do
   opt :current, "Name of the quest in progress"
 end
 
+given = opts.select { |key, value| key.to_s.match(/_given/)}
+noargs = given.empty?
+
 if opts[:showall] then
   puts "The following quests are available: "
   Dir.glob('/root/.testing/spec/localhost/*_spec.rb').each do |f|
     puts File.basename(f).gsub('_spec.rb','').capitalize
   end
-  exit
+  #exit
 end
 
 if opts[:completed] then
@@ -39,13 +42,13 @@ if opts[:completed] then
         puts value['name'].capitalize
     end
   end
-  exit
+  #exit
 end
 
 if opts[:current] then
   questlog = YAML::load_file('/root/.testing/log.yml')
   puts questlog['current'].capitalize
-  exit
+  #exit
 end
 
 if opts[:start] then
@@ -104,7 +107,7 @@ json_formatter.output_hash[:examples].each do |example|
 end
 total = failures.length + successes.length
 
-if opts[:progress] && !opts[:brief] && !opts[:start] then
+if opts[:progress] || noargs then
   if successes.length != 0 then 
     puts "", "The following tasks were completed successfully! :".green.bold
     successes.each { |x| puts " + #{x}" }
@@ -130,7 +133,7 @@ end
 
 if opts[:brief]  then
   if total == 0 then
-    cputs "No"
+    puts "No"
   else
     puts "#{successes.length}/#{total}"
   end

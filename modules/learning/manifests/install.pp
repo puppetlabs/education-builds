@@ -49,7 +49,7 @@ class learning::install {
   # using execs now till there is a more graceful solution
   
   exec { 'install trollop':
-    command => '/opt/puppet/bin/gem install trollop',
+    command => '/opt/puppet/bin/gem install trollop -v 2.0',
     unless  => '/opt/puppet/bin/gem list trollop -i',
     require => Exec['install-pe'],
   }
