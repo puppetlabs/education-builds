@@ -51,5 +51,12 @@ class learning {
     mode   => '0755',
   }
 
+  file { '/root/setup':
+    ensure  => directory,
+    source  => 'puppet:///modules/learning/setup',
+    mode    => '0755',
+    recurse => true,
+  }
+
 }
 
