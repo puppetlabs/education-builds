@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Variables</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/quests/welcome.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Progress
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Cheat-Sheet
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    About
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Resources
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" clas="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="active">
+                                <a href="/quests/variables.html" class = "active">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+
+                <h1>Variables</h1>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Resources Quest</li>
+<li>Mainfest Quest</li>
+<li>Classes Quest</li>
+</ul>
+
+<a id="quest_objectives"><h2>Quest Objectives</h2></a>
+
+<p>In this quest you will gain a better understanding of using variable and facts in your manifest to make operating more scalable. </p>
+
+<blockquote>
+<p>The green reed which bends in the wind is stronger than the mighty oak which breaks in a storm.</p>
+
+<p>--Confuscius</p>
+</blockquote>
+
+<p>The tasks we will accompish in this quest will help you learn more about manipulating your Puppet manifests to accomplish specific tasks. If you're ready to get started, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start variables
+</code></pre></div>
+<a id="variables"><h2>Variables</h2></a>
+
+<p>What you have learned so far about manifests gives you the means to achieve a great deal. However, you need not travel far down your destined path of Puppet mastery before manifests like the ones you have written thus far will seem stiff and brittle; you will need something more supple, able to shift to meet changing conditions as you travel the roads of Elvium and beyond.</p>
+
+<p>You’ve almost definitely used variables before in some other programming or scripting language, but <code>$variables</code> always start with a dollar sign and you assign them with the <code>=</code> operator. You can use variables as the value for any resource attribute, or as the title of a resource.</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="nv">$longthing</span> <span class="o">=</span> <span class="s2">"Really long SSH key"</span>
+
+<span class="nc">file</span> <span class="p">{</span><span class="s1">'authorized_keys'</span><span class="p">:</span>
+  <span class="nt">path</span>    <span class="p">=&gt;</span> <span class="s1">'/root/.ssh/authorized_keys'</span><span class="p">,</span>
+  <span class="nt">content</span> <span class="p">=&gt;</span> <span class="nv">$longthing</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<div class="lvm-inline-aside">
+<strong>What about the `$::variable` </strong><p>
+People who write manifests to share with the public often adopt the habit of always using the $::variable notation when referring to facts. The double-colon prefix specifies that a given variable should be found at top scope. This isn’t actually necessary, since variable lookup will always reach top scope anyway.
+</p>
+</div>
+
+<p>Lets make our manifests more adaptable by using variables.</p>
+
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<p>To see an example of a variable doing its duty, first navigate to your workshop directory and create a new manifest called <code>fickle.pp</code></p>
+
+<div class="lvm-task-number"><p>Task 2 :</p></div>
+
+<p>Enter the following to name and assign a variable:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="vg">$variable_name</span> <span class="o">=</span> <span class="s2">"variable value!</span><span class="se">\n</span><span class="s2">"</span>
+</code></pre></div>
+
+<div class="lvm-task-number"><p>Task 3 :</p></div>
+
+<p>Now lets have that variable do something productive for us. Can you...</p>
+
+<a id="facts"><h2>Facts</h2></a>
+
+<blockquote>
+<p>Get your facts first, then distort them as you please.</p>
+
+<p>--Mark Twain</p>
+</blockquote>
+
+<p>Puppet has a bunch of built-in, pre-assigned variables that you can use. Remember the Puppet tool <code>facter</code> when you first started? Just a quick refresher, <code>facter</code> discovers system information, normalizes it into a set of variables, and then passes them off to Puppet. Puppet’s compiler accesses those facts when it’s reading a manifest.</p>
+
+<p>Remember running <code>facter ipaddress</code>? Puppet told you your IP address without you having to do anything. What if I wanted to turn <code>facter ipaddress</code> into a variable? You guessed it. It would look like this <code>${ipaddress}</code></p>
+
+<p>How does this make our manifests more flexible? If I entered the following variables in a manifest:</p>
+
+<div class="highlight"><pre><code class="puppet">   <span class="nc">file</span> <span class="p">{</span><span class="s1">'motd'</span><span class="p">:</span>
+      <span class="nt">ensure</span>  <span class="p">=&gt;</span> <span class="ss">file</span><span class="p">,</span>
+      <span class="nt">path</span>    <span class="p">=&gt;</span> <span class="s1">'/etc/motd'</span><span class="p">,</span>
+      <span class="nt">mode</span>    <span class="p">=&gt;</span> <span class="m">0644</span><span class="p">,</span>
+      <span class="nt">content</span> <span class="p">=&gt;</span> <span class="s2">"This Learning Puppet VM's IP address is </span><span class="si">${ipaddress}</span><span class="s2">. It is running </span><span class="si">${operatingsystem}</span><span class="s2"> </span><span class="si">${operatingsystemrelease}</span><span class="s2"> and Puppet </span><span class="si">${puppetversion}</span><span class="s2">.</span>
+
+<span class="s2">   Web console login:</span>
+<span class="s2">     URL: https://</span><span class="si">${ipaddress_eth0}</span><span class="s2"></span>
+<span class="s2">     User: puppet@example.com</span>
+<span class="s2">     Password: learningpuppet</span>
+<span class="s2">     "</span><span class="p">,</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>and then applied the manifest, this is what would be returned: </p>
+
+<div class="highlight"><pre><code class="puppet">   <span class="nc">file</span> <span class="p">{</span><span class="s1">'motd'</span><span class="p">:</span>
+      <span class="nt">ensure</span>  <span class="p">=&gt;</span> <span class="ss">file</span><span class="p">,</span>
+      <span class="nt">path</span>    <span class="p">=&gt;</span> <span class="s1">'/etc/motd'</span><span class="p">,</span>
+      <span class="nt">mode</span>    <span class="p">=&gt;</span> <span class="m">0644</span><span class="p">,</span>
+      <span class="nt">content</span> <span class="p">=&gt;</span> <span class="ss">This</span> <span class="ss">Learning</span> <span class="ss">Puppet</span> <span class="ss">VM</span><span class="err">'</span><span class="ss">s</span> <span class="ss">IP</span> <span class="ss">address</span> <span class="ss">is</span> <span class="m">172.16.52.135.</span> <span class="ss">It</span> <span class="ss">is</span> <span class="ss">running</span> <span class="ss">CentOS</span> <span class="m">5.7</span> <span class="ss">and</span> <span class="ss">Puppet</span> <span class="m">3.0.1.</span>
+
+    <span class="ss">Web</span> <span class="ss">console</span> <span class="ss">login</span><span class="p">:</span>
+      <span class="ss">URL</span><span class="p">:</span> <span class="ss">https</span><span class="p">:</span><span class="err">//</span><span class="m">172.16.52.135</span>
+      <span class="ss">User</span><span class="p">:</span> <span class="ss">puppet</span><span class="err">@</span><span class="ss">example</span><span class="m">.</span><span class="ss">com</span>
+      <span class="ss">Password</span><span class="p">:</span> <span class="ss">learningpuppet</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>It's as simple as that without hardly doing anything on your end. Feeling confident? Lets combine our knowledge of variables and facts in our manifest</p>
+
+<div class="lvm-task-number"><p>Task 4 :</p></div>
+
+<p>Our manifests are becoming more flexible, with pretty much no real work on our part.</p>
+
+
+            </div>
+        <div id="site-footer">
+    <div class="footer-top">
+    </div>
+</div>
+
+        </div>
+    </div>
+    </body>
+</html>

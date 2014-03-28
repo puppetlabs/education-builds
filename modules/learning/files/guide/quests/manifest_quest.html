@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Manifests</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/quests/welcome.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Progress
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Cheat-Sheet
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    About
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Resources
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" clas="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="active">
+                                <a href="/quests/manifest_quest.html" class = "active">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+
+                <h1>Manifests</h1>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Resources Quest</li>
+</ul>
+
+<a id="quest_objectives"><h2>Quest Objectives</h2></a>
+
+<p>In this quest you will gain a better understanding of resource declarations, the resource abstraction layer and using puppet apply for applying manifests. The tasks we will accompish in this quest will help you learn more about Puppet manifests. If you're ready to get started, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start manifest
+</code></pre></div>
+<a id="puppet_manifests"><h2>Puppet Manifests</h2></a>
+
+<p>As you saw in the Resources quest, Puppet's <strong>resource declarations</strong> can be used to keep track of just about anything here in the Learning VM. So far, you have made changes to the world without using Puppet. You looked at resource declarations only in order to keep track of the effects of what you did. In this quest, you will learn to craft your own resource declarations and inscribe them in a special file called a <strong>manifest</strong>. </p>
+
+<p>Once you've created a manifest, you will use the <code>puppet apply</code> tool to implement it. Puppet will check each resource in your environment against the resource declaration in the manifest. Puppet's <strong>providers</strong> will then do everything neccessary to bring the state of those resources in line with the resource declarations in your manifest.</p>
+
+<p>Manifests, like the resource declarations they contain, are written in Puppet's Domain Specific Language (DSL). In addition to resource declarations, a manifest will often contain <strong>classes</strong>, which organize resource declarations into functional sets, and <strong>logic</strong> to allow you to manage resources according to variables in the Elvium environment. You will learn more about these aspects of manifest creation in a later quest.</p>
+
+<div class="lvm-callout lvm-tip"><p>
+You can use `puppet describe user` and `puppet resource user` for help using and understanding the user resource.
+</p></div>
+
+<p>Before you get started lets take a look at quests you have completed</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --completed
+</code></pre></div>
+<p>Great! It shows you have completed the Resources Quest. Feel free to use this tool anytime to checkout which quests you've completed on your jounrey. Now lets get back to learning about Puppet manifests.</p>
+
+<p>To establish the manifest you want to place it in your home directory (<code>/root</code>). Make sure you're in this directory before creating your manifest.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">cd /root
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<p>Now we are ready to create a manifest to manage the user Ralph. The <code>.pp</code> extension identifies a file as a manifest.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">nano ralph.pp
+</code></pre></div>
+<div class="lvm-inline-aside">
+<strong>Text Editors </strong><p>
+
+For the sake of simplicity and consistency, we use the text editor nano in our instructions, but feel free to use vim if you prefer.
+
+</p>
+</div>
+
+<div class="lvm-task-number"><p>Task 2 :</p></div>
+
+<p>Type the following deadly incantation into your manifest:</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="nc">user</span> <span class="p">{</span> <span class="s1">'ralph'</span><span class="p">:</span>
+    <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="s1">'absent'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Save the file and exit your text editor.</p>
+
+<a id="puppet_parser"><h2>Puppet Parser</h2></a>
+
+<p><code>puppet parser</code> is like Puppet's version of spellcheck. This action validates Puppet's DSL syntax without compiling a catalog or syncing any resources. If no manifest files are provided, Puppet will validate the default site manifest. If there are no syntax errors, Puppet will return nothing, otherwise Puppet will display the first syntax error encountered. </p>
+
+<div class="lvm-callout lvm-warning"><p>
+The puppet parser can only ensure that the syntax of a manifest is well-formed. It can't guarantee that your variables are correctly named, your logic is valid, or, for that matter, that your manifest does what you want it to.
+</p></div>
+
+<div class="lvm-task-number"><p>Task 3 :</p></div>
+
+<p>Enter the following command in the command line:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet parser validate ralph.pp
+</code></pre></div>
+<p>If the parser returns nothing, continue on. If not, make the necessary changes with nano and re-validate until the syntax checks out.</p>
+
+<a id="puppet_apply"><h2>Puppet Apply</h2></a>
+
+<p>This is a very handy tool for learning to write code in Puppet's DSL and is a standalone puppet execution tool. However, in reality, you'll probably use this tool to describe the configurations of an entire system in a single file. This description will be constructed as a list of all resources you want to manage on your system, but as you can imagine, that might end up being a <em>really</em> long file! You will see how this can be a more manageable process when you come across <strong>Classes</strong> during your journey.</p>
+
+<div class="lvm-task-number"><p>Task 4 :</p></div>
+
+<p>Simulate the change in the system without actually enforcing the <code>ralph.pp</code> manifest</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet apply --noop ralph.pp
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 5 :</p></div>
+
+<p>Using <code>puppet apply</code> apply the simulated manifest <code>ralph.pp</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet apply ralph.pp
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 6 :</p></div>
+
+<p>Check in on Ralph. How is his health?</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet resource user ralph
+</code></pre></div>
+<p>If you like, you can check the old fashioned way as well. If the user doesn't exist, it will return nothing.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">egrep -i "^ralph" /etc/passwd
+</code></pre></div>
+<p>He is not too well, it appears! Clearly Ralph was no match for your Puppet skills.</p>
+
+<p>Check on your progress. How are you doing so far?</p>
+
+<div class="lvm-task-number"><p>Task 7 :</p></div>
+
+<p>With manifests you can create as well as destroy. Lets create a new assistant by adding a user <code>jack</code> to the Learning VM.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">nano jack.pp
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 8 :</p></div>
+
+<p>Write the following code to your manifest:</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="nc">user</span> <span class="p">{</span> <span class="s1">'jack'</span><span class="p">:</span>
+    <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="s1">'present'</span><span class="p">,</span>
+    <span class="nt">gid</span> <span class="p">=&gt;</span> <span class="s1">'501'</span><span class="p">,</span>
+    <span class="nt">home</span> <span class="p">=&gt;</span> <span class="s1">'/home/jack'</span><span class="p">,</span>
+    <span class="nt">password</span> <span class="p">=&gt;</span> <span class="s1">'!!'</span><span class="p">,</span>
+    <span class="nt">uid</span> <span class="p">=&gt;</span> <span class="s1">'501'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<div class="lvm-task-number"><p>Task 9 :</p></div>
+
+<p>Check your syntax:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet parser validate jack.pp
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 10 :</p></div>
+
+<p>Simulate your changes:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet apply --noop jack.pp
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 11 :</p></div>
+
+<p>And apply:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet apply jack.pp
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 12 :</p></div>
+
+<p>Now check in on Jack. </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet resource user jack   
+</code></pre></div>
+<p>You have an extordinary power to add and remove whomever and whatever you may like. Use your powers wisely.</p>
+
+
+            </div>
+        <div id="site-footer">
+    <div class="footer-top">
+    </div>
+</div>
+
+        </div>
+    </div>
+    </body>
+</html>

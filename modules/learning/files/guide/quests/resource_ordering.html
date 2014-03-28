@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Ordering</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/quests/welcome.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Progress
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Cheat-Sheet
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    About
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Resources
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" clas="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+
+                <h1>Resource Ordering</h1>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Resources Quest</li>
+<li>Mainfest Quest</li>
+<li>Classes Quest</li>
+<li>Varibales Quest</li>
+<li>Conditions Quest</li>
+</ul>
+
+<a id="quest_objectives"><h2>Quest Objectives</h2></a>
+
+<p>The tasks we will accompish in this quest will help you learn more about specifying the order in which Puppet should manage the resources in a manifest. If you're ready to get started, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start ordering
+</code></pre></div>
+<a id="explicit_ordering"><h2>Explicit Ordering</h2></a>
+
+<p>You are likely used to reading instructions from top to bottom. If you wish to master the creation of Puppet manifests, however, you must learn think of ordering in a different way. Rather than processessing instructions from top to bottom, Puppet interprets the resource declarations in a manifest in whatever order is most effecient.</p>
+
+<p>Often, however, you will need to ensure that once resource declaration is applied before another. For instance, if you wish to declare in a manifest that a service should be running, you need to ensure that the package for that service is already installed and configured.</p>
+
+<p>If you require that a group of resources be managed in a specific order, you must explicitly state the dependency relationships between these resources within the resource declarations.</p>
+
+<a id="relationship_metaparameters"><h2>Relationship Metaparameters</h2></a>
+
+<div class="lvm-callout lvm-fact"><p>
+In Puppet's DSL, a resource metaparamter is a variable that doesn't refer directly to the state of a resource, but rather tells Puppet how to process the resource declaration itself.
+</p></div>
+
+<p>There are four metaparameter attributes that you can include in your resource declaration to establish order relationships among resources. The value of any relationship metaparameter should be the title or titles (in an array) of one or more target resources.</p>
+
+<ul>
+<li><p><code>before</code> - causes a resource to be applied <strong>before</strong> a target resource.</p></li>
+<li><p><code>require</code> - causes a resource to be applied <strong>after</strong> a target resouroce.</p></li>
+<li><p><code>notify</code> - causes a resource to be applied <strong>before</strong> the target resource. The target resource will refresh if the notifying resource changes.</p></li>
+<li><p><code>subscribe</code> - causes a resource to be applied <strong>after</strong> the target resource. The subscribing resource will refresh if the target resource changes.</p></li>
+</ul>
+
+<p>These parameters are included in a resource declaration just like any other attribute value pair. For instance, refer to the following example:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">service</span> <span class="p">{</span> <span class="s1">'sshd'</span><span class="p">:</span>
+  <span class="k">ensure</span>    <span class="o">=&gt;</span> <span class="n">running</span><span class="p">,</span>
+  <span class="n">enable</span>    <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
+  <span class="n">subscribe</span> <span class="o">=&gt;</span> <span class="no">File</span><span class="o">[</span><span class="s1">'/etc/ssh/sshd_config'</span><span class="o">]</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Here, the service resource with the title 'sshd' will be applied <strong>after</strong> the file resource with the title '/etc/ssh/sshd_config'. Furthermore, if any other changes are made to the targeted file resource, the service will refresh.</p>
+
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<a id="let's_do_a_quick_review"><h2>Let's do a Quick Review</h2></a>
+
+<p>Up until this point you've been on a journey towards learning Puppet. To be successful at doing that, it is imperative you understand the fundatmental components of using Puppet: Resources and Manifests. Before we progress any further, it is important that you reflect on your understanding of these components. Feel free to revisit those quests should you not fully grasp the information. </p>
+
+<p>Furthermore, Puppet Manifests are highly scable components to stablizing and maximizing your infrastructure. To customize that stablization, we examined Classes, Variables, Facts, Conditional Statements and Resource Ordering. It is important that you understand when and how these components to Puppet Manifests are used. Should you be in doubt of your understanding, please revisit those quests. </p>
+
+
+            </div>
+        <div id="site-footer">
+    <div class="footer-top">
+    </div>
+</div>
+
+        </div>
+    </div>
+    </body>
+</html>

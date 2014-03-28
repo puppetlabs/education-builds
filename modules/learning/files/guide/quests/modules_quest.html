@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Modules</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/quests/welcome.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Progress
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Cheat-Sheet
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    About
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Resources
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" clas="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+
+                <h1>Modules</h1>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Resources Quest</li>
+<li>Mainfest Quest</li>
+<li>Classes Quest</li>
+<li>Varibales Quest</li>
+<li>Conditions Quest</li>
+<li>Ordering Quest</li>
+</ul>
+
+<a id="quest_objectives"><h2>Quest Objectives</h2></a>
+
+<p>A Puppet <strong>module</strong> is a collection of resources, definitions, files, templates, etc, organized around a particular purpose. In order to enable Puppet to find these class definitions, manifests allow one to test the class defintions that it may need to configure a machine for a particular purpose. We adhere to a consistent directory structure in which we place class definitions and any other files that are needed etc.</p>
+
+<p>The tasks we will accompish in this quest will explore and help you get started learning about modules. When you're ready, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start modules
+</code></pre></div>
+<a id="module_path"><h2>Module Path</h2></a>
+
+<p>All the modules are placed in a special directory specified by the <strong>modulepath</strong>. The modulepath is setting that can be defined in Puppet configuration file. Puppet's configuration file exists in the directory <code>/etc/puppetlabs/puppet/puppet.conf</code> in Elvium.</p>
+
+<p>You can also find the modulepath with the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet agent --configprint modulepath
+</code></pre></div>
+<p>What the returned value tells us is that Puppet will look in the directories <code>/etc/puppetlabs/puppet/modules</code> and then in <code>/opt/puppet/share/puppet/modules</code> to find the modules in use on the system.</p>
+
+<a id="module_structure"><h2>Module Structure</h2></a>
+
+<!-- In the future there can be a more advanced quest with understanding module structure -->
+
+<p>A module is a directory with a pre-defined structure, with class definitions, files etc in specific sub-directories. The module’s name must be the same name of the directory. Inside a module there must be a manifests directory, which can contain any number of <code>.pp</code> files but must contain the <code>init.pp</code> file. The <code>init.pp</code> file must contain a single class definition and must be the same as the module’s name.</p>
+
+<a id="declaring_classes_from_modules"><h2>Declaring Classes from Modules</h2></a>
+
+<p>Once a class is stored in a module, there are actually several ways to declare it. You've already seen this, but you can declare classes by putting <code>include [class name]</code> in your main manifest.</p>
+
+<p>The <code>include</code> function declares a class, if it hasn’t already been declared somewhere else. If a class <em><strong>has</strong></em> already been declared, <code>include</code> will notice that and do nothing.</p>
+
+<p>This lets you safely declare a class in several places. If some class depends on something in another class, it can declare that class without worrying whether it’s also being declared in <code>site.pp</code>.</p>
+
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<p>Find your <code>modulepath</code> and then ensure your are working in that directory.</p>
+
+<div class="lvm-task-number"><p>Task 2 :</p></div>
+
+<p>Create your manifests directory by typing the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">mkdir -p users/manifests
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 3 :</p></div>
+
+<p>Now, we're going to want to edit the manifest. Type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">nano users/manifest/init.pp
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 4 :</p></div>
+
+<p>Do you remember the <code>user</code> resource and the anatomy of how a resource is constructed? Using that knowledge can you make sure that user como is present in the user class.</p>
+
+<div class="lvm-task-number"><p>Task 5 :</p></div>
+
+<p>Next, check to make sure the syntax you entered is correct using <code>puppet parser</code>.</p>
+
+<div class="lvm-task-number"><p>Task 6 :</p></div>
+
+<p>Lets now make a test directory in the same modulepath. Type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">mkdir users/tests
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 7 :</p></div>
+
+<p>Like we did before, we are going to want to edit the manifest in the test directory: Type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">nano users/tests/init.pp
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 8 :</p></div>
+
+<p>We are going to take advantage of the <code>include</code> function now. Type the following information into the manifest:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">    include users
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 9 :</p></div>
+
+<p>Next, check to make sure the syntax you entered is correct using <code>puppet parser</code>.</p>
+
+<div class="lvm-task-number"><p>Task 10 :</p></div>
+
+<p>Oh shoot! We forgot to add the staff <code>group</code> to user como. Can you quickly run back into the manifest and make sure the staff <code>group</code> is present. Don't forgot to add <code>/bin/bash</code> as the shell and <code>gid =&gt; 'staff',</code> for user como as well.</p>
+
+<div class="lvm-task-number"><p>Task 11 :</p></div>
+
+<p>Sorry about that, check again to make sure the syntax you entered is correct using <code>puppet parser</code>.</p>
+
+<div class="lvm-task-number"><p>Task 12 :</p></div>
+
+<p>We're not ready to execute this manifest just yet. We want to test run it first. Do you remember in the Manifests Quest when we discussed how to do that? Go ahead and apply the manifest in the test directory in <code>--noop</code> mode.</p>
+
+<div class="lvm-task-number"><p>Task 13 :</p></div>
+
+<p>Great! Everything is running how it should be. Now finish this off by enforcing your class on the local system.</p>
+
+<h4>You just created your first puppet module!!</h4>
+
+<h3>There are two important things to note here:</h3>
+
+<ol>
+<li><p>Puppet's DSL, by virtue of its <strong>declarative</strong> nature, makes it possible for us to define the attributes of the resouces, without the need to concern ourselves with <em>how</em> the definition is enforced. Puppet uses the Resource Abstraction Layer to abstract away the complexity surrounding the specific commands to be executed, and the operating system-specific tools used to realize our definition! You did not need to know or specify the command to create a new unix user group to create the group <code>staff</code>, for example.</p></li>
+<li><p>By creating a class called users, it is now possible for us to automate the process of creating the users we need on any system with Puppet installed on it, by simply including that class on that system. Class definitions are reusable!</p></li>
+</ol>
+
+
+            </div>
+        <div id="site-footer">
+    <div class="footer-top">
+    </div>
+</div>
+
+        </div>
+    </div>
+    </body>
+</html>

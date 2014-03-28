@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Conditions</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/quests/welcome.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Progress
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Cheat-Sheet
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    About
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Resources
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" clas="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="active">
+                                <a href="/quests/conditions_quest.html" class = "active">Conditional Statements</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+
+                <h1>Conditional Statements</h1>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Resources Quest</li>
+<li>Mainfest Quest</li>
+<li>Classes Quest</li>
+<li>Varibales Quest</li>
+</ul>
+
+<a id="quest_objectives"><h2>Quest Objectives</h2></a>
+
+<p>Conditional statements let your Puppet code behave differently in certain situations. By using facts as conditions, you can easily make Puppet do different things on different operating systems, but conditional statements are most helpful when combining facts with data retrieved from an external source. Conditional statements are not a required necessity to using Puppet, but offer an added flexible bonus proving the power of Puppet. To start this quest enter the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start conditions
+</code></pre></div>
+<a id="if_statements"><h2>
+<code>if</code> Statements</h2></a>
+
+<p>Puppet’s <code>if</code> statements behave much like those in any other language. The <code>if</code> condition is evaluated first and, if it is true, only the <code>if</code> code block is executed. If it is false, then the <code>elsif</code> condition kicks in (if present). Should the <code>if</code> condition and <code>elseif</code> condition fail, then the <code>else</code> condition picks up the slack and is executed (if present). If all the conditions fail and there is no <code>else</code> block, Puppet will do nothing and move on.</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="kr">if</span> <span class="ss">str2bool</span><span class="p">(</span><span class="s2">"$is_virtual"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nc">service</span> <span class="p">{</span><span class="s1">'ntpd'</span><span class="p">:</span>
+  <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="ss">stopped</span><span class="p">,</span>
+  <span class="nt">enable</span> <span class="p">=&gt;</span> <span class="ss">false</span><span class="p">,</span>
+  <span class="p">}</span>
+}
+
+<span class="kr">else</span> <span class="p">{</span>
+  <span class="nc">service</span> <span class="p">{</span> <span class="s1">'ntpd'</span><span class="p">:</span>
+    <span class="nt">name</span>       <span class="p">=&gt;</span> <span class="s1">'ntpd'</span><span class="p">,</span>
+    <span class="nt">ensure</span>     <span class="p">=&gt;</span> <span class="ss">running</span><span class="p">,</span>
+    <span class="nt">enable</span>     <span class="p">=&gt;</span> <span class="ss">true</span><span class="p">,</span>
+    <span class="nt">hasrestart</span> <span class="p">=&gt;</span> <span class="ss">true</span><span class="p">,</span>
+    <span class="nt">require</span>    <span class="p">=&gt;</span> <span class="nc">Package</span><span class="p">[</span><span class="s1">'ntp'</span><span class="p">],</span>
+    <span class="p">}</span>
+}
+</code></pre></div>
+
+<div class="lvm-callout lvm-tip"><p>
+The `elsif` and `else` clauses are optional.
+</p></div>
+
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<p>Lets take a look at an existing manifest and update it with <code>if</code> conditions and a variable</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">nano somthing/something.pp
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 2 :</p></div>
+
+<p>Lets write the <code>if</code> condition in Puppet's DSL with the following criteria:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">- 
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 3 :</p></div>
+
+<p>Now lets write the <code>elseif</code> considition in Puppet's DSL with the following criteria:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">- 
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 4 :</p></div>
+
+<p>Now lets write the <code>else</code> considition in Puppet's DSL with the following criteria:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">- 
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 5 :</p></div>
+
+<p>Save the manifest</p>
+
+<div class="lvm-task-number"><p>Task 6 :</p></div>
+
+<p>Apply the manifest</p>
+
+<a id="unless_statements"><h2>
+<code>unless</code> Statements</h2></a>
+
+<p>The <code>unless</code> statement works like a reversed <code>if</code> statement. They take a condition and an arbitrary block of Puppet code, and will only execute the block if the condition is false. The condition is evaluated first and, if it is false, the code block is executed. If the condition is true, Puppet will do nothing and move on.</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="kr">unless</span> <span class="nv">$memorysize</span> <span class="o">&gt;</span> <span class="ss">1024</span> <span class="p">{</span>
+  <span class="nv">$maxclient</span> <span class="o">=</span> <span class="m">500</span>
+}
+</code></pre></div>
+
+<div class="lvm-callout lvm-tip"><p>
+You cannot include `elsif` or `else` clauses in `unless` conditional statements.
+</p></div>
+
+<div class="lvm-task-number"><p>Task 7 :</p></div>
+
+<a id="case_statements"><h2>Case Statements</h2></a>
+
+<p>Like <code>if</code> statements, case statements choose one of several blocks of arbitrary Puppet code to execute. They take a control expression and a list of cases and code blocks, and will execute the first block whose case value matches the control expression.</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="kr">case</span> <span class="nv">$operatingsystem</span> <span class="p">{</span>
+  <span class="ss">centos</span><span class="p">:</span> <span class="p">{</span> <span class="nv">$apache</span> <span class="o">=</span> <span class="s2">"httpd"</span> }
+  <span class="ss">redhat</span><span class="p">:</span> <span class="p">{</span> <span class="nv">$apache</span> <span class="o">=</span> <span class="s2">"httpd"</span> }
+  <span class="ss">debian</span><span class="p">:</span> <span class="p">{</span> <span class="nv">$apache</span> <span class="o">=</span> <span class="s2">"apache2"</span> }
+  <span class="ss">ubuntu</span><span class="p">:</span> <span class="p">{</span> <span class="nv">$apache</span> <span class="o">=</span> <span class="s2">"apache2"</span> }
+  <span class="kr">default</span><span class="p">:</span> <span class="p">{</span> <span class="nf">fail</span><span class="p">(</span><span class="s2">"Unrecognized operating system for webserver"</span><span class="p">)</span> }
+  <span class="p">}</span>
+
+<span class="nc">package</span> <span class="p">{</span><span class="s1">'apache'</span><span class="p">:</span>
+  <span class="nt">name</span>   <span class="p">=&gt;</span> <span class="nv">$apache</span><span class="p">,</span>
+  <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="ss">latest</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Puppet compares the control expression to each of the cases, in the order they are listed. It will execute the block of code associated with the first matching case, and ignore the remainder of the statement.</p>
+
+<ul>
+<li>Basic cases are compared with the <code>==</code> operator (which is case-insensitive).</li>
+<li>Regular expression cases are compared with the <code>=~</code> operator (which is case-sensitive).</li>
+<li>The special <code>default</code> case matches anything.</li>
+</ul>
+
+<div class="lvm-task-number"><p>Task 8 :</p></div>
+
+
+            </div>
+        <div id="site-footer">
+    <div class="footer-top">
+    </div>
+</div>
+
+        </div>
+    </div>
+    </body>
+</html>

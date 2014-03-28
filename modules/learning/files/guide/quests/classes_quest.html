@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Classes</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/quests/welcome.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Progress
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Cheat-Sheet
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    About
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Resources
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" clas="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="active">
+                                <a href="/quests/classes_quest.html" class = "active">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+
+                <h1>Classes</h1>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Resources Quest</li>
+<li>Mainfest Quest</li>
+</ul>
+
+<a id="quest_objectives"><h2>Quest Objectives</h2></a>
+
+<p>In this quest we cover the use <strong>classes</strong> to group resource declarations into reusable blocks of Puppet code. If you're ready to get started, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start classes
+</code></pre></div>
+<a id="defining_classes"><h2>Defining Classes</h2></a>
+
+<p>When the Wizard Judge on Elvium convicts a system componenet that is causing harm or useless to the system, he categorizes them from the rest of the population. To do this in Elvium additional requirements are required for classifying. We can create a definition for a class of misfits called <code>broken_ops</code>. This class will store two broken components in Elvium. To do this:</p>
+
+<ul>
+<li>Users in Elvium should have their home directories in the directory <code>/mnt/home</code>
+</li>
+<li>We need to ensure that a group with the name of <code>operational</code> is present</li>
+<li>We also need to add the names of the users who will be members of the group <code>operational</code>
+</li>
+<li>makerbot's home directory should be <code>/mnt/home/maker</code>. </li>
+</ul>
+
+<div class="highlight"><pre><code class="puppet"><span class="kd">class</span> <span class="nc">broken_ops</span> <span class="p">{</span>
+  <span class="nc">user</span> <span class="p">{</span> <span class="s1">'maker'</span><span class="p">:</span>
+    <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="ss">present</span><span class="p">,</span>
+    <span class="nt">gid</span>    <span class="p">=&gt;</span> <span class="s1">'operations'</span><span class="p">,</span>
+    <span class="nt">home</span>   <span class="p">=&gt;</span> <span class="s1">'/mnt/home/maker'</span><span class="p">,</span>   
+   <span class="p">}</span>
+    
+  <span class="nc">user</span> <span class="p">{</span> <span class="s1">'frion'</span><span class="p">:</span>
+    <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="ss">present</span><span class="p">,</span>
+    <span class="nt">gid</span>    <span class="p">=&gt;</span> <span class="s1">'operations'</span><span class="p">,</span>
+    <span class="nt">home</span>   <span class="p">=&gt;</span> <span class="s1">'/mnt/home/frion'</span><span class="p">,</span>   
+  <span class="p">}</span>
+        
+  <span class="nc">group</span> <span class="p">{</span> <span class="s1">'operations'</span><span class="p">:</span>
+    <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="ss">present</span><span class="p">,</span>
+    <span class="nt">gid</span>    <span class="p">=&gt;</span> <span class="s1">'1001'</span><span class="p">,</span>
+  <span class="p">}</span>
+
+  <span class="nc">file</span> <span class="p">{</span> <span class="s1">'/mnt/home/'</span><span class="p">:</span>
+    <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="ss">directory</span><span class="p">,</span>
+    <span class="nt">mode</span>   <span class="p">=&gt;</span> <span class="s1">'0755'</span><span class="p">,</span>
+  <span class="p">}</span>
+}  
+</code></pre></div>
+
+<p>In the above example of classifying broken users on Elvium, we <strong>defined</strong> a class called <code>broken_ops</code>, which consists of a collection of three different resources - a <code>user</code> resource, a <code>group</code> resource, and a <code>file</code> resource. The above description is both elegant, and self-documenting and 100% constructed in Puppet's DSL.</p>
+
+<p>Now that we have a class called <code>broken_ops</code>, we can include the above class in the configuration of a machine to manage broken users in Elvium.</p>
+
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<p>Run the following command</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet apply /root/examples/modules1-ntp1.pp
+</code></pre></div>
+<p>That's funny. Nothing happened. This is because the class in the <code>modules1-ntp1.pp</code> manifest is only being defined and not declared.</p>
+
+<div class="lvm-task-number"><p>Task 2 :</p></div>
+
+<p>We are going to have to modify the <code>modules1-ntp1.pp</code> manifest a little to make sure Puppet applies the defined resources. Type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">nano /root/examples/modules1-ntp1.pp
+</code></pre></div>
+<a id="declaring_classes"><h2>Declaring Classes</h2></a>
+
+<p>In the previous section, we saw an example of a class definition and learned that a class is a collection of resoure. The question that still needs answering is, how can we use the class definition? How can we tell Puppet to <em>use</em> the defintion as part of configuring a system?</p>
+
+<p>You can direct Puppet to apply a class definition on a system by using the <strong><em>include</em></strong> function. We already know that Puppet manifests are files with the extension ".pp" and contain code in Puppet's DSL, but new information on top of that is that it has the <strong><em>include</em></strong> directive already built in so we can use the class(es) created in the manifest.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">include users
+</code></pre></div>
+<p>A manifest with just the single line above will apply the definition of class users to the system. But when you say, <code>include users</code> how does Puppet know where to find the class defintion? We will answer that question as you journey.</p>
+
+<div class="lvm-task-number"><p>Task 3 :</p></div>
+
+<p>In the <code>modules1-ntp1.pp</code> manifest go ahead and add the <code>include</code> command at the very end. This will hopefully tell Puppet to apply the defined <code>ntp</code> resource.</p>
+
+<div class="lvm-task-number"><p>Task 4 :</p></div>
+
+<p>Go ahead and now apply the manifest <code>/root/examples/modules1-ntp1.pp</code>.</p>
+
+<p>Great! This time Puppet actually applied our defined resources. Always remember to define first, then delcare. However, please do not ever do this above example in real life, since you may want to include classes across nodes. This is just an example to show you the functionality and benefit of classes. In the Modules Quest we will show you the proper way define classes and declare classes separately.</p>
+
+
+            </div>
+        <div id="site-footer">
+    <div class="footer-top">
+    </div>
+</div>
+
+        </div>
+    </div>
+    </body>
+</html>

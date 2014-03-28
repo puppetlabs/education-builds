@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Welcome</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/quests/welcome.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Progress
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Cheat-Sheet
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    About
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Resources
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" clas="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li class="active">
+                                <a href="/index.html" class = "active">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+
+                <h1>Welcome</h1>
+
+<a id="quest_objectives"><h2>Quest Objectives</h2></a>
+
+<p>In this quest you will be introduced to the Learning Virtual Machine environment.</p>
+
+<a id="welcome_to_the_learning_vm"><h2>Welcome to the Learning VM</h2></a>
+
+<blockquote>
+<p>Any sufficiently advanced technology is indistinguishable from magic.</p>
+
+<p>-Arthur C. Clarke</p>
+</blockquote>
+
+<p>Welcome to the Learning VM. Have a look around. What you see will be fairly typical of a Unix-based Operating System. You will see a filesystem populated with many of the usual directories and files. Some services are running in the background, including the SSH service that you can use to access the Learning VM from your own terminal.</p>
+
+<p>You may have noticed that you are not an ordinary user; you are logged into the 'root' account with its user id of '0', the mark of the <strong>Superuser</strong>. This account gives you the ability to change just about anything you like in the Learning VM, just as you would if you were tasked with administrating a machine.</p>
+
+<p>By following this Quest Guide, you will learn how Puppet allows you to use these priveleges easily and effectively.</p>
+
+<a id="quest_navigation"><h2>Quest Navigation</h2></a>
+
+<p>In order to learn more about Puppet, and to work your way through this learning virtual machine, you will have to complete a series of Quests and with each Quest you have certain amount of 'Tasks' that need to be completed. To monitor your status as you progress, we've created custom commands for you.</p>
+
+<div class="lvm-callout lvm-tip"><p>
+These custom `quest` commands are not related to Puppet. They are only related to this Learning Virtual Machine.
+</p></div>
+
+<p>The following command will help you with using the quest tool:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --help
+</code></pre></div>
+<p>The <code>quest --help</code> command provides you with an understanding of several quest tools such as the following:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --progress    # Display details of tasks completed (default: true)
+quest --brief       # Display number of tasks compelted
+quest --name        # Name of the quest to track
+quest --completed   # Display completed quests
+quest --showall     # Show all available quests
+quest --start       # Provide name of the quest to start tracking
+</code></pre></div>
+<div class="lvm-callout lvm-tip"><p>
+By typing `clear` into your terminal will clear everything on your screen.
+</p></div>
+
+<div class="lvm-inline-aside">
+<strong>Remember these commands </strong><p>
+These will be integrated into the first few quests to help you remember them. We'll explain these commands further as you progress.
+</p>
+</div>
+
+<div class="img-wrapper">
+<img src="assets/terminal.png"><p>Figure</p>
+</div>
+
+<a id="facter"><h2>Facter</h2></a>
+
+<p>Facter is a Puppet tool that helps you obtain facts about your system. Here are a few items for you to get to know your system a little better:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">facter ipaddress
+facter facterversion
+facter memorysize
+facter operatingsystem
+facter osfamily
+facter puppetversion
+</code></pre></div>
+<div class="lvm-callout lvm-tip"><p>
+You can see all the facts by running facter -p
+</p></div>
+
+<a id="summary"><h2>Summary</h2></a>
+
+<p>In this quest we introduced you to the quest navigation commands, which provides you real time feedback on your progress using the learning virtual machine. We also introduced you to a Puppet tool called Facter, which allows to easily obtain facts about Puppet, your system, this virtual machine and so much more. This is just a primer quest to get you familar with using the command line and introduction to the quest structure. When you're ready, let's get started learning about Puppet Resources.</p>
+
+
+            </div>
+        <div id="site-footer">
+    <div class="footer-top">
+    </div>
+</div>
+
+        </div>
+    </div>
+    </body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Puppet Module Tool</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/quests/welcome.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Progress
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Cheat-Sheet
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    About
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/">
+                                    Resources
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" clas="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+
+                <h1>Puppet Module Tool</h1>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Resources Quest</li>
+<li>Mainfest Quest</li>
+<li>Classes Quest</li>
+<li>Varibales Quest</li>
+<li>Conditions Quest</li>
+<li>Ordering Quest</li>
+<li>Modules Quest</li>
+</ul>
+
+<a id="quest_obhectives"><h2>Quest Obhectives</h2></a>
+
+<p>The <code>puppet module</code> tool is the most important tool in expanding Puppet. The <code>puppet module</code> tool allows you to create, install and searches for modules on the Puppet Forge. We'll discuss the Puppet Forge more in detail below, but the Puppet Forge is a repository of user-contributed Puppet code of expandable components to using Puppet. The <code>puppet module</code> tool also has subcommands that make finding, installing, and managing modules from the Puppet Forge much easier from the command line. It can also generate empty modules, and prepare locally developed modules for release on the Forge. If you're ready to take your Puppet knowledge to the next level type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start puppet module tool
+</code></pre></div>
+<a id="actions"><h2>Actions</h2></a>
+
+<ul>
+<li>
+<code>list</code> - List installed modules.</li>
+<li>
+<code>search</code> - Search the Puppet Forge for a module.</li>
+<li>
+<code>install</code> - Install a module from the Puppet Forge or a release archive.</li>
+<li>
+<code>upgrade</code> - Upgrade a puppet module.</li>
+<li>
+<code>uninstall</code> - Uninstall a puppet module.</li>
+<li>
+<code>build</code> - Build a module release package.</li>
+<li>
+<code>changes</code> - Show modified files of an installed module.</li>
+<li>
+<code>generate</code> - Generate boilerplate for a new module.</li>
+</ul>
+
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<p>Let's see what modules are already installed and where they're located. To do this, we want Puppet to show us in a tree format. Go ahead and type the following command: </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet module list -tree
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 2 :</p></div>
+
+<p>Wow! you have a lot installed. That's great. But it seems like your missing the [module name] module. You should search the Puppet Forge for the module. Type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet module search puppetlabs-apache
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 3 :</p></div>
+
+<p>There's something on the Forge that exists! Let use it. Let's install module one version earlier than present. Run the following command:</p>
+
+<p>NOTE: normally I would have you install the latest version, but now I can show you how to update an existing module in the next step</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet module install puppetlabs-apache --version 0.10.0
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 4 :</p></div>
+
+<p>Okay, now go ahead and upgrade earlier module version to present version</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet module upgrade puppetlabs-apache
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 5 :</p></div>
+
+<p>Please do not do this, but you can also uninstall a module by running the below command. We're not going to do this because we still need this module</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet module uninstall puppetlabs-apache
+</code></pre></div>
+<a id="the_puppet_forge"><h2>The Puppet Forge</h2></a>
+
+<p>The <a href="http://forge.puppetlabs.com">Puppet Forge</a> is a public repository of modules written by members of the puppet community for Puppet Open Source and Puppet Enterprise. Modules available on the forge simplify the process of managing your systems. These modules will provide you with classes and new resource types to manage the various aspects of your infrastructure. This reduces your time from describing the classes using Puppet's DSL to usning an existing description with the configuring the right options for you.</p>
+
+<div class="lvm-task-number"><p>Task 6 :</p></div>
+
+<p>Now lets inspect the module the code written in Puppet DSL in the module's manifests directory. The directory path is: </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">/etc/puppetlabs/puppet/modules/apache/manifests
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 7 :</p></div>
+
+<p>However, there is a much easier way to inspect this module by visiting the <a href="https://forge.puppetlabs.com/puppetlabs/apache">page for the apache module on the puppet forge</a>.</p>
+
+<div class="lvm-task-number"><p>Task 8 :</p></div>
+
+<p>The documentation on the page provides insight into how to use the provided class definitions in the module to accomplish tasks. If we wanted to install [something] with the default options, the module documentation suggests we can do it as follows:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">class { 'apache':  }
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 9 :</p></div>
+
+<p>It's as simple as that! So if we wanted our machine to have apache installed on it, all we need to do is ensure that the above <strong>class declaration</strong> is in some manifest that applies to our node.</p>
+
+<div class="lvm-task-number"><p>Task 10 :</p></div>
+
+<p>What if we wanted to configure the default website served by Apache?</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">apache::vhost { 'first.example.com':
+  port    =&gt; '80',
+  docroot =&gt; '/var/www/first',
+}
+</code></pre></div>
+<p>NOTE: This leverage a <strong>Defined Resource Type</strong> called <code>apache::vhost</code> that helps us create virtual hosts in Apache. You can specify the port Apache listens to by changing the value for the parameter <code>port</code>.</p>
+
+<!-- How can 9 and 10 be converted into tasks -->
+
+
+            </div>
+        <div id="site-footer">
+    <div class="footer-top">
+    </div>
+</div>
+
+        </div>
+    </div>
+    </body>
+</html>
