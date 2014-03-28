@@ -51,11 +51,13 @@ class learning::install {
   exec { 'install trollop':
     command => '/opt/puppet/bin/gem install trollop',
     unless  => '/opt/puppet/bin/gem list trollop -i',
+    require => Exec['install-pe'],
   }
   
   exec { 'install serverspec':
     command => '/opt/puppet/bin/gem install serverspec',
     unless  => '/opt/puppet/bin/gem list serverspec -i',
+    require => Exec['install-pe'],
   }
 
 }
