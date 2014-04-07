@@ -426,7 +426,7 @@ task :createvmx, [:vmos] => [:createovf] do |t,args|
   cputs "Converting OVF to VMX..."
   FileUtils.rm_rf("#{VMWAREDIR}/#{$settings[:vmname]}-vmware") if File.directory?("#{VMWAREDIR}/#{$settings[:vmname]}-vmware")
   FileUtils.mkdir_p("#{VMWAREDIR}/#{$settings[:vmname]}-vmware")
-  system("'#{@ovftool_default}' --lax --compress=9 --targetType=VMX '#{OVFDIR}/#{$settings[:vmname]}-ovf/#{$settings[:vmname]}.ovf' '#{VMWAREDIR}/#{$settings[:vmname]}-vmware'")
+  system("'#{@ovftool_default}' --lax --targetType=VMX '#{OVFDIR}/#{$settings[:vmname]}-ovf/#{$settings[:vmname]}.ovf' '#{VMWAREDIR}/#{$settings[:vmname]}-vmware'")
 
   cputs 'Changing virtualhw.version = to "8"'
   # this path is different on OSX
