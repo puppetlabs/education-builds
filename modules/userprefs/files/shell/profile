@@ -8,6 +8,7 @@ alias vi=vim
 
 # Point the PE installer to the cached agent installer
 export q_tarball_server="/usr/src/installer/"
+export q_pe_check_for_updates=n
 
 validate_yaml() {
   ruby -ryaml -e "YAML.load_file '$1'"
