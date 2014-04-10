@@ -74,6 +74,8 @@ EOF
 sed -i 's/HOSTNAME.*/HOSTNAME=<%= $settings[:hostname] %>/' /etc/sysconfig/network
 hostname <%= $settings[:hostname] %>
 
+yum upgrade openssl -y
+
 sed -i 's/127\.0\.0\.1.*/\0 <%= $settings[:hostname] %> <%= $settings[:hostname].split('.')[0] %>/' /etc/hosts
 cp /mnt/puppet/<%= $settings[:pe_tarball] %> /root/
 <% if $settings[:vmtype] == "learning" %>
