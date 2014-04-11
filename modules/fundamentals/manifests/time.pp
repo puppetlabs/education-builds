@@ -23,8 +23,8 @@
 # for time, and
 #   b) all agents are synced to the master via a cron task
 
-class fundamentals::time ( $offline = 'false' ) {
-  if $offline == 'true' {
+class fundamentals::time ($offline = false ) {
+  if $offline == true {
     $time_servers = [$::servername]
   }
   else {

@@ -18,7 +18,14 @@
 #       * creates a bare repository in repo root
 #       * checks out a working copy in the environments root
 #
-class fundamentals {
+#
+# $offline   : Configure NTP (and other services) to run in standalone mode
+# $autosetup : Automatically configure environment, etc.
+#
+class fundamentals (
+  $offline   = false,
+  $autosetup = false,
+) {
 
   if $::hostname == 'master' {
 
@@ -28,6 +35,12 @@ class fundamentals {
     }
   }
   else {
-    include fundamentals::agent
+    class { 'fundamentals::agent':
+      autosetup => $autosetup,
+    }
+  }
+
+  class { 'fundamentals::time':
+    offline => $offline,
   }
 }

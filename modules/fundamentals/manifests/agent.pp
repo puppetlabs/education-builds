@@ -4,7 +4,10 @@
 #  * git pre-commit hook
 #  * hiera configuration
 
-class fundamentals::agent ( $workdir = 'puppetcode' ) {
+class fundamentals::agent (
+  $workdir   = 'puppetcode',
+  $autosetup = false,
+) {
   Exec {
     environment => 'HOME=/root',
     path        => '/usr/bin:/bin:/user/sbin:/usr/sbin',
@@ -59,6 +62,26 @@ class fundamentals::agent ( $workdir = 'puppetcode' ) {
       ensure   => present,
       populate => false,
     }
+
+    if(size($teams) == 1) {
+      $team = $teams[0]
+
+      file { '/etc/puppetlabs/puppet/modules':
+        ensure => link,
+        target => "/root/${team}/modules",
+        force  => true,
+      }
+
+      if $autosetup {
+        ini_setting { "environment":
+          ensure  => present,
+          path    => '/etc/puppetlabs/puppet/puppet.conf',
+          section => 'agent',
+          setting => 'environment',
+          value   => $team,
+        }
+      }
+    }
   } else {
     # If we don't have teams, enforce the symlink. When they get to
     # the capstone, they should know how to manage this on their own.
@@ -68,6 +91,17 @@ class fundamentals::agent ( $workdir = 'puppetcode' ) {
       target => "/root/${workdir}/modules",
       force  => true,
     }
+
+    if $autosetup {
+      ini_setting { "environment":
+        ensure  => present,
+        path    => '/etc/puppetlabs/puppet/puppet.conf',
+        section => 'agent',
+        setting => 'environment',
+        value   => $::hostname,
+      }
+    }
+
   }
 
   # export a fundamentals::user with our ssh key.
