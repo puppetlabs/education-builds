@@ -30,7 +30,7 @@ while : ; do
   echo "... that IP is unreachable."
 done
 
-echo "${master} master.puppetlabs.vm classroom.puppetlabs.vm master classroom" >> /etc/hosts
+echo "${master} master.puppetlabs.vm master" >> /etc/hosts
 echo "${ipaddr} ${username}.puppetlabs.vm ${username}" >> /etc/hosts
 sed -i "s/^HOSTNAME=.*$/HOSTNAME=${username}.puppetlabs.vm/" /etc/sysconfig/network
 sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/CentOS-Base.repo
