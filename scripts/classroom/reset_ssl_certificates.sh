@@ -1,9 +1,23 @@
 #! /bin/sh
 
+echo
+echo
+echo "################################################################################"
+echo
+echo "This script will completely reset all certificates on a standalone Puppet Master"
+echo
+echo "             Press Control-C now to abort or [enter] to continue."
+echo
+echo "################################################################################"
+echo
+read junk
+
 mkdir ~/certificates.bak/{puppet,puppetdb,puppet-dashboard}
 cp -a /etc/puppetlabs/puppet/ssl ~/certificates.bak/puppet/
 cp -a /etc/puppetlabs/puppetdb/ssl ~/certificates.bak/puppetdb/
 cp -a /opt/puppet/share/puppet-dashboard/certs ~/certificates.bak/puppet-dashboard/
+
+echo "Certificates backed up to ~/certificates.bak"
 
 service pe-puppet stop
 service pe-mcollective stop
