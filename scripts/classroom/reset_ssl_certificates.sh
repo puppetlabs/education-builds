@@ -55,3 +55,5 @@ echo "Puppet Enterprise Console certificates regenerated"
 
 puppet agent -t
 service pe-puppet start
+
+echo "Certificates reset. Please regenerate all client certificates now."
