@@ -1,5 +1,13 @@
 #! /bin/sh
 
+if [[ $(hostname) != "master.puppetlabs.vm" && $(hostname) != "classroom.puppetlabs.vm" ]]
+then
+  echo "This tool is intended to be run on the classroom master."
+  echo "Do you wish to continue anyway? [yes/NO]"
+  read junk
+  [ "${junk}" != "yes" ] && exit 1
+fi
+
 echo
 echo
 echo "################################################################################"
