@@ -5,12 +5,54 @@
 @font-face {
     font-family: 'Arvo';
     src: url('../fonts/arvo/Arvo-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
+@font-face {
+    font-family: 'Arvo';
+    src: url('../fonts/arvo/Arvo-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Arvo';
+    src: url('../fonts/arvo/Arvo-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Arvo';
+    src: url('../fonts/arvo/Arvo-Bolditalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
 
 @font-face {
     font-family: 'PT Sans';
-    src: url('../fonts/PT-Sans/PTC55F.ttf') format('truetype');
+    src: url('../fonts/PT-Sans/PTS55F.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
+@font-face {
+    font-family: 'PT Sans';
+    src: url('../fonts/PT-Sans/PTS75F.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'PT Sans';
+    src: url('../fonts/PT-Sans/PTS56F.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'PT Sans';
+    src: url('../fonts/PT-Sans/PTS76F.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
 
 @font-face {
     font-family: 'FontAwesome';
@@ -20,9 +62,14 @@
 }
 
 @media all{
+    body {
+        font-family: 'PT Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+        font-size: 15px;
+        color: #5d5e59;
+    }
 
     div.lvm-task-number {
-        color: #333;
+        color: #6c6d6d;
         font-family: 'Arvo','Helvetica Neue',Helvetica,Arial,sans-serif;
         font-size: 16px;
         font-style: bold;
@@ -30,7 +77,7 @@
     }
 
     div.lvm-task-number p:before {
-        color: #7FBA2D;
+        color: #7C6AAB;
         display: inline;
         font-family: 'FontAwesome', 'Helvetica Neue', Helvetica, Arial, sans-serif;
         content: ' ';
@@ -48,7 +95,7 @@
         position: relative;
         left: 1em;
         page-break-inside: avoid;
-        margin-right: -180px;
+        margin-right: -190px;
     }
     
     div.lvm-callout p{
@@ -62,7 +109,7 @@
         content: "  ";
         display: block;
         font-size: 15pt;
-        text-align: center;        
+        text-align: center;
     }
     
     div.lvm-warning p:before{
@@ -70,7 +117,8 @@
         content: "  ";
         display: block;
         font-size: 15pt;
-        text-align: center;                
+        text-align: center;
+        color: #7C6AAB;
     }
     
     div.lvm-fact p:before{
@@ -87,12 +135,12 @@
         color: #333;
         padding: 1em;
         margin: 2em;
-        border: 1pt solid #eee;        
+        border: 1pt solid #eee;
+        page-break-inside: avoid;        
     }
     div.lvm-inline-aside strong{
         font-family: "Arvo","PT Sans","Helvetica Neue",Helvetica,Arial,sans-serif;    
         line-height: 2;    
-        color: #000;
     }
     code, pre {
         font-family: Monaco, Andale Mono, Courier New, monospace;
@@ -108,13 +156,14 @@
     }
     pre {
         display: block;
-        padding: 4px;
+        padding: 8px;
         margin: 0 0 18px;
         line-height: 16px;
         font-size: 11px;
         border: 1px solid #ccc;
         white-space: pre-wrap;
         word-wrap: break-word;
+        page-break-inside: avoid;        
     }
     pre code {
         background: none;
@@ -122,14 +171,43 @@
         padding: 0;
     }
 
+    ol,
+    ul {
+    max-width: 37em;
+    margin-bottom: 1em;
+    }
+
+    #content a {
+        color: #0095dd;
+    }
+
+    div.img-wrapper {
+      display: block;
+      text-align: center;
+    }
+
+    div.img-wrapper p{
+        font-style: italic;
+        margin-left: 10px;
+    }
+    
+    div.img-wrapper p:after{
+        counter-increment: image;
+        content: ' ' counter(image);
+    }
+
+    p{
+        text-align: justify;
+    }
 }
 
 @media screen {
 
     body, #page {
-        height: 100%;
+        min-height: 100%;
         min-width: 320px;
         margin: 0px;
+        position: relative;
     }
     
     div.highlight {
@@ -147,19 +225,9 @@
     img {
         max-width: 520px;
         height: auto;
-        counter-increment: img;        
         vertical-align: bottom;
+        text-align: center;
     }
-
-    div.img-wrapper p{
-        font-style: italic;
-        margin-left: 10px;
-    }
-
-    div.img-wrapper p:after{
-        content: ' ' counter(img);
-    }
-
         
     li {
         display: list-item;
@@ -215,6 +283,7 @@
     
     #main {
         z-index: 1;
+        padding-bottom: 40px;
     }
     
     div {
@@ -252,7 +321,9 @@
     
     body {
         font-family: 'PT Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; 
-        font-size: 14px;
+        font-size: 15px;
+        color: #5d5e59;
+        height: 100%;
     }
     table {
     	margin: 10px 0 15px 0;
@@ -273,7 +344,6 @@
         margin-bottom: 9px;
         line-height: 1.5;
         max-width: 37em;
-    
     }
     h1, 
     h2, 
@@ -282,7 +352,7 @@
     h5, 
     h6 {
         font-family: 'Arvo','PT Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
-        color: #7FBA2D;
+        color: #6c6d6d;
         font-weight: normal;
         line-height: 1.15em;
         text-rendering: optimizeLegibility;
@@ -290,24 +360,27 @@
     
     h1 {
         margin-bottom: 50px;
+        margin-top: 15px;
         font-size: 36px;
-        text-shadow: 0px 0px 1px #7CB72A;
+        counter-reset: image;
     }
     
     h2 {
     display: block;
-    font-size: 20px;
-    -webkit-margin-before: 0.83em;
-    -webkit-margin-after: 0.83em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
+    font-size: 1.625rem;
+    margin-bottom: 0.83em;
+    margin-top: 0.83em;
     }
+
     h3 {
-        color: #7FBA2D;    
+        display: block;
+        color: #6c6d6d;    
         font-size: 18px;
+        margin-bottom: 0.53em;
+        margin-top: 0.53em;
     }
     h4 {
-        color: #7FBA2D;
+        color: #6c6d6d;
         font-size: 14px;
     }
     h5 {
@@ -337,6 +410,7 @@
       margin-top: 0;
       quotes: "" "";
       margin-bottom: 0.5em;
+      max-width: 37em;
     }
     
     blockquote:before {
@@ -393,7 +467,6 @@
         float: right;
         width: 700px;
         margin: 20px 0;
-        padding-bottom: 360px;
     }
 
     ::selection {
@@ -426,7 +499,7 @@
 
     #site-header {
         width: 100%;
-        background: #635F5E;
+        background: #7C6AAB;
         height: 105px;
         border-top: 8px solid #fff;
         border-bottom: 2px solid #c4c4c5;
@@ -455,13 +528,18 @@
         font-size: 18px;
     }
 
-    #cover-page h1{
-        font-size: 48pt;
+    #footer{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 40px;
+        background: #7C6AAB;
+        border-top: 2px solid #c4c4c5;
+        -webkit-box-shadow: rgba(0,0,0,0.15) 0 0 20px;
+        -moz-box-shadow: rgba(0,0,0,0.15) 0 0 20px;
+        box-shadow: rgba(0,0,0,0.15) 0 0 20px;
     }
-
-    #cover-page h2{
-        font-size: 28pt;
-    }
+    
 
     * {
         -webkit-box-sizing: border-box;
@@ -473,10 +551,6 @@
 @media print { 
      
     @page {
-        /*
-        size: 15cm 40cm;
-        margin: 10pt;
-        */
         margin-left: 40pt;
         margin-right: 180pt;
     }
@@ -492,7 +566,6 @@
     content {
         page: content;
         counter-reset: page 1;
-        counter-reset: figure 0;
     }
 
     @page content{
@@ -500,6 +573,12 @@
             content: counter(page);
             font-family: 'PT Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; 
             font-size: 10pt;
+        }
+        @bottom-left {
+            content: "© 2014 Puppet Labs";
+            font-family: 'PT Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            font-size: 8pt;
+            font-style: italic;
         }
         @top {
             content: string(quest-title);
@@ -532,7 +611,7 @@
     }
 
     div.lvm-task-number {
-        color: #7FBA2D;
+        color: #6c6d6d;
     }
 
     toc h1 {
@@ -577,9 +656,7 @@
     div.lvm-callout p{
         font-size: 11px;
         line-height: 1.2;
-
     }
-
 
     toc a,
     div.pdfnav a {
@@ -613,43 +690,38 @@
     #cover-page h1{
         font-size: 48pt;
         padding-left: 120px;
-        padding-top: 80px
+        padding-top: 80px;
+        color: #EFA92D;
     }
 
     #cover-page h2{
         font-size: 28pt;
         padding-left: 120px;
         padding-right: 80px;
+        color: #7C6AAB;
     }
 
     #underline {
-        background: #7FBA2D;
+        background: #EFA92D;
         height: 7px;
         width: 100%;
         margin-left: 120px;
     }
     
     #image-wrapper {
-        margin-left: -320px;
         position: fixed;
-        bottom: 0px;
+        top: 415px;
         right: 0px;
     }
 
-
     #top-bar{
-        background-color: #635F5E;
+        background-color: #7C6AAB;
         height: 70pt;
+        border-bottom: 5px solid #302B6D;
     }
 
     #top-bar img{
-        padding: 20px;
-    }
-
-    #title-inderline {
-        color: blue;
-        height: 10px;
-        width: 100%;
+        padding: 28px;
     }
         
     div.page-break{
@@ -667,12 +739,7 @@
         margin: 0;
         padding: 0;
     }
-    
-    body {
-        font-family: 'PT Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-size: 12px;
-    }
-    
+        
     p {
         margin-bottom: 9px;
         line-height: 1.5;
@@ -685,7 +752,7 @@
     h5, 
     h6 {
         font-family: "Arvo", "Helvetica Neue",Helvetica,Arial,sans-serif;
-        color: #7FBA2D;
+        color: #6c6d6d;
         font-weight: normal;
         line-height: 1.15em;
         margin: 1em 0 .25em;
@@ -693,33 +760,24 @@
     }
     
     content h1 {
-        margin-top: 200px;
+        margin-top: 80px;
         margin-bottom: 50px;
         font-size: 36px;
         string-set: quest-title content();
         string-set:  counter(page);
         page: content;
+        counter-reset: image;
         prince-page-group: start;
     }
     
     content img {
         max-width: 520px;
-        counter-increment: img;
-    }
-
-    div.img-wrapper p{
-        font-style: italic;
-        margin-left: 10px;
-    }
-    
-    div.img-wrapper p:after{
-        content: ' ' counter(img);
     }
 
     
     h2 {
     display: block;
-    font-size: 20px;
+    font-size: 1.625rem;
     -webkit-margin-before: 0.83em;
     -webkit-margin-after: 0.83em;
     -webkit-margin-start: 0px;
@@ -782,6 +840,7 @@
         font-style: italic;
         font-family: 'PT Sans Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
+
     sup {
         font-size: 0.83em;
         vertical-align: super;
