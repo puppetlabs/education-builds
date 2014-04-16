@@ -1,9 +1,10 @@
 class learning::install {
   exec {'install-pe':
-    # This is a workaround for PE 3.2.0 offline installations to work"
+    # This is a workaround for PE 3.2.0+ offline installations to work"
     # If you don't reset the rubylib, it'll inherit the one used during kickstart and the installer will blow up.
     environment => ["q_tarball_server=/usr/src/installer/","RUBYLIB=''"],
     command     => "/root/puppet-enterprise/puppet-enterprise-installer -D -a /root/learning.answers",
+    creates     => '/usr/local/bin/puppet',
     logoutput   => true,
     timeout     => '14400',
   }
@@ -42,6 +43,21 @@ class learning::install {
     ensure  => directory,
     source  => "puppet:///modules/${module_name}/examples",
     recurse => true,
+  }
+
+  # to use pe_gem to install the following gems, we first need pe_gem installed
+  # using execs now till there is a more graceful solution
+  
+  exec { 'install trollop':
+    command => '/opt/puppet/bin/gem install trollop -v 2.0',
+    unless  => '/opt/puppet/bin/gem list trollop -i',
+    require => Exec['install-pe'],
+  }
+  
+  exec { 'install serverspec':
+    command => '/opt/puppet/bin/gem install serverspec',
+    unless  => '/opt/puppet/bin/gem list serverspec -i',
+    require => Exec['install-pe'],
   }
 
 }

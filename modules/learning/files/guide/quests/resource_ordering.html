@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Ordering</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/index.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/glossary.html">
+                                    Glossary
+                                </a>
+                            <li>
+                                <a href="https://puppetlabs.com/learn" target="_blank">
+                                    Learning Resources
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://docs.puppetlabs.com" target="_blank">
+                                    Puppet Docs
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" class="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/big_picture.html">Power of Puppet</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="active">
+                                <a href="/quests/resource_ordering.html" class = "active">Ordering</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/modules_quest.html">Modules</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/puppet_module_tool_quest.html">Puppet Module Tool</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/afterword.html">Afterword</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/glossary.html">Glossary</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+                <h1>Resource Ordering</h1>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Welcome Quest</li>
+<li>Power of Puppet Quest</li>
+<li>Resources Quest</li>
+<li>Mainfest Quest</li>
+<li>Varibales Quest</li>
+<li>Conditions Quest</li>
+</ul>
+
+<a id=""><h2>Quest Objectives</h2></a>
+
+<ul>
+<li>Understand why some resources must be managed in a specific order.</li>
+<li>Use the <code>before</code>, <code>require</code>, <code>notify</code>, and <code>subscribe</code> metaparameters to effectively manage the order that Puppet applies resource declarations.</li>
+</ul>
+
+<a id=""><h2>Getting Started</h2></a>
+
+<p>This quest will help you learn more about specifying the order in which Puppet should manage resources in a manifest. When you're ready to get started, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start ordering
+</code></pre></div>
+<a id=""><h2>Explicit Ordering</h2></a>
+
+<p>We are likely to reading instructions from top to bottom and execute them in that order. When it comes to resource declarations in a Puppet manifest, Puppet does things a little differently. It works through the problem as though it were give a list of things to do, and it was left to decide the most efficient way to get those done. We have referred to the catalog vaguely in the previous sections. The <strong>catalog</strong> is a compilation of all the resources that will be applied to a given system, and the relationships between those resources. In building the catalog, unless we <em>explicitly</em> specify the relationship between the resources, Puppet will manage them in its own order.  </p>
+
+<p>For the most part, Puppet specifies relationships between resources in the appropriate manner while building the catalog. For example, if you say that user <code>gigabyte</code> should exist, and the directory <code>/home/gigabyte/bin</code> should be present and be owned by user <code>gigabyte</code>, then Puppet will specify a relationship between the two - that the user should be managed before the directory. These are implicit (shall we call them obvious?) relationships. </p>
+
+<p>Sometimes, however, you will need to ensure that a resource declaration is applied before another. For instance, if you wish to declare that a service should be running, you need to ensure that the package for that service is installed and configured before you can start the service. One might ask as to why there is not implicit relationship in this case. The answer is that, often times, more than one package provides the same service, and what if you are using a package you built yourself? Since Puppet cannot <em>always</em> conclusively determine the mapping between a package and a service (the names of the software package and the service or executable it provides are not always the same either), it is up to us to specify the relationship between them.</p>
+
+<p>When you need a group of resources to be managed in a specific order, you must explicitly state the dependency relationships between these resources within the resource declarations.</p>
+
+<a id=""><h2>Relationship Metaparameters</h2></a>
+
+<div class="lvm-callout lvm-fact"><p>
+A metaparamter is a resource attribute that can be specified for _any_ type of resource, rather than a specific type.
+</p></div>
+
+<p>Metaparameters follow the familiar <code>attribute =&gt; value</code> syntax. There are four metaparameter <strong>attributes</strong> that you can include in your resource declaration to order relationships among resources.</p>
+
+<ul>
+<li>
+<code>before</code> causes a resource to be applied <strong>before</strong> a specified resource</li>
+<li>
+<code>require</code> causes a resource to be applied <strong>after</strong> a specified resource</li>
+<li>
+<code>notify</code> causes a resource to be applied <strong>before</strong> the specified resource. Notify will generate a refresh even whenever the resource changes. </li>
+<li>
+<code>subscribe</code> causes a resource to be applied <strong>after</strong> the specified resource. The subscribing resource will  be refreshed if the target resource changes.</li>
+</ul>
+
+<p>The <strong>value</strong> of the relationship metaparameter is the title or titles (in an array) of one or more target resources.</p>
+
+<p>We're going to use SSH as our example. Setting the <code>GSSAPIAuthentication</code> setting for the SSH daemon to <code>no</code> will help speed up the login process when one tries to establish an SSH connection to the Learning VM. </p>
+
+<p>Let's try and disable GSSAPIAuthentication, and in the process, learn about resource relationships.</p>
+
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<p>Create a puppet manifest to manage the <code>/etc/ssh/sshd_config</code> file</p>
+
+<p>Create the file <code>/root/sshd.pp</code> using a text editor, with the following content in it.</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="nc">file</span> <span class="p">{</span> <span class="s1">'/etc/ssh/sshd_config'</span><span class="p">:</span>
+  <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="ss">file</span><span class="p">,</span>
+  <span class="nt">mode</span>   <span class="p">=&gt;</span> <span class="m">600</span><span class="p">,</span>
+  <span class="nt">source</span> <span class="p">=&gt;</span> <span class="s1">'/root/examples/sshd_config'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>What we have done above is to say that Puppet should ensure that the file <code>/etc/ssh/sshd_config</code> exists, and that the contents of the file should be sourced from the file <code>/root/examples/sshd_config</code>. The <code>source</code> attribute also allows us to use a different URI to specify the file, something we will discuss in the Modules quest. For now, we are using a file in <code>/root/examples</code> as the content source for the SSH daemon's configuration file.</p>
+
+<p>Now that we have created the manifest, applying the manifest will ensure that the <code>/etc/ssh/sshd_config</code> file will have the exact same content as the <code>/root/examples/sshd_config</code> file.</p>
+
+<p>Now let us disable GSSAPIAuthentication.</p>
+
+<div class="lvm-task-number"><p>Task 2 :</p></div>
+
+<p>Disable GSSAPIAuthentication for the SSH service</p>
+
+<p>Edit the <code>/root/examples/sshd_config</code> file.<br>
+Find the line that reads:</p>
+
+<p>GSSAPIAuthentication yes</p>
+
+<p>and comment that out by adding a <code>#</code> at the beginning of the line.</p>
+
+<p>Then, uncomment the line above it, the one that says:</p>
+
+<p>#GSSAPIAuthentication no</p>
+
+<p>by editing it to:</p>
+
+<p>GSSAPIAuthentication yes  </p>
+
+<p>Save the file and exit the text editor.</p>
+
+<p>Even though we have edited the source for the configuration file for the SSH daemon, simply changing the content of the configuration file will not disable the GSSAPIAuthentication option. For the option to be disabled, the service (the SSH server daemon) needs to be restarted. That's when the newly specified settings will take effect.</p>
+
+<p>Let's now add a metaparameter that will tell Puppet to manage the <code>sshd</code> service and have it <code>subscribe</code> to the config file. Add the following Puppet code below your file resource:</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="nc">service</span> <span class="p">{</span> <span class="s1">'sshd'</span><span class="p">:</span>
+  <span class="nt">ensure</span>     <span class="p">=&gt;</span> <span class="ss">running</span><span class="p">,</span>
+  <span class="nt">enable</span>     <span class="p">=&gt;</span> <span class="ss">true</span><span class="p">,</span>
+  <span class="nt">subscribe</span>  <span class="p">=&gt;</span> <span class="nc">File</span><span class="p">[</span><span class="s1">'/etc/ssh/sshd_config'</span><span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Notice that in the above the <code>subscribe</code> metaparameter has the value <code>File['/etc/ssh/sshd_config']</code>. The value indicates that we are talking about a file resource (that Puppet knows about), with the <em>title</em> <code>/etc/ssh/sshd_config</code>. That is the file resource we have in the manifest. References to resources always take this form. Ensure that the first letter of the type ('File' in this case) is always capitalized when you refer to a resource in a manifest.</p>
+
+<p>Now, let's apply the change. Remember to check syntax, and do a dry-run using the <code>--noop</code> flag first, before using <code>puppet apply /root/sshd.pp</code> to apply your changes. </p>
+
+<p>You will see Puppet report that the content of the <code>/etc/ssh/sshd_config</code> file changed. You should also be able to see that the SSH service was restarted. </p>
+
+<p>In the above example, the <code>service</code> resource will be applied <strong>after</strong> the <code>file</code> resource. Furthermore, if any other changes are made to the targeted file resource, the service will refresh.</p>
+
+<a id=""><h2>Package/File/Service</h2></a>
+
+<p>Wait a minute! We are managing the service <code>sshd</code>, we are managing it's configuration file, but all that would mean nothing if the package that install the SSH server is not installed. So, to round it up, and make our manifest complete with regards to managing the SSH server on the VM, we have to ensure that the appropriate <code>package</code> resource is managed as well. </p>
+
+<p>On CentOS machines, such as the VM we are using, the <code>openssh-server</code> package installs the SSH server. </p>
+
+<ul>
+<li>The package resource makes sure the software and its config file are installed.</li>
+<li>The file resource config file depends on the package resource.</li>
+<li>The service resources subscribes to changes in the config file.</li>
+</ul>
+
+<p>The <strong>package/file/service</strong> pattern is one of the most useful idioms in Puppet. It’s hard to overstate the importance of this pattern! If you only stopped here and learned this, you could still get a lot of work done using Puppet.</p>
+
+<p>To stay consistent with the package/file/service idiom, let's dive back into the sshd_config file and add the <code>openssh-server</code> package to it.</p>
+
+<div class="lvm-task-number"><p>Task 3 :</p></div>
+
+<p>Manage the package for the SSH server</p>
+
+<p>Type the following code in above your file resource in file <code>/root/sshd.pp</code></p>
+
+<div class="highlight"><pre><code class="puppet"><span class="nc">package</span> <span class="p">{</span> <span class="s1">'openssh-server'</span><span class="p">:</span>
+  <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="ss">present</span><span class="p">,</span>
+  <span class="nt">before</span> <span class="p">=&gt;</span> <span class="nc">File</span><span class="p">[</span><span class="s1">'/etc/ssh/sshd_config'</span><span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>Make sure to check the syntax.<br>
+</li>
+<li>Once everything looks good, go ahead and apply the manifest.</li>
+</ul>
+
+<p>Notice that we use <code>before</code> to ensure that the package is managed before the configuration file is managed. This makes sense, since if the package weren't installed, the configuration file (and the <code>/etc/ssh/</code> directory that contains it would not exist. If you tried to manage to contents of a file in a directory that does not exists, you are destined to fail. By specifying the relationship between the package and the file, we ensure success.</p>
+
+<p>Now we have a manifest that manages the package, configuration file and the service, and we specify the order in which they should be managed.</p>
+
+<a id=""><h2>Let's do a Quick Review</h2></a>
+
+<p>In this Quest, we learned how to specify relationships between resources, to provide for better control over the order in which the resources are managed by Puppet. We also learned of the Package-File-Service pattern, which emulates the natural sequence of managing a service on a system. If you were to manually install and configure a service - you would first install the package, then edit the configuration file to set things up appropriately, and finally start or restart the service.</p>
+
+            </div>
+        </div>
+        <div id="footer">
+</div>
+       
+    </div>
+    </body>
+</html>

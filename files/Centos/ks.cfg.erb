@@ -98,7 +98,9 @@ mkdir -p /usr/src/installer/<%= @real_pe_ver %>
 cp /mnt/puppet/<%= $settings[:agent_tarball] %> /usr/src/installer/<%= @real_pe_ver %>/
 
 # put verification script links in personal bin directory
+<% if $settings[:vmtype] == "training" %>
 ln -s /usr/src/puppetlabs-training-bootstrap/scripts/classroom /root/bin
+<% end %>
 
 rpm -Uvh /mnt/puppet/epel-release.rpm
 yum -y install git

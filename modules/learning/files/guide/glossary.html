@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Glossary</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/index.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/glossary.html">
+                                    Glossary
+                                </a>
+                            <li>
+                                <a href="https://puppetlabs.com/learn" target="_blank">
+                                    Learning Resources
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://docs.puppetlabs.com" target="_blank">
+                                    Puppet Docs
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" class="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/big_picture.html">Power of Puppet</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resource_ordering.html">Ordering</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/modules_quest.html">Modules</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/puppet_module_tool_quest.html">Puppet Module Tool</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/afterword.html">Afterword</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="active">
+                                <a href="/glossary.html" class = "active">Glossary</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+                <h1>Glossary of Puppet Vocabulary</h1>
+
+<p>An accurate, shared vocabulary goes a long way to ensure the success of a project. To that end, this glossary defines the most common terms Puppet users rely on.</p>
+
+<a id=""><h2>attribute</h2></a>
+
+<p>Attributes are used to specify the state desired for a given configuration resource. Each resource type has a slightly different set of possible attributes, and each attribute has its own set of possible values. For example, a package resource (like <code>vim</code>) would have an <code>ensure</code> attribute, whose value could be <code>present</code>, <code>latest</code>, <code>absent</code>, or a version number:</p>
+
+<div class="highlight"><pre><code class="ruby">    <span class="n">package</span> <span class="p">{</span><span class="s1">'vim'</span><span class="p">:</span>
+      <span class="k">ensure</span>   <span class="o">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+      <span class="n">provider</span> <span class="o">=&gt;</span> <span class="n">apt</span><span class="p">,</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<p>The value of an attribute is specified with the <code>=&gt;</code> operator; attribute/value pairs are separated by commas.</p>
+
+<a id=""><h2>agent</h2></a>
+
+<p>(or  <strong>agent node</strong>)</p>
+
+<p>Puppet is usually deployed in a simple client-server arrangement, and the Puppet client daemon is known as the "agent." By association, a computer running puppet agent is usually referred to as an "agent node" (or simply "agent," or simply "node").</p>
+
+<p>Puppet agent regularly pulls configuration catalogs from a puppet master server and applies them to the local system.</p>
+
+<a id=""><h2>catalog</h2></a>
+
+<p>A catalog is a compilation of all the resources that will be applied to a given system and the relationships between those resources.</p>
+
+<p>Catalogs are compiled from manifests by a puppet master server and served to agent nodes. Unlike the manifests they were compiled from, they don't contain any conditional logic or functions. They are unambiguous, are only relevant to one specific node, and are machine-generated rather than written by hand.</p>
+
+<a id=""><h2>class</h2></a>
+
+<p>A collection of related resources, which, once defined, can be declared as a single unit. For example, a class could contain all of the elements (files, settings, modules, scripts, etc) needed to configure Apache on a host. Classes can also declare other classes.</p>
+
+<p>Classes are singletons, and can only be applied once in a given configuration, although the <code>include</code> keyword allows you to declare a class multiple times while still only evaluating it once.</p>
+
+<div class="lvm-inline-aside">
+<h4>Note: </h4>
+<p></p>
+<p>Being singletons, Puppet classes are not analogous to classes in object-oriented programming languages. OO classes are like templates that can be instantiated multiple times; Puppet's equivalent to this concept is <a href="#type-defined">defined types</a>.</p>
+</div>
+
+<a id=""><h2>classify</h2></a>
+
+<p>(or <strong>node classification</strong>)</p>
+
+<p>To assign <a href="#class">classes</a> to a <a href="#agent">node</a>, as well as provide any data the classes require. Writing a class makes a set of configurations available; classifying a node determines what its actual configuration will be.</p>
+
+<p>Nodes can be classified with <a href="#node-definition">node definitions</a> in the <a href="#site-manifest">site manifest</a>, with an <a href="#external-node-classifier">ENC</a>, or with both.</p>
+
+<a id=""><h2>declare</h2></a>
+
+<p>To direct Puppet to include a given class or resource in a given configuration. To declare resources, use the lowercase <code>file {'/tmp/bar':}</code> syntax. To declare classes, use the <code>include</code> keyword or the <code>class {'foo':}</code> syntax. (Note that Puppet will automatically declare any classes it receives from an <a href="#external-node-classifier">external node classifier</a>.)</p>
+
+<p>You can configure a resource or class when you declare it by including <a href="#attribute">attribute/value pairs</a>.</p>
+
+<p>Contrast with "<a href="#define">define</a>."</p>
+
+<a id=""><h2>define</h2></a>
+
+<p>To specify the contents and behavior of a class or a defined resource type. Defining a class or type doesn't automatically include it in a configuration; it simply makes it available to be <a href="#declare">declared</a>.</p>
+
+<a id="define-noun"><h2>define (noun)</h2></a>
+
+<p>(or <strong>definition</strong>)</p>
+
+<p>An older term for a <a href="#type-defined">defined resource type</a>.</p>
+
+<a id="define-keyword"><h2>define (keyword)</h2></a>
+
+<p>The language keyword used to create a <a href="#type-defined">defined type</a>.</p>
+
+<a id=""><h2>defined resource type</h2></a>
+
+<p>(or <strong>defined type</strong>)</p>
+
+<p>See "<a href="#type-defined">type (defined)</a>."</p>
+
+<a id=""><h2>ENC</h2></a>
+
+<p>See <a href="#external-node-classifier">external node classifier</a>.</p>
+
+<a id=""><h2>environment</h2></a>
+
+<p>An arbitrary segment of your Puppet <a href="#site">site</a>, which can be served a different set of modules. For example, environments can be used to set up scratch nodes for testing before roll-out, or to divide a site by types of hardware.</p>
+
+<a id=""><h2>expression</h2></a>
+
+<p>The Puppet language supports several types of expressions for comparison and evaluation purposes. Amongst others, Puppet supports boolean expressions, comparision expressions, and arithmetic expressions.</p>
+
+<a id=""><h2>external node classifier</h2></a>
+
+<p>(or <strong>ENC</strong>)</p>
+
+<p>An executable script, which, when called by the puppet master, returns information about which classes to apply to a node.</p>
+
+<p>ENCs provide an alternate method to using the main site manifest (<code>site.pp</code>) to classify nodes. An ENC can be written in any language, and can use information from any pre-existing data source (such as an LDAP db) when classifying nodes.</p>
+
+<p>An ENC is called with the name of the node to be classified as an argument, and should return a YAML document describing the node.</p>
+
+<a id=""><h2>fact</h2></a>
+
+<p>A piece of information about a node, such as its operating system, hostname, or IP address.</p>
+
+<p>Facts are read from the system by <a href="#facter">Facter</a>, and are made available to Puppet as global variables.</p>
+
+<p>Facter can also be extended with custom facts, which can expose site-specific details of your systems to your Puppet manifests.</p>
+
+<a id=""><h2>Facter</h2></a>
+
+<p>Facter is Puppet's system inventory tool. Facter reads <a href="#fact">facts</a> about a node (such as its hostname, IP address, operating system, etc.) and makes them available to Puppet.</p>
+
+<p>Facter includes a large number of built-in facts; you can view their names and values for the local system by running <code>facter</code> at the command line.</p>
+
+<p>In agent/master Puppet arrangements, agent nodes send their facts to the master.</p>
+
+<a id=""><h2>filebucket</h2></a>
+
+<p>A repository in which Puppet stores file backups when it has to replace files. A filebucket can be either local (and owned by the node being mangaed) or site-global (and owned by the puppet master). Typically, a single filebucket is defined for a whole network and is used as the default backup location.</p>
+
+<a id=""><h2>function</h2></a>
+
+<p>A statement in a manifest which returns a value or makes a change to the catalog.</p>
+
+<p>Since they run during compilation, functions happen on the puppet master in an agent/master arrangement. The only agent-specific information they have access to are the <a href="#fact">facts</a> the agent submitted.</p>
+
+<p>Common functions include <code>template</code>, <code>notice</code>, and <code>include</code>.</p>
+
+<a id=""><h2>global scope</h2></a>
+
+<p>See <a href="#scope">scope</a>.</p>
+
+<a id=""><h2>host</h2></a>
+
+<p>Any computer (physical or virtual) attached to a network.</p>
+
+<p>In the Puppet docs, this usually means an instance of an operating system with the Puppet agent installed. See also "<a href="#agent">Agent Node</a>".</p>
+
+<a id="host-resource-type"><h2>host (resource type)</h2></a>
+
+<p>An entry in a system's <code>hosts</code> file, used for name resolution.</p>
+
+<a id=""><h2>idempotent</h2></a>
+
+<p>Able to be applied multiple times with the same outcome. Puppet resources are idempotent, since they describe a desired final state rather than a series of steps to follow.</p>
+
+<p>(The only major exception is the <code>exec</code> type; exec resources must still be idempotent, but it's up to the user to design each exec resource correctly.)</p>
+
+<a id="inheritance-class"><h2>inheritance (class)</h2></a>
+
+<p>A Puppet class can be derived from one other class with the <code>inherits</code> keyword. The derived class will declare all of the same resources, but can override some of their attributes and add new resources.</p>
+
+<blockquote>
+<p><strong>Note:</strong> Most users should avoid inheritance most of the time. Unlike object-oriented programming languages, inheritance isn't terribly important in Puppet; it is only useful for overriding attributes, which can be done equally well by using a single class with a few <a href="#parameter-defined-types-and-parameterized-classes">parameters</a>.</p>
+</blockquote>
+
+<a id="inheritance-node"><h2>inheritance (node)</h2></a>
+
+<p>Node statements can be derived from other node statements with the <code>inherits</code> keyword. This works identically to the way class inheritance works.</p>
+
+<div class="lvm-inline-aside">
+<h4>Note:</h4>
+<p></p>
+<p>Node inheritance <strong>should almost always be avoided.</strong> Many new users attempt to use node inheritance to look up variables that have a common default value and a rare specific value on certain nodes; it is not suited to this task, and often yields the opposite of the expected result. If you have a lot of conditional per-node data, we recommend using the Heira tool or assigning variables with an ENC instead.</p>
+</div>
+
+<a id=""><h2>master</h2></a>
+
+<p>In a standard Puppet client-server deployment, the server is known as the master. The puppet master serves configuration <a href="#catalog">catalogs</a> on demand to the puppet <a href="#agent">agent</a> service that runs on the clients.</p>
+
+<p>The puppet master uses an HTTP server to provide catalogs. It can run as a standalone daemon process with a built-in web server, or it can be managed by a production-grade web server that supports the rack API. The built-in web server is meant for testing, and is not suitable for use with more than ten nodes.</p>
+
+<a id=""><h2>manifest</h2></a>
+
+<p>A file containing code written in the Puppet language, and named with the <code>.pp</code> file extension. The Puppet code in a manifest can:</p>
+
+<ul>
+<li>
+<a href="#declare">Declare</a> <a href="#resource">resources</a> and <a href="#class">classes</a>
+</li>
+<li>Set <a href="#variable">variables</a>
+</li>
+<li>Evaluate <a href="#function">functions</a>
+</li>
+<li>
+<a href="#define">Define</a> <a href="#class">classes</a>, <a href="#type-defined">defined types</a>, and <a href="#node-definition">nodes</a>
+</li>
+</ul>
+
+<p>Most manifests are contained in <a href="#module">modules</a>. Every manifest in a module should <a href="#define">define</a> a single <a href="#class">class</a> or <a href="#type-defined">defined type</a>.</p>
+
+<p>The puppet master service reads a single "site manifest," usually located at <code>/etc/puppet/manifests/site.pp</code>. This manifest usually defines <a href="#node-definition">nodes</a>, so that each managed <a href="#node">agent node</a> will receive a unique catalog.</p>
+
+<a id=""><h2>metaparameter</h2></a>
+
+<p>A resource <a href="#attribute">attribute</a> that can be specified for any type of resource. Metaparameters are part of Puppet's framework rather than part of a specific <a href="#type">type</a>, and usually affect the way resources relate to each other.</p>
+
+<a id=""><h2>module</h2></a>
+
+<p>A collection of classes, resource types, files, and templates, organized around a particular purpose. For example, a module could be used to completely configure an Apache instance or to set-up a Rails application. There are many pre-built modules available for download in the <a href="http://forge.puppetlabs.com/">Puppet Forge</a>.</p>
+
+<a id=""><h2>namevar</h2></a>
+
+<p>(or <strong>name</strong>)</p>
+
+<p>The attribute that represents a <a href="#resource">resource</a>'s <strong>unique identity</strong> on the <strong>target system.</strong> For example: two different files cannot have the same <code>path</code>, and two different services cannot have the same <code>name</code>.</p>
+
+<p>Every resource <a href="#type">type</a> has a designated namevar; usually it is simply <code>name</code>, but some types, like <code>file</code> or <code>exec</code>, have their own (e.g. <code>path</code> and <code>command</code>). If the namevar is something other than <code>name</code>, it will be called out in the type reference.</p>
+
+<p>If you do not specify a value for a resource's namevar when you declare it, it will default to that resource's <a href="#title">title</a>.</p>
+
+<a id="node-definition"><h2>node (definition)</h2></a>
+
+<p>(or <strong>node statement</strong>)</p>
+
+<p>A collection of classes, resources, and variables in a manifest, which will only be applied to a certain <a href="#agent">agent node</a>. Node definitions begin with the <code>node</code> keyword, and can match a node by full name or by regular expression.</p>
+
+<p>When a managed node retrieves or compiles its catalog, it will receive the contents of a single matching node statement, as well as any classes or resources declared outside any node statement. The classes in every <em>other</em> node statement will be hidden from that node.</p>
+
+<a id=""><h2>node scope</h2></a>
+
+<p>The local variable <a href="#scope">scope</a> created by a <a href="#node-definition">node definition</a>. Variables declared in this scope will override top-scope variables. (Note that <a href="#external-node-classifier-enc">ENCs</a> assign variables at top scope, and do not introduce node scopes.)</p>
+
+<a id=""><h2>noop</h2></a>
+
+<p>Noop mode (short for "No Operations" mode) lets you simulate your configuration without making any actual changes. Basically, noop allows you to do a dry run with all logging working normally, but with no effect on any hosts. To run in noop mode, execute <code>puppet agent</code> or <code>puppet apply</code> with the <code>--noop</code> option.</p>
+
+<a id=""><h2>notify</h2></a>
+
+<p>A notification <a href="#relationship">relationship</a>, set with the <code>notify</code> <a href="#metaparameter">metaparameter</a> or the wavy chaining arrow. (<code>~&gt;</code>)</p>
+
+<a id=""><h2>notification</h2></a>
+
+<p>A type of <a href="#relationship">relationship</a> that both declares an order for resources and causes <a href="#refresh">refresh</a> events to be sent.</p>
+
+<a id=""><h2>ordering</h2></a>
+
+<p>Which resources should be managed before which others.</p>
+
+<p>By default, the order of a <a href="#manifest">manifest</a> is not the order in which resources are managed. You must declare a <a href="#relationship">relationship</a> if a resource depends on other resources. See ["Relationships and Ordering"][lang<em>puppet</em>relationships] in the Puppet language reference for more details.</p>
+
+<a id=""><h2>parameter</h2></a>
+
+<p>Generally speaking, a parameter is a chunk of information that a class or resource can accept.</p>
+
+<a id=""><h2>pattern</h2></a>
+
+<p>A colloquial term, describing a collection of related manifests meant to solve an issue or manage a particular configuration item. (For example, an Apache pattern.) See also <a href="#module">module</a>.</p>
+
+<a id=""><h2>plusignment operator</h2></a>
+
+<p>The <code>+&gt;</code> operator, which allows you to add values to resource attributes using the ('plusignment') syntax. Useful when you want to override resource attributes without having to respecify already declared values.</p>
+
+<a id=""><h2>provider</h2></a>
+
+<p>Providers implement resource <a href="#type">types</a> on a specific type of system, using the system's own tools. The division between types and providers allows a single resource type <code>package</code> to manage packages on many different systems (using, for example, <code>yum</code> on Red Hat systems, <code>dpkg</code> and <code>apt</code> on Debian-based systems, and <code>ports</code> on BSD systems).</p>
+
+<p>Typically, providers are simple Ruby wrappers around shell commands, so they are usually short and easy to create.</p>
+
+<a id=""><h2>plugin</h2></a>
+
+<p>A custom <a href="#type">type</a>, <a href="#function">function</a>, or <a href="#fact">fact</a> that extends Puppet's capabilities and is distributed via a <a href="#module">module</a>.</p>
+
+<a id=""><h2>realize</h2></a>
+
+<p>To specify that a <a href="#virtual-resource">virtual resource</a> should actually be applied to the current system. Once a virtual resource has been declared, there are two methods for realizing it:</p>
+
+<ol>
+<li>Use the "spaceship" syntax <code>&lt;||&gt;</code>
+</li>
+<li>Use the <code>realize</code> function</li>
+</ol>
+
+<p>A virtually declared resource will be present in the <a href="#catalog">catalog</a>, but will not be applied to a system until it is realized.</p>
+
+<a id=""><h2>refresh</h2></a>
+
+<p>A resource gets <strong>refreshed</strong> when a resource it <a href="#subscribe">subscribes to</a> (or which <a href="#notify">notifies it</a>) is changed.</p>
+
+<p>Different resource types do different things when they get refreshed. (Services restart; mount points unmount and remount; execs usually do nothing, but will fire if the <code>refreshonly</code> attribute is set.)</p>
+
+<a id=""><h2>relationship</h2></a>
+
+<p>A rule stating that one resource should be managed before another.</p>
+
+<a id=""><h2>resource</h2></a>
+
+<p>A unit of configuration, whose state can be managed by Puppet. Every resource has a <a href="#type">type</a> (such as <code>file</code>, <code>service</code>, or <code>user</code>), a <a href="#title">title</a>, and one or more <a href="#attribute">attributes</a> with specified values (for example, an <code>ensure</code> attribute with a value of <code>present</code>).</p>
+
+<p>Resources can be large or small, simple or complex, and they do not always directly map to simple details on the client -- they might sometimes involve spreading information across multiple files, or even involve modifying devices. For example, a <code>service</code> resource only models a single service, but may involve executing an init script, running an external command to check its status, and modifying the system's run level configuration.</p>
+
+<a id=""><h2>resource declaration</h2></a>
+
+<p>A fragment of Puppet code that details the desired state of a resource and instructs Puppet to manage it. This term helps to differentiate between the literal resource on disk and the specification for how to manage that resource. However, most often, these are just referred to as "resources."</p>
+
+<a id=""><h2>scope</h2></a>
+
+<p>The area of code where a variable has a given value.</p>
+
+<p>Class definitions and type definitions create local scopes. Variables declared in a local scope are available by their short name (e.g. <code>$my_variable</code>) inside the scope, but are hidden from other scopes unless you refer to them by their fully qualified name (e.g. <code>$my_class::my_variable</code>).</p>
+
+<p>Variables outside any definition (or set by an ENC) exist at a special "top scope;" they are available everywhere by their short names (e.g. <code>$my_variable</code>), but can be overridden in a local scope if that scope has a variable of the same name.</p>
+
+<p>Node definitions create a special "node scope." Variables in this scope are also available everywhere by their short names, and can override top-scope variables.</p>
+
+<div class="lvm-inline-aside">
+<h4>Note: </h4>
+<p></p>
+<p>Previously, Puppet used dynamic scope, which would search for short-named variables through a long chain of parent scopes. This was deprecated in version 2.7 and will be removed in the next version.</p>
+</div>
+
+<a id=""><h2>site</h2></a>
+
+<p>An entire IT ecosystem being managed by Puppet. That is, a site includes all puppet master servers, all agent nodes, and all independent masterless Puppet nodes within an organization.</p>
+
+<a id=""><h2>site manifest</h2></a>
+
+<p>The main "point of entry" <a href="#manifest">manifest</a> used by the puppet master when compiling a catalog. The location of this manifest is set with the <code>manifest</code> setting in puppet.conf. Its default value is usually <code>/etc/puppet/manifests/site.pp</code> or <code>/etc/puppetlabs/puppet/manifests/site.pp</code>.</p>
+
+<p>The site manifest usually contains <a href="#node-definition">node definitions</a>. When an <a href="#external-node-classifier">ENC</a> is being used, the site manifest may be nearly empty, depending on whether the ENC was designed to have complete or partial node information.</p>
+
+<a id=""><h2>site module</h2></a>
+
+<p>A common idiom in which one or more <a href="#module">modules</a> contain <a href="#class">classes</a> specific to a given Puppet site. These classes usually describe complete configurations for a specific system or a given group of systems. For example, the <code>site::db_slave</code> class might describe the entire configuration of a database server, and a new database server could be configured simply by applying that class to it.</p>
+
+<a id=""><h2>subclass</h2></a>
+
+<p>A class that inherits from another class. See <a href="#inheritance-class">inheritance</a>.</p>
+
+<a id=""><h2>subscribe</h2></a>
+
+<p>A notification <a href="#relationship">relationship</a>, set with the <code>subscribe</code> <a href="#metaparameter">metaparameter</a> or the wavy chaining arrow. (<code>~&gt;</code>)
+See ["Relationships and Ordering"][lang<em>puppet</em>relationships] in the Puppet language reference for more details.</p>
+
+<a id=""><h2>template</h2></a>
+
+<p>A partial document which is filled in with data from <a href="#variable">variables</a>. Puppet can use Ruby ERB templates to generate configuration files tailored to an individual system.</p>
+
+<a id=""><h2>title</h2></a>
+
+<p>The unique identifier (in a given Puppet <a href="#catalog">catalog</a>) of a resource or class.</p>
+
+<ul>
+<li>In a class, the title is simply the name of the class.</li>
+<li>In a resource declaration, the title is the part after the first curly brace and before the colon; in the example below, the title is <code>/etc/passwd</code>:</li>
+</ul>
+
+<div class="highlight"><pre><code class="ruby">        <span class="n">file</span>  <span class="p">{</span> <span class="s1">'/etc/passwd'</span><span class="p">:</span>
+          <span class="n">owner</span> <span class="o">=&gt;</span> <span class="s1">'root'</span><span class="p">,</span>
+          <span class="n">group</span> <span class="o">=&gt;</span> <span class="s1">'root'</span><span class="p">,</span>
+        <span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>In native resource types, the <a href="#namevar">name or namevar</a> will use the title as its default value if you don't explicitly specify a name.</li>
+<li>In a defined resource type or a class, the title is available for use throughout the definition as the <code>$title</code> variable.</li>
+</ul>
+
+<p>Unlike the name or namevar, a resource's title need not map to any actual attribute of the target system; it is only a referent. This means you can give a resource a single title even if its name has to vary across different kinds of system, like a configuration file whose location differs on Solaris.</p>
+
+<a id=""><h2>top scope</h2></a>
+
+<p>See <a href="#scope">scope</a>.</p>
+
+<a id=""><h2>type</h2></a>
+
+<p>A kind of <a href="#resource">resource</a> that Puppet is able to manage; for example, <code>file</code>, <code>cron</code>, and <code>service</code> are all resource types. A type specifies the set of attributes that a resource of that type may use, and models the behavior of that kind of resource on the target system. You can declare many resources of a given type.</p>
+
+<a id="type-defined"><h2>type (defined)</h2></a>
+
+<p>(or <strong>defined resource type;</strong> sometimes called a <strong>define</strong> or <strong>definition</strong>)</p>
+
+<p>A <a href="#type">resource type</a> implemented as a group of other resources, written in the Puppet language and saved in a <a href="#manifest">manifest</a>. (For example, a defined type could use a combination of <code>file</code> and <code>exec</code> resources to set up and populate a Git repository.) Once a type is <a href="#define">defined</a>, new resources of that type can be <a href="#declare">declared</a> just like any native or custom resource.</p>
+
+<p>Since defined types are written in the Puppet language instead of as Ruby plugins, they are analogous to macros in other languages. Contrast with <a href="#type-native">native types</a>.</p>
+
+<a id="type-native"><h2>type (native)</h2></a>
+
+<p>A resource type written in Ruby. Puppet ships with a large set of built-in native types, and custom native types can be distributed as <a href="#plugin">plugins</a> in <a href="#module">modules</a>. See the <a href="/references/stable/type.html">type reference</a> for a complete list of built-in types.</p>
+
+<p>Native types have lower-level access to the target system than defined types, and can directly use the system's own tools to make changes. Most native types have one or more <a href="#provider">providers</a>, so that they can implement the same resources on different kinds of systems.</p>
+
+<a id=""><h2>variable</h2></a>
+
+<p>A named placeholder in a <a href="#manifest">manifest</a> that represents a value. Variables in Puppet are similar to variables in other programming languages, and are indicated with a dollar sign (e.g. <code>$operatingsystem</code>) and assigned with the equals sign (e.g. <code>$myvariable = "something"</code>). Once assigned, variables cannot be reassigned within the same <a href="#scope">scope</a>; however, other local scopes can assign their own value to any variable name.</p>
+
+<p><a href="#fact">Facts</a> from <a href="#agent">agent nodes</a> are represented as variables within Puppet manifests, and are automatically pre-assigned before compilation begins.</p>
+
+<a id=""><h2>variable scoping</h2></a>
+
+<p>See <a href="#scope">scope</a> above.</p>
+
+<a id=""><h2>virtual resource</h2></a>
+
+<p>A resource that is declared in the catalog but will not be applied to a system unless it is explicitly <a href="#realize">realized</a>.</p>
+
+            </div>
+        </div>
+        <div id="footer">
+</div>
+       
+    </div>
+    </body>
+</html>

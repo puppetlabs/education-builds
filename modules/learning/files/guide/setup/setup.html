@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Setup</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/index.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/glossary.html">
+                                    Glossary
+                                </a>
+                            <li>
+                                <a href="https://puppetlabs.com/learn" target="_blank">
+                                    Learning Resources
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://docs.puppetlabs.com" target="_blank">
+                                    Puppet Docs
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" class="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/big_picture.html">Power of Puppet</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resource_ordering.html">Ordering</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/modules_quest.html">Modules</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/puppet_module_tool_quest.html">Puppet Module Tool</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/afterword.html">Afterword</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/glossary.html">Glossary</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+                <h1>Learning VM Setup</h1>
+
+<a id=""><h2>About the Learning Virtual Machine</h2></a>
+
+<p>The Learning Virtual Machine (VM) is a sandbox environment for you to play with and learn Puppet Enterprise. The VM is powered by CentOS Linux. For your convenience, Puppet Enterprise (PE) has already been installed in the VM. To get started with learning about Puppet Enterprise, we need to get the VM running. </p>
+
+<p>The Learning VM comes in two flavors - a VMware version that is suitable for VMware Player or VMware workstation on Linux and Windows based machines, and VMware Fusion on Mac, as well an Open Virtualization Format (OVF) file that is suitable for use with all virtualization players that support it. This is the format that is best suited to be opened and used with Oracle Virtualbox. </p>
+
+<a id=""><h2>Getting started with the Learning VM</h2></a>
+
+<p>In order to get started, we need to open the appropriate file with the Virtualization software of your choice. Please note that in order to get started, you will first need to have installed software the enables you to open pre-packaged VMs, such as VMware Player, VMware Workstation, or Oracle Virtualbox. If you haven't already, please download and install one of these:</p>
+
+<ul>
+<li><a href="http://www.vmware.com/go/downloadplayer">VMWare Player</a></li>
+<li><a href="https://www.virtualbox.org/wiki/Downloads">VirtualBox</a></li>
+</ul>
+
+<p>Once that is complete, please follow the instructions in the following sections.</p>
+
+<h3>VMware Setup</h3>
+
+<p>Before we get started, please ensure you have an up-to-date installation of your VMware virtualization software. The goal is to open the <em>.vmx</em>  file in the downloaded VMware VM zip file, change the Network Adapter to use a Bridged connection, and tweak the memory settings, and finally, powering on the VM. If, at any point, you are not sure or want to start from scratch, you can delete the files extracted from the zip archive, and start over again, by extracting the files from the archive.</p>
+
+<p>For the rest of this guide, the instructions are for VMware Fusion. However, this should assist you in using VMware Player or Workstation as well.</p>
+
+<p>From the VMWare <strong>File</strong> menu, select <strong>Open</strong> and navigate to the .vmx file included in your Learning VM download. You can also drag and drop the .vmx file into the VMWare virtual machine library.</p>
+
+<p>Don't launch the VM just yet; we'll want to adjust a couple of settings first. With the Learning VM selected in the VMWare library, open the <strong>Settings</strong> panel and click the <strong>Network Adapter</strong> icon.</p>
+
+<p>Select <strong>Autodetect</strong> under the <strong>Bridged Networking</strong> heading as shown in the example.</p>
+
+<div class="img-wrapper">
+<img src="../assets/vmware_network_bridged.png"><p>Figure</p>
+</div>
+
+<p>Next, we'll want to allocate some extra memory to the Virtual Machine to ensure that it has the resources neccessary for everything to run smoothly. Go back to <strong>Settings</strong> panel and click the <strong>Processors &amp; Memory</strong> icon. We suggest allocating at least two gigabytes of memory. Use the slider to set your memory allocation. Note that the Learning VM will likely still function with less memory allocated, but you may encounter performance issues.</p>
+
+<div class="img-wrapper">
+<img src="../assets/vmware_memory.png"><p>Figure</p>
+</div>
+
+<p>Now that your settings are configured, click the <strong>Power On</strong> button to boot up the VM.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">NOTE: Virtualization software uses mouse and keyboard capture to 'own' these devices communicate input to the guest operating system. The keystroke to release the mouse and keyboard will be displayed at the top right of the VM window.
+</code></pre></div>
+<p>Once the VM is powered up, skip ahead to the Next Steps section below.</p>
+
+<h3>VirtualBox Setup</h3>
+
+<p>Be sure you have an up-to-date installation of VirtualBox. The Learning VM works best with VirtualBox 4.x. You can find a free download of the latest version at https://www.virtualbox.org/wiki/Downloads.</p>
+
+<p>Choose “Import Appliance” from the File menu and select the .ovf file included with your download.</p>
+
+<p>NOTE: <strong>Do not</strong> use the “New Virtual Machine Wizard” and select the included .vmdk file as the disk; machines created this way will kernel panic during boot. </p>
+
+<p>Don't launch the VM just yet; we'll want to adjust a couple of settings first. </p>
+
+<p>In the VirtualBox Manager panel, select <strong>Network</strong> to access networking options. Choose <strong>Bridged Adapter</strong> from the drop-down menu.</p>
+
+<div class="img-wrapper">
+<img src="./assets/vbox_network_bridged.png"><p>Figure</p>
+</div>
+
+<p>For everything to work smoothly, we suggest allocating at least two gigabytes of memory to the VM. In the VirtualBox Manager panel, click <strong>System</strong> to access system options and use the slider to set your memory allocation. Note that the Learning VM will likely still function with less memory allocated, but you may encounter performance issues.</p>
+
+<div class="img-wrapper">
+<img src="./assets/vbox_memory.png"><p>Figure</p>
+</div>
+
+<p>Now that everything is configured, click the <strong>Start</strong> button in the upper left to boot up the VM.</p>
+
+<p>Note: Refer to <a href="http://www.virtualbox.org/manual">VirtualBox documentation</a> for additional information as required.</p>
+
+<p>Once the VM is powered up in VirtualBox, follow the Next Steps below:</p>
+
+<a id=""><h2>Next Steps</h2></a>
+
+<p>Once you have the VM running, check if you can log into it. You can use the following credentials to log in:  </p>
+
+<ul>
+<li>Login Username: root</li>
+<li>Password: puppet</li>
+</ul>
+
+<p>Once you are logged in, make a note of the IP address. You'll need this to access the VM via SSH. If you forget the IP or if it changes, you can access it again by entering the following command in the VM commandline.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">    ifconfig
+</code></pre></div>
+<p>The IP address will be listed as the 'inet addr' for the 'eth0' interface. For example:</p>
+
+<div class="img-wrapper">
+<img src="./assets/setup_ifconfig.png"><p>Figure</p>
+</div>
+
+<p>The IP address for the VM in the above example is: <strong>192.168.16.135</strong>. Please note that the IP address for your VM will be different. Please make a note of your IP address.</p>
+
+<p>Now you are ready to learn more about Puppet using the installation of Puppet Enterprise on the VM. Please continue following the rest of the Quest Guide. We hope you have fun learning Puppet!</p>
+
+            </div>
+        </div>
+        <div id="footer">
+</div>
+       
+    </div>
+    </body>
+</html>
