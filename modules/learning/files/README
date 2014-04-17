@@ -1,0 +1,23 @@
+# README
+
+This the Puppet Enterprise Learning VM.
+
+This CentOS-based VM comes with Puppet Enterprise pre-installed.
+This VM is best used with the companion Quest Guide, in PDF format.
+
+To get started consult the Quest_Guide.pdf contained in the .zip file
+you extracted this VM from.
+
+To view your current IP address, run `facter ipaddress_eth0`
+
+To log in to the Puppet Enterprise console, go to:
+https://<YOUR IP ADDRESS HERE>
+
+  User: puppet@example.com
+  Password: learningpuppet
+
+Questions and Comments: learningvm@puppetlabs.com
+
+Copyright - 2014. Puppet Labs
+
+

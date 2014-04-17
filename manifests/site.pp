@@ -6,7 +6,7 @@ node default {
 }
 
 node /learn/ {
-  class { 'bootstrap': print_console_login => true, }
+  include bootstrap
   include localrepo
   include learning
   stage { 'pe_install': require => Stage['main'], }

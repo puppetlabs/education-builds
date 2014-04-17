@@ -13,25 +13,45 @@ require 'pathname'
 require 'yaml'
 require 'trollop'
 
-opts = Trollop::options do
+#puts ARGV
+p = Trollop::Parser.new do
+  version "0.0.1 (c) 2014 Puppet Labs"
+  banner <<EOS
+
+quest: learning progress feedback tool 
+Usage:
+quest [--option] (brief)
+where [--option] is one of:
+EOS
   opt :progress, "Display details of tasks completed"
-  opt :brief, "Display number of tasks completed"
-  opt :name, "Name of the quest to track", :type => :string
   opt :completed, "Display completed quests"
-  opt :showall, "Show all available quests"
-  opt :start, "Provide name of the quest to start tracking", :type => :string
-  opt :current, "Name of the quest in progress"
+  opt :list, "Show all available quests"
+  opt :start, "Provide name of the quest to track", :type => :string
 end
+
+opts = Trollop::with_standard_exception_handling p do
+  options = p.parse
+end
+
+brief = p.leftovers.first == "brief"
+#if [:start] && !brief && p.leftovers then
+#  p.educate
+#  exit 1
+#end
 
 given = opts.select { |key, value| key.to_s.match(/_given/)}
 noargs = given.empty?
 
-if opts[:showall] then
-  puts "The following quests are available: "
-  Dir.glob('/root/.testing/spec/localhost/*_spec.rb').each do |f|
-    puts File.basename(f).gsub('_spec.rb','').capitalize
+if opts[:list] then
+  if brief then
+    questlog = YAML::load_file('/root/.testing/log.yml')
+    puts questlog['current'].capitalize
+  else
+    puts "The following quests are available: "
+    Dir.glob('/root/.testing/spec/localhost/*_spec.rb').each do |f|
+      puts File.basename(f).gsub('_spec.rb','').capitalize
+    end
   end
-  #exit
 end
 
 if opts[:completed] then
@@ -42,34 +62,27 @@ if opts[:completed] then
         puts value['name'].capitalize
     end
   end
-  #exit
-end
-
-if opts[:current] then
-  questlog = YAML::load_file('/root/.testing/log.yml')
-  puts questlog['current'].capitalize
-  #exit
 end
 
 if opts[:start] then
+  name = opts[:start].downcase
   questlog = YAML::load_file('/root/.testing/log.yml')
-  if File.exist?("/root/.testing/spec/localhost/#{opts[:start]}_spec.rb") then
-    questlog['current'] = opts[:start].downcase
+  if File.exist?("/root/.testing/spec/localhost/#{name}_spec.rb") then
+    questlog['current'] = name
     File.open('/root/.testing/log.yml', 'w') { |f| f.write questlog.to_yaml }
-    puts "You are starting the #{opts[:start].capitalize} quest."
+    puts "You have started the #{name.capitalize} quest."
   else
     puts "Please select another quest. The Quest you specified does not exist."
-    puts "The command: 'quests --showall' will list all available quests."
+    puts "The command: 'quests --list' will list all available quests."
+    exit 1
   end
 end
 
-if opts[:name].nil? then
+if opts[:start].nil? then
   questlog = YAML::load_file('/root/.testing/log.yml')
   name = questlog['current']
-else
-  name = opts[:name]
 end
-  
+
 include Serverspec::Helper::Exec
 include Serverspec::Helper::DetectOS
 
@@ -83,7 +96,26 @@ RSpec.configure do |c|
   else
     c.sudo_password = ENV['SUDO_PASSWORD']
   end
+#  c.before(:all, &:silence_output)
+#  c.after(:all, &:enable_output)
+end
 
+public
+def silence_output
+  @orig_stderr = $stderr
+  @orig_stdout = $stdout
+
+  # redirect stderr and stdout to /dev/null
+  $stderr = File.new('/dev/null', 'w')
+  $stdout = File.new('/dev/null', 'w')
+end
+
+# Replace stdout and stderr so anything else is output correctly.
+def enable_output
+  $stderr = @orig_stderr
+  $stdout = @orig_stdout
+  @orig_stderr = nil
+  @orig_stdout = nil
 end
 
 config = RSpec.configuration
@@ -108,6 +140,16 @@ end
 total = failures.length + successes.length
 
 if opts[:progress] || noargs then
+
+  if brief then
+    if total == 0 then
+      puts "No"
+    else
+      puts "#{successes.length}/#{total}"
+    end
+    exit
+  end
+
   if successes.length != 0 then 
     puts "", "The following tasks were completed successfully! :".green.bold
     successes.each { |x| puts " + #{x}" }
@@ -130,13 +172,4 @@ if successes.length == total then
     File.open('/root/.testing/log.yml', 'w') {|f| f.write quests_complete.to_yaml }
   end
 end
-
-if opts[:brief]  then
-  if total == 0 then
-    puts "No"
-  else
-    puts "#{successes.length}/#{total}"
-  end
-end
-
 
