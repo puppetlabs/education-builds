@@ -15,6 +15,7 @@ require 'trollop'
 
 #puts ARGV
 p = Trollop::Parser.new do
+  version "0.0.1 (c) 2014 Puppet Labs"
   banner <<EOS
 
 quest: learning progress feedback tool 
