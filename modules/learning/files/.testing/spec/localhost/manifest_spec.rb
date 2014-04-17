@@ -1,62 +1,33 @@
 require 'spec_helper'
 
-describe file('/root/ralph.pp') do
-  it { should exist }
-  it { should contain "ensure => 'absent'" }
-end
-
-describe "puppet parser validate ralph.pp" do
-  it 'should be executed' do
-    file('/root/.bash_history').should contain 'puppet parser validate ralph.pp'
+describe "The file /root/byte.pp" do
+  it 'should be created' do
+    file('/root/byte.pp').should be_file
+    file('/root/byte.pp').should contain /ensure => 'absent'/
   end
 end
 
-describe "puppet apply --noop ralph.pp" do
-  it 'should be executed' do
-    file('/root/.bash_history').should contain 'puppet apply --noop ralph.pp'
+describe "The puppet parser command" do
+  it 'should be used to check syntax' do
+    file('/root/.bash_history').should contain 'puppet parser validate byte.pp'
   end
 end
 
-describe "puppet apply ralph.pp" do
-  it 'should be executed' do
-    file('/root/.bash_history').should contain 'puppet apply ralph.pp'
+describe "The byte.pp manifest" do
+  it 'should be simulated using the --noop flag' do
+    file('/root/.bash_history').should contain 'puppet apply --noop byte.pp'
   end
 end
 
-describe "puppet resource user ralph" do
-  it 'should be executed' do
-    file('/root/.bash_history').should contain 'puppet resources user ralph'
+describe "The byte.pp manifest" do
+  it 'should be applied' do
+    file('/root/.bash_history').should contain 'puppet apply byte.pp'
   end
 end
 
-describe file('/root/jack.pp') do
-  it { should exist }
-  it { should contain "ensure => 'present'" }
-end
-
-
-describe "puppet parser validate jack.pp" do
-  it 'should be executed' do
-    file('/root/.bash_history').should contain 'puppet parser validate jack.pp'
+describe "The user gigabyte" do
+  it 'should be created' do
+    user('gigabyte').should exist
   end
 end
 
-
-describe "puppet apply --noop jack.pp" do
-  it 'should be executed' do
-    file('/root/.bash_history').should contain 'puppet apply --noop jack.pp'
-  end
-end
-
-describe "puppet apply jack.pp" do
-  it 'should be executed' do
-    file('/root/.bash_history').should contain 'puppet apply jack.pp'
-  end
-end
-
-
-describe "puppet resource user jack" do
-  it 'should be executed' do
-    file('/root/.bash_history').should contain 'puppet resources user jack'
-  end
-end
