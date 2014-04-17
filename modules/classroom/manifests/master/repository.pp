@@ -2,14 +2,14 @@
 # Create the user a bare repository in the repository root
 # Create a clone of that repository in the users' puppet environment
 # Add a post-commit hook to automatically update the environment on push
-define fundamentals::master::repository (
+define classroom::master::repository (
   $ensure  = present,
   $root    = '/var/repositories',
   $envroot = '/etc/puppetlabs/puppet/environments',
 ) {
 
   if !( $ensure in ['present','absent'] ) {
-    fail("fundamentals::master::repository ensure parameter must be 'present' or 'absent'")
+    fail("classroom::master::repository ensure parameter must be 'present' or 'absent'")
   }
 
   validate_absolute_path("$root")
@@ -47,7 +47,7 @@ define fundamentals::master::repository (
 
     file { "${root}/${name}.git/hooks/post-update":
       ensure   => file,
-      content  => template('fundamentals/post-update.erb'),
+      content  => template('classroom/post-update.erb'),
       mode     => '0755',
       require  => Vcsrepo["${root}/${name}.git"],
     }

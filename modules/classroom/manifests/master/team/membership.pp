@@ -4,7 +4,7 @@
 #
 # $name: colon delimited list of $team:$user
 #
-define fundamentals::master::team::membership {
+define classroom::master::team::membership {
   $args = split($name, ':')
   $team = $args[0]
   $user = $args[1]

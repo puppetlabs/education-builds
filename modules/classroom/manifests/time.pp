@@ -1,12 +1,12 @@
-# fundamentals::time - keeps master and agents in sync for training
+# classroom::time - keeps master and agents in sync for training
 #
 # Warning: Do not use in production - this is a hack specifically for
 # puppetlabs training courses
 #
 # Use:
 # 1) If an internet connection with port 123 open is available:
-# `include fundamentals::time`
-# for all nodes, or classify all nodes with the class fundamentals::time
+# `include classroom::time`
+# for all nodes, or classify all nodes with the class classroom::time
 # to ensure:
 #   a) The master is in sync with a timeserver from the ntp.org pool, and
 #   b) the agents are in sync with the master
@@ -16,14 +16,14 @@
 #   Agents will use a cron job to sync with the master every 5 minutes
 # 2) If an internet connection is not available:
 # declare the class thus for all nodes:
-# ` class { 'fundamentals::time': offline => 'true' }`
-# or classify all nodes using an ENC with the fundamentals::time class
+# ` class { 'classroom::time': offline => 'true' }`
+# or classify all nodes using an ENC with the classroom::time class
 # with the 'offline' parameter set to 'true'. This will:
 #   a) ensure that the master's internal clock is the authoritative source
 # for time, and
 #   b) all agents are synced to the master via a cron task
 
-class fundamentals::time ($offline = false ) {
+class classroom::time ($offline = false ) {
   if $offline == true {
     $time_servers = [$::servername]
   }

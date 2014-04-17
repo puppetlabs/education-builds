@@ -1,4 +1,4 @@
-define fundamentals::console::groupparam (
+define classroom::console::groupparam (
   $group,
   $class,
   $param,

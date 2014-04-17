@@ -1,4 +1,4 @@
-class fundamentals::master::console {
+class classroom::master::console {
     
   # Fixes to make the console accessible by the IP address of the master
   # Required for PE 3.0.0

@@ -1,4 +1,4 @@
-class fundamentals::console::patch {
+class classroom::console::patch {
   File {
     owner => 'root',
     group => 'root',
@@ -14,7 +14,7 @@ class fundamentals::console::patch {
   # each patch to be applied should drop a file in /tmp/patches
   file { '/tmp/patches/selectNone.diff':
     ensure => file,
-    source => 'puppet:///modules/fundamentals/selectNone.diff',
+    source => 'puppet:///modules/classroom/selectNone.diff',
   }
   # then apply it
   exec { 'Live Management select none':

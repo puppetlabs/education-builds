@@ -2,10 +2,10 @@
 #
 # Uses a nasty hack to determine idempotency that assumes that homedir 
 # creation indicates console existance. This is icky. Fix soon.
-define fundamentals::console::user ( $password ) {
+define classroom::console::user ( $password ) {
 
   # work around a gratuitous API change in PE 2.6
-  if versioncmp($::fundamentals_pe_version, '2.6') < 0 {
+  if versioncmp($::classroom_pe_version, '2.6') < 0 {
     $userstring = 'EMAIL'
   } else {
     $userstring = 'USERNAME'
@@ -13,7 +13,7 @@ define fundamentals::console::user ( $password ) {
 
   # Working around how rake tasks use bundle post 3.0.0
 
-  if versioncmp($::fundamentals_pe_version, '3.0.0') < 0 {
+  if versioncmp($::classroom_pe_version, '3.0.0') < 0 {
     $execute_me = 'rake db:create_user '
     $current_dir = '/opt/puppet/share/console-auth'
    } else {

@@ -5,7 +5,7 @@
 # $name: path of workdir
 # $username: the username for git operations. Defaults to $name
 # $populate: add starter code
-define fundamentals::agent::workdir (
+define classroom::agent::workdir (
   $ensure   = 'present',
   $username = $name,
   $populate = true,
@@ -25,7 +25,7 @@ define fundamentals::agent::workdir (
     if $populate {
       file { "${workdir}/site.pp":
         ensure  => file,
-        source  => 'puppet:///modules/fundamentals/site.pp',
+        source  => 'puppet:///modules/classroom/site.pp',
         replace => false,
       }
 
@@ -53,7 +53,7 @@ define fundamentals::agent::workdir (
 
     file { "${workdir}/.git/hooks/pre-commit":
       ensure  => file,
-      source  => 'puppet:///modules/fundamentals/pre-commit',
+      source  => 'puppet:///modules/classroom/pre-commit',
       mode    => '0755',
       require => Exec["initialize ${name} repo"],
     }

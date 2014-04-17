@@ -1,5 +1,5 @@
 # Create a classroom user on the master
-define fundamentals::user (
+define classroom::user (
   $key = undef,
   # Password defaults to puppetlabs
   $password='$1$Tge1IxzI$kyx2gPUvWmXwrCQrac8/m0',
@@ -40,12 +40,12 @@ define fundamentals::user (
   }
 
   if $console_password {
-    fundamentals::console::user { $name:
+    classroom::console::user { $name:
       password => $console_password,
     }
   }
 
-  fundamentals::master::repository { $name:
+  classroom::master::repository { $name:
     ensure => present,
   }
 

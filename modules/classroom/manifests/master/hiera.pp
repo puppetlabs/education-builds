@@ -4,7 +4,7 @@
 # Paramters:
 # * $autoteam: automatically create simple teams for Capstone. Defaults to false.
 #
-class fundamentals::master::hiera (
+class classroom::master::hiera (
   $autoteam = false,
 ) {
   validate_bool($autoteam)
@@ -21,7 +21,7 @@ class fundamentals::master::hiera (
 
   file { '/etc/puppetlabs/puppet/hieradata/defaults.yaml':
     ensure  => file,
-    source  => 'puppet:///modules/fundamentals/defaults.yaml',
+    source  => 'puppet:///modules/classroom/defaults.yaml',
     replace => false,
   }
 
@@ -33,7 +33,7 @@ class fundamentals::master::hiera (
 
   file { '/etc/puppetlabs/puppet/hiera.yaml':
     ensure => file,
-    source => 'puppet:///modules/fundamentals/hiera.master.yaml',
+    source => 'puppet:///modules/classroom/hiera.master.yaml',
   }
 
   if $autoteam {
@@ -42,7 +42,7 @@ class fundamentals::master::hiera (
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => template('fundamentals/teams.yaml.erb'),
+      content => template('classroom/teams.yaml.erb'),
       replace => false,
     }
   }

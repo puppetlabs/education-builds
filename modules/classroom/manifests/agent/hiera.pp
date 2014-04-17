@@ -2,7 +2,7 @@
 # can work through the hiera sections without teaching them
 # how to configure it.
 
-class fundamentals::agent::hiera {
+class classroom::agent::hiera {
   File {
     owner => 'root',
     group => 'root',
@@ -16,12 +16,12 @@ class fundamentals::agent::hiera {
 
   file { '/etc/puppetlabs/puppet/hieradata/defaults.yaml':
     ensure  => file,
-    source  => 'puppet:///modules/fundamentals/defaults.yaml',
+    source  => 'puppet:///modules/classroom/defaults.yaml',
     replace => false,
   }
 
   file { '/etc/puppetlabs/puppet/hiera.yaml':
     ensure => file,
-    source => 'puppet:///modules/fundamentals/hiera.agent.yaml',
+    source => 'puppet:///modules/classroom/hiera.agent.yaml',
   }
 }

@@ -4,7 +4,7 @@
 #  * git pre-commit hook
 #  * hiera configuration
 
-class fundamentals::agent (
+class classroom::agent (
   $workdir   = 'puppetcode',
   $autosetup = false,
 ) {
@@ -48,9 +48,9 @@ class fundamentals::agent (
   # Make sure that Hiera is configured for all nodes so that we
   # can work through the hiera sections without teaching them
   # how to configure it.
-  include fundamentals::agent::hiera
+  include classroom::agent::hiera
 
-  fundamentals::agent::workdir { $workdir:
+  classroom::agent::workdir { $workdir:
     ensure   => present,
     username => $::hostname,
   }
@@ -58,7 +58,7 @@ class fundamentals::agent (
   # If we have teams defined, build a working directory for each.
   $teams = teams($::hostname)
   if $teams {
-    fundamentals::agent::workdir { $teams:
+    classroom::agent::workdir { $teams:
       ensure   => present,
       populate => false,
     }
@@ -104,12 +104,12 @@ class fundamentals::agent (
 
   }
 
-  # export a fundamentals::user with our ssh key.
+  # export a classroom::user with our ssh key.
   #
   # !!!! THIS WILL EXPORT AN EMPTY KEY ON THE FIRST RUN !!!!
   #
   # On the second run, the ssh key will exist and so this fact will be set.
-  @@fundamentals::user { $::hostname:
+  @@classroom::user { $::hostname:
     key => $::root_ssh_key,
   }
 }

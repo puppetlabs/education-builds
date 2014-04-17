@@ -1,4 +1,4 @@
-define fundamentals::console::class {
+define classroom::console::class {
 
     exec { "add_console_class_${name}":
       path        => '/opt/puppet/bin:/bin',
