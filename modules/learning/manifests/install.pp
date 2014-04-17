@@ -48,8 +48,8 @@ class learning::install {
   file {'/etc/puppetlabs/puppet/modules/lvmguide':
     ensure   => directory,
     source   => "puppet:///modules/${module_name}/lvmguide",
-    recourse => true,
-    require     => Exec['install-pe'],
+    recurse  => true,
+    require  => Exec['install-pe'],
   }
 
   # to use pe_gem to install the following gems, we first need pe_gem installed
