@@ -1,5 +1,18 @@
+# Configure the classroom environment for Rapid Deployment.
+#
+# This class is designed to work with the pre-baked gitlab virtual machine.
+#
+# classroom::rapid_deploy
+#   * Configure host entry for gitlab server
+#   * Configure r10k and remove extra environments from previous classes
+#   * Set up the deploy webhook gitlab will be calling
+#   * Configure git and SSH keys
+#
+# $gitserver    : Hostname of gitlab server.
+# $gitserver_ip : IP address of gitlab server (required).
+#
 class classroom::rapid_deploy (
-  $gitserver,
+  $gitserver = 'gitlabs.puppetlabs.vm',
   $gitserver_ip,
 ) {
   if ! is_ip_address($gitserver_ip) {
@@ -7,9 +20,9 @@ class classroom::rapid_deploy (
   }
 
   File {
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
+    owner => 'root',
+    group => 'root',
+    mode  => '0755',
   }
 
   host { $gitserver:
