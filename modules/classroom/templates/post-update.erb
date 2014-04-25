@@ -1,0 +1,11 @@
+#! /bin/sh
+
+# clean up environment
+unset $(git rev-parse --local-env-vars)
+cd '/etc/puppetlabs/puppet/environments/<%= @name %>' || exit
+
+echo "Updating Puppet Environment <%= @name %>"
+
+git fetch --all
+git reset --hard origin/master
+

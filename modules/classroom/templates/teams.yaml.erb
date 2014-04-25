@@ -1,0 +1,30 @@
+<%=
+  # The maximum number of students in a group.
+  # Defaults to 5, you can set it in the console too
+  maxsize = @maxsize ? @maxsize.to_i : 5
+
+  # Load the list of students via the home directory entries.
+  # Note that
+  #   1) this only works because this template is being compiled on the same
+  #      host it's being applied to, rarely a safe assumption to make.
+  #   2) this will only work one time, because each group will get its
+  #      own user. (We could "fix" that if we wanted to.)
+  students = Dir.glob('/home/*')
+  groupnum = (students.size < maxsize) ? 1 : (students.size.to_f/maxsize).ceil
+
+  # Populate our groups hash with the group names
+  groups = {}
+  (1..groupnum).each {|n| groups["group#{n}"] = [] }
+
+  # Iterate through the students, adding an entry to our hash for each
+  # student underneath the appropriate group key, round robin style
+  count  = 0
+  students.each do |name|
+    current = (count%groupnum) + 1
+    groups["group#{current}"] << File.basename(name)
+    count += 1
+  end
+
+  # Now just output our hash as yaml and let Puppet write the file out
+  { 'teams' => groups }.to_yaml
+%>
