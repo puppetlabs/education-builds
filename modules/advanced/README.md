@@ -44,7 +44,7 @@ PE Versions older than 2.7.1 cannot be used for the `classroom.puppetlabs.vm` du
 ## Technical Breakdown
 ***
 
-### Classroom (classroom.puppetlabs.vm) 
+### Classroom (classroom.puppetlabs.vm)
 The following files are managed with this module
 * `/etc/puppetlabs/puppet/auth.conf`  
 
@@ -79,16 +79,13 @@ The `advanced::agent::peadmin` class automatically sets up the .mcollective file
 
 For student machines that are running a version of PE older than 2.7.1, the `advanced::agent::mcofiles` class automatically copies the right certs and mcollective credentials files over as needed.
 
-License
--------
-
 
 Contact
 -------
 zack -@- puppetlabs.com
-eduteam -@- puppetlabs.com
+education -@- puppetlabs.com
 
 Support
 -------
 
-Please log tickets and issues at our [Projects site](http://projects.puppetlabs.com/projects/puppet-advanced/issues/new)
+Please log tickets and issues at our [Projects site](http://puppetlabs.com/training/issues)

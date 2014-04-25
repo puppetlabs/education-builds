@@ -29,16 +29,12 @@ Classifying a node with classroom defaults:
 
 ```
 
-License
--------
-
-
 Contact
 -------
 ben.ford@puppetlabs.com
-eduteam@puppetlabs.com
+education@puppetlabs.com
 
 Support
 -------
 
-Please log tickets and issues at our [Projects site](http://projects.puppetlabs.com/projects/training/issues)
+Please log tickets and issues at our [Projects site](http://puppetlabs.com/training/issues)
