@@ -27,25 +27,6 @@ bit of experience with git.
 When transitioning to the Rapid Deploy course, you should remove the `classroom` class from
 each node and reclassify them with `classroom::rapid_deploy`.
 
-License
--------
-
-Copyright (C) 2014 Puppet Labs Inc
-
-Puppet Labs can be contacted at: info@puppetlabs.com
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
 Contact
 -------
 
