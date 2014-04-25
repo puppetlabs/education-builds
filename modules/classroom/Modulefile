@@ -1,8 +1,8 @@
 name    'pltraining-classroom'
-version '1.4.4'
+version '1.4.5'
 source 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/classroom'
 author 'pltraining'
-license 'Apache License, Version 2.0'
+license 'Apache 2.0'
 summary 'Module to aid in Puppet EDU training environment creation'
 description 'Important! This is not the module you are looking for
     unless you are a trainer teaching Puppet Labs training courses!

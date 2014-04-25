@@ -1,9 +1,9 @@
-# fundamentals
+# classroom
 
-## This is the fundamentals module, used for setting up the classroom environment.
+## Setting up the training classroom environment.
 
-Simply classify every node in the classroom with `fundamentals`. It will conditionally 
-will configured both master and agent and will account for certain variations in PE versions.
+Simply classify every node in the classroom with `classroom`. It will conditionally
+configure both master and agent and will account for certain variations in PE versions.
 
 It will enable storeconfigs on the master, then restart `pe-httpd`. On the second and any
 subsequent runs, it will collect all exported user records and instantiate accounts, ssh keys,
@@ -20,16 +20,14 @@ Once all nodes have been classified, just kick off a few puppet runs and everyon
 as a clam. Especially because they all walk away with copies of their source code and a teeny
 bit of experience with git.
 
-License
--------
+## Course specific configurations
 
+### Rapid Deploy
+
+When transitioning to the Rapid Deploy course, you should remove the `classroom` class from
+each node and reclassify them with `classroom::rapid_deploy`.
 
 Contact
 -------
-ben.ford@puppetlabs.com
-eduteam@puppetlabs.com
 
-Support
--------
-
-Please log tickets and issues at our [Projects site](http://projects.puppetlabs.com/projects/training/issues)
+education@puppetlabs.com
