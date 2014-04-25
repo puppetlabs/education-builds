@@ -4,9 +4,10 @@
 #
 # classroom::rapid_deploy
 #   * Configure host entry for gitlab server
-#   * Configure r10k and remove extra environments from previous classes
-#   * Set up the deploy webhook gitlab will be calling
-#   * Configure git and SSH keys
+#   * On the classroom master:
+#     * Configure r10k and remove extra environments from previous classes
+#     * Set up the deploy webhook gitlab will be calling
+#     * Configure git and SSH keys
 #
 # $gitserver    : Hostname of gitlab server.
 # $gitserver_ip : IP address of gitlab server (required).
@@ -19,79 +20,81 @@ class classroom::rapid_deploy (
     fail('Please pass a valid IP address to the rapid_deploy class')
   }
 
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0755',
-  }
-
   host { $gitserver:
     ip => $gitserver_ip,
   }
 
-  class { 'r10k':
-    sources => {
-      'puppet' => {
-        'remote'  => "git@${gitserver}:root/control.git",
-        'basedir' => "${::settings::confdir}/environments",
-        'prefix'  => false,
-      }
-    },
-    purgedirs         => ["${::settings::confdir}/environments"],
-    manage_modulepath => true,
-    modulepath        => "${::settings::confdir}/environments/\$environment/modules:/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules",
-  }
+  if $::hostname == 'master' {
+    File {
+      owner => 'root',
+      group => 'root',
+      mode  => '0755',
+    }
 
-  augeas { 'purge extra environments':
-    context => '/files/etc/puppetlabs/puppet/puppet.conf',
-    changes => "rm *[label() != 'main' and label() != 'agent' and label() != 'master']",
-  }
+    class { 'r10k':
+      sources => {
+        'puppet' => {
+          'remote'  => "git@${gitserver}:root/control.git",
+          'basedir' => "${::settings::confdir}/environments",
+          'prefix'  => false,
+        }
+      },
+      purgedirs         => ["${::settings::confdir}/environments"],
+      manage_modulepath => true,
+      modulepath        => "${::settings::confdir}/environments/\$environment/modules:/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules",
+    }
 
-  file { '/etc/init.d/webhooks':
-    ensure => file,
-    source => 'puppet:///modules/classroom/webhooks.init',
-    before => Service['webhooks'],
-  }
+    augeas { 'purge extra environments':
+      context => '/files/etc/puppetlabs/puppet/puppet.conf',
+      changes => "rm *[label() != 'main' and label() != 'agent' and label() != 'master']",
+    }
 
-  file { '/usr/local/bin/webhooks':
-    ensure  => file,
-    content => template('classroom/webhooks.erb'),
-    notify  => Service['webhooks'],
-  }
+    file { '/etc/init.d/webhooks':
+      ensure => file,
+      source => 'puppet:///modules/classroom/webhooks.init',
+      before => Service['webhooks'],
+    }
 
-  package { 'sinatra':
-    ensure   => present,
-    provider => gem,
-    before   => Service['webhooks'],
-  }
+    file { '/usr/local/bin/webhooks':
+      ensure  => file,
+      content => template('classroom/webhooks.erb'),
+      notify  => Service['webhooks'],
+    }
 
-  service { 'webhooks':
-    ensure => running,
-    enable => true,
-  }
+    package { 'sinatra':
+      ensure   => present,
+      provider => gem,
+      before   => Service['webhooks'],
+    }
 
-  file { '/root/.ssh':
-    ensure => directory,
-    mode   => '0600',
-  }
-  file { '/root/.ssh/config':
-    ensure => file,
-    mode   => '0600',
-    source => 'puppet:///modules/classroom/gitlab/sshconfig',
-  }
-  file { '/root/.ssh/gitlab_rsa':
-    ensure => file,
-    mode   => '0600',
-    source => 'puppet:///modules/classroom/gitlab/gitlab_rsa',
-  }
-  file { '/root/.ssh/gitlab_rsa.pub':
-    ensure => file,
-    mode   => '0600',
-    source => 'puppet:///modules/classroom/gitlab/gitlab_rsa.pub',
-  }
-  file { '/root/.gitconfig':
-    ensure => file,
-    mode   => '0644',
-    source => 'puppet:///modules/classroom/gitlab/gitconfig',
+    service { 'webhooks':
+      ensure => running,
+      enable => true,
+    }
+
+    file { '/root/.ssh':
+      ensure => directory,
+      mode   => '0600',
+    }
+    file { '/root/.ssh/config':
+      ensure => file,
+      mode   => '0600',
+      source => 'puppet:///modules/classroom/gitlab/sshconfig',
+    }
+    file { '/root/.ssh/gitlab_rsa':
+      ensure => file,
+      mode   => '0600',
+      source => 'puppet:///modules/classroom/gitlab/gitlab_rsa',
+    }
+    file { '/root/.ssh/gitlab_rsa.pub':
+      ensure => file,
+      mode   => '0600',
+      source => 'puppet:///modules/classroom/gitlab/gitlab_rsa.pub',
+    }
+    file { '/root/.gitconfig':
+      ensure => file,
+      mode   => '0644',
+      source => 'puppet:///modules/classroom/gitlab/gitconfig',
+    }
   }
 }
