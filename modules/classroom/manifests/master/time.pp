@@ -1,5 +1,5 @@
-# classroom::time - keeps master and agents in sync for training
-#
+# Ensures that the classroom master is the canonical source of time.
+
 # Warning: Do not use in production - this is a hack specifically for
 # puppetlabs training courses
 #
@@ -23,7 +23,10 @@
 # for time, and
 #   b) all agents are synced to the master via a cron task
 
-class classroom::time ($offline = false ) {
+class classroom::master::time (
+  $offline = classroom::params::offline
+) inherits classroom::params {
+
   if $offline == true {
     $time_servers = [$::servername]
   }
@@ -31,38 +34,23 @@ class classroom::time ($offline = false ) {
     $time_servers = ['0.pool.ntp.org iburst', '1.pool.ntp.org iburst', '2.pool.ntp.org iburst', '3.pool.ntp.org']
   }
 
-  if $::fqdn == $::servername {
-    class { '::ntp':
-       servers => $time_servers,
-       panic   => false,
-       udlc    => true,
-    }
-   # If we are online sync with a timeserver - handy for resuming class
-   # allows time to be synced without slew, and without having to restart ntpd
-    if $offline == 'false' {
-      cron { 'synctime':
-        command => "/usr/sbin/ntpdate -us ${time_servers[3]}",
-        minute  => '*/5',
-      }
-    }
-    # If we're offline, no point in repeatedly trying to sync
-    else {
-      cron { 'synctime':
-        ensure  => absent,
-      }
+  class { '::ntp':
+     servers => $time_servers,
+     panic   => false,
+     udlc    => true,
+  }
+  # If we are online sync with a timeserver - handy for resuming class
+  # allows time to be synced without slew, and without having to restart ntpd
+  if $offline == 'false' {
+    cron { 'synctime':
+      command => "/usr/sbin/ntpdate -us ${time_servers[3]}",
+      minute  => '*/5',
     }
   }
+  # If we're offline, no point in repeatedly trying to sync
   else {
-    package { 'ntpdate':
-      ensure => present,
-    } ->
-    service { 'ntpd':
-      ensure => stopped,
-    }
-    # For agents, *always* stay true to the time on on the master
     cron { 'synctime':
-      command => "/usr/sbin/ntpdate -s $::servername",
-      minute  => '*/5',
+      ensure  => absent,
     }
   }
 }

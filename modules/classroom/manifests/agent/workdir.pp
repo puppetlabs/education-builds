@@ -15,6 +15,10 @@ define classroom::agent::workdir (
     group => 'root',
     mode  => '0644',
   }
+  Exec {
+    environment => 'HOME=/root',
+    path        => '/usr/bin:/bin:/user/sbin:/usr/sbin',
+  }
   $workdir = "/root/${name}"
 
   if $ensure == 'present' {
