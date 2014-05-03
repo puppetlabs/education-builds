@@ -5,6 +5,7 @@ class classroom::practitioner (
   $autosetup = $classroom::params::autosetup,
   $autoteam  = $classroom::params::autoteam,
   $role      = $classroom::params::role,
+  $manageyum = $classroom::params::manageyum,
 ) inherits classroom::params {
   # just wrap the classroom class
   class { 'classroom':
@@ -12,5 +13,6 @@ class classroom::practitioner (
     autosetup => $autosetup,
     autoteam  => $autoteam,
     role      => $role,
+    manageyum => $manageyum,
   }
 }

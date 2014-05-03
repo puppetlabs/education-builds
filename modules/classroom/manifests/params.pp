@@ -14,6 +14,12 @@ class classroom::params {
   # Name of the student's working directory
   $workdir   = 'puppetcode'
 
+  # Should we manage upstream yum repositories in the classroom?
+  $manageyum = true
+
+  # Upstream yum repositories
+  $repositories = [ 'base', 'extras', 'updates', 'epel' ]
+
   $role = $hostname ? {
     'master' => 'master',
     default  => 'agent'

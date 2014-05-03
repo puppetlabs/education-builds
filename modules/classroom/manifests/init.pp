@@ -28,7 +28,7 @@ class classroom (
   $autosetup = $classroom::params::autosetup,
   $autoteam  = $classroom::params::autoteam,
   $role      = $classroom::params::role,
-
+  $manageyum = $classroom::params::manageyum,
 ) inherits classroom::params {
 
   case $role {
@@ -44,5 +44,10 @@ class classroom (
         }
       }
     default  : { fail("Unknown role: ${role}") }
+  }
+
+  class { 'classroom::repositories':
+    offline   => $offline,
+    manageyum => $manageyum,
   }
 }
