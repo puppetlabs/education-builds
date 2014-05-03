@@ -1,4 +1,4 @@
-# Configure the Fundamentals classroom environment.
+# Configure the training classroom environment.
 #
 # classroom::agent
 #   * set up the agent with an sshkey for root
@@ -21,26 +21,28 @@
 #
 # $offline   : Configure NTP (and other services) to run in standalone mode
 # $autosetup : Automatically configure environment, etc.
+# $role      : What classroom role this node should play
 #
 class classroom (
-  $offline   = false,
-  $autosetup = false,
-) {
+  $offline   = $classroom::params::offline,
+  $autosetup = $classroom::params::autosetup,
+  $autoteam  = $classroom::params::autoteam,
+  $role      = $classroom::params::role,
 
-  if $::hostname == 'master' {
+) inherits classroom::params {
 
-    # define a list of classes that should be available in the console
-    class { 'classroom::master':
-      classes => [ 'users', 'apache', 'classroom' ]
-    }
-  }
-  else {
-    class { 'classroom::agent':
-      autosetup => $autosetup,
-    }
-  }
-
-  class { 'classroom::time':
-    offline => $offline,
+  case $role {
+    'master' : {
+        class { 'classroom::master':
+          offline  => $offline,
+          autoteam => $autoteam,
+        }
+      }
+    'agent'  : {
+        class { 'classroom::agent':
+          autosetup => $autosetup,
+        }
+      }
+    default  : { fail("Unknown role: ${role}") }
   }
 }

@@ -3,46 +3,19 @@
 #  * git source repository
 #  * git pre-commit hook
 #  * hiera configuration
-
+#  * time synchronization with the classroom master
 class classroom::agent (
-  $workdir   = 'puppetcode',
-  $autosetup = false,
-) {
-  Exec {
-    environment => 'HOME=/root',
-    path        => '/usr/bin:/bin:/user/sbin:/usr/sbin',
-  }
+  $workdir   = classroom::params::workdir,
+  $autosetup = classroom::params::autosetup,
+) inherits classroom::params {
 
-  package { 'git':
-    ensure => present,
-  }
+  # make sure our git environment is set up and usable
+  include classroom::agent::git
 
-  file { '/root/.ssh':
-    ensure => directory,
-    mode   => '0600',
-  }
-
-  exec { 'generate_key':
-    command => 'ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa',
-    creates => '/root/.ssh/id_rsa',
-    require => File['/root/.ssh'],
-  }
-
-  exec { "git config --global user.name '${::hostname}'":
-    unless  => 'git config --global user.name',
-    require => Package['git'],
-  }
-
-  exec { "git config --global user.email ${::hostname}@puppetlabs.vm":
-    unless  => 'git config --global user.email',
-    require => Package['git'],
-  }
-
-  # /etc/puppet/ssl is confusing to have around. Sloppy. Kill.
-  file {'/etc/puppet':
-    ensure  => absent,
-    recurse => true,
-    force   => true,
+  classroom::agent::workdir { $workdir:
+    ensure   => present,
+    username => $::hostname,
+    require  => Class['classroom::agent::git'],
   }
 
   # Make sure that Hiera is configured for all nodes so that we
@@ -50,59 +23,11 @@ class classroom::agent (
   # how to configure it.
   include classroom::agent::hiera
 
-  classroom::agent::workdir { $workdir:
-    ensure   => present,
-    username => $::hostname,
-  }
+  # Ensure that the time is always synced with the classroom master
+  include classroom::agent::time
 
-  # If we have teams defined, build a working directory for each.
-  $teams = teams($::hostname)
-  if $teams {
-    classroom::agent::workdir { $teams:
-      ensure   => present,
-      populate => false,
-    }
-
-    if(size($teams) == 1) {
-      $team = $teams[0]
-
-      file { '/etc/puppetlabs/puppet/modules':
-        ensure => link,
-        target => "/root/${team}/modules",
-        force  => true,
-      }
-
-      if $autosetup {
-        ini_setting { "environment":
-          ensure  => present,
-          path    => '/etc/puppetlabs/puppet/puppet.conf',
-          section => 'agent',
-          setting => 'environment',
-          value   => $team,
-        }
-      }
-    }
-  } else {
-    # If we don't have teams, enforce the symlink. When they get to
-    # the capstone, they should know how to manage this on their own.
-    # create a symlink to allow local puppet use
-    file { '/etc/puppetlabs/puppet/modules':
-      ensure => link,
-      target => "/root/${workdir}/modules",
-      force  => true,
-    }
-
-    if $autosetup {
-      ini_setting { "environment":
-        ensure  => present,
-        path    => '/etc/puppetlabs/puppet/puppet.conf',
-        section => 'agent',
-        setting => 'environment',
-        value   => $::hostname,
-      }
-    }
-
-  }
+  # If we have teams defined for this node, build a working directory for each.
+  include classroom::agent::teams
 
   # export a classroom::user with our ssh key.
   #
@@ -112,5 +37,11 @@ class classroom::agent (
   @@classroom::user { $::hostname:
     key => $::root_ssh_key,
   }
-}
 
+  # /etc/puppet/ssl is confusing to have around. Sloppy. Kill.
+  file {'/etc/puppet':
+    ensure  => absent,
+    recurse => true,
+    force   => true,
+  }
+}
