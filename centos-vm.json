@@ -94,13 +94,13 @@
     }
   ],
   "variables": {
+    "hostname": "vagrant",
     "iso_checksum": "67ea68068ae53d1f23431072ec0288b3e1abfe4d",
     "iso_url": "http://mirrors.kernel.org/centos/6.5/isos/i386/CentOS-6.5-i386-bin-DVD1.iso",
+    "ks_file": "ks.cfg",
     "os_name": "CentOS-6.5",
     "pe_status": "release",
     "pe_version": "3.2.1",
-    "hostname": "vagrant",
-    "ks_file": "ks.cfg",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "vagrant",
     "system_user_password": "vagrant",
