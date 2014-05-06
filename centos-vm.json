@@ -100,12 +100,12 @@
     "ks_file": "ks.cfg",
     "os_name": "CentOS-6.5",
     "pe_status": "release",
-    "pe_version": "3.2.1",
+    "pe_version": "3.2.3",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "vagrant",
     "system_user_password": "vagrant",
     "training_branch": "master",
     "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
-    "vm_name": "centos-6.5-pe-3.2.1"
+    "vm_name": "centos-6.5-pe-3.2.3"
   }
 }
