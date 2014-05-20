@@ -1,6 +1,6 @@
-# This is a wrapper class to include all the bits needed for Practitioner
+# This is a wrapper class to include all the bits needed for Fundamentals
 #
-class classroom::practitioner (
+class classroom::course::fundamentals (
   $offline   = $classroom::params::offline,
   $autosetup = $classroom::params::autosetup,
   $autoteam  = $classroom::params::autoteam,

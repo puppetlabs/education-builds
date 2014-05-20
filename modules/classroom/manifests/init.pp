@@ -24,30 +24,19 @@
 # $role      : What classroom role this node should play
 #
 class classroom (
-  $offline   = $classroom::params::offline,
-  $autosetup = $classroom::params::autosetup,
-  $autoteam  = $classroom::params::autoteam,
-  $role      = $classroom::params::role,
-  $manageyum = $classroom::params::manageyum,
+  $offline      = $classroom::params::offline,
+  $autosetup    = $classroom::params::autosetup,
+  $autoteam     = $classroom::params::autoteam,
+  $role         = $classroom::params::role,
+  $manageyum    = $classroom::params::manageyum,
+  $time_servers = $classroom::params::time_servers,
 ) inherits classroom::params {
 
   case $role {
-    'master' : {
-        class { 'classroom::master':
-          offline  => $offline,
-          autoteam => $autoteam,
-        }
-      }
-    'agent'  : {
-        class { 'classroom::agent':
-          autosetup => $autosetup,
-        }
-      }
+    'master' : { include classroom::master }
+    'agent'  : { include classroom::agent  }
     default  : { fail("Unknown role: ${role}") }
   }
 
-  class { 'classroom::repositories':
-    offline   => $offline,
-    manageyum => $manageyum,
-  }
+  include classroom::repositories
 }

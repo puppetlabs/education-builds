@@ -9,7 +9,7 @@ class classroom::params {
   $autoteam  = false
 
   # list of classes that should be available in the console
-  $classes   = [ 'users', 'apache', 'classroom' ]
+  $classes   = [ 'users', 'apache', 'classroom', 'userprefs' ]
 
   # Name of the student's working directory
   $workdir   = 'puppetcode'
@@ -19,6 +19,9 @@ class classroom::params {
 
   # Upstream yum repositories
   $repositories = [ 'base', 'extras', 'updates', 'epel' ]
+
+  # time servers to use if we've got network
+  $time_servers = ['0.pool.ntp.org iburst', '1.pool.ntp.org iburst', '2.pool.ntp.org iburst', '3.pool.ntp.org']
 
   $role = $hostname ? {
     'master' => 'master',

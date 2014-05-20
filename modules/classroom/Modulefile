@@ -9,8 +9,13 @@ description 'Important! This is not the module you are looking for
     - Configures and sets up classroom environment for Puppet Classroom trainings.'
 project_page 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/classroom'
 
+dependency 'puppetlabs/apache',
 dependency 'puppetlabs/concat', '>= 0.1.0'
+dependency 'puppetlabs/mysql'
+dependency 'puppetlabs/ntp', '>= 3.0.1'
 dependency 'puppetlabs/vcsrepo', '>= 0.1.2'
 dependency 'pltraining/userprefs'
-dependency 'puppetlabs/ntp', '>= 3.0.1'
+dependency 'hunner/charybdis'
+dependency 'hunner/wordpress'
 dependency 'zack/r10k'
+dependency 'zack/exports'

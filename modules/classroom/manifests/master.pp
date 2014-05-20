@@ -1,9 +1,9 @@
 # Set up the master with user accounts, environments, etc
 class classroom::master (
-  $classes  = classroom::params::classes,
-  $offline  = classroom::params::offline,
-  $autoteam = $classroom::params::autoteam,
-) inherits classroom::params {
+  $classes  = $classroom::classes,
+  $offline  = $classroom::offline,
+  $autoteam = $classroom::autoteam,
+) inherits classroom {
 
   File {
     owner => 'root',

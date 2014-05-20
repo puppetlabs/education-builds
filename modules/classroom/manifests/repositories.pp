@@ -1,8 +1,9 @@
+# Manage yum (and maybe someday apt) repositories in the classroom.
 class classroom::repositories (
-  $manageyum    = $classroom::params::manageyum,
-  $offline      = $classroom::params::offline,
-  $repositories = $classroom::params::repositories,
-) inherits classroom::params {
+  $manageyum    = $classroom::manageyum,
+  $offline      = $classroom::offline,
+  $repositories = $classroom::repositories,
+) inherits classroom {
 
   if $manageyum and $::osfamily == 'RedHat' {
     yumrepo { $repositories:

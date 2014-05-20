@@ -12,7 +12,7 @@
 # $gitserver    : Hostname of gitlab server.
 # $gitserver_ip : IP address of gitlab server (required).
 #
-class classroom::rapid_deploy (
+class classroom::course::rapid_deploy (
   $gitserver = 'gitlabs.puppetlabs.vm',
   $gitserver_ip,
 ) {
