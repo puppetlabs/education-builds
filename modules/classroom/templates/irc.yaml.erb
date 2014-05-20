@@ -1,10 +1,10 @@
 ---
-:irc_server: 'irc://<%= @nick %>@irc.puppetlabs.vm:6667#advanced'
+:irc_server: 'irc://<%= @nick %>@<%= @servername %>:6667#advanced'
 #:irc_password: 'password'
 :irc_join: true
 :irc_ssl: false
 :irc_register_first: true
 :timeout: 30
-:report_url: https://classroom.puppetlabs.vm/nodes/%h
+:report_url: https://<%= @servername %>/nodes/%h
 #:github_token: 'token'
 #:github_user: 'user'

@@ -1,6 +1,6 @@
 servers = (
   {
-    address = "irc.puppetlabs.vm";
+    address = "<%= @servername %>";
     chatnet = "PuppetNet";
     port = "6667";
     autoconnect = "yes";
@@ -181,15 +181,15 @@ statusbar = {
 };
 settings = {
   core = {
-  real_name = "<%= scope.lookupvar("::fqdn") %>";
-    user_name = "<%= scope.lookupvar("::hostname") %>";
-    nick = "<%= scope.lookupvar("::hostname") %>";
+  real_name = "<%= @fqdn %>";
+    user_name = "<%= @hostname %>";
+    nick = "<%= @hostname %>";
     settings_autosave = "no";
     server_connect_timeout = "1min";
     awaylog_file = "~/.irssi/logs/away.log";
   };
   "irc/core" = {
-    alternate_nick = "<%= scope.lookupvar("::hostname") %>_";
+    alternate_nick = "<%= @hostname %>_";
     part_message = " ";
     skip_motd = "yes";
   };

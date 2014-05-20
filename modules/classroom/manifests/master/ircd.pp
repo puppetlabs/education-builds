@@ -5,11 +5,11 @@ class classroom::master::ircd {
   }
 
   file { '/etc/ngircd.conf':
-    ensure => file,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
-    source => "puppet:///modules/${module_name}/ngircd.conf",
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template("${module_name}/ngircd.conf.erb"),
   }
 
   service { 'ngircd':
