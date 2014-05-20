@@ -15,4 +15,11 @@ class classroom::course::practitioner (
     role      => $role,
     manageyum => $manageyum,
   }
+
+  if $role == 'master' {
+    # master gets the IRC server
+    include classroom::master::ircd
+  }
+  # Everyone gets Irssi
+  include classroom::agent::irc
 }
