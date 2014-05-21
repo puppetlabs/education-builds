@@ -30,11 +30,14 @@ class classroom (
   $role         = $classroom::params::role,
   $manageyum    = $classroom::params::manageyum,
   $time_servers = $classroom::params::time_servers,
+  $workdir      = $classroom::params::workdir,
 ) inherits classroom::params {
 
+  # variables are available to included classes by the evil power of inheritance
   case $role {
     'master' : { include classroom::master }
     'agent'  : { include classroom::agent  }
+    'proxy'  : { include classroom::proxy  }
     default  : { fail("Unknown role: ${role}") }
   }
 

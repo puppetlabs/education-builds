@@ -11,7 +11,7 @@
 # setting as well.
 #
 class classroom::agent::teams (
-  $autosetup= $classroom::autosetup,
+  $autosetup = $classroom::autosetup,
 ) inherits classroom {
 
   # If we have teams defined for this student, build a working directory for each.

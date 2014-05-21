@@ -25,14 +25,16 @@ class classroom::params {
 
   $role = $hostname ? {
     'master' => 'master',
+    'proxy'  => 'proxy',
     default  => 'agent'
   }
 
+  $download = "\n\nPlease download a new VM: http://downloads.puppetlabs.com/training/\n\n"
   if versioncmp($::classroom_vm_release, '2.5') < 0 {
-    fail('Your VM is out of date: http://downloads.puppetlabs.com/training/')
+    fail("Your VM is out of date. ${download}")
   }
 
   if versioncmp($::pe_version, '3.0.0') < 0 {
-    fail('Your Puppet Enterprise installation is out of date. Please download a new VM: http://downloads.puppetlabs.com/training/')
+    fail("Your Puppet Enterprise installation is out of date. ${download}")
   }
 }
