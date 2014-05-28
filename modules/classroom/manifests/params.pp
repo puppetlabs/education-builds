@@ -24,9 +24,9 @@ class classroom::params {
   $time_servers = ['0.pool.ntp.org iburst', '1.pool.ntp.org iburst', '2.pool.ntp.org iburst', '3.pool.ntp.org']
 
   $role = $hostname ? {
-    'master' => 'master',
-    'proxy'  => 'proxy',
-    default  => 'agent'
+    /master|classroom/ => 'master',
+    'proxy'            => 'proxy',
+    default            => 'agent'
   }
 
   $download = "\n\nPlease download a new VM: http://downloads.puppetlabs.com/training/\n\n"

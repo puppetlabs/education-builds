@@ -17,8 +17,9 @@ class classroom::course::practitioner (
   }
 
   if $role == 'master' {
-    # master gets the IRC server
+    # master gets the IRC server and reporting scripts
     include classroom::master::ircd
+    include classroom::master::reporting_tools
   }
   # Everyone gets Irssi
   include classroom::agent::irc
