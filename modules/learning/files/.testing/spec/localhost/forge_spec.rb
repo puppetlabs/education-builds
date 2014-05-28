@@ -8,8 +8,8 @@ describe "The installed modules" do
 end
 
 describe "The Forge" do
-  it 'should be search for module puppetlabs-mysql' do
-    file('/root/.bash_history').should contain "puppet module search puppetlabs-mysql"
+  it 'should be search for mysql modules' do
+    file('/root/.bash_history').should contain "puppet module search mysql"
   end
 end
 
