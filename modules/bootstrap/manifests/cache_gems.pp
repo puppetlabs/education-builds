@@ -39,6 +39,11 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'highline':        }
   bootstrap::gem { 'serverspec':      }
 
+  # These gems are required for the Architect course
+  bootstrap::gem { 'trollop':         }
+#  bootstrap::gem { 'highline':        }
+  bootstrap::gem { 'hiera-eyaml':     }
+
   # These are the gems needed by the extending puppet using ruby course
   bootstrap::gem { 'rspec':                  }
   bootstrap::gem { 'diff-lcs':               }
