@@ -7,11 +7,12 @@ class bootstrap ($print_console_login = false) {
 
   # yum repos
   yumrepo { 'puppetlabs':
-    baseurl  => 'http://yum.puppetlabs.com/el/6/products/$basearch/',
-    enabled  => '0',
-    priority => '99',
-    gpgcheck => '0',
-    descr    => 'Puppetlabs yum repo'
+    baseurl             => 'http://yum.puppetlabs.com/el/6/products/$basearch/',
+    enabled             => '0',
+    priority            => '99',
+    gpgcheck            => '0',
+    skip_if_unavailable => '1',
+    descr               => 'Puppetlabs yum repo'
   }
   package { 'yum-plugin-priorities':
     ensure => installed,
@@ -24,8 +25,9 @@ class bootstrap ($print_console_login = false) {
     require => Package['yum-plugin-priorities'],
   }
   yumrepo { ['epel', 'updates', 'base', 'extras']:
-    enabled  => '0',
+    enabled  => '1',
     priority => '99',
+    skip_if_unavailable => '1',
   }
 
   # Moving the root user declaration to the userprefs module.
