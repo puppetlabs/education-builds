@@ -23,10 +23,16 @@ class classroom::params {
   # time servers to use if we've got network
   $time_servers = ['0.pool.ntp.org iburst', '1.pool.ntp.org iburst', '2.pool.ntp.org iburst', '3.pool.ntp.org']
 
-  $role = $hostname ? {
-    /master|classroom/ => 'master',
-    'proxy'            => 'proxy',
-    default            => 'agent'
+  # is this a student's tier3 agent in Architect?
+  if $domain != 'puppetlabs.vm' {
+    $role = 'tier3'
+  }
+  else {
+    $role = $hostname ? {
+      /master|classroom/ => 'master',
+      'proxy'            => 'proxy',
+      default            => 'agent'
+    }
   }
 
   $download = "\n\nPlease download a new VM: http://downloads.puppetlabs.com/training/\n\n"
@@ -34,7 +40,7 @@ class classroom::params {
     fail("Your VM is out of date. ${download}")
   }
 
-  if versioncmp($::pe_version, '3.0.0') < 0 {
+  if versioncmp($::pe_version, '3.2.0') < 0 {
     fail("Your Puppet Enterprise installation is out of date. ${download}")
   }
 }

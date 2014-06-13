@@ -38,6 +38,7 @@ class classroom (
     'master' : { include classroom::master }
     'agent'  : { include classroom::agent  }
     'proxy'  : { include classroom::proxy  }
+    'tier3'  : { include classroom::tier3  }
     default  : { fail("Unknown role: ${role}") }
   }
 
