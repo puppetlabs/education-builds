@@ -1,3 +1,9 @@
+# Horrible nasty patches to make Live Management more performant
+#
+# Note: These only have any relevance to the extraordinarily abnormal use case
+#       of our training environments. These will likely not have any real
+#       impact on actual production use of the PE Console.
+#
 class classroom::console::patch {
   File {
     owner => 'root',

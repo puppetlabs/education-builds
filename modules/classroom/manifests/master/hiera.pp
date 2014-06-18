@@ -5,8 +5,8 @@
 # * $autoteam: automatically create simple teams for Capstone. Defaults to false.
 #
 class classroom::master::hiera (
-  $autoteam = $classroom::params::autoteam,
-) inherits classroom::params {
+  $autoteam = $classroom::autoteam,
+) inherits classroom {
   validate_bool($autoteam)
 
   File {

@@ -5,9 +5,9 @@
 #  * hiera configuration
 #  * time synchronization with the classroom master
 class classroom::agent (
-  $workdir   = classroom::params::workdir,
-  $autosetup = classroom::params::autosetup,
-) inherits classroom::params {
+  $workdir   = $classroom::workdir,
+  $autosetup = $classroom::autosetup,
+) inherits classroom {
 
   # make sure our git environment is set up and usable
   include classroom::agent::git

@@ -23,5 +23,6 @@ class classroom::agent::hiera {
   file { '/etc/puppetlabs/puppet/hiera.yaml':
     ensure => file,
     source => 'puppet:///modules/classroom/hiera.agent.yaml',
+    replace => false,
   }
 }

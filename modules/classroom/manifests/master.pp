@@ -1,9 +1,9 @@
 # Set up the master with user accounts, environments, etc
 class classroom::master (
-  $classes  = classroom::params::classes,
-  $offline  = classroom::params::offline,
-  $autoteam = $classroom::params::autoteam,
-) inherits classroom::params {
+  $classes  = $classroom::classes,
+  $offline  = $classroom::offline,
+  $autoteam = $classroom::autoteam,
+) inherits classroom {
 
   File {
     owner => 'root',
@@ -30,9 +30,7 @@ class classroom::master (
   }
 
   # configure Hiera environments for the master
-  class { 'classroom::master::hiera':
-    autoteam => $autoteam,
-  }
+  include classroom::master::hiera
 
   # if we've gotten to the Capstone and teams are defined, create our teams!
   $teams = hierasafe('teams', undef)
@@ -46,9 +44,7 @@ class classroom::master (
   }
 
   # Ensure that time is set appropriately
-  class { 'classroom::master::time':
-    offline => $offline,
-  }
+  include classroom::master::time
 
   # unselect all nodes in Live Management by default
   #include classroom::console::patch
