@@ -77,18 +77,18 @@
       ],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [
-        "../_shared/script/centos/base.sh",
-        "training_scripts/install_necessary_repositories.sh",
-        "training_scripts/clone_and_setup_foss_puppet.sh",
-        "training_scripts/puppet_bootstrap_run.sh",
-        "training_scripts/download_pe_tarball.sh",
-        "training_scripts/download_agent_tarball.sh",
-        "training_scripts/set_version.sh",
-        "../_shared/script/centos/vagrant.sh",
-        "../_shared/script/centos/sshd.sh",
-        "../_shared/script/centos/vmtools.sh",
-        "../_shared/script/centos/cleanup.sh",
-        "../_shared/script/centos/zerodisk.sh"
+        "http/centos/script/base.sh",
+        "http/centos/training_scripts/install_necessary_repositories.sh",
+        "http/centos/training_scripts/clone_and_setup_foss_puppet.sh",
+        "http/centos/training_scripts/puppet_bootstrap_run.sh",
+        "http/centos/training_scripts/download_pe_tarball.sh",
+        "http/centos/training_scripts/download_agent_tarball.sh",
+        "http/centos/training_scripts/set_version.sh",
+        "http/centos/script/vagrant.sh",
+        "http/centos/script/sshd.sh",
+        "http/centos/script/vmtools.sh",
+        "http/centos/script/cleanup.sh",
+        "http/centos/script/zerodisk.sh"
       ],
       "type": "shell"
     }
