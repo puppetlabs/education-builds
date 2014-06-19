@@ -10,7 +10,7 @@
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_checksum_type": "sha1",
       "iso_url": "{{ user `iso_url` }}",
-      "output_directory": "{{user `vm_name`}}-vmware",
+      "output_directory": "~/Sites/build/{{user `vm_name`}}-vmware",
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "ssh_password": "{{user `system_user_password`}}",
       "ssh_username": "{{user `system_user`}}",
@@ -35,7 +35,7 @@
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_checksum_type": "sha1",
       "iso_url": "{{ user `iso_url` }}",
-      "output_directory": "{{user `vm_name`}}-ovf-virtualbox",
+      "output_directory": "~/Sites/build/{{user `vm_name`}}-ovf-virtualbox",
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "ssh_password": "{{user `system_user_password`}}",
       "ssh_username": "{{user `system_user`}}",
@@ -62,7 +62,7 @@
   "post-processors": [
     {
       "keep_input_artifact": true,
-      "output": "../_output/{{.Provider}}/trainingvm-{{.Provider}}.box",
+      "output": "~/Sites/build/{{.Provider}}.box",
       "type": "vagrant"
     }
   ],
