@@ -162,8 +162,6 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
       "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
     }
-    iso_glob = 'ubuntu-12.04.4-server*'
-    iso_url = 'http://mirrors.cat.pdx.edu/ubuntu-releases/12.04.4/ubuntu-12.04.4-server-i386.iso'
   when 'Centos'
     # Parse templates and output in BUILDDIR
     $settings[:pe_install_suffix] = '-el-6-i386'
@@ -199,47 +197,6 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       "#{CACHEDIR}/#{$settings[:pe_tarball]}"         => "/puppet/#{$settings[:pe_tarball]}",
       "#{CACHEDIR}/#{$settings[:agent_tarball]}"      => "/puppet/#{$settings[:agent_tarball]}",
     }
-    iso_glob = 'CentOS-6.5-*'
-    iso_url = 'http://mirror.tocici.com/centos/6/isos/i386/CentOS-6.5-i386-bin-DVD1.iso'
-  end
-
-
-  iso_file = Dir.glob("#{CACHEDIR}/#{iso_glob}").first || ENV['iso_file']
-
-  if ! iso_file
-    iso_default = iso_url
-  else
-    iso_default = iso_file
-  end
-  if ! File.exist?("#{CACHEDIR}/#{$settings[:vmos]}.iso")
-    unless iso_file
-      cprint "Please specify #{$settings[:vmos]} ISO path or url [#{iso_default}]: "
-      iso_uri = STDIN.gets.chomp.rstrip
-      iso_uri = iso_default if iso_uri.empty?
-      if iso_uri != iso_file
-        case iso_uri
-        when /^(http|https):\/\//
-          iso_file = File.basename(iso_uri)
-          cputs "Downloading ISO to #{CACHEDIR}/#{iso_file}..."
-          download iso_uri, "#{CACHEDIR}/#{iso_file}"
-        else
-          cputs "Copying ISO to #{CACHEDIR}..."
-          FileUtils.cp iso_uri, CACHEDIR
-        end
-      end
-    end
-    cputs "Mapping files from #{BUILDDIR} into ISO..."
-    map_iso(iso_file, "#{KSISODIR}/#{$settings[:vmos]}.iso", files)
-  else
-    cputs "Image #{KSISODIR}/#{$settings[:vmos]}.iso is already created; skipping"
-  end
-  # Extract the OS version from the iso filename as ubuntu and centos are the
-  # same basic format and get caught by the match group below
-  iso_version = iso_file[/^.*-(\d+\.\d+\.?\d?)-.*\.iso$/,1]
-  if $settings[:vmtype] == 'training'
-    $settings[:vmname] = "#{$settings[:vmos]}-#{iso_version}-pe-#{@real_pe_ver}".downcase
-  else
-    $settings[:vmname] = "learn_puppet_#{$settings[:vmos]}-#{iso_version}-pe-#{@real_pe_ver}".downcase
   end
 end
 
@@ -285,40 +242,6 @@ task :jenkins_everything, [:vmos] do |t,args|
   Rake::Task[:shipvm].invoke
   Rake::Task[:publishvm].invoke
 end
-
-task :createovf, [:vmos] do |t,args|
-  args.with_defaults(:vmos => $settings[:vmos])
-  prompt_vmos(args.vmos)
-
-  Rake::Task[:unmountiso].invoke($settings[:vmos])
-  cputs "Converting Original .vbox to OVF..."
-  FileUtils.rm_rf("#{OVFDIR}/#{$settings[:vmname]}-ovf") if File.directory?("#{OVFDIR}/#{$settings[:vmname]}-ovf")
-  FileUtils.mkdir_p("#{OVFDIR}/#{$settings[:vmname]}-ovf")
-  system("VBoxManage export '#{$settings[:vmname]}' -o '#{OVFDIR}/#{$settings[:vmname]}-ovf/#{$settings[:vmname]}.ovf'")
-end
-
-task :createvmx, [:vmos] => [:createovf] do |t,args|
-  args.with_defaults(:vmos => $settings[:vmos])
-  prompt_vmos(args.vmos)
-
-  Rake::Task[:unmountiso].invoke($settings[:vmos])
-  cputs "Converting OVF to VMX..."
-  FileUtils.rm_rf("#{VMWAREDIR}/#{$settings[:vmname]}-vmware") if File.directory?("#{VMWAREDIR}/#{$settings[:vmname]}-vmware")
-  FileUtils.mkdir_p("#{VMWAREDIR}/#{$settings[:vmname]}-vmware")
-  system("'#{@ovftool_default}' --lax --targetType=VMX '#{OVFDIR}/#{$settings[:vmname]}-ovf/#{$settings[:vmname]}.ovf' '#{VMWAREDIR}/#{$settings[:vmname]}-vmware'")
-
-  cputs 'Changing virtualhw.version = to "8"'
-  # this path is different on OSX
-  if hostos =~ /Darwin/
-    @vmxpath = "#{VMWAREDIR}/#{$settings[:vmname]}-vmware/#{$settings[:vmname]}.vmwarevm/#{$settings[:vmname]}.vmx"
-  else
-    @vmxpath = "#{VMWAREDIR}/#{$settings[:vmname]}-vmware/#{$settings[:vmname]}/#{$settings[:vmname]}.vmx"
-  end
-  content = File.read(@vmxpath)
-  content = content.gsub(/^virtualhw\.version = "\d+"$/, 'virtualhw.version = "8"')
-  File.open(@vmxpath, 'w') { |f| f.puts content }
-end
-
 
 desc "Zip up the VMs (unimplemented)"
 task :packagevm, [:vmos] do |t,args|
