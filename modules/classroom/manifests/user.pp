@@ -1,9 +1,9 @@
 # Create a classroom user on the master
 define classroom::user (
-  $key = undef,
-  # Password defaults to puppetlabs
-  $password='$1$Tge1IxzI$kyx2gPUvWmXwrCQrac8/m0',
-  $console_password='puppetlabs'
+  $key        = undef,
+  $password   = '$1$Tge1IxzI$kyx2gPUvWmXwrCQrac8/m0', # puppetlabs
+  $consolepw  = 'puppetlabs',
+  $managerepo = true,
 ) {
   File {
     owner => $name,
@@ -39,14 +39,16 @@ define classroom::user (
     }
   }
 
-  if $console_password {
+  if $consolepw {
     classroom::console::user { $name:
-      password => $console_password,
+      password => $consolepw,
     }
   }
 
-  classroom::master::repository { $name:
-    ensure => present,
+  if $managerepo {
+    classroom::master::repository { $name:
+      ensure => present,
+    }
   }
 
 }

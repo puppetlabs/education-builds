@@ -6,5 +6,5 @@ class classroom::agent::hosts {
     tag          => ['classroom','master'],
   }
 
-  # Host <<| tag == 'classroom' |>>
+  Host <<| tag == 'classroom' |>>
 }
