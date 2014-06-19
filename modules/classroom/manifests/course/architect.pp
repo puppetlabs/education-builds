@@ -20,7 +20,6 @@ class classroom::course::architect (
   if $role == 'master' {
     # master gets the IRC server and reporting scripts
     include classroom::master::ircd
-    include classroom::master::reporting_tools
     include classroom::master::puppetdb
 
     # prepare mcollective certs & config for syncronization
@@ -30,6 +29,7 @@ class classroom::course::architect (
     # synchronize mcollective certs & config to client node
     include classroom::mcollective::client
     include classroom::agent::r10k
+    include classroom::master::reporting_tools
   }
 
   # Everyone gets Irssi
