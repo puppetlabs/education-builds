@@ -14,11 +14,18 @@ class classroom::params {
   # Name of the student's working directory
   $workdir   = 'puppetcode'
 
+  # default user password
+  $password  = '$1$Tge1IxzI$kyx2gPUvWmXwrCQrac8/m0' # puppetlabs
+  $consolepw = 'puppet'
+
   # Should we manage upstream yum repositories in the classroom?
   $manageyum = true
 
   # Upstream yum repositories
   $repositories = [ 'base', 'extras', 'updates', 'epel' ]
+
+  # manage git repositories for the student and the master
+  $managerepos = true
 
   # time servers to use if we've got network
   $time_servers = ['0.pool.ntp.org iburst', '1.pool.ntp.org iburst', '2.pool.ntp.org iburst', '3.pool.ntp.org']

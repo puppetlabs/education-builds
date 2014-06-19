@@ -1,8 +1,9 @@
 # Set up the master with user accounts, environments, etc
 class classroom::master (
-  $classes  = $classroom::classes,
-  $offline  = $classroom::offline,
-  $autoteam = $classroom::autoteam,
+  $classes     = $classroom::classes,
+  $offline     = $classroom::offline,
+  $autoteam    = $classroom::autoteam,
+  $managerepos = $classroom::managerepos,
 ) inherits classroom {
 
   File {
@@ -21,26 +22,9 @@ class classroom::master (
     }
   }
 
-  package { 'git':
-    ensure => present,
-  }
-
-  file { ['/var/repositories', '/etc/puppetlabs/puppet/environments']:
-    ensure => directory,
-  }
-
-  # configure Hiera environments for the master
-  include classroom::master::hiera
-
-  # if we've gotten to the Capstone and teams are defined, create our teams!
-  $teams = hierasafe('teams', undef)
-  if $teams {
-    $teamnames = keys($teams)
-
-    # create each team. Pass in the full hash so that team can set its members
-    classroom::master::team { $teamnames:
-      teams => $teams,
-    }
+  # if configured to do so, configure repos & environments on the master
+  if $managerepos {
+    include classroom::master::repositories
   }
 
   # Ensure that time is set appropriately

@@ -11,6 +11,7 @@ project_page 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/m
 
 dependency 'puppetlabs/apache',
 dependency 'puppetlabs/concat', '>= 0.1.0'
+dependency 'puppetlabs/git'
 dependency 'puppetlabs/mysql'
 dependency 'puppetlabs/ntp', '>= 3.0.1'
 dependency 'puppetlabs/vcsrepo', '>= 0.1.2'

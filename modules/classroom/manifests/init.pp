@@ -29,8 +29,11 @@ class classroom (
   $autoteam     = $classroom::params::autoteam,
   $role         = $classroom::params::role,
   $manageyum    = $classroom::params::manageyum,
+  $managerepos  = $classroom::params::managerepos,
   $time_servers = $classroom::params::time_servers,
   $workdir      = $classroom::params::workdir,
+  $password     = $classroom::params::password,
+  $consolepw    = $classroom::params::consolepw,
 ) inherits classroom::params {
 
   # variables are available to included classes by the evil power of inheritance
