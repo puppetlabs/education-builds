@@ -125,47 +125,8 @@ task :init do
   gitclone ptbrepo, ptbrepo_destination, @ptbbranch
 end
 
-desc "Destroy VirtualBox instance"
-task :destroyvm, [:vmos] do |t,args|
-  args.with_defaults(:vmos => $settings[:vmos])
-  prompt_vmos(args.vmos)
-  if %x{VBoxManage list vms}.match /("#{$settings[:vmname]}")/
-    cputs "Destroying VM #{$settings[:vmname]}..."
-    system("VBoxManage unregistervm '#{$settings[:vmname]}' --delete")
-  end
-end
 
-desc "Create a new vmware instance for kickstarting"
-task :createvm, [:vmos,:vmtype,:mem] do |t,args|
-  args.with_defaults(:vmos => $settings[:vmos],:vmtype => $settings[:vmtype],:mem => (ENV['mem']||'1024'))
-  begin
-    prompt_vmos(args.vmos)
 
-    Rake::Task[:destroyvm].invoke($settings[:vmos])
-    dir = "#{BUILDDIR}/vagrant"
-    unless File.directory?(dir)
-      FileUtils.mkdir_p(dir)
-    end
-
-    case $settings[:vmos]
-    when /(Centos|Redhat)/
-      ostype = 'RedHat'
-    else
-      ostype = $settings[:vmos]
-    end
-    cputs "Creating VM '#{$settings[:vmname]}' in #{dir} ..."
-    system("VBoxManage createvm --name '#{$settings[:vmname]}' --basefolder '#{dir}' --register --ostype #{ostype}")
-    Dir.chdir("#{dir}/#{$settings[:vmname]}")
-    cputs "Configuring VM settings..."
-    system("VBoxManage modifyvm '#{$settings[:vmname]}' --memory #{args.mem} --nic1 nat --usb off --audio none")
-    system("VBoxManage storagectl '#{$settings[:vmname]}' --name 'IDE Controller' --add ide")
-    system("VBoxManage createhd --filename 'box-disk1.vmdk' --size 8192 --format VMDK")
-    system("VBoxManage storageattach '#{$settings[:vmname]}' --storagectl 'IDE Controller' --port 0 --device 0 --type hdd --medium 'box-disk1.vmdk'")
-    system("VBoxManage storageattach '#{$settings[:vmname]}' --storagectl 'IDE Controller' --port 1 --device 0 --type dvddrive --medium emptydrive")
-  ensure
-    Dir.chdir(BASEDIR)
-  end
-end
 
 desc "Creates a modified ISO with preseed/kickstart"
 task :createiso, [:vmos,:vmtype] do |t,args|
@@ -282,64 +243,6 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   end
 end
 
-task :mountiso, [:vmos] => [:createiso] do |t,args|
-  args.with_defaults(:vmos => $settings[:vmos])
-  prompt_vmos(args.vmos)
-  cputs "Mounting #{$settings[:vmos]} on #{$settings[:vmname]}"
-  system("VBoxManage storageattach '#{$settings[:vmname]}' --storagectl 'IDE Controller' --port 1 --device 0 --type dvddrive --medium '#{KSISODIR}/#{$settings[:vmos]}.iso'")
-  Rake::Task[:unmountiso].reenable
-end
-
-task :unmountiso, [:vmos] do |t,args|
-  args.with_defaults(:vmos => $settings[:vmos])
-  prompt_vmos(args.vmos)
-
-  sleeptotal = 0
-  while %x{VBoxManage list runningvms}.match /("#{$settings[:vmname]}")/
-    cputs "Waiting for #{$settings[:vmname]} to shut down before unmounting..." if sleeptotal >= 90
-    sleep 5
-    sleeptotal += 5
-  end
-  # Set higher for install, reduce it here for packaging
-  system("VBoxManage modifyvm '#{$settings[:vmname]}' --memory 1024")
-  cputs "Unmounting #{$settings[:vmos]} on #{$settings[:vmname]}"
-  system("VBoxManage storageattach '#{$settings[:vmname]}' --storagectl 'IDE Controller' --port 1 --device 0 --type dvddrive --medium none")
-  Rake::Task[:mountiso].reenable
-end
-
-desc "Remove the dynamically created ISO"
-task :destroyiso, [:vmos] do |t,args|
-  args.with_defaults(:vmos => $settings[:vmos])
-  prompt_vmos(args.vmos)
-
-  if File.exists?("#{KSISODIR}/#{$settings[:vmos]}.iso")
-    cputs "Removing ISO..."
-    File.delete("#{KSISODIR}/#{$settings[:vmos]}.iso")
-  else
-    cputs "No ISO found"
-  end
-end
-
-desc "Start the VM"
-task :startvm, [:vmos] do |t,args|
-  headless = nil || ENV['vboxheadless']
-  args.with_defaults(:vmos => $settings[:vmos])
-  prompt_vmos(args.vmos)
-  cputs "Starting #{$settings[:vmname]}"
-  if headless
-    system("VBoxHeadless --startvm '#{$settings[:vmname]}'")
-  else
-    system("VBoxManage startvm '#{$settings[:vmname]}'")
-  end
-end
-
-desc "Reload the VM"
-task :reloadvm, [:vmos] => [:createvm, :mountiso, :startvm] do |t,args|
-  args.with_defaults(:vmos => $settings[:vmos])
-  prompt_vmos(args.vmos)
-  Rake::Task[:unmountiso].invoke($settings[:vmos])
-end
-
 desc "Build a release VM"
 task :release do
   require 'yaml'
@@ -367,14 +270,7 @@ task :everything, [:vmos] do |t,args|
 
   Rake::Task[:init].invoke
   Rake::Task[:createiso].invoke($settings[:vmos])
-  Rake::Task[:createvm].invoke($settings[:vmos])
-  Rake::Task[:mountiso].invoke($settings[:vmos])
-  Rake::Task[:startvm].invoke($settings[:vmos])
-  Rake::Task[:unmountiso].invoke($settings[:vmos])
-  Rake::Task[:createovf].invoke($settings[:vmos])
-  Rake::Task[:createvmx].invoke($settings[:vmos])
-  Rake::Task[:createvbox].invoke($settings[:vmos])
-  Rake::Task[:vagrantize].invoke($settings[:vmos])
+  Rake::Task[:runpacker].invoke($settings)[:vmos])
   Rake::Task[:packagevm].invoke($settings[:vmos])
 end
 
@@ -384,27 +280,10 @@ task :jenkins_everything, [:vmos] do |t,args|
 
   Rake::Task[:init].invoke
   Rake::Task[:createiso].invoke($settings[:vmos])
-  Rake::Task[:createvm].invoke($settings[:vmos])
-  Rake::Task[:mountiso].invoke($settings[:vmos])
-  Rake::Task[:startvm].invoke($settings[:vmos])
-  Rake::Task[:unmountiso].invoke($settings[:vmos])
-  Rake::Task[:createovf].invoke($settings[:vmos])
-  Rake::Task[:createvmx].invoke($settings[:vmos])
-  Rake::Task[:createvbox].invoke($settings[:vmos])
-  Rake::Task[:vagrantize].invoke($settings[:vmos])
+  Rake::Task[:runpacker].invoke($settings)[:vmos])
   Rake::Task[:packagevm].invoke($settings[:vmos])
   Rake::Task[:shipvm].invoke
   Rake::Task[:publishvm].invoke
-end
-
-desc "Force-stop the VM"
-task :stopvm, [:vmos] do |t,args|
-  args.with_defaults(:vmos => $settings[:vmos])
-  prompt_vmos(args.vmos)
-  if %x{VBoxManage list runningvms}.match /("#{$settings[:vmname]}")/
-    cputs "Stopping #{$settings[:vmname]}"
-    system("VBoxManage controlvm '#{$settings[:vmname]}' poweroff")
-  end
 end
 
 task :createovf, [:vmos] do |t,args|
@@ -440,31 +319,6 @@ task :createvmx, [:vmos] => [:createovf] do |t,args|
   File.open(@vmxpath, 'w') { |f| f.puts content }
 end
 
-task :createvbox, [:vmos] do |t,args|
-  args.with_defaults(:vmos => $settings[:vmos])
-  prompt_vmos(args.vmos)
-  cputs "Making copy of VM for VBOX..."
-  FileUtils.rm_rf("#{VBOXDIR}/#{$settings[:vmname]}-vbox") if File.directory?("#{VBOXDIR}/#{$settings[:vmname]}-vbox")
-  FileUtils.mkdir_p("#{VBOXDIR}/#{$settings[:vmname]}-vbox")
-  system("rsync -a '#{VAGRANTDIR}/#{$settings[:vmname]}/' '#{VBOXDIR}/#{$settings[:vmname]}-vbox'")
-  orig = "#{VBOXDIR}/#{$settings[:vmname]}-vbox/#{$settings[:vmname]}.vbox"
-  FileUtils.cp orig, "#{orig}.backup", :preserve => true
-  xml_file = File.read(orig)
-  doc = Nokogiri::XML(xml_file)
-  adapters = doc.xpath("//vm:Adapter", 'vm' =>'http://www.innotek.de/VirtualBox-settings')
-  adapters.each do |adapter|
-    adapter['MACAddress'] = ''
-  end
-  File.open(orig, 'w') {|f| f.puts doc.to_xml }
-end
-
-task :vagrantize, [:vmos] do |t,args|
-  args.with_defaults(:vmos => $settings[:vmos])
-  prompt_vmos(args.vmos)
-  cputs "Vagrantizing VM..."
-  system("vagrant package --base '#{$settings[:vmname]}' --output '#{VAGRANTDIR}/#{$settings[:vmname]}.box'")
-  FileUtils.ln_sf("#{VAGRANTDIR}/#{$settings[:vmname]}.box", "#{VAGRANTDIR}/#{$settings[:vmos].downcase}-latest.box")
-end
 
 desc "Zip up the VMs (unimplemented)"
 task :packagevm, [:vmos] do |t,args|
@@ -477,23 +331,6 @@ task :packagevm, [:vmos] do |t,args|
   system("#{@md5} '#{CACHEDIR}/#{$settings[:vmname]}-vmware.zip' > '#{CACHEDIR}/#{$settings[:vmname]}-vmware.zip.md5'")
   system("#{@md5} '#{CACHEDIR}/#{$settings[:vmname]}-vbox.zip' > '#{CACHEDIR}/#{$settings[:vmname]}-vbox.zip.md5'")
   # zip & md5 vagrant
-end
-
-desc "Unmount the ISO and remove kickstart files and repos"
-task :clean, [:del] do |t,args|
-  args.with_defaults(:del => $settings[:del])
-  prompt_del(args.del)
-  cputs "Destroying vms"
-  ['Ubuntu','Centos'].each do |os|
-    Rake::Task[:destroyvm].invoke(os)
-    Rake::Task[:destroyvm].reenable
-  end
-  cputs "Removing #{BUILDDIR}"
-  FileUtils.rm_rf(BUILDDIR) if File.directory?(BUILDDIR)
-  if $settings[:del] == 'yes'
-    cputs "Removing packaged VMs"
-    FileUtils.rm Dir.glob("#{CACHEDIR}/*-pe-#{@real_pe_ver}*.zip*")
-  end
 end
 
 ## Ship the VMs somewhere. These dirs are NFS exports mounted on the builder, so really only
