@@ -9,7 +9,8 @@ module Puppet::Parser::Functions
       latest_module_version(('puppetlabs', 'mysql')
     EOS
 ) do |args|
-    name = "#{args[0]}/#{args[1]}"  forge = Puppet::Forge.new
+    name = "#{args[0]}/#{args[1]}"  
+    forge = Puppet::Forge.new
     forge.search(name).first['version']
   end
 end
