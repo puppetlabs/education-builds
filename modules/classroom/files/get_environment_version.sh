@@ -9,4 +9,11 @@ fi
 ENVROOT='/etc/puppetlabs/puppet/environments'
 GITDIR="${ENVROOT}/${1}/.git"
 
-git --git-dir ${GITDIR} rev-parse --short HEAD
+# check to make sure the env repo exists
+if [ -d ${GITDIR} ];
+then
+  git --git-dir ${GITDIR} rev-parse --short HEAD
+else
+  date '+%s'
+fi
+

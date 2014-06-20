@@ -30,6 +30,7 @@ stats     = {}
 
 Dir.glob("#{reportdir}/*/*.yaml").each do |file|
   begin
+    puts "Processing: #{file}"
     report = YAML.load_file(file)
     host   = report.host
     stats[host] = {
