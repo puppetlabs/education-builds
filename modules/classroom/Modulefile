@@ -1,5 +1,5 @@
 name    'pltraining-classroom'
-version '1.4.5'
+version '0.0.1'
 source 'https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/classroom'
 author 'pltraining'
 license 'Apache 2.0'
