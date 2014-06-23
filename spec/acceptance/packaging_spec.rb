@@ -154,11 +154,11 @@ describe package('emacs') do
 end
 
 file ('/root/.emacs') do
-  it { should contain('puppet-mode.el')
+  it { should contain('puppet-mode.el') }
 end
 
 file ('/root/.emacs.d/puppet-mode.el') do
-  it { should contain('puppet-mode-syntax-table')
+  it { should contain('puppet-mode-syntax-table') }
 end
 
 describe package('vim-enhanced') do
@@ -170,24 +170,24 @@ describe file('/root/.vim') do
 end
 
 describe file('/root/.vim/syntax/puppet.vim') do
-  it { should contain('puppet syntax file')
+  it { should contain('puppet syntax file') }
 end
 
 describe file('/root/.vimrc') do
-  it { should contain('syntax on')
+  it { should contain('syntax on') }
 end
 
 describe 'localrepos' do
   it 'should have packages cached' do
-    shell("yum --disablerepo="*" --enablerepo="base_local" list available" do |cmd|
+    shell('yum --disablerepo="*" --enablerepo="base_local" list available') do |cmd|
       cmd.stdout.should =~ /irssi/
       cmd.exit_code.should == 0
     end
-    shell("yum --disablerepo="*" --enablerepo="epel_local" list available" do |cmd|
+    shell('yum --disablerepo="*" --enablerepo="epel_local" list available') do |cmd|
       cmd.stdout.should =~ /rubygem-sinatra/
       cmd.exit_code.should == 0
     end
-    shell("yum --disablerepo="*" --enablerepo="updates_local" list available") do |cmd|
+    shell('yum --disablerepo="*" --enablerepo="updates_local" list available') do |cmd|
       cmd.exit_code.should == 0
     end
   end
@@ -210,7 +210,7 @@ end
 
 # Learning VM specific stuff:
 if hosts_as('learning').length > 0
-  describe file('/root/learning.answers' do
+  describe file('/root/learning.answers') do
     it { should be_file }
     it { should contain('q_puppetagent_certname=learn.localdomain') }
   end
@@ -232,7 +232,7 @@ if hosts_as('learning').length > 0
     it { should be_file }
     it { should contain("set-option -g status-right 'Quest:") }
   end
-  desribe file('/root/.testing/spec/localhost/begin_spec.rb') do
+  describe file('/root/.testing/spec/localhost/begin_spec.rb') do
     it { should be_file }
     it { should contain("require 'spec_helper'") }
   end
@@ -246,12 +246,12 @@ if hosts_as('learning').length > 0
   describe file('/root/setup/guide.pp') do
     it { should contain('/var/www/html') }
   end
-  describe file('/usr/local/bin/puppet') do
+  describe file('/opt/puppet/bin/puppet') do
     it { should be_file }
     it { should be_mode 755 }
   end
   describe file('/root/examples') do
-    it { should be_file }
+    it { should be_directory }
   end
   describe 'learning VM gems' do
     it 'should be installed' do
