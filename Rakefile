@@ -69,15 +69,6 @@ task :init do
     cputs "Getting PE tarballs for #{vmos}"
   end
 
-  cputs "Cloning puppet..."
-  gitclone 'git://github.com/puppetlabs/puppet.git', "#{CACHEDIR}/puppet.git", 'master'
-
-  cputs "Cloning facter..."
-  gitclone 'git://github.com/puppetlabs/facter.git', "#{CACHEDIR}/facter.git", 'master'
-
-  cputs "Cloning hiera..."
-  gitclone 'git://github.com/puppetlabs/hiera.git', "#{CACHEDIR}/hiera.git", 'master'
-
   ptbrepo_destination = "#{CACHEDIR}/puppetlabs-training-bootstrap.git"
 
   STDOUT.sync = true
@@ -125,9 +116,6 @@ task :init do
   gitclone ptbrepo, ptbrepo_destination, @ptbbranch
 end
 
-
-
-
 desc "Creates a modified ISO with preseed/kickstart"
 task :createiso, [:vmos,:vmtype] do |t,args|
   args.with_defaults(:vmos => $settings[:vmos], :vmtype => $settings[:vmtype])
@@ -151,17 +139,6 @@ task :createiso, [:vmos,:vmtype] do |t,args|
     # Uses hostname, pe_install_suffix
     build_file('preseed.cfg')
 
-    # Define ISO file targets
-    files = {
-      "#{BUILDDIR}/Ubuntu/lang"                       => '/isolinux/lang',
-      "#{BUILDDIR}/Ubuntu/txt.cfg"                    => '/isolinux/txt.cfg',
-      "#{BUILDDIR}/Ubuntu/isolinux.cfg"               => '/isolinux/isolinux.cfg',
-      "#{BUILDDIR}/Ubuntu/preseed.cfg"                => '/puppet/preseed.cfg',
-      "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
-      "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
-      "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
-      "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
-    }
   when 'Centos'
     # Parse templates and output in BUILDDIR
     $settings[:pe_install_suffix] = '-el-6-i386'
@@ -184,20 +161,6 @@ task :createiso, [:vmos,:vmtype] do |t,args|
       #download "http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
       download "http://mirrors.cat.pdx.edu/epel/6/i386/epel-release-6-8.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
     end
-
-    # Define ISO file targets
-    files = {
-      "#{BUILDDIR}/Centos/isolinux.cfg"               => '/isolinux/isolinux.cfg',
-      "#{BUILDDIR}/Centos/ks.cfg"                     => '/puppet/ks.cfg',
-      "#{CACHEDIR}/epel-release.rpm"                  => '/puppet/epel-release.rpm',
-      "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
-      "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
-      "#{CACHEDIR}/hiera.git"                         => '/puppet/hiera.git',
-      "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
-      "#{CACHEDIR}/#{$settings[:pe_tarball]}"         => "/puppet/#{$settings[:pe_tarball]}",
-      "#{CACHEDIR}/#{$settings[:agent_tarball]}"      => "/puppet/#{$settings[:agent_tarball]}",
-    }
-  end
 end
 
 desc "Build a release VM"
