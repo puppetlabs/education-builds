@@ -50,6 +50,9 @@ end
 describe package('tree') do
   it {should be_installed }
 end
+describe package('ruby-augeas') do
+  it {should be_installed }
+end
 describe host('localhost.localdomain') do
     it { should be_resolvable.by('hosts') }
 end
@@ -88,7 +91,7 @@ describe 'Forge Modules' do
   it 'should be cached' do
     cached_modules.each do |mod|
       expect(shell('ls /usr/src/forge').stdout).to match /#{mod}/
-      expect(shell("file /usr/src/forge/#{mod}*.tar.gz").stdout).to match /HTML/#/gzip compressed data/
+      expect(shell("file /usr/src/forge/#{mod}*.tar.gz").stdout).to match /gzip compressed data/
     end
   end
 end
@@ -98,6 +101,45 @@ describe 'Puppetlabs yumrepo' do
     expect(shell('yum repolist disabled').stdout).to match /puppetlabs/     
   end
 end
+
+describe file('/root/.gemrc') do
+  it {should be_file }
+end
+
+cached_gems = [
+  'builder',
+  'addressable',
+  'carrier-pigeon',
+  'rack-protection',
+  'sinatra',
+  'tilt',
+  'net-ssh',
+  'highline',
+  'serverspec',
+  'trollop',
+  'hiera-eyaml',
+  'rspec',
+  'diff-lcs',
+  'rspec-core',
+  'rspec-mocks',
+  'rspec-puppet',
+  'rspec-expectations',
+  'mocha',
+  'metaclass',
+  'puppetlabs-spec-helper',
+  'beaker',
+  'beaker-rspec'
+]
+
+describe 'Gems' do
+  it 'should be cached' do
+    cached_gems.each do |gem|
+      expect(shell('ls /var/cache/rubygems/gems').stdout).to match /#{gem}/
+      expect(shell("file /var/cache/rubygems/gem/#{gem}*.gem").stdout).to match /POSIX tar archive/
+    end
+  end
+end
+
 # Learning VM specific stuff:
 if hosts_as('learning').length > 0
 end
