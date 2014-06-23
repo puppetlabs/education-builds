@@ -4,7 +4,7 @@ class classroom::agent::git {
     path        => '/usr/bin:/bin:/user/sbin:/usr/sbin',
   }
 
-  include git
+  include ::git
 
   file { '/root/.ssh':
     ensure => directory,

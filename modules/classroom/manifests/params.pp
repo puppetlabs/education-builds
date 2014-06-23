@@ -9,7 +9,7 @@ class classroom::params {
   $autoteam  = false
 
   # list of classes that should be available in the console
-  $classes   = [ 'users', 'apache', 'classroom', 'userprefs' ]
+  $classes   = [ 'users', 'apache', 'userprefs' ]
 
   # Name of the student's working directory
   $workdir   = 'puppetcode'

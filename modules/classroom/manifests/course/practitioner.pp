@@ -20,6 +20,7 @@ class classroom::course::practitioner (
     # master gets the IRC server and reporting scripts
     include classroom::master::ircd
     include classroom::master::reporting_tools
+    include classroom::master::sudoers
   }
   # Everyone gets Irssi
   include classroom::agent::irc
