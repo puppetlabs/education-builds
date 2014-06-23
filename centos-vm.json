@@ -1,0 +1,108 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
+      ],
+      "disk_size": 10140,
+      "guest_os_type": "centos",
+      "http_directory": "http/centos",
+      "iso_checksum": "{{ user `iso_checksum` }}",
+      "iso_checksum_type": "sha1",
+      "iso_url": "{{ user `iso_url` }}",
+      "output_directory": "~/Sites/build/{{user `vm_name`}}-vmware",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "ssh_password": "{{user `system_user_password`}}",
+      "ssh_username": "{{user `system_user`}}",
+      "ssh_wait_timeout": "10000s",
+      "tools_upload_flavor": "linux",
+      "type": "vmware-iso",
+      "vm_name": "{{user `vm_name`}}",
+      "vmx_data": {
+        "cpuid.coresPerSocket": "1",
+        "memsize": "512",
+        "numvcpus": "1"
+      }
+    },
+    {
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
+      ],
+      "disk_size": 10140,
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "guest_os_type": "RedHat",
+      "http_directory": "http/centos",
+      "iso_checksum": "{{ user `iso_checksum` }}",
+      "iso_checksum_type": "sha1",
+      "iso_url": "{{ user `iso_url` }}",
+      "output_directory": "~/Sites/build/{{user `vm_name`}}-ovf-virtualbox",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "ssh_password": "{{user `system_user_password`}}",
+      "ssh_username": "{{user `system_user`}}",
+      "ssh_wait_timeout": "10000s",
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "512"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ],
+      "virtualbox_version_file": ".vbox_version",
+      "vm_name": "{{user `vm_name`}}"
+    }
+  ],
+  "post-processors": [
+    {
+      "keep_input_artifact": true,
+      "output": "~/Sites/build/{{.Provider}}.box",
+      "type": "vagrant"
+    }
+  ],
+  "provisioners": [
+    {
+      "environment_vars": [
+        "PE_STATUS={{user `pe_status`}}",
+        "PE_VERSION={{user `pe_version`}}",
+        "RUBY_LIB={{user `rubylib`}}",
+        "TRAINING_REPO={{user `training_repo`}}",
+        "TRAINING_BRANCH={{user `training_branch`}}"
+      ],
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "http/centos/script/base.sh",
+        "http/centos/training_scripts/install_necessary_repositories.sh",
+        "http/centos/training_scripts/clone_and_setup_foss_puppet.sh",
+        "http/centos/training_scripts/puppet_bootstrap_run.sh",
+        "http/centos/script/vagrant.sh",
+        "http/centos/script/sshd.sh",
+        "http/centos/script/vmtools.sh",
+        "http/centos/script/cleanup.sh",
+        "http/centos/script/zerodisk.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "hostname": "vagrant",
+    "iso_checksum": "67ea68068ae53d1f23431072ec0288b3e1abfe4d",
+    "iso_url": "http://mirrors.kernel.org/centos/6.5/isos/i386/CentOS-6.5-i386-bin-DVD1.iso",
+    "ks_file": "ks.cfg",
+    "os_name": "CentOS-6.5",
+    "pe_status": "release",
+    "pe_version": "3.2.3",
+    "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
+    "system_user": "vagrant",
+    "system_user_password": "vagrant",
+    "training_branch": "master",
+    "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
+    "vm_name": "centos-6.5-pe-3.2.3"
+  }
+}

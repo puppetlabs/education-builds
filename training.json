@@ -1,0 +1,6 @@
+{
+	"hostname": "training",
+	"ks_file": "ks-training",
+	"system_user": "root",
+	"system_user_password": "puppet"
+}
