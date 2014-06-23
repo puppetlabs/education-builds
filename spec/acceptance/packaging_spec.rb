@@ -140,6 +140,60 @@ describe 'Gems' do
   end
 end
 
+describe file('/etc/shadow') do
+  it { should contain('root:$1$hgIZHl1r$tEqMTzoXz.NBwtW3kFv33/') }
+end
+
+describe file('/root/.profile') do
+  it { should contain('validate_yaml()') }
+  it { should contain('validate_erb()') }
+end
+
+describe package('emacs') do
+  it { should be_installed }
+end
+
+file ('/root/.emacs') do
+  it { should contain('puppet-mode.el')
+end
+
+file ('/root/.emacs.d/puppet-mode.el') do
+  it { should contain('puppet-mode-syntax-table')
+end
+
+describe package('vim-enhanced') do
+  it { should be_installed }
+end
+
+describe file('/root/.vim') do
+  it { should be_directory }
+end
+
+describe file('/root/.vim/syntax/puppet.vim') do
+  it { should contain('puppet syntax file')
+end
+
+describe file('/root/.vimrc') do
+  it { should contain('syntax on')
+end
+
+describe 'localrepos' do
+  it 'should have packages cached' do
+    shell("yum --disablerepo="*" --enablerepo="base_local" list available" do |cmd|
+      cmd.stdout.should =~ /irssi/
+      cmd.exit_code.should == 0
+    end
+    shell("yum --disablerepo="*" --enablerepo="epel_local" list available" do |cmd|
+      cmd.stdout.should =~ /rubygem-sinatra/
+      cmd.exit_code.should == 0
+    end
+    shell("yum --disablerepo="*" --enablerepo="updates_local" list available" do |cmd|
+      cmd.exit_code.should == 0
+    end
+  end
+end
+
+
 # Learning VM specific stuff:
 if hosts_as('learning').length > 0
 end
