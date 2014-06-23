@@ -187,7 +187,7 @@ describe 'localrepos' do
       cmd.stdout.should =~ /rubygem-sinatra/
       cmd.exit_code.should == 0
     end
-    shell("yum --disablerepo="*" --enablerepo="updates_local" list available" do |cmd|
+    shell("yum --disablerepo="*" --enablerepo="updates_local" list available") do |cmd|
       cmd.exit_code.should == 0
     end
   end
@@ -210,6 +210,59 @@ end
 
 # Learning VM specific stuff:
 if hosts_as('learning').length > 0
+  describe file('/root/learning.answers' do
+    it { should be_file }
+    it { should contain('q_puppetagent_certname=learn.localdomain') }
+  end
+  describe file('/etc/motd') do
+    it { should be_file }
+    it { should contain('Password: learningpuppet') }
+  end
+  describe package('tmux') do
+    it { should be_installed }
+  end
+  describe file('/root/README') do
+    it { should be_file }
+    it { should contain('Puppet Enterprise Learning VM') }
+  end
+  describe file('/root/bin') do
+    it { should be_directory }
+  end
+  describe file('/root/.tmux.conf') do
+    it { should be_file }
+    it { should contain("set-option -g status-right 'Quest:") }
+  end
+  desribe file('/root/.testing/spec/localhost/begin_spec.rb') do
+    it { should be_file }
+    it { should contain("require 'spec_helper'") }
+  end
+  describe file('/root/.testing/log.yml') do
+    it { should be_file }
+    it { should contain('current: begin') }
+  end
+  describe file('/root/.testing/test.rb') do
+    it { should be_mode 755 }
+  end
+  describe file('/root/setup/guide.pp') do
+    it { should contain('/var/www/html') }
+  end
+  describe file('/usr/local/bin/puppet') do
+    it { should be_file }
+    it { should be_mode 755 }
+  end
+  describe file('/root/examples') do
+    it { should be_file }
+  end
+  describe 'learning VM gems' do
+    it 'should be installed' do
+      shell("/opt/puppet/bin/gem list trollop -i") do |cmd|
+        cmd.exit_code.should == 0
+      end
+      shell("/opt/puppet/bin/gem list serverspec -i") do |cmd|
+        cmd.exit_code.should == 0
+      end
+    end
+  end
 end
 
 # Training VM specific stuff below:
