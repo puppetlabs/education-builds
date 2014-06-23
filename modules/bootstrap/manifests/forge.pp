@@ -14,7 +14,7 @@ define bootstrap::forge(
     $ver = $version
   } else {
     $ver = latest_module_version($author, $module)
-    if !$ver { fail("Unable to determine ${author}-${name}'s version." }
+    if !$ver { fail("Unable to determine ${author}-${name}'s version.") }
   }
 
   $filename = "${author}-${module}-${ver}.tar.gz"
