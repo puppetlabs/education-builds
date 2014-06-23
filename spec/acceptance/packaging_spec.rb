@@ -60,6 +60,44 @@ describe file('/etc/ssh/sshd_config') do
   it { should contain('^GSSAPIAuthentication no') }
 end
 
+#cached_modules = ['puppetlabs-concat-1.0.0.tar.gz', 'cprice404-inifile-0.10.4.tar.gz']
+cached_modules = [
+  'puppetlabs-concat', 
+  'camptocamp-augeasfacter',
+  'domcleal-augeasproviders',
+  'razorsedge-vmwaretools',
+  'hunner-wordpress',
+  'puppetlabs-mysql',
+  'puppetlabs-apache',
+  'thias-vsftpd',
+  'puppetlabs-vcsrepo',
+  'puppetlabs-ntp',
+  'puppetlabs-haproxy',
+  'jamtur01-irc',
+  'hunner-charybdis',
+  'puppetlabs-puppetdb',
+  'puppetlabs-pe_gem',
+  'stahnma-epel',
+  'nanliu-staging'
+  ]
+
+# Just check that they are present
+# functional tests elsewhere will determine whether the cached version work.
+# This way we can always cache latest and run (functional) tests against them
+describe 'Forge Modules' do
+  it 'should be cached' do
+    cached_modules.each do |mod|
+      expect(shell('ls /usr/src/forge').stdout).to match /#{mod}/
+      expect(shell("file /usr/src/forge/#{mod}*.tar.gz").stdout).to match /HTML/#/gzip compressed data/
+    end
+  end
+end
+
+describe 'Puppetlabs yumrepo' do
+  it 'should be disabled' do
+    expect(shell('yum repolist disabled').stdout).to match /puppetlabs/     
+  end
+end
 # Learning VM specific stuff:
 if hosts_as('learning').length > 0
 end
