@@ -53,9 +53,6 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'hunner-charybdis':
     version => '1.0.0',
   }
-  bootstrap::forge { 'puppetlabs-puppetdb':
-    version => '1.6.0',
-  }
   bootstrap::forge { 'puppetlabs-pe_gem':
     version => '0.0.1',
   }
