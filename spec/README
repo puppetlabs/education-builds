@@ -1,0 +1,19 @@
+To test the VMs: 
+
+1. Install the following gems on the host system:
+  - beaker
+  - beaker-rspec
+  - fission (if you want to use VMware Fusion VMs)
+2. Create a ~/.fissionrc file listing where the VMware VMs are located
+3. Place the VMware VM with the desired name in the directory listed
+  in the ~/.fissionrc file
+4. Create a snapshot of the VM once, with the name specified in the host file
+  which is "initial" by default.
+  - spec/acceptance/nodesets/default.yml has the name of the VM and snapshot
+2. From the parent directory (..) execute:  
+    `beaker exec rspec spec/acceptance`
+  - This will use the spec/acceptance/nodesets/default.yml 
+    file to determine what SUTs to use etc.
+  - The *_spec.rb files in the spec/acceptance directory specify the tests
+
+  

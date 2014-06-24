@@ -1,0 +1,10 @@
+HOSTS:
+  learn.localdomain:
+    roles:
+      - master
+      - learning
+    platform: centos-6.5-i386
+    hypervisor: fusion
+    snapshot: initial
+    vmname: learn_puppet_centos-6.5-pe-3.2.2
+    ip : 192.168.16.140
