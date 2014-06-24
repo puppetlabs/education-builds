@@ -16,7 +16,7 @@ class classroom::params {
 
   # default user password
   $password  = '$1$Tge1IxzI$kyx2gPUvWmXwrCQrac8/m0' # puppetlabs
-  $consolepw = 'puppet'
+  $consolepw = 'puppetlabs'
 
   # Should we manage upstream yum repositories in the classroom?
   $manageyum = true
