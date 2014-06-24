@@ -27,7 +27,6 @@ cached_modules = [
 describe 'Forge Modules' do
   it 'should be cached' do
     cached_modules.each do |mod|
-      expect(shell('ls /usr/src/forge').stdout).to match /#{mod}/
       expect(shell("file /usr/src/forge/#{mod}*.tar.gz").stdout).to match /gzip compressed data/
     end
   end
