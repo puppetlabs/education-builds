@@ -468,12 +468,17 @@ desc "Zip up the VMs (unimplemented)"
 task :packagevm, [:vmos] do |t,args|
   args.with_defaults(:vmos => $settings[:vmos])
   prompt_vmos(args.vmos)
-  system("zip -rj '#{CACHEDIR}/#{$settings[:vmname]}-ovf.zip' '#{OVFDIR}/#{$settings[:vmname]}-ovf'")
-  system("zip -rj '#{CACHEDIR}/#{$settings[:vmname]}-vmware.zip' '#{VMWAREDIR}/#{$settings[:vmname]}-vmware'")
-  system("zip -rj '#{CACHEDIR}/#{$settings[:vmname]}-vbox.zip' '#{VBOXDIR}/#{$settings[:vmname]}-vbox'")
-  system("#{@md5} '#{CACHEDIR}/#{$settings[:vmname]}-ovf.zip' > '#{CACHEDIR}/#{$settings[:vmname]}-ovf.zip.md5'")
-  system("#{@md5} '#{CACHEDIR}/#{$settings[:vmname]}-vmware.zip' > '#{CACHEDIR}/#{$settings[:vmname]}-vmware.zip.md5'")
-  system("#{@md5} '#{CACHEDIR}/#{$settings[:vmname]}-vbox.zip' > '#{CACHEDIR}/#{$settings[:vmname]}-vbox.zip.md5'")
+
+  version  = @ptb_version.gsub(/[\w\.]/, '')
+  filename = "#{CACHEDIR}/#{$settings[:vmname]}-ptb#{version}"
+
+  system("zip -rj '#{filename}-ovf.zip'    '#{OVFDIR}/#{$settings[:vmname]}-ovf'")
+  system("zip -rj '#{filename}-vmware.zip' '#{VMWAREDIR}/#{$settings[:vmname]}-vmware'")
+  system("zip -rj '#{filename}-vbox.zip'   '#{VBOXDIR}/#{$settings[:vmname]}-vbox'")
+
+  system("#{@md5} '#{filename}-ovf.zip'    > '#{filename}-ovf.zip.md5'")
+  system("#{@md5} '#{filename}-vmware.zip' > '#{filename}-vmware.zip.md5'")
+  system("#{@md5} '#{filename}-vbox.zip'   > '#{filename}-vbox.zip.md5'")
   # zip & md5 vagrant
 end
 

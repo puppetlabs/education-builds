@@ -1,0 +1,3 @@
+2.6
+  * Added version numbers to the filename
+
