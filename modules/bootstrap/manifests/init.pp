@@ -119,8 +119,9 @@ class bootstrap ($print_console_login = false) {
   }
 
   package { 'ruby_augeas_lib':
-    ensure => 'present',
-    name   => $ruby_aug_package,
+    ensure  => 'present',
+    name    => $ruby_aug_package,
+    require => Class['localrepo']
   }
 
   augeas { "GSSAPI_disable":
