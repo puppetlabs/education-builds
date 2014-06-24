@@ -21,9 +21,11 @@ cached_modules = [
   'nanliu-staging'
   ]
 
-# Just check that they are present
-# functional tests elsewhere will determine whether the cached version work.
-# This way we can always cache latest and run (functional) tests against them
+# Just check that they are present.
+# Functional tests elsewhere will determine whether 
+# the cached versions work as desired.
+# This way we can eventually always cache the latest versions of all modules
+# and run (functional) tests against them
 describe 'Forge Modules' do
   it 'should be cached' do
     cached_modules.each do |mod|
