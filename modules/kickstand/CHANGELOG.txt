@@ -1,0 +1,6 @@
+2014-06-27 - Version 0.0.07
+
+This module is no longer a complete provisioner. It is a skeleton with comments
+indicating where students should add code to complete it.
+
+An example solution is provided to the instructor in the Architect class.

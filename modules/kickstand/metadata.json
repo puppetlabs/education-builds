@@ -1,0 +1,14 @@
+{
+  "name": "pltraining-kickstand",
+  "version": "0.0.7",
+  "author": "pltraining",
+  "summary": "Module to assist in the provisioning lab for the Advanced Puppet course",
+  "license": "Apache License, Version 2.0",
+  "source": "https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/kickstand",
+  "project_page": "https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/kickstand",
+  "issues_url": "https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/kickstand/issues",
+  "description": "Important! This is not the module you are looking for\n    unless you are a trainer teaching the Advanced Puppet course!\n    - Required for the provisioning example and exercises.",
+  "dependencies": [
+  
+  ]
+}
