@@ -90,10 +90,14 @@ class Server < Sinatra::Base
     logger.debug "Signing certificate: #{certname}"
     certificate_status = ''
 
+
+
     ###############################################
-    # Sign the new agent certificate
+    # Classify the new node in the console
     logger.debug "Classifying: #{certname}"
     classification_status = ''
+
+
 
     # remove certname from list of known booting instances
     settings.outstanding.delete(certname)
