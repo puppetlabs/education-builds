@@ -1,11 +1,11 @@
 [base_local]
-name=CentOS base mirrored on the master
+name=CentOS base mirrored on the provisioner
 baseurl=http://<%= @serverip %>:<%= @serverport %>/yum/centos/6/os/i386
 enabled=1
 gpgcheck=0
 
 [epel_local]
-name=EPEL mirrored on the master
+name=EPEL mirrored on the provisioner
 baseurl=http://<%= @serverip %>:<%= @serverport %>/yum/epel/6/local/i386
 enabled=1
 gpgcheck=0
