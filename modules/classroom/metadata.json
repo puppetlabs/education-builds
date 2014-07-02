@@ -9,6 +9,7 @@
   "issues_url": "https://github.com/puppetlabs/puppetlabs-training-bootstrap/issues",
   "description": "Important! This is not the module you are looking for\n    unless you are a trainer teaching Puppet Labs training courses!\n    - Configures and sets up classroom environment for Puppet Classroom trainings.",
   "dependencies": [
+    {"name":"jamtur01/irc",         "version_requirement":">= 0.0.7"},
     {"name":"puppetlabs/apache",    "version_requirement":">= 0.8.1"},
     {"name":"puppetlabs/concat",    "version_requirement":">= 0.1.0"},
     {"name":"puppetlabs/git",       "version_requirement":">= 0.0.3"},
