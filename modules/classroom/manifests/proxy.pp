@@ -21,7 +21,7 @@ class classroom::proxy {
 
   @@host { $::fqdn:
     ensure       => present,
-    host_aliases => [$::hostname],
+    host_aliases => [$::hostname, 'irc.classroom.vm'],
     ip           => $::ipaddress,
     tag          => 'classroom'
   }
