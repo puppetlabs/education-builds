@@ -55,9 +55,6 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'metaclass':              }
   bootstrap::gem { 'puppetlabs_spec_helper': }
 
-  # And this gem is required for gem generate_index to work
-  bootstrap::gem { 'builder': }
-
   Bootstrap::Gem <| |> -> File['/root/.gemrc']
 
 }
