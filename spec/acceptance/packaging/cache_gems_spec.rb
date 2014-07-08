@@ -32,7 +32,7 @@ cached_gems = [
 describe 'Gems' do
   it 'should be cached' do
     cached_gems.each do |gem|
-      expect(shell("file /var/cache/rubygems/gem/#{gem}*.gem").stdout).to match /POSIX tar archive/
+      expect(shell("file /var/cache/rubygems/gems/#{gem}*.gem").stdout).to match /POSIX tar archive/
     end
   end
 end
