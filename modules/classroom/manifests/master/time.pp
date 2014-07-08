@@ -24,33 +24,31 @@
 #   b) all agents are synced to the master via a cron task
 
 class classroom::master::time (
-  $offline = classroom::params::offline
-) inherits classroom::params {
+  $offline      = $classroom::offline,
+  $time_servers = $classroom::time_servers,
+) inherits classroom {
 
-  if $offline == true {
-    $time_servers = [$::servername]
+  if $offline {
+    # No point in repeatedly trying to sync if we don't have net
+    $cronjob = absent
+    # Set NTP service to consider itself authoritative
+    $servers = [$::servername]
   }
   else {
-    $time_servers = ['0.pool.ntp.org iburst', '1.pool.ntp.org iburst', '2.pool.ntp.org iburst', '3.pool.ntp.org']
+    # Forcibly sync with a timeserver - handy for resuming class without slew
+    $cronjob = present
+    $servers = $time_servers
   }
 
   class { '::ntp':
-     servers => $time_servers,
+     servers => $servers,
      panic   => false,
      udlc    => true,
   }
-  # If we are online sync with a timeserver - handy for resuming class
-  # allows time to be synced without slew, and without having to restart ntpd
-  if $offline == 'false' {
-    cron { 'synctime':
-      command => "/usr/sbin/ntpdate -us ${time_servers[3]}",
-      minute  => '*/5',
-    }
-  }
-  # If we're offline, no point in repeatedly trying to sync
-  else {
-    cron { 'synctime':
-      ensure  => absent,
-    }
+
+  cron { 'synctime':
+    ensure  => $cronjob,
+    command => "/usr/sbin/ntpdate -us ${time_servers[3]}",
+    minute  => '*/5',
   }
 }

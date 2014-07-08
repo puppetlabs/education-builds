@@ -20,7 +20,7 @@ echo "##########################################################################
 echo
 read junk
 
-mkdir ~/certificates.bak/{puppet,puppetdb,puppet-dashboard}
+mkdir -p ~/certificates.bak/{puppet,puppetdb,puppet-dashboard}
 cp -a /etc/puppetlabs/puppet/ssl ~/certificates.bak/puppet/
 cp -a /etc/puppetlabs/puppetdb/ssl ~/certificates.bak/puppetdb/
 cp -a /opt/puppet/share/puppet-dashboard/certs ~/certificates.bak/puppet-dashboard/

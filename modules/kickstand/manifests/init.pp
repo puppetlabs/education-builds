@@ -1,8 +1,14 @@
 class kickstand {
   File {
-    owner  => 'root',
-    group  => 'root',
-    before => Service['kickstand'],
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    notify  => Service['kickstand'],
+  }
+
+  package { 'sinatra':
+    ensure   => present,
+    provider => gem,
   }
 
   # manage this file so kickstand doesn't break the master with ownership issues
@@ -13,34 +19,45 @@ class kickstand {
     mode   => '0644',
   }
 
-  file { '/opt/kickstand':
+  $directories = [
+    '/opt/kickstand',
+    '/opt/kickstand/bin',
+    '/opt/kickstand/share',
+    '/opt/kickstand/share/public',
+    '/opt/kickstand/share/views',
+  ]
+
+  file { $directories:
     ensure  => directory,
-    recurse => true,
-    source  => 'puppet:///modules/kickstand/kickstand',
   }
 
   file { '/opt/kickstand/share/public/yum':
     ensure  => link,
     target  => '/var/yum/mirror',
-    require => File['/opt/kickstand'],
   }
 
   file { '/opt/kickstand/bin/kickstand':
     ensure => file,
     mode   => '0744',
-    source => 'puppet:///modules/kickstand/kickstand/bin/kickstand',
+    replace => false,
+    source => 'puppet:///modules/kickstand/bin/kickstand',
   }
 
-  file { '/opt/kickstand/bin/kickstand.init':
+  file { '/opt/kickstand/share/views/kickstart.erb':
     ensure => file,
-    mode   => '0744',
-    source => 'puppet:///modules/kickstand/kickstand/bin/kickstand.init',
+    replace => false,
+    source => 'puppet:///modules/kickstand/views/kickstart.erb',
+  }
+
+  file { '/opt/kickstand/share/views/mirror.erb':
+    ensure => file,
+    source => 'puppet:///modules/kickstand/views/mirror.erb',
   }
 
   file { '/etc/init.d/kickstand':
-    ensure  => link,
-    target  => '/opt/kickstand/bin/kickstand.init',
-    require => File['/opt/kickstand/bin/kickstand.init'],
+    ensure => file,
+    mode   => '0744',
+    source => 'puppet:///modules/kickstand/bin/kickstand.init',
   }
 
   service { 'kickstand':

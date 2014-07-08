@@ -26,10 +26,6 @@ class bootstrap::cache_gems (
     source => 'puppet:///modules/bootstrap/gemrc',
   }
 
-  # These are the gems needed by the Fundamentals course
-
-
-  # These are the gems needed by the Advanced course
   bootstrap::gem { 'addressable':     }
   bootstrap::gem { 'carrier-pigeon':  }
   bootstrap::gem { 'rack-protection': }
@@ -38,10 +34,7 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'net-ssh':         }
   bootstrap::gem { 'highline':        }
   bootstrap::gem { 'serverspec':      }
-
-  # These gems are required for the Architect course
   bootstrap::gem { 'trollop':         }
-#  bootstrap::gem { 'highline':        }
   bootstrap::gem { 'hiera-eyaml':     }
 
   # These are the gems needed by the extending puppet using ruby course

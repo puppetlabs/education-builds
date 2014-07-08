@@ -1,0 +1,70 @@
+# Kickstart file for Puppet on CentOS
+
+install
+cdrom
+lang en_US.UTF-8
+keyboard us
+network --device eth0 --bootproto dhcp --hostname <%= @certname %>
+rootpw puppet
+firewall --enabled --service=ssh
+selinux --disabled
+authconfig --enableshadow --passalgo=md5
+timezone --utc America/Los_Angeles
+bootloader --location=mbr
+unsupported_hardware
+
+text
+skipx
+zerombr
+reboot
+
+clearpart --all --initlabel
+autopart
+
+%packages --nobase
+lvm2
+kernel
+e2fsprogs
+grub
+
+-ipw2100-firmware
+-ipw2200-firmware
+-ivtv-firmware
+
+%post
+
+# Change to a vt to see progress
+
+exec < /dev/tty3 > /dev/tty3
+chvt 3
+
+# redirect output to ks-post.log including stdout and stderr
+(
+    ###############################################
+    # Bootstrap any settings required
+
+
+
+
+
+    # drop in a release file for the classroom handoff to work correctly
+    echo 'Puppet Labs Training VM 2.5 (kickstand)' > /etc/puppetlabs-release
+
+    # grab a mirror yum repo so that we can install certain packages without network
+    curl -o /etc/yum.repos.d/mirror.repo 'http://<%= @kickstand_ip %>:<%= @kickstand_port %>/mirror.repo'
+    sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/CentOS-Base.repo
+
+
+
+
+    ###############################################
+    # Install the Puppet agent
+
+
+
+
+
+) 2>&1 | /usr/bin/tee /root/ks-post.log
+
+# switch back to installer
+chvt 1

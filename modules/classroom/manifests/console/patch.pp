@@ -1,3 +1,9 @@
+# Horrible nasty patches to make Live Management more performant
+#
+# Note: These only have any relevance to the extraordinarily abnormal use case
+#       of our training environments. These will likely not have any real
+#       impact on actual production use of the PE Console.
+#
 class classroom::console::patch {
   File {
     owner => 'root',
@@ -5,10 +11,11 @@ class classroom::console::patch {
     mode  => '0644',
   }
   Exec {
-    cwd     => '/opt/puppet/share/live-management',
-    path    => '/usr/bin',
-    creates => '/tmp/patches/lock',
-    before  => File['/tmp/patches/lock'],
+    cwd         => '/opt/puppet/share/live-management',
+    path        => '/usr/bin',
+    creates     => '/tmp/patches/lock',
+    before      => File['/tmp/patches/lock'],
+    refreshonly => true,
   }
 
   # each patch to be applied should drop a file in /tmp/patches
@@ -18,8 +25,8 @@ class classroom::console::patch {
   }
   # then apply it
   exec { 'Live Management select none':
-    command => 'patch -p0 < /tmp/patches/selectNone.diff',
-    require => File['/tmp/patches/selectNone.diff'],
+    command   => 'patch -p0 < /tmp/patches/selectNone.diff',
+    subscribe => File['/tmp/patches/selectNone.diff'],
   }
 
   # completion flag
