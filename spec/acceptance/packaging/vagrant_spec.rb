@@ -3,7 +3,7 @@ require 'spec_helper_acceptance'
 
 describe file('/etc/sudoers') do
   it { should be_file }
-  it { should contain('vagrant ALL=(ALL:ALL) NOPASSWD: ALL') }
+  it { should contain('vagrant        ALL=(ALL)       NOPASSWD: ALL')}
 end
 
 describe user('vagrant') do
