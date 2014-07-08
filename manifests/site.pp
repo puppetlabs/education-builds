@@ -2,7 +2,6 @@ node default {
   include bootstrap
   include localrepo
   include training
-  include vagrant
 }
 
 node /learn/ {
