@@ -6,7 +6,6 @@ describe file('/root/.gemrc') do
 end
 
 cached_gems = [
-  'builder',
   'addressable',
   'carrier-pigeon',
   'rack-protection',
