@@ -1,7 +1,6 @@
 # NOTE: This file is managed by Puppet; any changes you make will be erased.
 
 if tput setaf 1 &> /dev/null; then
-  tput sgr0
   if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
     MAGENTA=$(tput setaf 9)
     ORANGE=$(tput setaf 172)
@@ -46,7 +45,7 @@ function parse_git_dirty() {
 function parse_git_branch() {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
-export PS1="\[$ORANGE\][\[${BOLD}${MAGENTA}\]\u@\h \[$GREEN\]\w\[$BOLD\]\$(is_on_git && [[ -n \$(git branch 2> /dev/null) ]] && echo \":\")\[$PURPLE\]\$(parse_git_branch)\[$BOLD\]\[$ORANGE\]]\[$RESET\]# "
+export PS1="\[${ORANGE}\][\[${BOLD}${MAGENTA}\]\u@\h \[${GREEN}\]\w\[${BOLD}\]\$(is_on_git && [[ -n \$(git branch 2> /dev/null) ]] && echo \":\")\[${PURPLE}\]\$(parse_git_branch)\[${RESET}\]\[${ORANGE}\]]\[${RESET}\]# "
 
 <% if @hostname =~ /learn/ -%>
 export PROMPT_COMMAND='history -a; history -r'
