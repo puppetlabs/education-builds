@@ -1,7 +1,6 @@
 # NOTE: This file is managed by Puppet; any changes you make will be erased.
 
 if tput setaf 1 &> /dev/null; then
-  tput sgr0
   if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
     MAGENTA=$(tput setaf 9)
     ORANGE=$(tput setaf 172)
