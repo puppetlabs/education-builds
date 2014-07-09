@@ -7,7 +7,6 @@ alias vi=vim
 #export TERM=ansi
 
 # Point the PE installer to the cached agent installer
-export q_tarball_server="/usr/src/installer/"
 export q_pe_check_for_updates=n
 
 validate_yaml() {
