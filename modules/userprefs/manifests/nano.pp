@@ -1,27 +1,29 @@
 class userprefs::nano (
+  $user    = 'root',
+  $homedir = '/root',
   $default = true,
 ) {
   package { 'nano':
     ensure => present,
   }
 
-  file { '/root/.nanorc':
+  file { "${homedir}/.nanorc":
     ensure  => 'file',
     source  => 'puppet:///modules/userprefs/nano/nanorc',
   }
 
-  file { '/root/.nano.d':
+  file { "${homedir}/.nano.d":
     ensure => directory,
   }
 
-  file { '/root/.nano.d/puppet.nanorc':
+  file { "${homedir}/.nano.d/puppet.nanorc":
     ensure  => 'file',
     source  => 'puppet:///modules/userprefs/nano/puppet.nanorc',
   }
 
   if $default {
     file_line { 'default editor':
-      path    => '/root/.profile',
+      path    => "${homedir}/.profile",
       line    => 'export EDITOR=nano',
       match   => "EDITOR=",
       require => Package['nano'],
