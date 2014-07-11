@@ -30,13 +30,28 @@ while : ; do
   echo "... that IP is unreachable."
 done
 
-echo "${master} master.puppetlabs.vm master" >> /etc/hosts
-echo "${ipaddr} ${username}.puppetlabs.vm ${username}" >> /etc/hosts
-sed -i "s/^HOSTNAME=.*$/HOSTNAME=${username}.puppetlabs.vm/" /etc/sysconfig/network
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/CentOS-Base.repo
-ntpdate master.puppetlabs.vm
-hostname ${username}.puppetlabs.vm
-source /etc/profile
+check_success "Adding host record for classroom master"             \
+      "echo '${master} master.puppetlabs.vm master' >> /etc/hosts 2>&1"
 
-# Now actually perform the install. Yay for packages!
-curl -k https://master.puppetlabs.vm:8140/packages/current/install.bash | bash
+check_success "Adding host record for ${username}.puppetlabs.vm"    \
+      "$(echo "${ipaddr} ${username}.puppetlabs.vm ${username}" >> /etc/hosts 2>&1)"
+
+check_success "Configuring hostname"                                \
+      "$(hostname ${username}.puppetlabs.vm 2>&1)"
+
+check_success "Setting hostname on boot"                            \
+      "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${username}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
+
+check_success "Synchronizing time with the classroom master"        \
+      "$(ntpdate master.puppetlabs.vm 2>&1)"
+
+if [ $ERRORCOUNT -eq 0 ]
+then
+  source /etc/profile
+
+  # Now actually perform the install. Yay for packages!
+  curl -k https://master.puppetlabs.vm:8140/packages/current/install.bash | bash
+else
+  echo
+  echo 'Please correct the errors displayed before trying again.'
+fi
