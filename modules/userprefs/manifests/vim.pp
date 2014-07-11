@@ -1,23 +1,25 @@
 class userprefs::vim (
+  $user    = 'root',
+  $homedir = '/root',
   $default = true,
 ) {
   package { 'vim-enhanced':
     ensure => present,
   }
 
-  file { '/root/.vim':
+  file { "${homedir}/.vim":
     ensure  => 'directory',
     source  => 'puppet:///modules/userprefs/vim/vim',
     recurse => true,
   }
 
-  file { '/root/.vimrc':
+  file { "${homedir}/.vimrc":
     source => 'puppet:///modules/userprefs/vim/vimrc',
   }
 
   if $default {
     file_line { 'default editor':
-      path    => '/root/.profile',
+      path    => "${homedir}/.profile",
       line    => 'export EDITOR=vim',
       match   => "EDITOR=",
       require => Package['vim-enhanced'],
