@@ -102,6 +102,14 @@ class bootstrap ($print_console_login = false) {
     force   => true,
   }
 
+  # Set up the /root/bin directory.
+  if $::hostname =~ /training/ {
+    file {'/root/bin':
+      ensure => link,
+      target => '/usr/src/puppetlabs-training-bootstrap/scripts/classroom',
+    }
+  }
+
   # Disable GSS-API for SSH to speed up log in
   $ruby_aug_package = $::osfamily ? {
     'RedHat' => 'ruby-augeas',
