@@ -89,6 +89,7 @@ include Serverspec::Helper::DetectOS
 RSpec.configure do |c|
   c.tty = true
   c.color_enabled = true
+  c.output_stream = File.open('/dev/null', 'w')
   c.add_formatter(:json)
   if ENV['ASK_SUDO_PASSWORD']
     require 'highline/import'
