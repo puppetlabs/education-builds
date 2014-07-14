@@ -1,27 +1,29 @@
 class userprefs::emacs (
+  $user    = 'root',
+  $homedir = '/root',
   $default = true,
 ) {
   package { 'emacs':
     ensure => present,
   }
 
-  file { '/root/.emacs':
+  file { "${homedir}/.emacs":
     ensure  => 'file',
     source  => 'puppet:///modules/userprefs/emacs/emacs',
   }
 
-  file { '/root/.emacs.d':
+  file { "${homedir}/.emacs.d":
     ensure => directory,
   }
 
-  file { '/root/.emacs.d/puppet-mode.el':
+  file { "${homedir}/.emacs.d/puppet-mode.el":
     ensure  => 'file',
     source  => 'puppet:///modules/userprefs/emacs/puppet-mode.el',
   }
 
   if $default {
     file_line { 'default editor':
-      path    => '/root/.profile',
+      path    => "${homedir}/.profile",
       line    => 'export EDITOR=emacs',
       match   => "EDITOR=",
       require => Package['emacs'],

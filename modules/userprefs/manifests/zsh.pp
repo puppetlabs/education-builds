@@ -1,4 +1,6 @@
 class userprefs::zsh (
+  $user     = 'root',
+  $homedir  = '/root',
   $default  = true,
   $password = undef,
 ) {
@@ -7,28 +9,28 @@ class userprefs::zsh (
   }
 
   # zsh doesn't source .profile by default.
-  file { '/root/.zprofile':
+  file { "${homedir}/.zprofile":
     ensure  => 'file',
     replace => false, # allow users to customize their .profile
     source  => 'puppet:///modules/userprefs/shell/zprofile',
     require => Package['zsh'],
   }
 
-  file { '/root/.zshrc':
+  file { "${homedir}/.zshrc":
     ensure  => file,
     replace => false,
     source  => 'puppet:///modules/userprefs/shell/zshrc',
     require => Package['zsh'],
   }
 
-  file { '/root/.zshrc.puppet':
+  file { "${homedir}/.zshrc.puppet":
     ensure  => file,
     source  => 'puppet:///modules/userprefs/shell/zshrc.puppet',
     require => Package['zsh'],
   }
 
   if $default {
-    user { 'root':
+    user { $user:
       ensure   => present,
       shell    => '/bin/zsh',
       password => $password,

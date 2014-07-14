@@ -1,5 +1,6 @@
 COLUMNS=$(tput cols)
 WIDTH=$[COLUMNS - 12]
+ERRORCOUNT=0
 
 function validate_args()
 {
@@ -23,8 +24,30 @@ function fail ()
 {
   MESSAGE="$1"
   RESOLUTION="$2"
+  ((++ERRORCOUNT))
+
   printf "%-${WIDTH}s[\033[31m FAIL \033[0m]\n" "$MESSAGE"
-  printf "  > %s\n" "$RESOLUTION"
+
+  if [ "$RESOLUTION" != "" ]
+  then
+    printf "  > %s\n" "$RESOLUTION"
+  fi
+}
+
+function check_success ()
+{
+  STATUS=$?
+  MESSAGE="$1"
+  RESOLUTION="$2"
+
+  if [ $STATUS -eq 0 ]
+  then
+    success "$MESSAGE"
+    return 0
+  else
+    fail "$MESSAGE" "$RESOLUTION"
+    return 1
+  fi
 }
 
 function check ()
@@ -35,14 +58,7 @@ function check ()
 
   eval "$COMMAND" > /dev/null 2>&1
 
-  if [ $? -eq 0 ]
-  then
-    success "$MESSAGE"
-    return 0
-  else
-    fail "$MESSAGE" "$RESOLUTION"
-    return 1
-  fi
+  check_success "$MESSAGE" "$RESOLUTION"
 }
 
 function version ()
