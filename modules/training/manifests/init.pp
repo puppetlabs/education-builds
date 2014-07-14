@@ -2,11 +2,9 @@ class training {
   # ILT training-specific setup
 
   # Set up the /root/bin directory.
-  if $::hostname =~ /training/ {
-    file {'/root/bin':
-      ensure => link,
-      target => '/usr/src/puppetlabs-training-bootstrap/scripts/classroom',
-    }
+  file {'/root/bin':
+    ensure => link,
+    target => '/usr/src/puppetlabs-training-bootstrap/scripts/classroom',
   }
 
   file { '/usr/src/wordpress':
