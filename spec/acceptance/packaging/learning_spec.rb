@@ -4,7 +4,7 @@ require 'spec_helper_acceptance'
 if hosts_as('learning').length > 0
   describe file('/root/learning.answers') do
     it { should be_file }
-    it { should contain('q_puppetagent_certname=learn.localdomain') }
+    it { should contain('q_puppetagent_certname=learning.puppetlabs.vm') }
   end
   describe file('/etc/motd') do
     it { should be_file }

@@ -1,0 +1,12 @@
+HOSTS:
+  learning.puppetlabs.vm:
+    roles:
+      - master
+      - learning
+    platform: centos-6.5-i386
+    hypervisor: vagrant
+    box_url: file://~/src/git/product-vagrant-boxes/packer/_output/virtualbox/learningvm-virtualbox.box
+    box: learningvm-virtualbox
+CONFIG:
+  nfs_server: none
+  consolereport: 443
