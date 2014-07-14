@@ -24,7 +24,7 @@ cached_gems = [
   'rspec-expectations',
   'mocha',
   'metaclass',
-  'puppetlabs-spec-helper',
+  'puppetlabs_spec_helper',
   'beaker',
   'beaker-rspec'
 ]
