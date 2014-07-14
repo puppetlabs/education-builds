@@ -31,7 +31,7 @@ while : ; do
 done
 
 check_success "Adding host record for classroom master"             \
-      "echo '${master} master.puppetlabs.vm master' >> /etc/hosts 2>&1"
+      "$(echo "${master} master.puppetlabs.vm master" >> /etc/hosts 2>&1)"
 
 check_success "Adding host record for ${username}.puppetlabs.vm"    \
       "$(echo "${ipaddr} ${username}.puppetlabs.vm ${username}" >> /etc/hosts 2>&1)"
