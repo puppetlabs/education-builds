@@ -174,10 +174,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   when 'Ubuntu'
     # Parse templates and output in BUILDDIR
     $settings[:pe_install_suffix] = '-ubuntu-12.04-i386'
-    if $settings[:vmtype] == 'training'
-      $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
-    else
-      $settings[:hostname] = "learn.localdomain"
+    $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
     end
     $settings[:pe_tarball] = @ubuntu_pe_tarball
     # No variables
@@ -204,11 +201,7 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   when 'Centos'
     # Parse templates and output in BUILDDIR
     $settings[:pe_install_suffix] = '-el-6-i386'
-    if $settings[:vmtype] == 'training'
-      $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
-    else
-      $settings[:hostname] = "learn.localdomain"
-    end
+    $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
 
     $settings[:pe_tarball]    = @centos_pe_tarball
     $settings[:agent_tarball] = @centos_agent_tarball

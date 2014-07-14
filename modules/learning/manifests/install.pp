@@ -11,7 +11,7 @@ class learning::install {
 
   # This rake task exists now! Hurray.
   exec {'reduce-activemq-heap':
-    command     => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile node:variables name="learn.localdomain" variables="activemq_heap_mb=\"256\"" RAILS_ENV=production',
+    command     => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile node:variables name="learning.puppetlabs.vm" variables="activemq_heap_mb=\"256\"" RAILS_ENV=production',
     logoutput   => true,
     environment => "RUBYLIB=''",
     require     => Exec['install-pe'],
@@ -19,8 +19,8 @@ class learning::install {
   }
 
   # So we'll make sure it exists:
-  exec {'ensure learn.localdomain exists in console':
-    command     => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile node:add name="learn.localdomain" RAILS_ENV=production',
+  exec {'ensure learning.puppetlabs.vm exists in console':
+    command     => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile node:add name="learning.puppetlabs.vm" RAILS_ENV=production',
     returns     => [0,1], # It returns 1 if the node already exists, but the command is actually idempotent, so that's fine.
     logoutput   => true,
     environment => "RUBYLIB=''",

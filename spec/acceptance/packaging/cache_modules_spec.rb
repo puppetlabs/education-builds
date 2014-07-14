@@ -15,7 +15,6 @@ cached_modules = [
   'puppetlabs-haproxy',
   'jamtur01-irc',
   'hunner-charybdis',
-  'puppetlabs-puppetdb',
   'puppetlabs-pe_gem',
   'stahnma-epel',
   'nanliu-staging'

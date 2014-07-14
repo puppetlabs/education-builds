@@ -1,10 +1,6 @@
 #! /usr/bin/env ruby -S rspec
 require 'spec_helper_acceptance'
 
-describe file('/etc/shadow') do
-  it { should contain('root:$1$hgIZHl1r$tEqMTzoXz.NBwtW3kFv33/') }
-end
-
 describe file('/root/.profile') do
   it { should contain('validate_yaml()') }
   it { should contain('validate_erb()') }
