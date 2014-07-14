@@ -5,8 +5,8 @@ HOSTS:
       - learning
     platform: centos-6.5-i386
     hypervisor: vagrant
-    box_url: file://~/src/git/product-vagrant-boxes/packer/_output/virtualbox/learningvm-virtualbox.box
-    box: learningvm-virtualbox
+    box_url: file:///Users/carthik/src/git/product-vagrant-boxes/packer/_output/virtualbox/learning-virtualbox.box
+    box: learning-virtualbox
 CONFIG:
   nfs_server: none
   consolereport: 443
