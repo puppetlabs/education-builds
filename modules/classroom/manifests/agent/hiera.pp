@@ -15,22 +15,35 @@ class classroom::agent::hiera (
       ensure => link,
       target => '/root/puppetcode/hieradata',
     }
+
+    file { '/etc/puppetlabs/puppet/hiera.yaml':
+      ensure => link,
+      target => '/root/puppetcode/hiera.yaml',
+      force  => true,
+    }
+
+    file { '/root/puppetcode/hiera.yaml':
+      ensure => file,
+      source => 'puppet:///modules/classroom/hiera.agent.yaml',
+      replace => false,
+    }
+
   }
   else {
     file { '/etc/puppetlabs/puppet/hieradata':
       ensure => directory,
+    }
+
+    # Because PE writes a default, we cannot use replace => false
+    file { '/etc/puppetlabs/puppet/hiera.yaml':
+      ensure => file,
+      source => 'puppet:///modules/classroom/hiera.agent.yaml',
     }
   }
 
   file { '/etc/puppetlabs/puppet/hieradata/defaults.yaml':
     ensure  => file,
     source  => 'puppet:///modules/classroom/defaults.yaml',
-    replace => false,
-  }
-
-  file { '/etc/puppetlabs/puppet/hiera.yaml':
-    ensure => file,
-    source => 'puppet:///modules/classroom/hiera.agent.yaml',
     replace => false,
   }
 }
