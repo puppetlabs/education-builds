@@ -21,7 +21,14 @@ class fundamentals::agent::hiera {
   }
 
   file { '/etc/puppetlabs/puppet/hiera.yaml':
+    ensure => link,
+    target => '/root/puppetcode/hiera.yaml',
+    force  => true,
+  }
+
+  file { '/root/puppetcode/hiera.yaml':
     ensure => file,
     source => 'puppet:///modules/fundamentals/hiera.agent.yaml',
+    replace => false,
   }
 }
