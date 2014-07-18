@@ -2,7 +2,7 @@
 require 'spec_helper_acceptance'
 
 cached_modules = [
-  'puppetlabs-concat', 
+  'puppetlabs-concat',
   'camptocamp-augeasfacter',
   'domcleal-augeasproviders',
   'razorsedge-vmwaretools',
@@ -17,11 +17,14 @@ cached_modules = [
   'hunner-charybdis',
   'puppetlabs-pe_gem',
   'stahnma-epel',
-  'nanliu-staging'
+  'nanliu-staging',
+  'puppetlabs/git',
+  'zack/r10k',
+  'zack/exports'
   ]
 
 # Just check that they are present.
-# Functional tests elsewhere will determine whether 
+# Functional tests elsewhere will determine whether
 # the cached versions work as desired.
 # This way we can eventually always cache the latest versions of all modules
 # and run (functional) tests against them

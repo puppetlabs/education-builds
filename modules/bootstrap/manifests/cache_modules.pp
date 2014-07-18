@@ -62,6 +62,15 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'nanliu-staging':
     version => '0.4.0',
   }
+  bootstrap::forge { 'puppetlabs/git':
+    version => '0.0.3',
+  }
+  bootstrap::forge { 'zack/r10k':
+    version => '1.0.2',
+  }
+  bootstrap::forge { 'zack/exports':
+    version => '0.0.4',
+  }
 
 
   # These are the additional modules needed by the extending puppet using ruby course
