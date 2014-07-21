@@ -12,7 +12,7 @@ class userprefs::user (
   $shell  = undef,
 ) {
   $homedir = $user ? {
-    'root'  => 'root',
+    'root'  => '/root',
     default => "/home/${user}",
   }
 
