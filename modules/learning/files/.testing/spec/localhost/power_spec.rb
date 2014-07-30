@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Module puppetlabs-apache" do
   it 'should be installed' do 
     file('/etc/puppetlabs/puppet/modules/apache').should be_directory
-    file('/etc/puppetlabs/puppet/modules/apache/Modulefile').should contain "name 'puppetlabs-apache'"
+    file('/etc/puppetlabs/puppet/modules/apache/metadata.json').should contain '"name": "puppetlabs-apache"'
   end
 end
 
