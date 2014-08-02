@@ -171,7 +171,7 @@
 </code></pre></div>
 <a id=""><h2>Explicit Ordering</h2></a>
 
-<p>We are likely to reading instructions from top to bottom and execute them in that order. When it comes to resource declarations in a Puppet manifest, Puppet does things a little differently. It works through the problem as though it were give a list of things to do, and it was left to decide the most efficient way to get those done. We have referred to the catalog vaguely in the previous sections. The <strong>catalog</strong> is a compilation of all the resources that will be applied to a given system, and the relationships between those resources. In building the catalog, unless we <em>explicitly</em> specify the relationship between the resources, Puppet will manage them in its own order.  </p>
+<p>We are likely to reading instructions from top to bottom and execute them in that order. When it comes to resource declarations in a Puppet manifest, Puppet does things a little differently. It works through the problem as though it were given a list of things to do, and it was left to decide the most efficient way to get those done. We have referred to the catalog vaguely in the previous sections. The <strong>catalog</strong> is a compilation of all the resources that will be applied to a given system, and the relationships between those resources. In building the catalog, unless we <em>explicitly</em> specify the relationship between the resources, Puppet will manage them in its own order.  </p>
 
 <p>For the most part, Puppet specifies relationships between resources in the appropriate manner while building the catalog. For example, if you say that user <code>gigabyte</code> should exist, and the directory <code>/home/gigabyte/bin</code> should be present and be owned by user <code>gigabyte</code>, then Puppet will specify a relationship between the two - that the user should be managed before the directory. These are implicit (shall we call them obvious?) relationships. </p>
 
@@ -259,7 +259,7 @@ Find the line that reads:</p>
 
 <a id=""><h2>Package/File/Service</h2></a>
 
-<p>Wait a minute! We are managing the service <code>sshd</code>, we are managing it's configuration file, but all that would mean nothing if the package that install the SSH server is not installed. So, to round it up, and make our manifest complete with regards to managing the SSH server on the VM, we have to ensure that the appropriate <code>package</code> resource is managed as well. </p>
+<p>Wait a minute! We are managing the service <code>sshd</code>, we are managing it's configuration file, but all that would mean nothing if the package that installs the SSH server is not installed. So, to round it out, and make our manifest complete with regards to managing the SSH server on the VM, we have to ensure that the appropriate <code>package</code> resource is managed as well. </p>
 
 <p>On CentOS machines, such as the VM we are using, the <code>openssh-server</code> package installs the SSH server. </p>
 
