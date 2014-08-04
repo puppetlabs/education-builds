@@ -56,8 +56,6 @@ ntp
 curl
 tar
 ruby
-rubygems
-rubygem-json
 
 %post
 exec < /dev/tty3 > /dev/tty3
@@ -101,7 +99,7 @@ cp /mnt/puppet/<%= $settings[:agent_tarball] %> /usr/src/installer/<%= @real_pe_
 
 echo "Puppet Labs Training VM <%= @ptb_version %> (Build <%= @ptb_build %>)" > /etc/puppetlabs-release
 rpm -Uvh /mnt/puppet/epel-release.rpm
-yum -y install git
+yum -y install git rubygem-json
 #yum -y upgrade #This takes a while
 cd /usr/src
 git clone /mnt/puppet/puppet.git
