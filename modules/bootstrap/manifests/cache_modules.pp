@@ -30,7 +30,7 @@ class bootstrap::cache_modules(
     version => '0.4.0',
   }
   bootstrap::forge { 'puppetlabs-mysql':
-    version => '0.9.0',
+    version => '2.3.1',
   }
   bootstrap::forge { 'puppetlabs-apache':
     version => '0.8.1',
