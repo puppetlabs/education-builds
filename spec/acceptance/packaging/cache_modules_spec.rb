@@ -18,9 +18,9 @@ cached_modules = [
   'puppetlabs-pe_gem',
   'stahnma-epel',
   'nanliu-staging',
-  'puppetlabs/git',
-  'zack/r10k',
-  'zack/exports'
+  'puppetlabs-git',
+  'zack-r10k',
+  'zack-exports'
   ]
 
 # Just check that they are present.
