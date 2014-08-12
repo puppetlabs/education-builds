@@ -36,7 +36,7 @@ class classroom::params {
   }
   else {
     $role = $hostname ? {
-      /master|classroom/ => 'master',
+      /^master|classroom$/ => 'master',
       'proxy'            => 'proxy',
       default            => 'agent'
     }
