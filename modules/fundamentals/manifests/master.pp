@@ -32,6 +32,15 @@ class fundamentals::master ( $classes = [] ) {
     ensure => directory,
   }
 
+  # Ensure the environment cache is disabled and restart if needed
+  augeas {'puppet.conf.main':
+    context => '/files/etc/puppetlabs/puppet/puppet.conf/main',
+    changes => [
+      "set environment_timeout 0",
+    ],
+    notify  => Service['pe-httpd'],
+  }
+
   # Ensure that storeconfigs are enabled and restart if needed
   augeas {'puppet.conf.master':
     context => '/files/etc/puppetlabs/puppet/puppet.conf/master',
