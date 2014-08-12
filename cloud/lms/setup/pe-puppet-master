@@ -1,0 +1,144 @@
+#!/bin/bash
+# puppet        Init script for running the puppet client daemon
+#
+# Author:       Duane Griffin <d.griffin@psenterprise.com>
+#               David Lutterkort <dlutter@redhat.com>
+#
+# chkconfig: 2345 98 02
+#
+# description: Enables periodic system configuration checks through puppet.
+# processname: puppet
+
+[ -f /etc/sysconfig/pe-puppet-master ] && . /etc/sysconfig/pe-puppet-master
+lockfile=${LOCKFILE-/var/lock/subsys/pe-puppet-master}
+pidfile=${PIDFILE-/var/run/pe-puppet/master.pid}
+puppetd=${PUPPETD-/opt/puppet/bin/puppet}
+confdir=/etc/puppetlabs/puppet
+RETVAL=0
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+export PATH
+
+PUPPET_OPTS="master"
+[ -n "$PUPPET_SERVER" ] && PUPPET_OPTS="${PUPPET_OPTS} --server=${PUPPET_SERVER}"
+[ -n "$PUPPET_LOG" ]    && PUPPET_OPTS="${PUPPET_OPTS} --logdest=${PUPPET_LOG}"
+[ -n "$PUPPET_PORT" ]   && PUPPET_OPTS="${PUPPET_OPTS} --masterport=${PUPPET_PORT}"
+
+# Determine if we can use the -p option to daemon, killproc, and status.
+# RHEL < 5 can't.
+if status | grep -q -- '-p' 2>/dev/null; then
+    daemonopts="--pidfile $pidfile"
+    pidopts="-p $pidfile"
+fi
+
+start() {
+    echo -n $"Starting puppet master: "
+    daemon $daemonopts $puppetd ${PUPPET_OPTS} ${PUPPET_EXTRA_OPTS}
+    RETVAL=$?
+    echo
+        [ $RETVAL = 0 ] && touch ${lockfile}
+        return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping puppet master: "
+    pid=`cat $pidfile 2> /dev/null`
+    killproc $pidopts $puppetd
+    RETVAL=$?
+    echo
+    # wait until really stopped
+    i=0
+    if [ -n "${pid:-}" ]; then
+      while kill -0 "${pid:-}" 2> /dev/null;  do
+          # If we get here it means the process has not yet died, but
+          # potentially will. In anticipation of it actually dying we
+          # set RETVAL to 0 here. If we eventually timeout, the real
+          # exit will be the return code of `kill -9` from below.
+          RETVAL=0
+          if [ $i = '60' ]; then
+              kill -9 $pid
+              RETVAL=$?
+              break;
+          else
+              if [ $i = '0' ]; then
+                  echo -n " ... waiting "
+              else
+                  echo -n "."
+              fi
+              i=$(($i+1))
+              sleep 1
+          fi
+      done
+    fi
+    [ $RETVAL = 0 ] && rm -f ${lockfile} ${pidfile}
+    return $RETVAL
+}
+
+reload() {
+    echo -n $"Restarting puppet master: "
+    killproc $pidopts $puppetd -HUP
+    RETVAL=$?
+    echo
+    return $RETVAL
+}
+
+restart() {
+    stop
+    start
+}
+
+rh_status() {
+    if [ -f "${pidfile}" ]; then
+        status $pidopts $puppetd
+        RETVAL=$?
+    else
+        RETVAL=3
+    fi
+    return $RETVAL
+}
+
+rh_status_q() {
+    rh_status >/dev/null 2>&1
+}
+
+genconfig() {
+    echo -n $"Generate configuration puppet: "
+    $puppetd ${PUPPET_OPTS} ${PUPPET_EXTRA_OPTS} --genconfig
+}
+
+case "$1" in
+    start)
+        start
+    ;;
+    stop)
+        stop
+    ;;
+    restart)
+        restart
+    ;;
+    reload|force-reload)
+        reload
+    ;;
+    condrestart|try-restart)
+        rh_status_q || exit 0
+        restart
+    ;;
+    status)
+        rh_status
+    ;;
+    once)
+        shift
+        $puppetd -o ${PUPPET_OPTS} ${PUPPET_EXTRA_OPTS} $@
+        ;;
+    genconfig)
+        genconfig
+    ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|reload|force-reload|condrestart|once|genconfig}"
+        exit 1
+esac
+
+exit $RETVAL
