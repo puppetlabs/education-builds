@@ -25,6 +25,14 @@ filebucket { 'main':
 # Make filebucket 'main' the default backup location for all File resources:
 File { backup => 'main' }
 
+# Suppress a deprecation warning if using PE 3.3.0. Students have been
+# confused by the message constantly showing up in red, even though it's
+# a warning.
+if $::puppetversion =~ /Puppet Enterprise 3\.3/ {
+  # Turn off deprecation warning
+  Package { allow_virtual => false }
+}
+
 # DEFAULT NODE
 # Node definitions in this file are merged with node data from the console. See
 # http://docs.puppetlabs.com/guides/language_guide.html#nodes for more on
