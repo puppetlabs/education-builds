@@ -1,6 +1,14 @@
 #! /bin/bash
 # Peter Swire - swirepe.com
 # https://github.com/swirepe/alwaysontop
+
+# bail early if we're not running bash
+if [[ ! $(ps -p $$ -ocomm= | sed 's/-//') =~ bash$ ]]
+then
+  echo "This utility currently only runs on bash."
+  return
+fi
+
 export PS1
 export PROMPT_COMMAND
 
