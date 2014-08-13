@@ -20,6 +20,7 @@ class fundamentals::master ( $classes = [] ) {
     # Write out our edu license file to prevent console noise
     file { '/etc/puppetlabs/license.key':
       ensure => file,
+      mode   => '0644',
       source => 'puppet:///modules/fundamentals/license.key',
     }
   }
