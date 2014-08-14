@@ -1,5 +1,14 @@
 class classroom::proxy {
   include '::haproxy'
+
+  haproxy::listen { 'puppet00':
+    ipaddress => $::ipaddress,
+    ports     => '8140',
+    options   => {
+      'mode'  => 'tcp',
+    },
+  }
+
   haproxy::listen { 'wordpress00':
     ipaddress => $::ipaddress,
     ports     => '80',

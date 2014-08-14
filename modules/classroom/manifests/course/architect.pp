@@ -38,6 +38,8 @@ class classroom::course::architect (
     # Include the Irssi setup and collect all hosts
     include classroom::agent::irc
     include classroom::agent::hosts
+
+    # The student masters should export a balancermember
+    include classroom::master::balancermember
   }
 }
-

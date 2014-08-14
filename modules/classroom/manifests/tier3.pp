@@ -18,6 +18,7 @@ class classroom::tier3 {
   }
 
   Host <<| title == $::domain |>>
+  Host <<| title == 'proxy.puppetlabs.vm' |>>
 
   notify { "Redirecting this agent to the ${::domain} master": }
 }
