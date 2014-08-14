@@ -61,6 +61,12 @@ define classroom::agent::workdir (
       mode    => '0755',
       require => Exec["initialize ${name} repo"],
     }
+
+    file { "${workdir}/.gitignore":
+      ensure  => file,
+      source  => 'puppet:///modules/classroom/dot_gitignore',
+      require => Exec["initialize ${name} repo"],
+    }
   }
   else {
     file { $workdir:

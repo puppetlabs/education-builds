@@ -1,0 +1,3 @@
+# Ignore Vim swap/temp files in Git
+.*.sw?
+*~
