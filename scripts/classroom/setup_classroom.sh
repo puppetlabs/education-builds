@@ -50,7 +50,7 @@ check_success "Setting hostname on boot"                            \
       "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${username}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
 
 check_success "Synchronizing time with the classroom master"        \
-      "$(ntpdate master.puppetlabs.vm 2>&1)"
+      "$(ntpdate -u master.puppetlabs.vm 2>&1)"
 
 if [ $ERRORCOUNT -eq 0 ]
 then
