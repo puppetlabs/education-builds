@@ -3,6 +3,12 @@ class userprefs::nano (
   $homedir = '/root',
   $default = true,
 ) {
+  File {
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+  }
+  
   package { 'nano':
     ensure => present,
   }
