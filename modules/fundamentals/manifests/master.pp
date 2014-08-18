@@ -59,6 +59,22 @@ class fundamentals::master ( $classes = [] ) {
     }
   }
 
+  file_line { 'rubycas_server_console_session_lifetime':
+    ensure => present,
+    path  => '/etc/puppetlabs/rubycas-server/config.yml',
+    match  => '^maximum_session_lifetime:',
+    line   => "maximum_session_lifetime: 100000",
+    notify => Service['pe-httpd'],
+  }
+
+  file_line { 'console_auth_session_lifetime':
+    ensure => present,
+    path   => '/etc/puppetlabs/console-auth/cas_client_config.yml',
+    match  => '\s*session_lifetime:',
+    line   => "  session_lifetime: 100000",
+    notify => Service['pe-httpd'],
+  }
+
   # configure Hiera environments for the master
   include fundamentals::master::hiera
 
