@@ -93,7 +93,6 @@ rm -f /root/<%= $settings[:pe_tarball] %>
 <% end %>
 
 # Cache agent tarball for pe_repo
-mkdir -p /usr/src/installer
 mkdir -p /usr/src/installer/<%= @real_pe_ver %>
 cp /mnt/puppet/<%= $settings[:agent_tarball] %> /usr/src/installer/<%= @real_pe_ver %>/
 
