@@ -20,10 +20,12 @@ echo "##########################################################################
 echo
 read junk
 
+TIMESTAMP=$(date '+%s')
+
 mkdir -p ~/certificates.bak/{puppet,puppetdb,puppet-dashboard}
-cp -a /etc/puppetlabs/puppet/ssl ~/certificates.bak/puppet/
-cp -a /etc/puppetlabs/puppetdb/ssl ~/certificates.bak/puppetdb/
-cp -a /opt/puppet/share/puppet-dashboard/certs ~/certificates.bak/puppet-dashboard/
+cp -a /etc/puppetlabs/puppet/ssl ~/certificates.bak/puppet/${TIMESTAMP}
+cp -a /etc/puppetlabs/puppetdb/ssl ~/certificates.bak/puppetdb/${TIMESTAMP}
+cp -a /opt/puppet/share/puppet-dashboard/certs ~/certificates.bak/puppet-dashboard/${TIMESTAMP}
 
 echo "Certificates backed up to ~/certificates.bak"
 
@@ -31,9 +33,8 @@ service pe-puppet stop
 service pe-mcollective stop
 service pe-httpd stop
 rm -rf /etc/puppetlabs/puppet/ssl/*
-puppet cert list -a
-echo "Press Ctrl-C once you see 'Starting Puppet master version x.y.z'"
-puppet master --no-daemonize --verbose
+
+puppet cert --generate $(puppet master --configprint certname) --dns_alt_names "$(puppet master --configprint dns_alt_names)" --verbose
 service pe-httpd start
 echo "Puppet Master certificates regenerated"
 
@@ -56,4 +57,4 @@ echo "Puppet Enterprise Console certificates regenerated"
 puppet agent -t
 service pe-puppet start
 
-echo "Certificates reset. Please regenerate all client certificates now."
+echo "Certificates reset. Please regenerate certificates on all agents now."
