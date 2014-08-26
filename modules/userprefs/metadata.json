@@ -1,4 +1,20 @@
 {
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": "6"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
   "name": "pltraining-userprefs",
   "version": "0.0.3",
   "author": "pltraining",
@@ -9,6 +25,6 @@
   "issues_url": "https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/userprefs/issues",
   "description": "Important! This is not the module you are looking for\n    unless you are a trainer teaching the Puppet Fundamentals course!\n    - Allows users to customize their userprefs by choosing their editor & shell.",
   "dependencies": [
-  
+
   ]
 }

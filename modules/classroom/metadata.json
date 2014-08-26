@@ -1,4 +1,20 @@
 {
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": "6"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
   "name": "pltraining-classroom",
   "version": "0.0.2",
   "author": "pltraining",
@@ -23,4 +39,3 @@
     {"name":"zack/exports",         "version_requirement":">= 0.0.4"}
   ]
 }
-
