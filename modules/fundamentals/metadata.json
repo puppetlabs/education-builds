@@ -1,0 +1,17 @@
+{
+  "name": "pltraining-fundamentals",
+  "version": "1.4.5",
+  "author": "pltraining",
+  "summary": "Module to aid in Puppet EDU training environment creation",
+  "license": "Apache License, Version 2.0",
+  "source": "https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/fundamentals",
+  "project_page": "https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/fundamentals",
+  "issues_url": "https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/fundamentals/issues",
+  "description": "Important! This is not the module you are looking for\n    unless you are a trainer teaching the Puppet Fundamentals course!\n    - Configures and sets up classroom environment for Puppet Fundamentals trainings.",
+  "dependencies": [
+    {"name":"puppetlabs/concat","version_requirement":">= 0.1.0"},
+    {"name":"puppetlabs/vcsrepo","version_requirement":">= 0.1.2"},
+    {"name":"pltraining/userprefs"},
+    {"name":"puppetlabs/ntp","version_requirement":">= 3.0.1"}
+  ]
+}
