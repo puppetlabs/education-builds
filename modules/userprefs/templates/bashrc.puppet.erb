@@ -52,5 +52,5 @@ export PROMPT_COMMAND='history -a; history -r'
 
 # If not running interactively, do not do anything
 [[ $- != *i* ]] && return
-[[ -z "$TMUX" ]] && exec tmux
+[[ -z "$TMUX" ]] && exec tmux attach
 <% end -%>
