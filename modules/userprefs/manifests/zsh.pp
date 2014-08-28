@@ -4,6 +4,12 @@ class userprefs::zsh (
   $default  = true,
   $password = undef,
 ) {
+  File {
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+  }
+  
   package { 'zsh':
     ensure => present,
   }
