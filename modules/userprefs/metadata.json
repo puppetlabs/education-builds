@@ -25,6 +25,6 @@
   "issues_url": "https://github.com/puppetlabs/puppetlabs-training-bootstrap/tree/master/modules/userprefs/issues",
   "description": "Important! This is not the module you are looking for\n    unless you are a trainer teaching the Puppet Fundamentals course!\n    - Allows users to customize their userprefs by choosing their editor & shell.",
   "dependencies": [
-
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 0.1.6" }
   ]
 }
