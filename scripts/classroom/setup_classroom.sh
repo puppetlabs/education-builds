@@ -22,9 +22,9 @@ while : ; do
   echo -n "Please choose a username: "
   read username
 
-  [[ "$username" =~ ^[a-z0-9][a-z0-9._]+$ && "$username" =~ [a-z]+ ]] && break
+  [[ "$username" =~ ^[a-z0-9][a-z0-9._]+$ && "$username" =~ [a-z]+ && "$username" != "root" ]] && break
 
-  echo "Usernames must be lowercase alphanumeric with at least one letter."
+  echo "Usernames must be lowercase alphanumeric with at least one letter and not 'root'."
   echo "... please try again."
 done
 
@@ -63,7 +63,7 @@ then
 else
   echo
   echo 'Please correct the errors displayed before trying again.'
-  
+
   # restore backup files
   cp "${BACKUP_DIR}/hosts" "$HOSTS"
   cp "${BACKUP_DIR}/network" "$NETWORK"
