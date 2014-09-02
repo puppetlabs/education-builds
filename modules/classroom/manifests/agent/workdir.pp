@@ -35,7 +35,7 @@ define classroom::agent::workdir (
         replace => false,
       }
 
-      file { "${workdir}/environment.conf":
+      file { "/etc/puppetlabs/puppet/environments/production/environment.conf":
         ensure  => file,
         content => "environment_timeout = 0\n",
         replace => false,
