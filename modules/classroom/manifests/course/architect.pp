@@ -24,16 +24,22 @@ class classroom::course::architect (
 
     # prepare mcollective certs & config for syncronization
     include classroom::mcollective::master
+
+    # Include the Irssi setup and collect all hosts
+    include classroom::agent::irc
+    include classroom::agent::hosts
   }
   elsif $role == 'agent' {
     # synchronize mcollective certs & config to client node
     include classroom::mcollective::client
     include classroom::agent::r10k
     include classroom::master::reporting_tools
+
+    # Include the Irssi setup and collect all hosts
+    include classroom::agent::irc
+    include classroom::agent::hosts
+
+    # The student masters should export a balancermember
+    include classroom::master::balancermember
   }
-
-  # Everyone gets Irssi
-  include classroom::agent::irc
-  include classroom::agent::hosts
 }
-

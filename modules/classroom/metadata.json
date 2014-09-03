@@ -1,4 +1,20 @@
 {
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": "6"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
   "name": "pltraining-classroom",
   "version": "0.0.2",
   "author": "pltraining",
@@ -10,17 +26,16 @@
   "description": "Important! This is not the module you are looking for\n    unless you are a trainer teaching Puppet Labs training courses!\n    - Configures and sets up classroom environment for Puppet Classroom trainings.",
   "dependencies": [
     {"name":"jamtur01/irc",         "version_requirement":">= 0.0.7"},
-    {"name":"puppetlabs/apache",    "version_requirement":">= 0.8.1"},
-    {"name":"puppetlabs/concat",    "version_requirement":">= 0.1.0"},
-    {"name":"puppetlabs/git",       "version_requirement":">= 0.0.3"},
-    {"name":"puppetlabs/haproxy",   "version_requirement":">= 0.5.0"},
-    {"name":"puppetlabs/mysql",     "version_requirement":">= 0.9.0"},
-    {"name":"puppetlabs/ntp",       "version_requirement":">= 3.0.1"},
-    {"name":"puppetlabs/vcsrepo",   "version_requirement":">= 0.1.2"},
-    {"name":"pltraining/userprefs", "version_requirement":">= 0.0.2"},
-    {"name":"hunner/wordpress",     "version_requirement":">= 0.4.0"},
-    {"name":"zack/r10k",            "version_requirement":">= 1.0.2"},
+    {"name":"puppetlabs/apache",    "version_requirement":">= 1.1.1"},
+    {"name":"puppetlabs/concat",    "version_requirement":">= 1.0.4"},
+    {"name":"puppetlabs/git",       "version_requirement":">= 0.2.0"},
+    {"name":"puppetlabs/haproxy",   "version_requirement":">= 1.0.0"},
+    {"name":"puppetlabs/mysql",     "version_requirement":">= 2.3.1"},
+    {"name":"puppetlabs/ntp",       "version_requirement":">= 3.1.2"},
+    {"name":"puppetlabs/vcsrepo",   "version_requirement":">= 1.1.0"},
+    {"name":"pltraining/userprefs", "version_requirement":">= 0.0.3"},
+    {"name":"hunner/wordpress",     "version_requirement":">= 0.6.0"},
+    {"name":"zack/r10k",            "version_requirement":">= 2.2.7"},
     {"name":"zack/exports",         "version_requirement":">= 0.0.4"}
   ]
 }
-

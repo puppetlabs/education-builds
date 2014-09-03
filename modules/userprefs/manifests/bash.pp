@@ -5,6 +5,12 @@ class userprefs::bash (
   $password = undef,
   $replace  = false,
 ) {
+  File {
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+  }
+
   package { 'bash':
     ensure => present,
   }

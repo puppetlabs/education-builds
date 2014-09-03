@@ -6,6 +6,13 @@ echo "This script will automate the setup of the Puppetlabs Training Classroom"
 echo
 offer_bailout
 
+# backup /etc/hosts and /etc/sysconfig/network
+HOSTS=/etc/hosts
+NETWORK=/etc/sysconfig/network
+BACKUP_DIR=$(mktemp -d)
+cp "$HOSTS" "$BACKUP_DIR"
+cp "$NETWORK" "$BACKUP_DIR"
+
 ipaddr=`hostname -I`
 echo "Your IP address appears to be ${ipaddr}"
 echo "If this is not correct, cancel now."
@@ -43,7 +50,7 @@ check_success "Setting hostname on boot"                            \
       "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${username}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
 
 check_success "Synchronizing time with the classroom master"        \
-      "$(ntpdate master.puppetlabs.vm 2>&1)"
+      "$(ntpdate -u master.puppetlabs.vm 2>&1)"
 
 if [ $ERRORCOUNT -eq 0 ]
 then
@@ -51,7 +58,13 @@ then
 
   # Now actually perform the install. Yay for packages!
   curl -k https://master.puppetlabs.vm:8140/packages/current/install.bash | bash
+
+  rm -rf "$BACKUP_DIR"
 else
   echo
   echo 'Please correct the errors displayed before trying again.'
+  
+  # restore backup files
+  cp "${BACKUP_DIR}/hosts" "$HOSTS"
+  cp "${BACKUP_DIR}/network" "$NETWORK"
 fi

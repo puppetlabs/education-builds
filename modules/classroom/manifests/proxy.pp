@@ -1,5 +1,14 @@
 class classroom::proxy {
   include '::haproxy'
+
+  haproxy::listen { 'puppet00':
+    ipaddress => $::ipaddress,
+    ports     => '8140',
+    options   => {
+      'mode'  => 'tcp',
+    },
+  }
+
   haproxy::listen { 'wordpress00':
     ipaddress => $::ipaddress,
     ports     => '80',
@@ -21,7 +30,7 @@ class classroom::proxy {
 
   @@host { $::fqdn:
     ensure       => present,
-    host_aliases => [$::hostname, 'irc.classroom.vm'],
+    host_aliases => [$::hostname, 'irc.puppetlabs.vm'],
     ip           => $::ipaddress,
     tag          => 'classroom'
   }
