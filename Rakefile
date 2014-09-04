@@ -175,7 +175,6 @@ task :createiso, [:vmos,:vmtype] do |t,args|
     # Parse templates and output in BUILDDIR
     $settings[:pe_install_suffix] = '-ubuntu-12.04-i386'
     $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
-    end
     $settings[:pe_tarball] = @ubuntu_pe_tarball
     # No variables
     build_file('lang')
