@@ -708,6 +708,6 @@ def get_pe(pe_install_suffix)
     cputs "Verifying installer signature"
     raise ('Installer verification failed') unless system("gpg --verify --always-trust #{installer}.asc #{installer}")
   end
-  return [ pe_tarball ]
+  return pe_tarball
 end
 # vim: set sw=2 sts=2 et tw=80 :
