@@ -92,10 +92,6 @@ ln -s /root/<%= fname %> /root/puppet-enterprise
 rm -f /root/<%= $settings[:pe_tarball] %>
 <% end %>
 
-# Cache agent tarball for pe_repo
-mkdir -p /usr/src/installer/<%= @real_pe_ver %>
-cp /mnt/puppet/<%= $settings[:agent_tarball] %> /usr/src/installer/<%= @real_pe_ver %>/
-
 rpm -Uvh /mnt/puppet/epel-release.rpm
 yum -y install git
 #yum -y upgrade #This takes a while
