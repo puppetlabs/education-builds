@@ -24,7 +24,7 @@ check "grep HOSTNAME=${NAME}.puppetlabs.vm /etc/sysconfig/network"  \
       "You should set HOSTNAME=${NAME}.puppetlabs.vm in /etc/sysconfig/network"
 
 check "ping -c1 master.puppetlabs.vm"                               \
-      "Checking master name resolution"                             \
+      "Checking master name resolves and is pingable"               \
       "You should have an entry in /etc/hosts for master.puppetlabs.vm"
 
 check "ping -c1 ${NAME}.puppetlabs.vm"                              \
