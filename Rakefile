@@ -23,7 +23,7 @@ VBOXDIR = "#{BUILDDIR}/vbox"
 # then,
 # Edit the PEVERSION to something like:
 # PEVERSION = '3.0.1-rc0-58-g9275a0f'
-PEVERSION = ENV['PEVERSION'] || '3.3.1'
+PEVERSION = ENV['PEVERSION'] || '3.3.2'
 PESTATUS = ENV['PESTATUS'] || 'release'
 $settings = Hash.new
 
