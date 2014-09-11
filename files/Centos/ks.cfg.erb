@@ -93,7 +93,7 @@ rm -f /root/<%= $settings[:pe_tarball] %>
 <% end %>
 
 rpm -Uvh /mnt/puppet/epel-release.rpm
-yum -y install git
+yum -y install git ruby ruby-devel rubygems-json
 #yum -y upgrade #This takes a while
 cd /usr/src
 git clone /mnt/puppet/puppet.git
