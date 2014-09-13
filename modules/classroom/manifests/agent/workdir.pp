@@ -27,7 +27,11 @@ define classroom::agent::workdir (
     }
 
     if $populate {
-      file { "${workdir}/site.pp":
+      file { "${workdir}/manifests":
+        ensure => directory,
+      }
+
+      file { "${workdir}/manifests/site.pp":
         ensure  => file,
         source  => 'puppet:///modules/classroom/site.pp',
         replace => false,
