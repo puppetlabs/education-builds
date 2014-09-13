@@ -30,6 +30,9 @@ class classroom::params {
   # time servers to use if we've got network
   $time_servers = ['0.pool.ntp.org iburst', '1.pool.ntp.org iburst', '2.pool.ntp.org iburst', '3.pool.ntp.org']
 
+  # list of module repositorites that should be precreated for the virtual courses
+  $precreated_repositories = [ 'motd', 'helloworld', 'mongodb' ]
+
   # is this a student's tier3 agent in Architect?
   if $domain != 'puppetlabs.vm' {
     $role = 'tier3'
@@ -43,7 +46,7 @@ class classroom::params {
   }
 
   $download = "\n\nPlease download a new VM: http://downloads.puppetlabs.com/training/\n\n"
-  if versioncmp($::classroom_vm_release, '2.5') < 0 {
+  if $::classroom_vm_release and versioncmp($::classroom_vm_release, '2.5') < 0 {
     fail("Your VM is out of date. ${download}")
   }
 
