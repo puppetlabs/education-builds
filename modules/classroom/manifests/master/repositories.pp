@@ -2,6 +2,8 @@
 # If it is included, hiera will be configured with environment
 # support, the environments directory will be managed and if
 # teams are defined, their repositories will be managed.
+# We also enable directory environments, by including that class.
+
 class classroom::master::repositories {
   File {
     owner => 'root',
@@ -14,6 +16,9 @@ class classroom::master::repositories {
   file { ['/var/repositories', '/etc/puppetlabs/puppet/environments']:
     ensure => directory,
   }
+
+  # Enable directory environments
+  include classroom::master::directory_environments
 
   # configure Hiera environments for the master
   include classroom::master::hiera
