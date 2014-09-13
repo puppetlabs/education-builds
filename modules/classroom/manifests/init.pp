@@ -14,7 +14,6 @@
 #   * creates an environment root for checking out working copies
 #   * instantiate all exported classroom::users
 #       * creates a shell user with ssh key
-#       * creates a puppet.conf environment fragment
 #       * creates a bare repository in repo root
 #       * checks out a working copy in the environments root
 #
