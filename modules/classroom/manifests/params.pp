@@ -31,7 +31,7 @@ class classroom::params {
   $time_servers = ['0.pool.ntp.org iburst', '1.pool.ntp.org iburst', '2.pool.ntp.org iburst', '3.pool.ntp.org']
 
   # list of module repositorites that should be precreated for the virtual courses
-  $precreated_repositories = [ 'motd', 'helloworld', 'mongodb' ]
+  $precreated_repositories = [ 'critical_policy', 'registry', 'profiles' ]
 
   # is this a student's tier3 agent in Architect?
   if $domain != 'puppetlabs.vm' {
