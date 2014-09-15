@@ -2,7 +2,7 @@
   "operatingsystem_support": [
     {
       "operatingsystem": "CentOS",
-      "operatingsystemrelease": [ "5.0", "6.0" ]
+      "operatingsystemrelease": [ "5.0", "6.0", "7.0" ]
     }
   ],
   "requirements": [
@@ -32,10 +32,11 @@
     {"name":"puppetlabs/haproxy",   "version_requirement":">= 1.0.0"},
     {"name":"puppetlabs/mysql",     "version_requirement":">= 2.3.1"},
     {"name":"puppetlabs/ntp",       "version_requirement":">= 3.1.2"},
+    {"name":"puppetlabs/stdlib",    "version_reqiurement":">= 4.0.0"},
     {"name":"puppetlabs/vcsrepo",   "version_requirement":">= 1.1.0"},
     {"name":"pltraining/userprefs", "version_requirement":">= 0.0.3"},
     {"name":"hunner/wordpress",     "version_requirement":">= 0.6.0"},
-    {"name":"zack/r10k",            "version_requirement":">= 2.2.7"},
+    {"name":"zack/r10k",            "version_requirement":">= 2.3.0"},
     {"name":"zack/exports",         "version_requirement":">= 0.0.4"}
   ]
 }
