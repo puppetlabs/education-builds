@@ -1,15 +1,16 @@
 class userprefs::zsh (
   $user     = 'root',
+  $group    = 'root',
   $homedir  = '/root',
   $default  = true,
   $password = undef,
 ) {
   File {
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    owner => $user,
+    group => $group,
+    mode  => '0644',
   }
-  
+
   package { 'zsh':
     ensure => present,
   }

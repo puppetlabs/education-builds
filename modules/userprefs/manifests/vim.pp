@@ -1,14 +1,15 @@
 class userprefs::vim (
   $user    = 'root',
+  $group   = 'root',
   $homedir = '/root',
   $default = true,
 ) {
   File {
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    owner => $user,
+    group => $group,
+    mode  => '0644',
   }
-  
+
   package { 'vim-enhanced':
     ensure => present,
   }

@@ -1,12 +1,14 @@
 class userprefs::profile (
+  $user    = 'root',
+  $group   = 'root',
   $homedir = '/root',
 ) {
   File {
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    owner => $user,
+    group => $group,
+    mode  => '0644',
   }
-  
+
   # Shell aliases that are used by all shells
   file { "${homedir}/.profile":
     ensure  => 'file',
