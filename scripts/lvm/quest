@@ -1,4 +1,67 @@
 #!/bin/bash
+#
+# This script was written by Evan K Langlois and donated to PuppetLabs
+# without restrictions of any kind.  Comments to: uudruid74@gmail.com
+# Run with "resetlocks" for emergency cleanup.  The updatecache argument
+# is to just force an update of the caches, namely to be run from bash's
+# PROMPT_COMMAND so that tmux can just use the caches instead of wasting
+# cpu on running a command over and over that can only change when the
+# user runs a command anyway.
+#
 
-cd /root/.testing/
-/opt/puppet/bin/ruby /root/.testing/test.rb $* 2>/dev/null
+CMDLINE=`echo $* | tr -d ' '` 
+BASE=`basename $0`
+BUFFER="/tmp/${BASE}${CMDLINE}.out"
+LOCK="/tmp/${BASE}.lck"
+RUBY='/opt/puppet/bin/ruby'
+DIR='/root/.testing'
+TEST='test.rb'
+
+#- There is special behavior when run from tmux
+#- As long as a lock file exists, we use the previous output
+#- The cached output isn't used as long as there is no lock,
+#- meaning the command line completed.
+
+if [ "$1" == "updatecache" ] || \
+          [[ `cat /proc/$PPID/cmdline` =~ 'tmux' ]]; then
+  if [ "$1" == "updatecache" ]; then
+    echo OldCommand $*
+    shift
+    CMDLINE=`echo $* | tr -d ' '`
+    BUFFER="/tmp/${BASE}${CMDLINE}.out"
+    echo NewCommand $*
+    
+  fi
+  if [ -e $LOCK ]; then       #- lock exists
+    if [ -s $BUFFER ]; then   #- is not empty - use cached output
+      cat $BUFFER
+      exit
+    else                      #- generating cache
+                              #- let other task run
+      exit
+    fi
+  else                        #- no lock, run new copy
+    trap "rm -f $LOCK" EXIT
+    touch $LOCK
+  fi
+                              #- This part is run by tmux and cached
+  cd $DIR 
+  $RUBY $TEST $* 2>/dev/null | tee $BUFFER.part
+                              #- Only cache non-empty outputs
+  if [ -s "$BUFFER.part" ]; then
+      mv $BUFFER.part $BUFFER
+  fi
+else                          #- not run by tmux - super reset option
+    if [ "$1" == "resetlocks" ]; then
+      echo Killing all instances of $TEST and resetting lock
+      trap "rm -f /tmp/${BASE}*" EXIT
+      ps -ef | grep $RUBY | grep $TEST | awk  '{ print $2 }' \
+            | xargs kill 2>/dev/null
+      exit
+    else                      #- No caching, just run
+                              #- Manually run - original script
+      cd $DIR
+      $RUBY $TEST $* 2>/dev/null 
+    fi
+fi
+
