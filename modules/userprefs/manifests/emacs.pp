@@ -1,14 +1,15 @@
 class userprefs::emacs (
   $user    = 'root',
+  $group   = 'root',
   $homedir = '/root',
   $default = true,
 ) {
   File {
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    owner => $user,
+    group => $group,
+    mode  => '0644',
   }
-  
+
   package { 'emacs':
     ensure => present,
   }

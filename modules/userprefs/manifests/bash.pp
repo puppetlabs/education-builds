@@ -1,14 +1,15 @@
 class userprefs::bash (
   $user     = 'root',
+  $group    = 'root',
   $homedir  = '/root',
   $default  = true,
   $password = undef,
   $replace  = false,
 ) {
   File {
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    owner => $user,
+    group => $group,
+    mode  => '0644',
   }
 
   package { 'bash':

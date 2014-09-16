@@ -7,19 +7,25 @@
 #           Accepts zsh/bash
 #
 class userprefs::user (
-  $user   = 'root',
+  $user   = $::id,
   $editor = undef,
   $shell  = undef,
 ) {
-  $homedir = $user ? {
-    'root'  => '/root',
-    default => "/home/${user}",
+  # this weird conditional is to support non-root users in Intro
+  if $user == 'root' {
+    $group   = 'root'
+    $homedir = '/root'
+  }
+  else {
+    $group   = 'pe-puppet'
+    $homedir = "/home/${user}"
   }
 
   if $editor {
     if $editor in ['vim', 'emacs', 'nano'] {
       class { "userprefs::${editor}":
         user    => $user,
+        group   => $group,
         homedir => $homedir,
       }
     }
@@ -32,6 +38,7 @@ class userprefs::user (
     if $shell in ['bash', 'zsh'] {
       class { "userprefs::${shell}":
         user    => $user,
+        group   => $group,
         homedir => $homedir,
       }
     }
@@ -41,6 +48,8 @@ class userprefs::user (
   }
 
   class { 'userprefs::profile':
+    user    => $user,
+    group   => $group,
     homedir => $homedir,
   }
 }
