@@ -12,7 +12,8 @@ require 'yaml'
 
 Puppet.initialize_settings
 
-datafile  = File.expand_path('~/puppetruns.yaml')
+username  = `who -m`.split.first
+datafile  = File.expand_path("~#{username}/puppetruns.yaml")
 reportdir = Puppet.settings[:reportdir]
 stats     = {}
 
