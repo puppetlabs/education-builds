@@ -16,7 +16,7 @@
     }
   ],
   "name": "pltraining-classroom",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "pltraining",
   "summary": "Manages Puppet Labs training classroom environments",
   "license": "Apache 2.0",
@@ -31,8 +31,7 @@
     {"name":"puppetlabs/git",       "version_requirement":">= 0.2.0"},
     {"name":"puppetlabs/haproxy",   "version_requirement":">= 1.0.0"},
     {"name":"puppetlabs/mysql",     "version_requirement":">= 2.3.1"},
-    {"name":"puppetlabs/ntp",       "version_requirement":">= 3.1.2"},
-    {"name":"puppetlabs/stdlib",    "version_requirement":">= 4.0.0"},
+    {"name":"puppetlabs/ntp",       "version_requirement":">= 3.2.0"},
     {"name":"puppetlabs/vcsrepo",   "version_requirement":">= 1.1.0"},
     {"name":"pltraining/userprefs", "version_requirement":">= 0.0.3"},
     {"name":"hunner/wordpress",     "version_requirement":">= 0.6.0"},
