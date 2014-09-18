@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Classes</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/index.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/glossary.html">
+                                    Glossary
+                                </a>
+                            <li>
+                                <a href="https://puppetlabs.com/learn" target="_blank">
+                                    Learning Resources
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://docs.puppetlabs.com" target="_blank">
+                                    Puppet Docs
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" class="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/big_picture.html">Power of Puppet</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resource_ordering.html">Ordering</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="active">
+                                <a href="/quests/classes_quest.html" class = "active">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/modules_quest.html">Modules</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/puppet_module_tool_quest.html">Puppet Module Tool</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/afterword.html">Afterword</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/glossary.html">Glossary</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+                <h1>Classes</h1>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Welcome Quest</li>
+<li>Power of Puppet Quest</li>
+<li>Resources Quest</li>
+<li>Mainfest Quest</li>
+<li>Variables Quest</li>
+<li>Conditions Quest</li>
+<li>Ordering Quest</li>
+</ul>
+
+<a id=""><h2>Quest Objectives</h2></a>
+
+<ul>
+<li>Understand what a <em>class</em> means in Puppet's Language</li>
+<li>Learn how to use a class definition</li>
+<li>Understand the difference between defining and declaring a class</li>
+</ul>
+
+<a id=""><h2>Getting Started</h2></a>
+
+<p>So we've mentioned the term <em>class</em> in previous quests. In this quest we cover the use of classes within a Puppet manifest to group resource declarations (and everything we've learned up to this point) into reusable blocks of Puppet code. When you're ready to get started, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start classes
+</code></pre></div>
+<div class="lvm-inline-aside">
+<h4>This is just an example </h4>
+<p></p>
+<p>We've written this quest to help you learn the functionality and purpose of classes. To keep things simple, we will write code to both define classes and include them within a single manifest. Keep in mind however, that in practice you will always define your classes in a separate manifest. In the Modules Quest we will show you the proper way define classes and declare classes separately.</p>
+</div>
+
+<a id=""><h2>Defining Classes</h2></a>
+
+<p>In Puppet's language <strong>classes</strong> are named blocks of Puppet code. Once you have defined a class, you can invoke it by name. Puppet will manage all the resources that are contained in the class defintion once the class is invoked. Please remember that classes in Puppet are not related to classes in Object Oriented Programming. In Puppet, classes serve as named containers for blocks of Puppet code.</p>
+
+<p>Let's dive right in, and look at an example of a class definition. We have created a class definition for you. Look at the contents of the file <code>/root/examples/modules1-ntp1.pp</code>. Open it using <code>nano</code> or your favorite text editor. </p>
+
+<p>The file should contain the following code:</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="kd">class</span> <span class="nc">ntp</span> <span class="p">{</span>
+  <span class="kr">case</span> <span class="nv">$operatingsystem</span> <span class="p">{</span>
+    <span class="ss">centos</span><span class="p">,</span> <span class="ss">redhat</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nv">$service_name</span> <span class="o">=</span> <span class="s1">'ntpd'</span>
+      <span class="nv">$conf_file</span>    <span class="o">=</span> <span class="s1">'ntp.conf.el'</span>
+    }
+    <span class="ss">debian</span><span class="p">,</span> <span class="ss">ubuntu</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nv">$service_name</span> <span class="o">=</span> <span class="s1">'ntp'</span>
+      <span class="nv">$conf_file</span>    <span class="o">=</span> <span class="s1">'ntp.conf.debian'</span>
+    }
+  <span class="p">}</span>
+
+  <span class="nc">package</span> <span class="p">{</span> <span class="s1">'ntp'</span><span class="p">:</span>
+    <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="ss">installed</span><span class="p">,</span>
+  <span class="p">}</span>
+  <span class="nc">file</span> <span class="p">{</span> <span class="s1">'ntp.conf'</span><span class="p">:</span>
+    <span class="nt">path</span>    <span class="p">=&gt;</span> <span class="s1">'/etc/ntp.conf'</span><span class="p">,</span>
+    <span class="nt">ensure</span>  <span class="p">=&gt;</span> <span class="ss">file</span><span class="p">,</span>
+    <span class="nt">require</span> <span class="p">=&gt;</span> <span class="nc">Package</span><span class="p">[</span><span class="s1">'ntp'</span><span class="p">],</span>
+    <span class="nt">source</span>  <span class="p">=&gt;</span> <span class="s2">"/root/examples/answers/</span><span class="si">${conf_file}</span><span class="s2">"</span>
+  <span class="p">}</span>
+  <span class="nc">service</span> <span class="p">{</span> <span class="s1">'ntp'</span><span class="p">:</span>
+    <span class="nt">name</span>      <span class="p">=&gt;</span> <span class="nv">$service_name</span><span class="p">,</span>
+    <span class="nt">ensure</span>    <span class="p">=&gt;</span> <span class="ss">running</span><span class="p">,</span>
+    <span class="nt">enable</span>    <span class="p">=&gt;</span> <span class="ss">true</span><span class="p">,</span>
+    <span class="nt">subscribe</span> <span class="p">=&gt;</span> <span class="nc">File</span><span class="p">[</span><span class="s1">'ntp.conf'</span><span class="p">],</span>
+  <span class="p">}</span>
+}
+</code></pre></div>
+
+<p>That's a class definition. As you can see, there is a <code>case</code> statement, and three resources, all contained within the following pair of curly braces:</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="kd">class</span> <span class="nc">ntp</span> <span class="p">{</span>
+
+}
+</code></pre></div>
+
+<p>The conditional (<code>case</code> statement) sets up the value for the <code>$service_name</code> and <code>$conf_file</code> variables appropriately for a set of operating systems. Three resources - a package, a file, and a service are defined, which use the variables to provide flexibility.</p>
+
+<p>Now what would happen if we applied this manifest, containing the class definition?</p>
+
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<p>Apply the manifest containing the <code>ntp</code> class definition:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet apply /root/examples/modules1-ntp1.pp
+</code></pre></div>
+<p>That's funny. Nothing happened, and nothing changed on the system!</p>
+
+<p>This is because the class in the <code>modules1-ntp1.pp</code> manifest is only being defined and not declared. When you applied the manifest, it is as if Puppet went, "Ok! Got it. When you ask for class ntp, I am to know that it refers to everything in the definition." You have to <em>declare</em> the class in order to make changes and manage to the resources specified in the definition. Declared? What's that? We will discuss that next.</p>
+
+<a id=""><h2>Declaring Classes</h2></a>
+
+<p>In the previous section, we saw an example of a class definition and learned that a class is a collection of resources. The question that still needs answering is, how can we use the class definition? How can we tell Puppet to use the definition as part of configuring a system?</p>
+
+<p>The simplest way to direct Puppet to apply a class definition on a system is by using the <code>include</code> directive. For example, to invoke class ntp you would have to say:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">include ntp
+</code></pre></div>
+<p>in a Puppet Manifest, and apply that manifest.</p>
+
+<p>Now you might wonder how Puppet knows <em>where</em> to find the definition for the class. Fair question. The answer involves Modules, the subject of our next lesson. For now, since we want to try applying the definition for class ntp, let's put the line <code>include ntp</code> right after the class definition.</p>
+
+<p>We have already done that for you, open the file <code>/root/examples/modules1-ntp2.pp</code>:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">nano /root/examples/modules1-ntp2.pp
+</code></pre></div>
+<p>You should see the line:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">include ntp
+</code></pre></div>
+<p>as the very last line of the file.</p>
+
+<div class="lvm-task-number"><p>Task 2 :</p></div>
+
+<p>Declare class ntp</p>
+
+<p>Go ahead and now apply the manifest <code>/root/examples/modules1-ntp2.pp</code>.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">HINT: Use the puppet apply tool. Refer to the Manifests Quest.
+</code></pre></div>
+<p>Great! This time Puppet actually managed the resources in the definition of class ntp. </p>
+
+<p>Again, please do not ever do this above example in real life, since you <em>always</em>  want to separate the definition from the declaration. This is just an example to show you the functionality and benefit of classes. In the Modules Quest we will show you the proper way define classes and declare classes separately.</p>
+
+<a id=""><h2>A detailed look at the lvmguide class</h2></a>
+
+<p>In the Power of Puppet Quest, we used a class called <code>lvmguide</code> to help us set up the website version of this Quest Guide. The <code>lvmguide</code> class gives us a nice illustration of structuring a class definition. We've included the code from the <code>lvmguide</code> class declaration below for easy reference as we talk about defining classes. Don't worry if a few things remain unclear at this point. For now, we're going to focus primarily on how class definitions work.</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="kd">class</span> <span class="nc">lvmguide</span> <span class="p">(</span> 
+  <span class="nv">$document_root</span> <span class="p">=</span> <span class="s1">'/var/www/html/lvmguide'</span><span class="p">,</span>
+  <span class="nv">$port</span> <span class="p">=</span> <span class="s1">'80'</span><span class="p">,</span>
+<span class="p">){</span>
+ <span class="nc">class</span> <span class="p">{</span> <span class="s1">'apache'</span><span class="p">:</span>
+   <span class="nt">default_vhost</span> <span class="p">=&gt;</span> <span class="ss">false</span><span class="p">,</span>
+ <span class="p">}</span>
+ <span class="nc">apache::vhost</span> <span class="p">{</span> <span class="s1">'learning.puppetlabs.vm'</span><span class="p">:</span>
+   <span class="nt">port</span>    <span class="p">=&gt;</span> <span class="nv">$port</span><span class="p">,</span>
+   <span class="nt">docroot</span> <span class="p">=&gt;</span> <span class="nv">$document_root</span><span class="p">,</span>
+ <span class="p">}</span>
+ <span class="nc">file</span> <span class="p">{</span> <span class="s1">'/var/www/html/lvmguide'</span><span class="p">:</span>
+   <span class="nt">ensure</span>  <span class="p">=&gt;</span> <span class="ss">directory</span><span class="p">,</span>
+   <span class="nt">owner</span>   <span class="p">=&gt;</span> <span class="nv">$::apache::params::user</span><span class="p">,</span>    
+   <span class="nt">group</span>   <span class="p">=&gt;</span> <span class="nv">$::apache::params::group</span><span class="p">,</span>    
+   <span class="nt">source</span>  <span class="p">=&gt;</span> <span class="s1">'puppet:///modules/lvmguide/html'</span><span class="p">,</span> 
+   <span class="nt">recurse</span> <span class="p">=&gt;</span> <span class="ss">true</span><span class="p">,</span>    
+   <span class="nt">require</span> <span class="p">=&gt;</span> <span class="nc">Class</span><span class="p">[</span><span class="s1">'apache'</span><span class="p">],</span>
+  <span class="p">}</span>
+}
+</code></pre></div>
+
+<p>In this example we've <strong>defined</strong> a class called <code>lvmguide</code>. The first line of the class definition begins with the word <code>class</code>, followed by the name of the class we're defining: in this case, <code>lvmguide</code>.</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="kd">class</span> <span class="nc">lvmguide</span> <span class="p">(</span>
+</code></pre></div>
+
+<p>Notice that instead of the usual curly bracket, there is an open parenthesis at the end of this first line, and it isn't until after the closing parenthesis that we see the opening curly bracket.</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="kd">class</span> <span class="nc">lvmguide</span> <span class="p">(</span>  
+  <span class="nv">$document_root</span> <span class="p">=</span> <span class="s1">'/var/www/html/lvmguide'</span><span class="p">,</span>
+  <span class="nv">$port</span> <span class="p">=</span> <span class="s1">'80'</span><span class="p">,</span>
+<span class="p">){</span>
+</code></pre></div>
+
+<p>The variable declarations contained in these parentheses are called class <strong>parameters</strong>.</p>
+
+<p>Class parameters allow you to pass a set of parameters to a class. In this case, the parameters are <code>$document_root</code> and <code>$port</code>. The values assigned to these parameters in the class definition are the <strong>default values</strong>, which will be used whenever values for the parameters are not passed in.</p>
+
+<p>The first item you see inside the curly braces is... another class! One of the advantages of keeping your classes modular is that you can easily pull together all the classes you need to achieve a particular purpose.</p>
+
+<div class="highlight"><pre><code class="puppet">  <span class="nc">class</span> <span class="p">{</span> <span class="s1">'apache'</span><span class="p">:</span>
+    <span class="nt">default_vhost</span> <span class="p">=&gt;</span> <span class="ss">false</span><span class="p">,</span>
+  <span class="p">}</span>
+</code></pre></div>
+
+<p>Notice how the code looks similar to how you might describe a user, file or package resource. It looks like a <em>declaration</em>. It is, indeed, a <em>class declaration</em>. This is the an alternative to using <code>include</code> to invoke existing class definitions. In this case, we wanted to set up an apache server to host our Quest Guide content as a website. Instead of trying to reinvent the wheel, we are able to pull in the existing <code>apache</code> class from the <code>apache</code> module we downloaded from the Forge.  </p>
+
+<p>If we had wanted to include the <code>apache</code> class with its default parameter settings, we could have used the <code>include apache</code> syntax. Turns out that just like the <code>lvmguide</code> class, the <code>apache</code> class is defined to accept parameters. Since we wanted to set the <code>default_vhost</code> parameter, we used the resource-like class declaration syntax. This allows us to set <code>default_vhost</code> to <code>false</code>.</p>
+
+<p>Our final two code blocks in the class definition are resource declarations:</p>
+
+<div class="highlight"><pre><code class="puppet">  <span class="nc">apache::vhost</span> <span class="p">{</span> <span class="s1">'learning.puppetlabs.vm'</span><span class="p">:</span>
+    <span class="nt">port</span>    <span class="p">=&gt;</span> <span class="nv">$port</span><span class="p">,</span>
+    <span class="nt">docroot</span> <span class="p">=&gt;</span> <span class="nv">$document_root</span><span class="p">,</span>
+  <span class="p">}</span>
+  <span class="nc">file</span> <span class="p">{</span> <span class="s1">'/var/www/html/lvmguide'</span><span class="p">:</span>
+    <span class="nt">ensure</span>  <span class="p">=&gt;</span> <span class="ss">directory</span><span class="p">,</span>
+    <span class="nt">owner</span>   <span class="p">=&gt;</span> <span class="nv">$::apache::params::user</span><span class="p">,</span>
+    <span class="nt">group</span>   <span class="p">=&gt;</span> <span class="nv">$::apache::params::group</span><span class="p">,</span>
+    <span class="nt">source</span>  <span class="p">=&gt;</span> <span class="s1">'puppet:///modules/lvmguide/html'</span><span class="p">,</span>
+    <span class="nt">recurse</span> <span class="p">=&gt;</span> <span class="ss">true</span><span class="p">,</span>
+    <span class="nt">require</span> <span class="p">=&gt;</span> <span class="nc">Class</span><span class="p">[</span><span class="s1">'apache'</span><span class="p">],</span>
+  <span class="p">}</span>
+</code></pre></div>
+
+<p>First, we declare a <code>apache::vhost</code> resource type, and pass along values from our class parameters to its <code>port</code> and <code>docroot</code> attributes.</p>
+
+<p>As in the above example, class definitions give you a concise way to group other classes and resource declarations into re-usable blocks of Puppet code. You can then selectively assign these classes to different machines across your Puppetized network in order to easily configure those machines to fulfill the defined function. Now that the <code>lvmguide</code> class is defined, enabling the Quest Guide website on other machines would be as easy as assigning that class in the PE Console.</p>
+
+<a id=""><h2>Review</h2></a>
+
+<p>We learned about classes, and how to define them. We also learned two way to invoke classes - using the <code>include</code> keyword, and declaring classes using a syntax similar to resource declarations. Classes are whole lot more useful once we understand what modules are, and we will learn about Modules in the next quest.</p>
+
+            </div>
+        </div>
+        <div id="footer">
+</div>
+       
+    </div>
+    </body>
+</html>

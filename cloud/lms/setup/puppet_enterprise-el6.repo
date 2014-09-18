@@ -1,0 +1,6 @@
+[pe_installer]
+baseurl=file:///home/ec2-user/setup/puppet-enterprise-3.3.1-el-6-x86_64/packages/el-6-x86_64
+gpgcheck=0
+name=Local Puppet Enterprise Installer
+enabled=1
+

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Welcome</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/index.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/glossary.html">
+                                    Glossary
+                                </a>
+                            <li>
+                                <a href="https://puppetlabs.com/learn" target="_blank">
+                                    Learning Resources
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://docs.puppetlabs.com" target="_blank">
+                                    Puppet Docs
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" class="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li class="active">
+                                <a href="/index.html" class = "active">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/big_picture.html">Power of Puppet</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resource_ordering.html">Ordering</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/modules_quest.html">Modules</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/puppet_module_tool_quest.html">Puppet Module Tool</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/afterword.html">Afterword</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/glossary.html">Glossary</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+                <h1>Welcome</h1>
+
+<a id=""><h2>Quest Objectives</h2></a>
+
+<ul>
+<li>Learn about the value of Puppet and Puppet Enterprise</li>
+<li>Familiarize yourself with the Quest structure and tool</li>
+</ul>
+
+<a id=""><h2>Getting Started</h2></a>
+
+<p>In this quest we'll introduce you to the Learning VM and give you the information you need to get you started on your learning adventure. When you're ready to get started, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start welcome
+</code></pre></div>
+<a id=""><h2>The Puppet Enterprise Learning Virtual Machine</h2></a>
+
+<blockquote>
+<p>Any sufficiently advanced technology is indistinguishable from magic.</p>
+
+<p>-Arthur C. Clarke</p>
+</blockquote>
+
+<p>Welcome to the Quest Guide for the Puppet Enterprise Learning Virtual Machine (VM). This guide is your companion to learning Puppet using the Learning VM. You should have started up the VM by now, and have an IP Address for the VM. </p>
+
+<p>Use the IP address to SSH to the VM. We do this for convenience and it's essential for you to get the most out of the Learning VM and this Quest Guide. </p>
+
+<p>If you are logged in directly to the Virtual Machine, please logout from it by typing the following command in the VM's terminal and pressing Enter:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">exit
+</code></pre></div>
+<p>We will now connect to the VM over SSH.</p>
+
+<p>To SSH to the VM, on a Linux system or a Mac, you can open a Terminal application and run the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">ssh root@&lt;ip-address&gt;
+</code></pre></div>
+<p>where <code>&lt;ip-address&gt;</code> will be replaced by the IP address for your Learning VM that you noted down when setting up your VM.</p>
+
+<p>If you are using a Windows computer, please use an SSH client. We recommend <a href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/download.html">Putty</a>.</p>
+
+<p>Here are the credentials to log in to the Learning VM via SSH:</p>
+
+<p>username: <strong>root</strong><br>
+password: <strong>puppet</strong></p>
+
+<p>Once you're logged in, feel free to take a look around. You will see the Learning VM is fairly typical of a Unix-based operating system. You should be aware though, that some services are running in the background, including the SSH service you're using to access this Learning VM from your own terminal.</p>
+
+<p>We should give you a heads up; since you're logged in to the <code>root</code> account, which is garnished by the <code>uid =&gt; 0</code>, you carry the mark of a <em>Superuser</em>. Your account gives you the ability to change just about anything you would like in this Learning VM, just as you would if you were tasked with administrating a machine.</p>
+
+<p>By following this Quest Guide, you will learn how Puppet allows you to use these privileges easily and effectively.</p>
+
+<a id=""><h2>What is Puppet?</h2></a>
+
+<p>So what is Puppet, and why should you care? At a high level, Puppet manages your machines' configurations. You describe your machine configurations in an easy-to-read declarative language, known as the Puppet DSL, and Puppet will bring your systems into the desired state and keep them there.</p>
+
+<p><em>Puppet Enterprise</em> is a complete configuration management platform, with an optimized set of components proven to work well together. It combines Puppet (including a preconfigured production-grade puppet master stack), a web console for analyzing reports and controlling your infrastructure, powerful orchestration features, cloud provisioning tools, and professional support.</p>
+
+<p>It may seem a lot easier to "just run a command" to effect a change in configuration, or perhaps writing a script that executes a series of commands looks like a more effective way to manage the configuration of a system. This is true, as long as you're only concerned about a single change, or changes to a single system. The true power of Puppet is that it allows you to describe all the details of the configuration for multiple machines in a composable manner, and allows you to manage the configuration of multiple machines (think hundreds or thousands) without having to write complicated scripts that are hard to comprehend; or maintaining an inventory of all your systems, and logging in to each system in turn to run the required commands or scripts. Puppet automates the process of configuring your systems and keeping them configured exactly as you need them to be.</p>
+
+<p>But a journey of a thousand miles starts with a single step. This Learning VM will get you started by means of examples that help you configure the VM. While doing the exercises, imagine the possibilities in using what you learn to manage hundreds or thousands of systems in an effortless, intuitive manner!</p>
+
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<p>Before we dig any deeper, let's check and see what version of Puppet Enterprise we are running on this Learning VM. Type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet -V   # That's a capital 'V'
+</code></pre></div>
+<p>You will see something like the following:</p>
+
+<p><em>3.4.3 (Puppet Enterprise 3.2.1)</em></p>
+
+<p>This indicates that Puppet Enterprise 3.2.1 is installed on the Learning VM, which leverages Puppet version 3.4.3. Puppet Enterprise includes more than 40 open source projects, including Puppet, MCollective, PuppetDB, Hiera, and others that we’ve integrated, certified, performance-tuned, and security-hardened to make it a complete solution suitable for automating mission-critical enterprise infrastructure. In addition, it includes several capabilities found only in Puppet Enterprise, including event inspection, supported modules, role-based access control, certification management and VMware cloud provisioning.</p>
+
+<a id=""><h2>What is a Quest?</h2></a>
+
+<p>Up to this point we've introduced you to the Learning VM and Puppet. We'll continue to dive into greater detail about Puppet in future quests. Wait a minute! What's a quest? That's a great question! A <strong>Quest</strong> is a structured tutorial consisting of a number of interactive tasks that will help you learn about a topic related to Puppet.</p>
+
+<p>Each Quest includes a number of <strong>Tasks</strong> that give you a hands-on opportunity to apply what you have learned. You have already finished a task by now, since the first task was to execute the <code>puppet -V</code> command earlier. But how do you keep track of everything as you progress? What if you forget what quest you are on? These are all great questions and that's why we specifically created a 'Quest Tool' for this Learning VM to help you when you're in need.</p>
+
+<a id=""><h2>The Quest Tool</h2></a>
+
+<p>To monitor your status as you progress through these Quests, we've created a quest tool you can use in the Learning VM. However, this quest tool is not part of Puppet itself. We have included this tool in the Learning VM to provide you with real-time feedback as you progress through the many Quests and Tasks on your journey to learn Puppet.</p>
+
+<div class="lvm-task-number"><p>Task 2 :</p></div>
+
+<p>To explore the command options for the quest tool, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --help
+</code></pre></div>
+<p>The <code>quest --help</code> command provides you with a list of all the options for the <code>quest</code> command. You can invoke the quest command with each of those options, such as:  </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --progress     # Displays details of tasks completed
+quest --completed    # Displays completed quests
+quest --list         # Shows all available quests
+quest --start &lt;name&gt; # Provide the name of a quest to start tracking progress
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 3 :</p></div>
+
+<p>Let's find out how much progress you have made thus far! Execute the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --progress 
+</code></pre></div>
+<p>Using the quest tool is entirely optional, but we have also integrated it into the first few quests to help you out if needed.</p>
+
+<div class="lvm-callout lvm-tip"><p>
+Typing `clear` into your terminal will remove everything on your terminal screen.
+</p></div>
+
+<p>In addition to the quest commandline tool, we have also integrated real-time feedback into the VM, which is displayed in the bottom-right corner of the terminal, as seen in Figure 1. </p>
+
+<div class="img-wrapper">
+<img src="assets/terminal.png"><p>Figure</p>
+</div> 
+
+<a id=""><h2>Review</h2></a>
+
+<p>In this introductory quest we provided a very high level explanation of what Puppet is, what a quest is, and how to use the quest tool. As you progressed through this quest, you learned about the mechanics of successfully completing a quest by means of completing the associated tasks. We hope you have a general understanding of how to complete a quest and what is in store for you on your learning journey.</p>
+
+            </div>
+        </div>
+        <div id="footer">
+</div>
+       
+    </div>
+    </body>
+</html>

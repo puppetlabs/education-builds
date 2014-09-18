@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Resources</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/index.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/glossary.html">
+                                    Glossary
+                                </a>
+                            <li>
+                                <a href="https://puppetlabs.com/learn" target="_blank">
+                                    Learning Resources
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://docs.puppetlabs.com" target="_blank">
+                                    Puppet Docs
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" class="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/big_picture.html">Power of Puppet</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="active">
+                                <a href="/quests/resources.html" class = "active">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resource_ordering.html">Ordering</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/modules_quest.html">Modules</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/puppet_module_tool_quest.html">Puppet Module Tool</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/afterword.html">Afterword</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/glossary.html">Glossary</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+                <h1>Resources</h1>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Welcome Quest</li>
+<li>Power of Puppet Quest</li>
+</ul>
+
+<a id=""><h2>Quest Objectives</h2></a>
+
+<ul>
+<li>Understand how resources on the system are modeled in Puppet's Domain Specific Language (DSL)</li>
+<li>Learn about the Resource Abstraction Layer (RAL)</li>
+<li>Use Puppet to inspect resources on your system</li>
+</ul>
+
+<a id=""><h2>Getting Started</h2></a>
+
+<p>In this quest, you will be introduced to Resources and how system configurations are represented using Resource definitions. You will learn how to inspect resources on the Learning VM using Puppet. Please note though, that we are not going to use Puppet to manage any resources. Instead, we are going to use basic Unix commands in this quest, and then look at how the resultant resource changes are represented in Puppet's Domain Specific Language (DSL). As an aspiring practitioner of Puppet, it is important for you to have a thorough understanding of the Puppet syntax as well as the <code>puppet resource</code> and <code>puppet describe</code> tools. When you're ready to get started, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start resources
+</code></pre></div>
+<a id=""><h2>Resources</h2></a>
+
+<p>Resources are the fundamental units for modeling system configurations. Each resource describes some aspect of a system, like a service that must be running or a package that must be installed. The block of Puppet code that describes a resource is called a <strong>resource declaration</strong>. Resource declarations are written in Puppet's own Domain Specific Language.</p>
+
+<h3>Puppet's Domain Specific Language</h3>
+
+<p>Puppet uses its own configuration language, one that was designed to be accessible and does not require much formal programming experience. The code you see below is an example of what we're referring to. Since it is a <strong>declarative</strong> language, the definitions of resources can be considered as <em>models</em> of the state of resources.</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="nc">type</span> <span class="p">{</span><span class="s1">'title'</span><span class="p">:</span>
+    <span class="nt">attribute</span> <span class="p">=&gt;</span> <span class="s1">'value'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<div class="lvm-inline-aside">
+<h4>The Trailing Comma </h4>
+<p></p>
+<p>Though a comma isn't strictly necessary at the end of the final attribute value pair, it is best practice to include it for the sake of consistency.</p>
+</div>
+
+<p>You will not be using resource declarations to shape your environment just yet. Instead, you will exercise your power by hand and use Puppet only to inspect your actions using the <code>puppet resource</code> and <code>puppet describe</code> tools.</p>
+
+<a id=""><h2>Anatomy of a Resource</h2></a>
+
+<p>Resources can be large or small, simple or complex. In the world of Puppet, you and everything around you (on the Learning VM) are resources. But let's say you wanted to learn more about a particular resource. How would one do that? Well, you have two options: <code>puppet describe</code> and <code>puppet resource</code>.</p>
+
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<p>Let's say you want to learn more about the <code>user</code> resource type as it applies to all users in the Learning VM. You would need to type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet describe user
+</code></pre></div>
+<p>The <code>puppet describe</code> command can list info about the currently installed resource types on a given machine.</p>
+
+<div class="lvm-task-number"><p>Task 2 :</p></div>
+
+<p>Great! But how would one look at a specific resource? Well, to check and see how you look in the world of Puppet, type the following command :</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet resource user root
+</code></pre></div>
+<p>The block of code below that describes you as the root user is called a <strong>resource declaration</strong>. It's a little abstract, but a nice portrait, don't you think?</p>
+
+<div class="highlight"><pre><code class="puppet"><span class="nc">user</span> <span class="p">{</span> <span class="s1">'root'</span><span class="p">:</span>
+  <span class="nt">ensure</span>           <span class="p">=&gt;</span> <span class="s1">'present'</span><span class="p">,</span>
+  <span class="nt">comment</span>          <span class="p">=&gt;</span> <span class="s1">'root'</span><span class="p">,</span>
+  <span class="nt">gid</span>              <span class="p">=&gt;</span> <span class="s1">'0'</span><span class="p">,</span>
+  <span class="nt">home</span>             <span class="p">=&gt;</span> <span class="s1">'/root'</span><span class="p">,</span>
+  <span class="nt">password</span>         <span class="p">=&gt;</span> <span class="s1">'$1$jrm5tnjw$h8JJ9mCZLmJvIxvDLjw1M/'</span><span class="p">,</span>
+  <span class="nt">password_max_age</span> <span class="p">=&gt;</span> <span class="s1">'99999'</span><span class="p">,</span>
+  <span class="nt">password_min_age</span> <span class="p">=&gt;</span> <span class="s1">'0'</span><span class="p">,</span>
+  <span class="nt">shell</span>            <span class="p">=&gt;</span> <span class="s1">'/bin/bash'</span><span class="p">,</span>
+  <span class="nt">uid</span>              <span class="p">=&gt;</span> <span class="s1">'0'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>The <code>puppet resource</code> can interactively inspect and modify resources on a single system as well as can be useful for one-off jobs. However, Puppet was born for greater things which we'll discuss further in the Manifest Quest.</p>
+
+<h3>Resource Type</h3>
+
+<p>Let's take a look at your first line in the above resource declaration. Do you see the word <code>user</code>? It's right <em>before</em> the curly brace. This is called the <strong>resource type</strong>. Just as any individual cat or dog is a member of its species (<em>Felis catus</em> and <em>Canus lupis familiaris</em> to be precise) any instance of a resource must be a member of a resource type. Think of this type as a framework that defines the range of characteristics an individual resource can have.</p>
+
+<p>Puppet allows you to describe and manipulate a variety of resource types. Below are some core resource types you will encounter most often: </p>
+
+<ul>
+<li>
+<code>user</code> A user</li>
+<li>
+<code>group</code> A user group</li>
+<li>
+<code>file</code> A specific file</li>
+<li>
+<code>package</code> A software package</li>
+<li>
+<code>service</code> A running service</li>
+<li>
+<code>cron</code> A scheduled cron job</li>
+<li>
+<code>exec</code> An external command</li>
+<li>
+<code>host</code> A host entry</li>
+</ul>
+
+<div class="lvm-inline-aside">
+<h4>...Wait, There's More! </h4>
+<p></p>
+<p>If you are curious to learn about all of the different built-in resources types available for you to manage, see the <a href="http://docs.puppetlabs.com/references/latest/type.html">Type Reference Document</a> </p>
+</div>
+
+<h3>Resource Title</h3>
+
+<p>Again, let's take a look at your first line in the above resource declaration. Do you see the single quoted word <code>'root'</code>? It's right <em>after</em> the curly brace. This is called the <strong>title</strong>. The title of a resource is used to identify it and <strong>must</strong> be unique. No two resources of the same type can share the same title. Also, don't forget to always add a colon (:) after the title. That's important to remember and often overlooked!</p>
+
+<h3>Attribute Value Pairs</h3>
+
+<p>One more time. Let's look at the resource declaration for user <code>root</code> listed above. After the colon (:) comes a list of <strong>attributes</strong> and their corresponding <strong>values</strong>. Each line consists of an attribute name, a <code>=&gt;</code> (which we call a hash rocket), a value, and a final comma. For example, the attribute value pair <code>home =&gt; '/root',</code> indicates that your home is set to the directory <code>/root</code>.</p>
+
+<div class="lvm-task-number"><p>Task 3 :</p></div>
+
+<p>The path to greatness is a lonely one. Fortunately, your superuser status gives you the ability to create a sidekick for yourself. First let's do this in a non-Puppet way. Type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">useradd byte
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 4 :</p></div>
+
+<p>Now take a look at Byte using the <code>puppet resource</code> tool. Type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet resource user byte
+</code></pre></div>
+<p>Potent stuff. Note that Byte's password attribute is set to <code>'!!'</code>. This isn't a proper password at all! In fact, it's a special value indicating Byte has no password whatsoever.</p>
+
+<div class="lvm-task-number"><p>Task 5 :</p></div>
+
+<p>Let's rectify Byte's password situation by setting it to <em>puppetlabs</em>. Type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">passwd byte
+</code></pre></div>
+<p>Now set the password to <em>puppetlabs</em> and pressing Enter (Return) twice. You will not see anything displayed as you type the password.</p>
+
+<p>Now if you take another look at Byte using <code>puppet resource</code>, the value for Byte's password attribute should now be set to a SHA1 hash of the password, something a little like this: <code>'$1$hNahKZqJ$9ul/RR2U.9ITZlKcMbOqJ.'</code></p>
+
+<div class="lvm-task-number"><p>Task 6 :</p></div>
+
+<p>Now have a look at Byte's home directory, which was set to <code>'/home/byte'</code> by default. Directories are a special kind of file, and so Puppet knows of them as File resources. The <code>title</code> of any file is, by default, the same as the path to that file. Let's find out more about the <code>tools</code> directory where our sidekick can store tools. Enter the command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet resource file /home/byte/tools
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 7 :</p></div>
+
+<p>What? <code>ensure =&gt; 'absent',</code>? Values of the <code>ensure</code> attribute indicate the basic state of a resource. A value of absent means something doesn't exist at all. We need to make a directory for Byte to store tools in:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">mkdir /home/byte/tools
+</code></pre></div>
+<p>Now have another look at Byte's tools directory:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet resource file /home/byte/tools
+</code></pre></div>
+<div class="lvm-inline-aside">
+<h4>Quest Progress </h4>
+<p></p>
+<p>Awesome! Have you noticed when you successfully finish a task, the 'completed tasks' in the lower right corner of your terminal increases? To check on your progress type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --progress
+</code></pre></div>
+
+<p>This shows your progress by displaying the tasks you've completed and tasks that still need completing.</p>
+
+<p></p>
+</div>
+
+<div class="lvm-task-number"><p>Task 8 :</p></div>
+
+<p>We want Byte to be the owner of the tools directory. To do this, type the following commands:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">chown -R byte:byte /home/byte/tools
+</code></pre></div>
+<p>Inspect the state of the directory one more time, to make sure everything is in order: </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet resource file /home/byte/tools
+</code></pre></div>
+<a id=""><h2>The Resource Abstraction Layer</h2></a>
+
+<p>By now, we have seen some examples of how Puppet 'sees' resources on the system. A common pattern you might observe is that these are descriptions of <em>how</em> the resource in question should or does look like. In subsequent quests, we will see how, instead of just inspecting existing resource, we can <em>declare</em> how specific resource <em>should look like</em>, providing us the ability to model the state of these resources. </p>
+
+<p>Puppet provides us this ability to describe resources of different types of resources. Each type is a high-level model of the resource. Our job in defining how a system should be configured is reduced to one of creating a <em>high-level model</em> of the <em>desired state</em> of the system. We don't need to worry about how that is achieved.</p>
+
+<p>Puppet takes the descriptions expressed by resource declarations and uses <strong>providers</strong> that are specific to the Operating System to realize them. These Providers abstract away the complexity of managing diverse implementations of resource types on different systems. As a whole, this system of resource types and the providers that implement them is called the <strong>Resource Abstraction Layer</strong>, or <strong>RAL</strong>.</p>
+
+<p>You can describe the ideal state of a user resource. Puppet will choose a suitable provider to realize your definition - in the case of users, Puppet can use providers to manage user records in <code>/etc/passwd</code> files or <code>NetInfo</code>, or <code>LDAP</code>. Similarly, when you wish to install a package, you can stand back and watch Puppet figure out whether to use <code>yum</code> or <code>apt</code> for package management. This lets you ignore the implentation details with managing the resources, such as the names of the commands (is it <code>adduser</code> or <code>useradd</code>?) the arguments for the commands, file formats etc and lets you focus on the more important job of modeling the desired state for your systems.</p>
+
+<p>By harnessing the power of the RAL, you can be confident of the potency of your Puppet skills wherever your journey takes you.</p>
+
+<a id=""><h2>Review</h2></a>
+
+<p>Let's rehash what we learned in this quest. First, we learned two very important Puppet topics: the Resource Abstraction Layer and the anatomy of a resource. To dive deeper into these two important topics, we showed you how to use the <code>puppet describe</code> and <code>puppet resource</code> tools, which also leads us to a better understanding Puppet's Language. These tools will be tremendously useful to you in the succeeding quests. Unfortunately we didn't get to write any Puppet code in this quest, but that's okay. We're going to start doing that in the Manifest Quest (the next quest)!</p>
+
+            </div>
+        </div>
+        <div id="footer">
+</div>
+       
+    </div>
+    </body>
+</html>

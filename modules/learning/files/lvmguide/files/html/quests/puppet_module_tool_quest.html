@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Puppet Module Tool</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+    <div id="page" class="page">
+        <div id="site-header" role="banner">
+    <div class="header-wrapper">
+        <div class"region region-header">
+            <div id="block-boxes-test" class="block block-boxes block-boxes simple logo block-odd">
+                <div class="content">
+                    <a href="/">
+                        <img src="/assets/Puppet-Labs-Logo.png">
+                    </a>
+                </div>
+            </div>
+            <div id="block-menu_block-2" class="block block-menu-block header-primary-menu block-even">
+                <div class="content">
+                    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+                        <ul class="menu">
+                            <li>
+                                <a href="/index.html">
+                                    Quests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/glossary.html">
+                                    Glossary
+                                </a>
+                            <li>
+                                <a href="https://puppetlabs.com/learn" target="_blank">
+                                    Learning Resources
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://docs.puppetlabs.com" target="_blank">
+                                    Puppet Docs
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div id="main" class="clearfix" role-"main">
+        <aside id="sidebar-first" class="column sidebar first" role="complementary">
+    <div id="sidebar-first-inner" class="inner">
+        <div class="content">
+            <h2>Quests</h2>
+            <div class="menu-block-wrapper menu-block-7 menu-name-main-menu parent-mlid-0 meni-level-2">
+                <ul class="menu">
+                    
+                        
+                            <li>
+                                <a href="/index.html">Welcome</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/big_picture.html">Power of Puppet</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resources.html">Resources</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/manifest_quest.html">Manifests</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/variables.html">Variables</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/conditions_quest.html">Conditional Statements</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/resource_ordering.html">Ordering</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/classes_quest.html">Classes</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/quests/modules_quest.html">Modules</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="active">
+                                <a href="/quests/puppet_module_tool_quest.html" class = "active">Puppet Module Tool</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/afterword.html">Afterword</a>
+                            </li>
+                        
+                    
+                        
+                            <li>
+                                <a href="/glossary.html">Glossary</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <div id="content" class="clearfix" role="main">
+                <h1>The Forge and the Puppet Module Tool</h1>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Welcome Quest</li>
+<li>Power of Puppet Quest</li>
+<li>Resources Quest</li>
+<li>Mainfest Quest</li>
+<li>Varibales Quest</li>
+<li>Conditions Quest</li>
+<li>Ordering Quest</li>
+<li>Classes Quest</li>
+<li>Modules Quest</li>
+</ul>
+
+<a id=""><h2>Quest Objectives</h2></a>
+
+<ul>
+<li>Confidently use the <code>puppet module</code> tool in association with Forge modules</li>
+</ul>
+
+<a id=""><h2>Getting Started</h2></a>
+
+<p>In the previous Modules Quest we primarily learned about the structure of a module and how to create a module. Next we want to answer questions like: </p>
+
+<ul>
+<li>How do I install a module?</li>
+<li>How do I use a module?</li>
+<li>What about upgrading an existing module?</li>
+<li>How can I do this all this and more from the command line?</li>
+</ul>
+
+<div class="lvm-inline-aside">
+<h4></h4>
+<p></p>
+<p>To complete this quest, the Learning VM will need to be connected to the Internet.</p>
+</div>
+ 
+
+<p>When you're ready to take your Puppet knowledge to the next level, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">quest --start forge
+</code></pre></div>
+<p>The <code>puppet module</code> tool is one of the most important tools in expanding your use of Puppet. The <code>puppet module</code> tool allows you to create, install, search, (and so much more) for modules on the Forge. We'll also discuss the Puppet Forge more in detail below.</p>
+
+<p>The <code>puppet module</code> tool has subcommands that make finding, installing, and managing modules from the Forge much easier from the command line. It can also generate empty modules, and prepare locally developed modules for release on the Forge. ## Actions</p>
+
+<ul>
+<li>
+<code>list</code> - List installed modules.</li>
+<li>
+<code>search</code> - Search the Puppet Forge for a module.</li>
+<li>
+<code>install</code> - Install a module from the Puppet Forge or a release archive.</li>
+<li>
+<code>upgrade</code> - Upgrade a puppet module.</li>
+<li>
+<code>uninstall</code> - Uninstall a puppet module.</li>
+<li>
+<code>build</code> - Build a module release package.</li>
+<li>
+<code>changes</code> - Show modified files of an installed module.</li>
+<li>
+<code>generate</code> - Generate boilerplate for a new module.</li>
+</ul>
+
+<div class="lvm-task-number"><p>Task 1 :</p></div>
+
+<p>List all the installed modules</p>
+
+<p>Let's see what modules are already installed on the Learning VM and where they're located. To do this, we want Puppet to show it to us in a tree format. Go ahead and type the following command: </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet module list --tree
+</code></pre></div>
+<div class="lvm-task-number"><p>Task 2 :</p></div>
+
+<p>Search the forge for a module</p>
+
+<p>Wow! you have a lot installed. That's great. Let's install one more - the <code>puppetlabs-mysql</code> module. You should search the Forge for that module. To do so from the command line, type the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet module search puppetlabs-mysql
+</code></pre></div>
+<p>You can also search for just <code>mysql</code> to see all the modules that have <code>mysql</code> in their name or description. Modules on the Forge are always named as <em>authorname-modulename</em>. The <code>puppetlabs-mysql</code> module is a module authored and curated primarily by the puppetlabs organization.</p>
+
+<div class="lvm-task-number"><p>Task 3 :</p></div>
+
+<p>Install a module </p>
+
+<p>There's something on the Forge that exists! Let use it. Let's install <code>puppetlabs-mysql</code> module. In fact, let us specify a specific version of the module. Run the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet module install puppetlabs-mysql --version 2.2.2
+</code></pre></div>
+<p>You will that the module is downloaded and installed. You will also see that in addition to the <code>puppetlabs-mysql</code> module, all the modules it depends on were also downloaded and installed.</p>
+
+<p>By default, modules are installed in the <code>modulepath</code>.</p>
+
+<div class="lvm-task-number"><p>Task 4 :</p></div>
+
+<p>Upgrade an installed module</p>
+
+<p>Okay, now let's go ahead and upgrade the mysql module to the latest version:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet module upgrade puppetlabs-mysql
+</code></pre></div>
+<p>Great, if you needed to uninstall a module, you can do so by running the following command:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">puppet module uninstall puppetlabs-mysql
+</code></pre></div>
+<a id=""><h2>The Puppet Forge</h2></a>
+
+<p>The <a href="http://forge.puppetlabs.com">Puppet Forge</a> is a public repository of modules written by members of the puppet community for Puppet. These modules will provide you with classes, new resource types, and other helpful tools such as functions, to manage the various aspects of your infrastructure. This reduces your task from describing the classes using Puppet's DSL to using existing descriptions witht the appropriate values for the parameters.</p>
+
+<p>If you would like to further inspect the <code>puppetlabs-mysql</code> module Puppet code, you need to want to <code>cd</code> to the path then open the <code>init.pp</code> manifest.  </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">cd /etc/puppetlabs/puppet/modules/mysql/manifests   
+nano init.pp
+</code></pre></div>
+<p>However, there is a much easier way to inspect this module by visiting the <a href="http://forge.puppetlabs.com/puppetlabs/mysql">page for the puppetlabs-mysql module on the Forge</a>.</p>
+
+<p>The documentation on the page provides insight into how to use the provided class definitions in the module to accomplish tasks. If we wanted to install <code>mysql</code> with the default options, the module documentation suggests we can do it as follows:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">include '::mysql::server'
+</code></pre></div>
+<p>It's as simple as that! So if we wanted our machine to have the <code>mysql</code> module installed on it, all we need to do is ensure that the above <strong>class declaration</strong> is in some manifest that applies it to our node.</p>
+
+<a id=""><h2>Puppet Enterprise Supported Modules</h2></a>
+
+<p><a href="https://forge.puppetlabs.com/supported">Puppet Enterprise Supported Modules</a> make it easy to ensure common services can be set up, configured and managed easily with Puppet Enterprise. These are modules that are tested with Puppet Enterprise, and officially supported under the umbrella of Puppet Enterprise support. They will be maintained, with bug and security patches as needed, and are vetted to work on multiple platforms. The list of modules is growing, and includes modules to manage, among others, NTP, Firewall, the Windows registry, APT, MySQL, Apache, and many others. Here's a <a href="https://forge.puppetlabs.com/modules?supported=yes">List of all supported modules at the Forge</a>.</p>
+
+<a id=""><h2>Review</h2></a>
+
+<p>We familiarized ourselves with the Puppet Module tool, which allows to download and manage modules from the Puppet Forge. Once a module is installed, we have access to all the definitions and tools provided by the installed module. This allows us to accelerate the process of managing system configrations with Puppet, by providing us the ability to re-use the work of the Puppet community.</p>
+
+            </div>
+        </div>
+        <div id="footer">
+</div>
+       
+    </div>
+    </body>
+</html>
