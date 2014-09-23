@@ -38,7 +38,10 @@ class classroom (
 
   # variables are available to included classes by the evil power of inheritance
   case $role {
-    'master' : { include classroom::master }
+    'master' : { 
+      include classroom::master 
+      include classroom::master::sudoers
+    }
     'agent'  : { include classroom::agent  }
     'proxy'  : { include classroom::proxy  }
     'tier3'  : { include classroom::tier3  }
