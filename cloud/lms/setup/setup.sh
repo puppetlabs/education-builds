@@ -5,8 +5,8 @@ VER=${1:-"6"}
 HOSTNAME="learn.puppetlabs.com"
 PASSWORD="puppet"
 
-curl -O https://s3.amazonaws.com/pe-builds/released/3.3.1/puppet-enterprise-3.3.1-el-${VER}-x86_64.tar.gz
-tar -xvzf puppet-enterprise-3.3.1-el-${VER}-x86_64.tar.gz
+curl -O https://s3.amazonaws.com/pe-builds/released/3.3.2/puppet-enterprise-3.3.2-el-${VER}-x86_64.tar.gz
+tar -xvzf puppet-enterprise-3.3.2-el-${VER}-x86_64.tar.gz
 
 echo "127.0.0.1   ${HOSTNAME}" > /etc/hosts
 sed -i "s/^HOSTNAME=.*$/HOSTNAME=${HOSTNAME}/" /etc/sysconfig/network
