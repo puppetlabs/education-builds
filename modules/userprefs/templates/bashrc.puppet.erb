@@ -51,8 +51,8 @@ export PS1="\[${ORANGE}\][\[${BOLD}${MAGENTA}\]\u@\h \[${GREEN}\]\w\[${BOLD}\]\$
 <% if @hostname =~ /learn/ -%>
 #- to be used with new 'quest' command and .tmux.conf
 function check_quest() {
-  (quest updatecache --list brief >/dev/null &)
-  (quest updatecache --progress brief >/dev/null &)
+  (quest updatecache --list brief >/dev/null && \
+  quest updatecache --progress brief >/dev/null &)
 }
 
 export PROMPT_COMMAND='history -a; history -r; check_quest'
