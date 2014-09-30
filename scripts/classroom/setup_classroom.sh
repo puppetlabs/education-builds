@@ -27,7 +27,7 @@ BACKUP_DIR=$(mktemp -d)
 cp "$HOSTS" "$BACKUP_DIR"
 cp "$NETWORK" "$BACKUP_DIR"
 
-ipaddr=`hostname -I`
+ipaddr=`hostname -I | awk '{print $1}'`
 echo "Your IP address appears to be ${ipaddr}"
 echo "If this is not correct, cancel now."
 offer_bailout
