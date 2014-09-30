@@ -36,6 +36,13 @@ while : ; do
   echo -n "Please choose a username: "
   read username
 
+  if [[ "$username" =~ \. ]]
+  then
+    echo 'WARNING: Periods in the username are unsupported in the classroom except'
+    echo 'WARNING: when creating a secondary agent in the Architect course.'
+    offer_bailout
+  fi
+
   [[ "$username" =~ ^[a-z0-9][a-z0-9._]+$ && "$username" =~ [a-z]+ && "$username" != "root" ]] && break
 
   echo "Usernames must be lowercase alphanumeric with at least one letter and not 'root'."
