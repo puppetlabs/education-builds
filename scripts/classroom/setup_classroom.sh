@@ -11,6 +11,13 @@ then
   exit 1
 fi
 
+puppet --version > /dev/null 2>&1
+if [ $? -eq 0 ]
+then
+  echo 'You appear to already have Puppet installed. Is this the Learning VM?'
+  exit 2
+fi
+
 offer_bailout
 
 # backup /etc/hosts and /etc/sysconfig/network
