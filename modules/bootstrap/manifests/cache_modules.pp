@@ -15,7 +15,7 @@ class bootstrap::cache_modules(
   # TODO: revisit this regularly and dump it when PE ships with this and all modules
   #       we use get updated to use this.
   bootstrap::forge { 'puppetlabs-concat':
-    version => '1.0.4',
+    version => '1.1.1',
   }
   bootstrap::forge { 'camptocamp-augeasfacter':
     version => '0.1.0',
@@ -24,7 +24,7 @@ class bootstrap::cache_modules(
     version => '1.2.0',
   }
   bootstrap::forge { 'razorsedge-vmwaretools':
-    version => '4.4.1',
+    version => '4.7.0',
   }
   bootstrap::forge { 'hunner-wordpress':
     version => '0.6.0',
@@ -42,7 +42,7 @@ class bootstrap::cache_modules(
     version => '1.1.0',
   }
   bootstrap::forge { 'puppetlabs-ntp':
-    version => '3.1.2',
+    version => '3.2.0',
   }
   bootstrap::forge { 'puppetlabs-haproxy':
     version => '1.0.0',
@@ -57,23 +57,20 @@ class bootstrap::cache_modules(
     version => '0.0.1',
   }
   bootstrap::forge { 'stahnma-epel':
-    version => '0.1.0',
+    version => '1.0.0',
   }
   bootstrap::forge { 'nanliu-staging':
-    version => '0.4.1',
+    version => '1.0.0',
   }
   bootstrap::forge { 'puppetlabs/git':
     version => '0.2.0',
   }
   bootstrap::forge { 'zack/r10k':
-    version => '2.2.7',
+    version => '2.3.0',
   }
   bootstrap::forge { 'zack/exports':
     version => '0.0.4',
   }
-
-
   # These are the additional modules needed by the extending puppet using ruby course
   # puppetlabs-mysql and puppetlabs-apache are also needed
-
 }
