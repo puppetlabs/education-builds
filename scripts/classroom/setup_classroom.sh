@@ -4,6 +4,13 @@ version
 
 echo "This script will automate the setup of the Puppetlabs Training Classroom"
 echo
+
+if [ "`hostname`" == 'master.puppetlabs.vm' ]
+then
+  echo 'Do not run on the classroom master'
+  exit 1
+fi
+
 offer_bailout
 
 # backup /etc/hosts and /etc/sysconfig/network
