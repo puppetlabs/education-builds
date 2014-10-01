@@ -12,7 +12,7 @@ class training {
   }
   exec { 'Cache WordPress':
     cwd       => '/usr/src/wordpress',
-    command   => '/usr/bin/wget --no-clobber http://wordpress.org/wordpress-3.8.tar.gz',
+    command   => '/usr/bin/wget --no-clobber https://www.wordpress.org/wordpress-3.8.tar.gz',
     creates   => '/usr/src/wordpress/wordpress-3.8.tar.gz',
     logoutput => 'on_failure',
     user      => 'root',
