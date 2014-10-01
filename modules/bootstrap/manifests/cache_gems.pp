@@ -34,7 +34,7 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'formatr':                                }
   bootstrap::gem { 'net-ssh':                                }
   bootstrap::gem { 'highline':                               }
-  bootstrap::gem { 'serverspec':                             }
+  bootstrap::gem { 'serverspec':         version => '1.16.0' }
   bootstrap::gem { 'trollop':                                }
   bootstrap::gem { 'hiera-eyaml':                            }
   bootstrap::gem { 'diff-lcs':                               }
