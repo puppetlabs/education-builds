@@ -44,9 +44,11 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'puppetlabs_spec_helper':                 }
   bootstrap::gem { 'puppet-lint':                            }
   bootstrap::gem { 'rspec':              version => '2.99.0' }
+  bootstrap::gem { 'rspec-its':          version => '1.0.1'  }
   bootstrap::gem { 'rspec-core':         version => '2.99.0' }
   bootstrap::gem { 'rspec-mocks':        version => '2.99.0' }
   bootstrap::gem { 'rspec-expectations': version => '2.99.0' }
+  bootstrap::gem { 'specinfra':          version => '1.27'   }
 
   Bootstrap::Gem <| |> -> File['/root/.gemrc']
 
