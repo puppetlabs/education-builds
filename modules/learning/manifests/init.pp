@@ -23,6 +23,16 @@ class learning {
     ensure => present,
   }
 
+  # Create docroot for lvmguide files, so the website files
+  # can be put in place
+  file { '/var/www/html/lvmguide':
+    ensure  => directory,
+    user    => 'apache',
+    group   => 'apache',
+    mode    => '755',
+    require => Package['httpd'],
+  }
+
   package { 'tmux':
     ensure => present,
   }
@@ -46,7 +56,7 @@ class learning {
     ensure  => directory,
     recurse => true,
     source  => 'puppet:///modules/learning/.testing',
-    ignore  => [ 'log.yml','test.rb'],
+    ignore  => [ 'test.rb'],
   }
   
   file { '/root/.testing/log.yml':
