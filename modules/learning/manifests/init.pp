@@ -18,6 +18,11 @@ class learning {
     source => 'puppet:///modules/learning/etc/motd',
   }
 
+  # Install apache2 httpd so the directories exist
+  package { 'httpd':
+    ensure => present,
+  }
+
   package { 'tmux':
     ensure => present,
   }
