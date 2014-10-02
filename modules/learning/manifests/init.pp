@@ -37,46 +37,32 @@ class learning {
     ensure => present,
   }
 
-  file { '/root/.tmux.conf':
-    ensure => file,
-    source => 'puppet:///modules/learning/tmux.conf',
-  }
-
   file { '/root/README':
     ensure => file,
     source => 'puppet:///modules/learning/README',
   }
 
   file { '/root/bin':
-    ensure => link,
-    target => '/usr/src/puppetlabs-training-bootstrap/scripts/lvm',
+    ensure => directory,
   }
 
-  file { '/root/.testing':
-    ensure  => directory,
-    recurse => true,
-    source  => 'puppet:///modules/learning/.testing',
-    ignore  => [ 'test.rb'],
+  exec { 'download_quest_tool':
+    command => "wget https://raw.githubusercontent.com/puppetlabs/courseware-lvm/master/quest_tool/bin/quest",
+    cwd     => '/root/bin',
+    creates => '/root/bin/quest',
+    require => File['/root/bin'],
   }
-  
-  file { '/root/.testing/log.yml':
+
+  file { '/root/bin/quest':
     ensure  => file,
-    source  => 'puppet:///modules/learning/.testing/log.yml',
-    replace => false,
-  }
-  
-  file { '/root/.testing/test.rb':
-    ensure => file,
-    source => 'puppet:///modules/learning/.testing/test.rb',
-    mode   => '0755',
+    mode    => '0755',
+    require => Exec['download_quest_tool'],
   }
 
-  file { '/root/setup':
-    ensure  => directory,
-    source  => 'puppet:///modules/learning/setup',
-    mode    => '0755',
-    recurse => true,
+  exec { 'update_content':
+    command => '/root/bin/quest update',
+    creates => '/root/.testing/VERSION',
+    require => File['/root/bin/quest'],
   }
 
 }
-
