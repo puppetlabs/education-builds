@@ -27,13 +27,25 @@ define classroom::agent::workdir (
     }
 
     if $populate {
-      file { "${workdir}/site.pp":
+      # create the modules, manifests, site.pp and environment.conf
+      # environment.conf required to prevent caching
+      file { "${workdir}/manifests/site.pp":
         ensure  => file,
         source  => 'puppet:///modules/classroom/site.pp',
         replace => false,
       }
 
+      file { "${workdir}/environment.conf":
+        ensure  => file,
+        content => "environment_timeout = 0\n",
+        replace => false,
+      }
+
       file { "${workdir}/modules":
+        ensure => directory,
+      }
+
+      file { "${workdir}/manifests":
         ensure => directory,
       }
 

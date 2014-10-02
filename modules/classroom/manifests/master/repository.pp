@@ -34,17 +34,6 @@ define classroom::master::repository (
   }
 
   if $ensure == present {
-    if $environment {
-      # create an environment for the user
-      augeas {"puppet.conf.environment.${name}":
-        context => "/files/etc/puppetlabs/puppet/puppet.conf/${name}",
-        changes => [
-          "set manifest ${clone_root}/${name}/site.pp",
-          "set modulepath ${clone_root}/${name}/modules:/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules",
-        ],
-      }
-    }
-
     vcsrepo { "${repo_root}/${name}.git":
       ensure   => bare,
     }
