@@ -25,6 +25,11 @@ class training {
     target       => '/etc/hosts',
   }
 
+  # Burn it to the ground
+  resources { 'host':
+    purge => true,
+  }
+
   exec { 'Cache WordPress':
     cwd       => '/usr/src/wordpress',
     command   => '/usr/bin/wget --no-clobber https://www.wordpress.org/wordpress-3.8.tar.gz',
