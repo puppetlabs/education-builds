@@ -51,7 +51,7 @@ class learning {
   }
 
   exec { 'download_quest_tool':
-    command => "wget https://raw.githubusercontent.com/puppetlabs/courseware-lvm/master/quest_tool/bin/quest",
+    command => 'wget --no-check-certificate https://raw.githubusercontent.com/puppetlabs/courseware-lvm/master/quest_tool/bin/quest',
     cwd     => '/root/bin',
     creates => '/root/bin/quest',
     require => File['/root/bin'],
