@@ -4,6 +4,10 @@ class learning {
     group => root,
     mode  => 644,
   }
+  Exec {
+    path => [ '/bin', '/usr/bin', '/usr/local/bin' ],
+    cwd  => '/',
+  }
 
   file { '/root/learning.answers':
     ensure => file,
