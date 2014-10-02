@@ -52,6 +52,14 @@ class bootstrap ($print_console_login = false) {
       source => 'puppet:///modules/bootstrap/ssh_keygen.sh',
       mode   => 0755,
     }
+    # Disable GSSAPIAuth for training VM.
+    # The learning VM has a quest that relates to this, so leave
+    # it enabled for the LVM.
+    augeas { "GSSAPI_disable":
+      context => '/files/etc/ssh/sshd_config',
+      changes => 'set GSSAPIAuthentication no',
+    }
+
   }
   # This shouldn't change anything, but want to make sure it actually IS laid out the way I expect.
   file {'/etc/rc.local':
@@ -112,11 +120,6 @@ class bootstrap ($print_console_login = false) {
     ensure  => 'present',
     name    => $ruby_aug_package,
     require => Class['localrepo']
-  }
-
-  augeas { "GSSAPI_disable":
-    context => '/files/etc/ssh/sshd_config',
-    changes => 'set GSSAPIAuthentication no',
   }
 
   # Cache forge modules locally in the vm:
