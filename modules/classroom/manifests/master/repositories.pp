@@ -11,7 +11,7 @@ class classroom::master::repositories {
 
   include git
 
-  file { ['/var/repositories', '/etc/puppetlabs/puppet/environments']:
+  file { '/var/repositories':
     ensure => directory,
   }
 
