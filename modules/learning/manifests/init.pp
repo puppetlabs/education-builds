@@ -27,7 +27,7 @@ class learning {
   # can be put in place
   file { '/var/www/html/lvmguide':
     ensure  => directory,
-    user    => 'apache',
+    owner   => 'apache',
     group   => 'apache',
     mode    => '755',
     require => Package['httpd'],
