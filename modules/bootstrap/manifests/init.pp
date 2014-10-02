@@ -46,7 +46,7 @@ class bootstrap ($print_console_login = false) {
     mode   => 0755,
   }
   # This script generates the initial root SSH key for the fundamentals git workflow
-  if $print_console_login == false {
+  if $::hostname =~ /learn/ {
     file { '/root/.ssh_keygen.sh':
       ensure => file,
       source => 'puppet:///modules/bootstrap/ssh_keygen.sh',
