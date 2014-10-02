@@ -120,8 +120,9 @@ rm -rf /var/lib/puppet
 rm -rf /etc/udev/rules.d/70-persistent-net.rules
 sed -i -e '/^HWADDR.*/d' /etc/sysconfig/network-scripts/ifcfg-eth0
 cp /usr/src/puppetlabs-training-bootstrap/files/registerdns.sh /etc/rc3.d/S16registerdns.sh
-yum -y clean all
+yum -y clean packages
 rm -rf /tmp/*
+
 
 ) 2>&1 | /usr/bin/tee /root/post.log
 cp /root/post.log /boot
