@@ -71,8 +71,9 @@ cat <<EOF > /etc/resolv.conf
 domain puppetlabs.vm
 nameserver 8.8.8.8
 EOF
-sed -i 's/HOSTNAME.*/HOSTNAME=<%= $settings[:hostname] %>/' /etc/sysconfig/network
+
 hostname <%= $settings[:hostname] %>
+sed -ie "s/HOSTNAME.*/HOSTNAME=<%= $settings[:hostname] %>/" /etc/sysconfig/network
 
 yum upgrade openssl bash -y
 
