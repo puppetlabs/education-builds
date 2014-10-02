@@ -73,11 +73,11 @@ nameserver 8.8.8.8
 EOF
 
 hostname <%= $settings[:hostname] %>
-sed -ie "s/HOSTNAME.*/HOSTNAME=<%= $settings[:hostname] %>/" /etc/sysconfig/network
+sed -i "s/HOSTNAME.*/HOSTNAME=<%= $settings[:hostname] %>/" /etc/sysconfig/network
 
 yum upgrade openssl bash -y
 
-sed -ie 's/127\.0\.0\.1.*/\0 <%= $settings[:hostname] %> <%= $settings[:hostname].split('.')[0] %>/' /etc/hosts
+sed -i 's/127\.0\.0\.1.*/\0 <%= $settings[:hostname] %> <%= $settings[:hostname].split('.')[0] %>/' /etc/hosts
 cp /mnt/puppet/<%= $settings[:pe_tarball] %> /root/
 <% if $settings[:vmtype] == "learning" %>
 <% if File.extname($settings[:pe_tarball]) == ".gz" %>
