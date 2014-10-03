@@ -4,6 +4,10 @@ class learning {
     group => root,
     mode  => 644,
   }
+  Exec {
+    path => [ '/bin', '/usr/bin', '/usr/local/bin' ],
+    cwd  => '/',
+  }
 
   file { '/root/learning.answers':
     ensure => file,
@@ -18,13 +22,23 @@ class learning {
     source => 'puppet:///modules/learning/etc/motd',
   }
 
-  package { 'tmux':
+  # Install apache2 httpd so the directories exist
+  package { 'httpd':
     ensure => present,
   }
 
-  file { '/root/.tmux.conf':
-    ensure => file,
-    source => 'puppet:///modules/learning/tmux.conf',
+  # Create docroot for lvmguide files, so the website files
+  # can be put in place
+  file { '/var/www/html/lvmguide':
+    ensure  => directory,
+    owner   => 'apache',
+    group   => 'apache',
+    mode    => '755',
+    require => Package['httpd'],
+  }
+
+  package { 'tmux':
+    ensure => present,
   }
 
   file { '/root/README':
@@ -33,35 +47,26 @@ class learning {
   }
 
   file { '/root/bin':
-    ensure => link,
-    target => '/usr/src/puppetlabs-training-bootstrap/scripts/lvm',
+    ensure => directory,
   }
 
-  file { '/root/.testing':
-    ensure  => directory,
-    recurse => true,
-    source  => 'puppet:///modules/learning/.testing',
-    ignore  => [ 'log.yml','test.rb'],
+  exec { 'download_quest_tool':
+    command => 'wget --no-check-certificate https://raw.githubusercontent.com/puppetlabs/courseware-lvm/master/quest_tool/bin/quest',
+    cwd     => '/root/bin',
+    creates => '/root/bin/quest',
+    require => File['/root/bin'],
   }
-  
-  file { '/root/.testing/log.yml':
+
+  file { '/root/bin/quest':
     ensure  => file,
-    source  => 'puppet:///modules/learning/.testing/log.yml',
-    replace => false,
-  }
-  
-  file { '/root/.testing/test.rb':
-    ensure => file,
-    source => 'puppet:///modules/learning/.testing/test.rb',
-    mode   => '0755',
+    mode    => '0755',
+    require => Exec['download_quest_tool'],
   }
 
-  file { '/root/setup':
-    ensure  => directory,
-    source  => 'puppet:///modules/learning/setup',
-    mode    => '0755',
-    recurse => true,
+  exec { 'update_content':
+    command => '/root/bin/quest update',
+    creates => '/root/.testing/VERSION',
+    require => File['/root/bin/quest'],
   }
 
 }
-
