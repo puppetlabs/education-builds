@@ -341,6 +341,7 @@ task :release do
     @ptb_version = "#{versions[:major]}.#{versions[:minor]}"
     File.write('version.yaml', versions.to_yaml)
     system("git commit version.yaml -m 'Updating for release #{@ptb_version}'")
+    system("git push upstream master")
   end
 
   cputs "Building release version #{@ptb_version}"
