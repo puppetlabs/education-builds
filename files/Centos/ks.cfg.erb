@@ -77,7 +77,7 @@ sed -i "s/HOSTNAME.*/HOSTNAME=<%= $settings[:hostname] %>/" /etc/sysconfig/netwo
 
 yum upgrade openssl bash -y
 
-sed -i 's/127\.0\.0\.1.*/\0 <%= $settings[:hostname] %> <%= $settings[:hostname].split('.')[0] %>/' /etc/hosts
+sed -i 's/127\.0\.0\.1.*/127.0.0.1 <%= $settings[:hostname] %> <%= $settings[:hostname].split('.')[0] %> localhost localhost.localdomain localhost4/' /etc/hosts
 cp /mnt/puppet/<%= $settings[:pe_tarball] %> /root/
 <% if $settings[:vmtype] == "learning" %>
 <% if File.extname($settings[:pe_tarball]) == ".gz" %>
