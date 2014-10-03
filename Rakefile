@@ -462,7 +462,7 @@ task :packagevm, [:vmos] do |t,args|
   if @ptb_version == '[Testing build]'
     version = @ptb_build
   else
-    version = @ptb_version.gsub(/[\w\.]/, '')
+    version = @ptb_version
   end
   
   filename = "#{CACHEDIR}/#{$settings[:vmname]}-ptb#{version}"
