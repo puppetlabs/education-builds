@@ -62,7 +62,7 @@ class learning::install {
   }
   
   exec { 'install serverspec':
-    command => '/opt/puppet/bin/gem install serverspec',
+    command => '/opt/puppet/bin/gem install serverspec -v 1.16.0',
     unless  => '/opt/puppet/bin/gem list serverspec -i',
     require => Exec['install-pe'],
   }
