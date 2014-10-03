@@ -19,7 +19,7 @@ class learning {
     ensure => file,
     owner  => root,
     mode   => 0644,
-    source => 'puppet:///modules/learning/etc/motd',
+    source => 'puppet:///modules/learning/README',
   }
 
   # Install apache2 httpd so the directories exist
