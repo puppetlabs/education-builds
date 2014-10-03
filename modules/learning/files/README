@@ -3,13 +3,9 @@
 This is the Puppet Enterprise Learning VM.
 
 This CentOS-based VM comes with Puppet Enterprise pre-installed.
-This VM is best used with the companion Quest Guide, in PDF format.
 
 To get started consult the Quest_Guide.pdf contained in the .zip file
 you extracted this VM from.
-
-This VM comes with several niceties to aid you in your journey to 
-learn Puppet, as detailed in the Quest Guide. 
 
 You can download the latest Quest Guide and the quest tool at:
   - https://downloads.puppetlabs.com/lvmguide/
@@ -29,5 +25,3 @@ Bugs can be reported at: https://tickets.puppetlabs.com/browse/LEARNVM
 Questions and Comments: learningvm@puppetlabs.com
 
 Copyright - 2014. Puppet Labs
-
-
