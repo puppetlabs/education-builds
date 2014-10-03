@@ -8,6 +8,14 @@ This VM is best used with the companion Quest Guide, in PDF format.
 To get started consult the Quest_Guide.pdf contained in the .zip file
 you extracted this VM from.
 
+This VM comes with several niceties to aid you in your journey to 
+learn Puppet, as detailed in the Quest Guide. 
+
+You can download the latest Quest Guide and the quest tool at:
+  - https://downloads.puppetlabs.com/lvmguide/
+A PDF version of the Quest Guide is available in the _site/ directory
+  after the zip file has been extracted
+
 To view your current IP address, run `facter ipaddress_eth0`
 
 To log in to the Puppet Enterprise console, go to:
@@ -15,6 +23,8 @@ https://<YOUR IP ADDRESS HERE>
 
   User: puppet@example.com
   Password: learningpuppet
+
+Bugs can be reported at: https://tickets.puppetlabs.com/browse/LEARNVM
 
 Questions and Comments: learningvm@puppetlabs.com
 
