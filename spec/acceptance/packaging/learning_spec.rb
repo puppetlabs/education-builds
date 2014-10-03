@@ -35,9 +35,9 @@ if hosts_as('learning').length > 0
   describe file('/root/.testing/test.rb') do
     it { should be_mode 755 }
   end
-  describe file('/root/setup/guide.pp') do
-    it { should contain('/var/www/html') }
-  end
+#  describe file('/root/setup/guide.pp') do
+#    it { should contain('/var/www/html') }
+#  end
   describe file('/opt/puppet/bin/puppet') do
     it { should be_file }
     it { should be_mode 755 }
