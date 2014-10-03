@@ -33,20 +33,33 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'tilt':            }
   bootstrap::gem { 'net-ssh':         }
   bootstrap::gem { 'highline':        }
-  bootstrap::gem { 'serverspec':      }
+  bootstrap::gem { 'serverspec':
+    version => '1.16.0',
+  }
   bootstrap::gem { 'trollop':         }
   bootstrap::gem { 'hiera-eyaml':     }
 
   # These are the gems needed by the extending puppet using ruby course
-  bootstrap::gem { 'rspec':                  }
+  bootstrap::gem { 'rspec':
+    version => '2.99.0',
+  }
   bootstrap::gem { 'diff-lcs':               }
-  bootstrap::gem { 'rspec-core':             }
-  bootstrap::gem { 'rspec-mocks':            }
+  bootstrap::gem { 'rspec-core':
+    version => '2.99.0',
+  }
+  bootstrap::gem { 'rspec-mocks':
+    version => '2.99.0',
+  }
   bootstrap::gem { 'rspec-puppet':           }
-  bootstrap::gem { 'rspec-expectations':     }
+  bootstrap::gem { 'rspec-expectations':
+    version => '2.99.0',
+  }
   bootstrap::gem { 'mocha':                  }
   bootstrap::gem { 'metaclass':              }
   bootstrap::gem { 'puppetlabs_spec_helper': }
+  bootstrap::gem { 'specinfra':
+    version => '1.27',
+  }
 
   Bootstrap::Gem <| |> -> File['/root/.gemrc']
 
