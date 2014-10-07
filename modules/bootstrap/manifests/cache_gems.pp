@@ -39,7 +39,6 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'trollop':                        version => '2.0'    }
   bootstrap::gem { 'hiera-eyaml':                    version => '2.0.3'  }
   bootstrap::gem { 'diff-lcs':                       version => '1.2.5'  }
-  bootstrap::gem { 'rspec':                          version => '3.1.0'  }
   bootstrap::gem { 'rspec-puppet':                   version => '1.0.1'  }
   bootstrap::gem { 'mocha':                          version => '1.1.0'  }
   bootstrap::gem { 'metaclass':                      version => '0.0.1'  }
