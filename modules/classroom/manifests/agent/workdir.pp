@@ -19,7 +19,7 @@ define classroom::agent::workdir (
     environment => 'HOME=/root',
     path        => '/usr/bin:/bin:/user/sbin:/usr/sbin',
   }
-  $workdir = "/root/${name}"
+  $workdir = $name
 
   if $ensure == 'present' {
     file { $workdir:
