@@ -10,10 +10,21 @@ define classroom::agent::workdir (
   $username = $name,
   $populate = true,
 ) {
-  Exec {
-    environment => 'HOME=/root',
-    path        => '/usr/bin:/bin:/user/sbin:/usr/sbin',
+  case $::osfamily {
+    'windows' : {
+      $environment = undef
+      $path = 'C:\Program Files (x86)\Git\bin'
+    }
+    default   : {
+      $environment = 'HOME=/root'
+      $path = '/usr/bin:/bin:/user/sbin:/usr/sbin'
+    }
   }
+  Exec {
+    environment => $environment,
+    path        => $path,
+  }
+
   $workdir = $name
 
   if $ensure == 'present' {
