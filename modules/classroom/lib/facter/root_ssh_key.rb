@@ -1,7 +1,8 @@
 Facter.add('root_ssh_key') do
-  setcode do
-    pubkey = '/root/.ssh/id_rsa.pub'
-    File.read(pubkey).split[1] if File.exists? pubkey
+  pubkey = '/root/.ssh/id_rsa.pub', 'C:/Users/Administrator/.ssh.pub'
+  pubkey.each do |key|
+    setcode do
+      File.read(key).split[1] if File.exists? key
+    end
   end
 end
-
