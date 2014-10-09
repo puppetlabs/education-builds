@@ -1,6 +1,7 @@
 class classroom::agent::git {
   case $::osfamily {
     'windows' : {
+      $environment = undef
       $path = 'C:\Program Files (x86)\Git\bin'
       $sshpath = 'C:/Users/Administrator/.ssh'
     }
