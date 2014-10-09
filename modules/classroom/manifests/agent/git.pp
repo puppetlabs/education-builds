@@ -41,6 +41,11 @@ class classroom::agent::git {
     }
   }
 
+  file { $sshpath:
+    ensure => directory,
+    mode   => '0600',
+  }
+
   exec { 'generate_key':
     command => "ssh-keygen -t rsa -N '' -f '${sshpath}/id_rsa'",
     creates => "${sshpath}/id_rsa",
