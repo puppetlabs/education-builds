@@ -12,9 +12,10 @@ class classroom::agent::time {
       ensure => running,
       enable => true,
     }
-    exec { 'sync time with master':
-      command => 'w32tm /register; w32tm /config /syncfromflags:MANUAL /manualpeerlist:master.puppetlabs.vm; w32tm /resync',
-      path    => $::path,
+    exec { 'configure windows time service':
+      command     => 'w32tm /register; w32tm /config /syncfromflags:MANUAL /manualpeerlist:master.puppetlabs.vm; w32tm /resync',
+      path        => $::path,
+      refreshonly => true,
     }
   }
   else {
