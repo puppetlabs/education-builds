@@ -7,15 +7,27 @@
 #   Classify all agent nodes
 #
 class classroom::agent::time {
-  package { 'ntpdate':
-    ensure => present,
-  } ->
-  service { 'ntpd':
-    ensure => stopped,
+  if $::osfamily == 'windows' {
+    service { 'W32Time':
+      ensure => running,
+      enable => true,
+    }
+    exec { 'sync time with master':
+      command => 'w32tm /register; w32tm /config /syncfromflags:MANUAL /manualpeerlist:master.puppetlabs.vm; w32tm /resync',
+      path    => $::path,
+    }
   }
-  # For agents, *always* stay true to the time on on the master
-  cron { 'synctime':
-    command => "/usr/sbin/ntpdate -s $::servername",
-    minute  => '*/5',
+  else {
+    package { 'ntpdate':
+      ensure => present,
+    } ->
+    service { 'ntpd':
+      ensure => stopped,
+    }
+    # For agents, *always* stay true to the time on on the master
+    cron { 'synctime':
+      command => "/usr/sbin/ntpdate -s $::servername",
+      minute  => '*/5',
+    }
   }
 }
