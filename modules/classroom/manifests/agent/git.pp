@@ -31,11 +31,11 @@ class classroom::agent::git {
 
   exec { "git config --global user.name '${::hostname}'":
     unless  => 'git config --global user.name',
-    require => Package['git'],
+    require => Class['::git'],
   }
 
   exec { "git config --global user.email ${::hostname}@puppetlabs.vm":
     unless  => 'git config --global user.email',
-    require => Package['git'],
+    require => Class['::git'],
   }
 }
