@@ -34,6 +34,9 @@ puppet config set server ${HOSTNAME}
 puppet cert --generate ${HOSTNAME} --dns_alt_names "puppet,${HOSTNAME}" --verbose
 cp site.pp /etc/puppetlabs/puppet/manifests
 
+gem install puppet-lint
+ln -s /opt/puppet/bin/puppet-lint /usr/local/bin/
+
 if [ ${VER} == 7 ]
 then
   cp pe-puppet-master.service /usr/lib/systemd/system/
