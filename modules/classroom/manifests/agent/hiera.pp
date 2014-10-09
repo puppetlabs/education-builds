@@ -43,3 +43,4 @@ class classroom::agent::hiera (
     source  => 'puppet:///modules/classroom/defaults.yaml',
     replace => false,
   }
+}
