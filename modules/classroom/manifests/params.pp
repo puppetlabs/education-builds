@@ -38,6 +38,14 @@ class classroom::params {
   # list of module repositorites that should be precreated for the virtual courses
   $precreated_repositories = [ 'critical_policy', 'registry', 'profiles' ]
 
+  # set path to /etc/puppet - incase agent is running on windows
+  if $::osfamily == 'windows' {
+    $etcpath = 'C:/ProgramData/PuppetLabs/puppet/etc'
+  }
+  else {
+    $etcpath = '/etc/puppetlabs/puppet'
+  }
+
   # is this a student's tier3 agent in Architect?
   if $domain != 'puppetlabs.vm' {
     $role = 'tier3'
