@@ -2,8 +2,8 @@ class classroom::agent::git {
   case $::osfamily {
     'windows' : {
       $environment = undef
-      $path = 'C:\Program Files (x86)\Git\bin'
-      $sshpath = 'C:/Users/Administrator/.ssh'
+      $path = 'C:/Program Files (x86)/Git/bin'
+      $sshpath = 'C:/Program Files (x86)/Git/.ssh'
     }
     default   : {
       $environment = 'HOME=/root'
@@ -27,6 +27,12 @@ class classroom::agent::git {
       creates => 'C:\Program Files (x86)\Git',
       path    => $::path,
       before  => Exec['generate_key'],
+      notify  => Exec['add git to path'],
+    }
+    exec { 'add git to path': 
+      command     => 'setx path "%path%;C:\Program Files (x86)\Git\bin"',
+      path        => $::path,
+      refreshonly => true,
     }
   }
   else {
@@ -36,8 +42,8 @@ class classroom::agent::git {
   }
 
   exec { 'generate_key':
-    command => "ssh-keygen -t rsa -N '' -f ${sshpath}",
-    creates => $sshpath,
+    command => "ssh-keygen -t rsa -N '' -f '${sshpath}/id_rsa'",
+    creates => "${sshpath}/id_rsa",
   }
 
   exec { "git config --global user.name '${::hostname}'":
