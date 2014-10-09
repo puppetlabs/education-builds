@@ -23,7 +23,7 @@ class classroom::agent::git {
     }
     exec { 'install git':
       command => 'c:/git_install.exe /VERYSILENT',
-      creates => 'C:\Program Files (x86)\Git'
+      creates => 'C:\Program Files (x86)\Git',
       path    => $::path,
       before  => Exec['generate key'],
     }
