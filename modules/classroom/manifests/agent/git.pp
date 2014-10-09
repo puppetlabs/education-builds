@@ -1,20 +1,32 @@
 class classroom::agent::git {
+  case $::osfamily {
+    'windows' : {
+      $environment = ''
+      $path = ''
+      $sshpath = ''
+    }
+    default   : {
+      $environment = 'HOME=/root'
+      $path = '/usr/bin:/bin:/user/sbin:/usr/sbin'
+      $sshpath = '/root/.ssh'
+    }
+  }
   Exec {
-    environment => 'HOME=/root',
-    path        => '/usr/bin:/bin:/user/sbin:/usr/sbin',
+    environment => $environment,
+    path        => $path,
   }
 
   include ::git
 
-  file { '/root/.ssh':
+  file { $sshpath:
     ensure => directory,
     mode   => '0600',
   }
 
   exec { 'generate_key':
-    command => 'ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa',
-    creates => '/root/.ssh/id_rsa',
-    require => File['/root/.ssh'],
+    command => "ssh-keygen -t rsa -N '' -f ${sshpath}",
+    creates => "${sshpath}/id_rsa",
+    require => File[$sshpath],
   }
 
   exec { "git config --global user.name '${::hostname}'":
