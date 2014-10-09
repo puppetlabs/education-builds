@@ -6,11 +6,6 @@ class classroom::agent::hiera (
   $workdir     = $classroom::workdir,
   $etcpath     = $classroom::etcpath,
 ) inherits classroom {
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-  }
 
   if $managerepos {
     file { "${etcpath}/hieradata":

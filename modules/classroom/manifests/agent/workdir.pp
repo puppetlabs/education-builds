@@ -10,11 +10,6 @@ define classroom::agent::workdir (
   $username = $name,
   $populate = true,
 ) {
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-  }
   Exec {
     environment => 'HOME=/root',
     path        => '/usr/bin:/bin:/user/sbin:/usr/sbin',
