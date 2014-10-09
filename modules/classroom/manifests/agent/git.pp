@@ -37,7 +37,7 @@ class classroom::agent::git {
 
   exec { 'generate_key':
     command => "ssh-keygen -t rsa -N '' -f ${sshpath}",
-    creates => "${sshpath}/id_rsa",
+    creates => $sshpath,
   }
 
   exec { "git config --global user.name '${::hostname}'":
