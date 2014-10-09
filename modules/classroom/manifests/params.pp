@@ -11,8 +11,13 @@ class classroom::params {
   # list of classes that should be available in the console
   $classes   = [ 'users', 'apache', 'userprefs' ]
 
-  # Name of the student's working directory
-  $workdir   = 'puppetcode'
+  # Path to the student's working directory
+  if $::osfamily == 'windows' {
+    $workdir = 'c:/puppetcode'
+  }
+  else {
+    $workdir   = '/root/puppetcode'
+  }
 
   # default user password
   $password  = '$1$Tge1IxzI$kyx2gPUvWmXwrCQrac8/m0' # puppetlabs
