@@ -4,6 +4,7 @@
 class classroom::agent::hiera (
   $managerepos = $classroom::managerepos,
   $workdir     = $classroom::workdir,
+  $etcpath     = $classroom::etcpath,
 ) inherits classroom {
   File {
     owner => 'root',
@@ -12,12 +13,12 @@ class classroom::agent::hiera (
   }
 
   if $managerepos {
-    file { '/etc/puppetlabs/puppet/hieradata':
+    file { "${etcpath}/hieradata":
       ensure => link,
       target => "${workdir}/hieradata",
     }
 
-    file { '/etc/puppetlabs/puppet/hiera.yaml':
+    file { "${etcpath}/hiera.yaml":
       ensure => link,
       target => "${workdir}/hiera.yaml",
       force  => true,
@@ -31,20 +32,19 @@ class classroom::agent::hiera (
 
   }
   else {
-    file { '/etc/puppetlabs/puppet/hieradata':
+    file { "${etcpath}/hieradata":
       ensure => directory,
     }
 
     # Because PE writes a default, we cannot use replace => false
-    file { '/etc/puppetlabs/puppet/hiera.yaml':
+    file { "${etcpath}/hiera.yaml":
       ensure => file,
       source => 'puppet:///modules/classroom/hiera.agent.yaml',
     }
   }
 
-  file { '/etc/puppetlabs/puppet/hieradata/defaults.yaml':
+  file { "${etcpath}/hieradata/defaults.yaml":
     ensure  => file,
     source  => 'puppet:///modules/classroom/defaults.yaml',
     replace => false,
   }
-}
