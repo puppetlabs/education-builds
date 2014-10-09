@@ -3,6 +3,7 @@
 # how to configure it.
 class classroom::agent::hiera (
   $managerepos = $classroom::managerepos,
+  $workdir     = $classroom::workdir,
 ) inherits classroom {
   File {
     owner => 'root',
@@ -13,16 +14,16 @@ class classroom::agent::hiera (
   if $managerepos {
     file { '/etc/puppetlabs/puppet/hieradata':
       ensure => link,
-      target => '/root/puppetcode/hieradata',
+      target => "${workdir}/hieradata",
     }
 
     file { '/etc/puppetlabs/puppet/hiera.yaml':
       ensure => link,
-      target => '/root/puppetcode/hiera.yaml',
+      target => "${workdir}/hiera.yaml",
       force  => true,
     }
 
-    file { '/root/puppetcode/hiera.yaml':
+    file { "${workdir}/hiera.yaml":
       ensure => file,
       source => 'puppet:///modules/classroom/hiera.agent.yaml',
       replace => false,
