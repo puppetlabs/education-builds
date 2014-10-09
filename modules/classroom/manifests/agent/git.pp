@@ -26,12 +26,12 @@ class classroom::agent::git {
       command => 'c:/git_install.exe /VERYSILENT',
       creates => 'C:\Program Files (x86)\Git',
       path    => $::path,
-      before  => Exec['generate key'],
+      before  => Exec['generate_key'],
     }
   }
   else {
     class { '::git':
-      before => Exec['generate key'],
+      before => Exec['generate_key'],
     }
   }
 
@@ -42,11 +42,11 @@ class classroom::agent::git {
 
   exec { "git config --global user.name '${::hostname}'":
     unless  => 'git config --global user.name',
-    require => Exec['generate key'],
+    require => Exec['generate_key'],
   }
 
   exec { "git config --global user.email ${::hostname}@puppetlabs.vm":
     unless  => 'git config --global user.email',
-    require => Exec['generate key'],
+    require => Exec['generate_key'],
   }
 }
