@@ -57,10 +57,23 @@ class classroom::master (
     target => '/etc/puppetlabs/puppet/manifests',
   }
 
-  file { "/etc/puppetlabs/puppet/environments/production/environment.conf":
-    ensure  => file,
-    content => "environment_timeout = 0\n",
-    replace => false,
+  # https://docs.puppetlabs.com/puppet/latest/reference/environments_configuring.html#environmenttimeout
+  # Suggests that this setting can be pushed up to puppet.conf globally.
+  # Initial testing appears to confirm that. If this proves problematic, then
+  # uncomment this resource and the relevant resource in classroom::agent::workdir
+  # file { "/etc/puppetlabs/puppet/environments/production/environment.conf":
+  #   ensure  => file,
+  #   content => "environment_timeout = 0\n",
+  #   replace => false,
+  # }
+
+  # Ensure the environment cache is disabled and restart if needed
+  augeas {'puppet.conf.main':
+    context => '/files/etc/puppetlabs/puppet/puppet.conf/main',
+    changes => [
+      "set environment_timeout 0",
+    ],
+    notify  => Service['pe-httpd'],
   }
 
   augeas {'puppet.conf.environmentpath':
