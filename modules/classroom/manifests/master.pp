@@ -23,6 +23,24 @@ class classroom::master (
     }
   }
 
+  # we know that you all love logging back into the Console every time you do a
+  # demo, but we're sadists, so we're goint to take that pleasure away from you.
+  file_line { 'rubycas_server_console_session_lifetime':
+    ensure => present,
+    path   => '/etc/puppetlabs/rubycas-server/config.yml',
+    match  => '^maximum_session_lifetime:',
+    line   => "maximum_session_lifetime: 100000",
+    notify => Service['pe-httpd'],
+  }
+
+  file_line { 'console_auth_session_lifetime':
+    ensure => present,
+    path   => '/etc/puppetlabs/console-auth/cas_client_config.yml',
+    match  => '\s*session_lifetime:',
+    line   => "  session_lifetime: 100000",
+    notify => Service['pe-httpd'],
+  }
+
   # create environments direectory and directory or production environment
   file {['/etc/puppetlabs/puppet/environments','/etc/puppetlabs/puppet/environments/production']:
     ensure => directory,
