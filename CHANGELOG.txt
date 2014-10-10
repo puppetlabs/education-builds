@@ -2,6 +2,7 @@
   * We've now pinned and cached ALL versions of the Gems required.
   * The timeout for the Console has been set to 1 million seconds.
   * Added back the vagrant user and VirtualBox / VMWare extensions.
+  * Also removed per environment environment.conf based on docs and testing. Troubleshooting guide includes instructions on re-enabling it.
 2.11
   * All of the Forge modules have been updated in the cache - this means the Fundamentals capstone will work offline.
   * We’ve removed the http://rubygems.org source from the /root/.gemrc file so that all gem installs are local. (We’ve also pinned versions of rspec and serverspec so they will work.) 
