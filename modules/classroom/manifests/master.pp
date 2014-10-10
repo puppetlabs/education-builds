@@ -29,7 +29,7 @@ class classroom::master (
     ensure => present,
     path   => '/etc/puppetlabs/rubycas-server/config.yml',
     match  => '^maximum_session_lifetime:',
-    line   => "maximum_session_lifetime: 100000",
+    line   => "maximum_session_lifetime: 1000000",
     notify => Service['pe-httpd'],
   }
 
@@ -37,7 +37,7 @@ class classroom::master (
     ensure => present,
     path   => '/etc/puppetlabs/console-auth/cas_client_config.yml',
     match  => '\s*session_lifetime:',
-    line   => "  session_lifetime: 100000",
+    line   => "  session_lifetime: 1000000",
     notify => Service['pe-httpd'],
   }
 
