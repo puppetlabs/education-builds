@@ -17,22 +17,8 @@ class classroom::agent::git {
   }
 
   if $::osfamily == 'windows' {
-    file { 'c:/git_install.exe':
-      ensure => present,
-      source => 'puppet:///modules/classroom/Git-1.9.4-preview20140929.exe',
-      before => Exec['install git'],
-    }
-    exec { 'install git':
-      command => 'c:/git_install.exe /VERYSILENT',
-      creates => 'C:\Program Files (x86)\Git',
-      path    => $::path,
-      before  => Exec['generate_key'],
-      notify  => Exec['add git to path'],
-    }
-    exec { 'add git to path': 
-      command     => 'setx path "%path%;C:\Program Files (x86)\Git\bin"',
-      path        => $::path,
-      refreshonly => true,
+    class { '::win_git':
+      before => Exec['generate_key'],
     }
   }
   else {
