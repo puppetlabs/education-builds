@@ -31,6 +31,7 @@
     {"name":"puppetlabs/git",       "version_requirement":">= 0.2.0"},
     {"name":"puppetlabs/haproxy",   "version_requirement":">= 1.0.0"},
     {"name":"puppetlabs/mysql",     "version_requirement":">= 2.3.1"},
+    {"name":"puppetlabs/registry",  "version_requirement":">= 1.0.3"},
     {"name":"puppetlabs/ntp",       "version_requirement":">= 3.2.0"},
     {"name":"puppetlabs/pe_gem",    "version_requirement":">= 0.0.1"},
     {"name":"puppetlabs/vcsrepo",   "version_requirement":">= 1.1.0"},

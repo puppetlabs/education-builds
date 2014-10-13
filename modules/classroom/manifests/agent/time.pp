@@ -16,6 +16,14 @@ class classroom::agent::time {
       command     => 'w32tm /register; w32tm /config /syncfromflags:MANUAL /manualpeerlist:master.puppetlabs.vm; w32tm /resync',
       path        => $::path,
       refreshonly => true,
+      subscribe   => Service['W32Time'],
+    }
+    registry::value { 'ntp poll interval':
+      key     => 'HKLM\SYSTEM\ControlSet001\Services \W32Time\TimeProviders\NtpClient',
+      value   => 'SpecialPollInterval',
+      type    => dword,
+      data    => '300',
+      require => Service['W32Time'],
     }
   }
   else {
