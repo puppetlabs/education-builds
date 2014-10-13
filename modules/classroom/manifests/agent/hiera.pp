@@ -7,6 +7,23 @@ class classroom::agent::hiera (
   $etcpath     = $classroom::etcpath,
 ) inherits classroom {
 
+  # Set defaults depending on os
+  case $::osfamily {
+    'windows' : {
+      File {
+        owner => 'Administrator',
+        group => 'Users',
+      }
+    }
+    default   : {
+      File {
+        owner => 'root',
+        group => 'root',
+        mode  => '0644',
+      }
+    }
+  }
+
   if $managerepos {
     file { "${etcpath}/hieradata":
       ensure => link,
