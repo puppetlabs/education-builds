@@ -18,12 +18,12 @@ class classroom::agent::git {
 
   if $::osfamily == 'windows' {
     class { '::win_git':
-      before => Exec['generate_key'],
+      before => [ File[$sshpath], Exec['generate_key'] ],
     }
   }
   else {
     class { '::git':
-      before => Exec['generate_key'],
+      before => [ File[$sshpath], Exec['generate_key'] ],
     }
   }
 
