@@ -6,55 +6,58 @@ class classroom::master (
   $managerepos = $classroom::managerepos,
 ) inherits classroom {
 
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '1777',
-  }
-
   # This wonkiness is due to the fact that puppet_enterprise::license class
   # manages this file only if it exists on the master. So we do the opposite.
   if ( file('/etc/puppetlabs/license.key', '/dev/null') == undef ) {
     # Write out our edu license file to prevent console noise
     file { '/etc/puppetlabs/license.key':
       ensure => file,
+      owner  => 'root',
+      group  => 'root',
       mode   => '0644',
       source => 'puppet:///modules/classroom/license.key',
     }
   }
 
+  package { 'hocon':
+    ensure   => present,
+    provider => 'pe_gem',
+  }
+
   # we know that you all love logging back into the Console every time you do a
-  # demo, but we're sadists, so we're goint to take that pleasure away from you.
-  file_line { 'rubycas_server_console_session_lifetime':
-    ensure => present,
-    path   => '/etc/puppetlabs/rubycas-server/config.yml',
-    match  => '^maximum_session_lifetime:',
-    line   => "maximum_session_lifetime: 1000000",
-    notify => Service['pe-httpd'],
+  # demo, but we're sadists, so we're going to take that pleasure away from you.
+  if versioncmp($::pe_version, '3.4.0') >= 0 {
+    if $::has_hocon {
+      conf_setting {'session timeout':
+        ensure  => present,
+        path    => '/etc/puppetlabs/console-services/conf.d/rbac.conf',
+        setting => 'rbac.session-timeout',
+        value   => '4320',
+        notify  => Service['pe-console-services'],
+      }
+      # Not under Puppet control in PE, so let's do it here
+      service {'pe-console-services':
+        ensure => running,
+        enable => true,
+      }
+    }
   }
+  else {
+    file_line { 'rubycas_server_console_session_lifetime':
+      ensure => present,
+      path   => '/etc/puppetlabs/rubycas-server/config.yml',
+      match  => '^maximum_session_lifetime:',
+      line   => "maximum_session_lifetime: 1000000",
+      notify => Service['pe-httpd'],
+    }
 
-  file_line { 'console_auth_session_lifetime':
-    ensure => present,
-    path   => '/etc/puppetlabs/console-auth/cas_client_config.yml',
-    match  => '\s*session_lifetime:',
-    line   => "  session_lifetime: 1000000",
-    notify => Service['pe-httpd'],
-  }
-
-  # create environments direectory and directory or production environment
-  file {['/etc/puppetlabs/puppet/environments','/etc/puppetlabs/puppet/environments/production']:
-    ensure => directory,
-  }
-
-  # create modules, manifests and config links/files for production environment
-  file {'/etc/puppetlabs/puppet/environments/production/modules':
-    ensure => link,
-    target => '/etc/puppetlabs/puppet/modules',
-  }
-
-  file {'/etc/puppetlabs/puppet/environments/production/manifests':
-    ensure => link,
-    target => '/etc/puppetlabs/puppet/manifests',
+    file_line { 'console_auth_session_lifetime':
+      ensure => present,
+      path   => '/etc/puppetlabs/console-auth/cas_client_config.yml',
+      match  => '\s*session_lifetime:',
+      line   => "  session_lifetime: 1000000",
+      notify => Service['pe-httpd'],
+    }
   }
 
   # https://docs.puppetlabs.com/puppet/latest/reference/environments_configuring.html#environmenttimeout
@@ -67,22 +70,18 @@ class classroom::master (
   #   replace => false,
   # }
 
-  # Ensure the environment cache is disabled and restart if needed
-  augeas {'puppet.conf.main':
-    context => '/files/etc/puppetlabs/puppet/puppet.conf/main',
-    changes => [
-      "set environment_timeout 0",
-    ],
-    notify  => Service['pe-httpd'],
+  file { '/etc/puppetlabs/puppet/environments':
+    ensure => directory,
+    mode   => '1777',
   }
 
-  augeas {'puppet.conf.environmentpath':
-    context => "/files/etc/puppetlabs/puppet/puppet.conf/main",
-    changes => 'set environmentpath  $confdir/environments',
-    require => [
-      File['/etc/puppetlabs/puppet/environments/production/modules'],
-      File['/etc/puppetlabs/puppet/environments/production/manifests']
-    ],
+  # Ensure the environment cache is disabled and restart if needed
+  ini_setting {'environment timeout':
+    ensure  => present,
+    path    => '/etc/puppetlabs/puppet/puppet.conf',
+    section => 'main',
+    setting => 'environment_timeout',
+    value   => '0',
     notify  => Service['pe-httpd'],
   }
 
@@ -104,9 +103,37 @@ class classroom::master (
   # unselect all nodes in Live Management by default
   #include classroom::console::patch
 
-  # Add any classes defined to the console
-  classroom::console::class { $classes: }
-
   # Now create all of the users who've checked in
   Classroom::User <<||>>
+
+  # Remainder of manifest is manual fiddling not needed on current PE
+  if versioncmp($::pe_version, '3.4.0') < 0 {
+    # create environments direectory and directory or production environment
+    file {['/etc/puppetlabs/puppet/environments','/etc/puppetlabs/puppet/environments/production']:
+      ensure => directory,
+    }
+
+    # create modules, manifests and config links/files for production environment
+    file {'/etc/puppetlabs/puppet/environments/production/modules':
+      ensure => link,
+      target => '/etc/puppetlabs/puppet/modules',
+    }
+
+    file {'/etc/puppetlabs/puppet/environments/production/manifests':
+      ensure => link,
+      target => '/etc/puppetlabs/puppet/manifests',
+    }
+
+    ini_setting { 'puppet.conf.environmentpath':
+      ensure  => present,
+      path    => '/etc/puppetlabs/puppet/puppet.conf',
+      section => 'main',
+      setting => 'environmentpath',
+      value   => '$confdir/environments',
+      notify  => Service['pe-httpd'],
+    }
+
+    # Add any classes defined to the console
+    classroom::console::class { $classes: }
+  }
 }

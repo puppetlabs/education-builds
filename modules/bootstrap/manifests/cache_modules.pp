@@ -71,6 +71,10 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'zack/exports':
     version => '0.0.4',
   }
+  bootstrap::forge { 'preben/conffile':
+    version => '0.1.0',
+  }
+
   # These are the additional modules needed by the extending puppet using ruby course
   # puppetlabs-mysql and puppetlabs-apache are also needed
 }

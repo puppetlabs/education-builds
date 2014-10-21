@@ -46,11 +46,11 @@ class classroom::params {
   }
 
   $download = "\n\nPlease download a new VM: http://downloads.puppetlabs.com/training/\n\n"
-  if $::classroom_vm_release and versioncmp($::classroom_vm_release, '2.5') < 0 {
+  if $::classroom_vm_release and versioncmp($::classroom_vm_release, '2.11') < 0 {
     fail("Your VM is out of date. ${download}")
   }
 
-  if versioncmp($::pe_version, '3.2.0') < 0 {
+  if versioncmp($::pe_version, '3.3.0') < 0 {
     fail("Your Puppet Enterprise installation is out of date. ${download}")
   }
 }
