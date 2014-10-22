@@ -48,7 +48,12 @@ class classroom::params {
 
   # is this a student's tier3 agent in Architect?
   if $domain != 'puppetlabs.vm' {
-    $role = 'tier3'
+    if $::osfamily == 'Windows' {
+      $role = 'agent'
+    }
+    else {
+      $role = 'tier3'
+    }
   }
   else {
     $role = $hostname ? {
