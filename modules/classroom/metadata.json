@@ -37,7 +37,6 @@
     {"name":"pltraining/userprefs", "version_requirement":">= 0.0.3"},
     {"name":"hunner/wordpress",     "version_requirement":">= 0.6.0"},
     {"name":"zack/r10k",            "version_requirement":">= 2.3.0"},
-    {"name":"zack/exports",         "version_requirement":">= 0.0.4"},
-    {"name":"preben-conffile",      "version_requirement":">= 0.1.0"}
+    {"name":"zack/exports",         "version_requirement":">= 0.0.4"}
   ]
 }
