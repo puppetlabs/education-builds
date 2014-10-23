@@ -19,27 +19,14 @@ class classroom::master (
     }
   }
 
-  package { 'hocon':
-    ensure   => present,
-    provider => 'pe_gem',
-  }
-
   # we know that you all love logging back into the Console every time you do a
   # demo, but we're sadists, so we're going to take that pleasure away from you.
   if versioncmp($::pe_version, '3.4.0') >= 0 {
-    if $::has_hocon {
-      conf_setting {'session timeout':
-        ensure  => present,
-        path    => '/etc/puppetlabs/console-services/conf.d/rbac.conf',
-        setting => 'rbac.session-timeout',
-        value   => '4320',
-        notify  => Service['pe-console-services'],
-      }
-      # Not under Puppet control in PE, so let's do it here
-      service {'pe-console-services':
-        ensure => running,
-        enable => true,
-      }
+    classroom::console::groupparam { 'session timeout':
+      group     => 'PE Console',
+      classname => 'puppet_enterprise::profile::console',
+      parameter => 'rbac_session_timeout',
+      value     => '4320',
     }
   }
   else {
@@ -70,11 +57,6 @@ class classroom::master (
   #   replace => false,
   # }
 
-  file { '/etc/puppetlabs/puppet/environments':
-    ensure => directory,
-    mode   => '1777',
-  }
-
   # Ensure the environment cache is disabled and restart if needed
   ini_setting {'environment timeout':
     ensure  => present,
@@ -85,15 +67,12 @@ class classroom::master (
     notify  => Service['pe-httpd'],
   }
 
-  # we need to restart the pe-httpd service when we change puppet.conf
-  # it is not under Puppet control in PE, so let's do it here
-  service {'pe-httpd':
-    ensure => running,
-    enable => true,
-  }
-
   # if configured to do so, configure repos & environments on the master
   if $managerepos {
+#    File <| title == '/etc/puppetlabs/puppet/environments' |> {
+#      mode   => '1777',
+#    }
+
     include classroom::master::repositories
   }
 
@@ -131,6 +110,13 @@ class classroom::master (
       setting => 'environmentpath',
       value   => '$confdir/environments',
       notify  => Service['pe-httpd'],
+    }
+
+    # we need to restart the pe-httpd service when we change puppet.conf
+    # it is not under Puppet control in PE, so let's do it here
+    service {'pe-httpd':
+      ensure => running,
+      enable => true,
     }
 
     # Add any classes defined to the console
