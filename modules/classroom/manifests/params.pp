@@ -30,6 +30,9 @@ class classroom::params {
   # time servers to use if we've got network
   $time_servers = ['0.pool.ntp.org iburst', '1.pool.ntp.org iburst', '2.pool.ntp.org iburst', '3.pool.ntp.org']
 
+  # where the agent installer tarball should go. This is only relevant when promoting a secondary master
+  $agent_cachedir = '/opt/puppet/packages/public/classroom'
+
   # list of module repositorites that should be precreated for the virtual courses
   $precreated_repositories = [ 'critical_policy', 'registry', 'profiles' ]
 

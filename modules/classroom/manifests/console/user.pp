@@ -29,6 +29,6 @@ define classroom::console::user ( $password, $role = 'Operator' ) {
     cwd         => '/opt/puppet/share/puppet-dashboard',
     environment => 'RAILS_ENV=production',
     command     => "${command} ${arguments}",
-    unless      => "${userlist} | grep ${name}"
+    unless      => "${userlist} | grep ${name}",
   }
 }

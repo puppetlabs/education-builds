@@ -25,6 +25,10 @@ class classroom::course::architect (
     # Include the Irssi setup and collect all hosts
     include classroom::agent::irc
     include classroom::agent::hosts
+
+    # Configure the classroom so that any secondary masters will get the
+    # agent tarball from the classroom master.
+    include classroom::master::agent_tarball
   }
   elsif $role == 'agent' {
     # tools used in class

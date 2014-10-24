@@ -9,6 +9,6 @@ define classroom::console::groupparam (
     cwd         => '/opt/puppet/share/puppet-dashboard',
     environment => 'RAILS_ENV=production',
     command     => "bundle exec rake nodegroup:addclassparam['${group}','${classname}','${parameter}','${value}']",
-    unless      => "bundle exec rake nodegroup:listclassparams['${group}','${classname}'] | grep ${parameter}",
+    unless      => "bundle exec rake nodegroup:listclassparams['${group}','${classname}'] | grep ${parameter} | grep '${value}'",
   }
 }
