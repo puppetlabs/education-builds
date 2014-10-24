@@ -99,8 +99,16 @@ class classroom::master (
   # Now create all of the users who've checked in
   Classroom::User <<||>>
 
-  # Remainder of manifest is manual fiddling not needed on current PE
-  if versioncmp($::pe_version, '3.4.0') < 0 {
+  if versioncmp($::pe_version, '3.4.0') >= 0 {
+    # The new PE stack takes a very long time to startup, which can cause
+    # disconcerting errors. This simply schedules that to the end of the run
+    # and waits for the service to resume servicing requests before allowing
+    # the run to complete
+    include classroom::master::wait_for_startup
+  }
+  else {
+    # Remainder of manifest is manual fiddling not needed on current PE
+
     # create environments direectory and directory or production environment
     file {['/etc/puppetlabs/puppet/environments','/etc/puppetlabs/puppet/environments/production']:
       ensure => directory,
