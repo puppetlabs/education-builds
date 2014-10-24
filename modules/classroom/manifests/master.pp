@@ -67,11 +67,20 @@ class classroom::master (
     notify  => Service['pe-httpd'],
   }
 
+  # Anything that needs to be top scope
+  file { '/etc/puppetlabs/puppet/environments/production/manifests/classroom.pp':
+    ensure => file,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => 'puppet:///modules/classroom/classroom.pp',
+  }
+
   # if configured to do so, configure repos & environments on the master
   if $managerepos {
-#    File <| title == '/etc/puppetlabs/puppet/environments' |> {
-#      mode   => '1777',
-#    }
+    File <| title == '/etc/puppetlabs/puppet/environments' |> {
+      mode => '1777',
+    }
 
     include classroom::master::repositories
   }
