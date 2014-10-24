@@ -6,27 +6,36 @@ class classroom::master (
   $managerepos = $classroom::managerepos,
 ) inherits classroom {
 
+  File {
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+  }
+
   # This wonkiness is due to the fact that puppet_enterprise::license class
   # manages this file only if it exists on the master. So we do the opposite.
   if ( file('/etc/puppetlabs/license.key', '/dev/null') == undef ) {
     # Write out our edu license file to prevent console noise
     file { '/etc/puppetlabs/license.key':
       ensure => file,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
       source => 'puppet:///modules/classroom/license.key',
     }
   }
 
   # we know that you all love logging back into the Console every time you do a
   # demo, but we're sadists, so we're going to take that pleasure away from you.
-  if versioncmp($::pe_version, '3.4.0') >= 0 {
+  if versioncmp($::pe_version, '3.7.0') > 0 {
     classroom::console::groupparam { 'session timeout':
       group     => 'PE Console',
       classname => 'puppet_enterprise::profile::console',
       parameter => 'rbac_session_timeout',
       value     => '4320',
+    }
+  }
+  elsif versioncmp($::pe_version, '3.4.0') >= 0 {
+    file { '/etc/puppetlabs/console-services/conf.d/rbac-session.conf':
+      ensure => file,
+      source => 'puppet:///modules/classroom/rbac-session.conf',
     }
   }
   else {
@@ -64,15 +73,11 @@ class classroom::master (
     section => 'main',
     setting => 'environment_timeout',
     value   => '0',
-    notify  => Service['pe-httpd'],
   }
 
   # Anything that needs to be top scope
   file { '/etc/puppetlabs/puppet/environments/production/manifests/classroom.pp':
     ensure => file,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
     source => 'puppet:///modules/classroom/classroom.pp',
   }
 
