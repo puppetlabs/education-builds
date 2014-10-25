@@ -36,6 +36,7 @@ class classroom::master (
     file { '/etc/puppetlabs/console-services/conf.d/rbac-session.conf':
       ensure => file,
       source => 'puppet:///modules/classroom/rbac-session.conf',
+      notify => Service['pe-console-services'],
     }
   }
   else {
@@ -73,6 +74,7 @@ class classroom::master (
     section => 'main',
     setting => 'environment_timeout',
     value   => '0',
+    notify  => Service['pe-puppetserver'],
   }
 
   # Anything that needs to be top scope
