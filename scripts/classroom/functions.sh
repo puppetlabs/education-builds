@@ -70,10 +70,25 @@ function version ()
  fi
 }
 
+function confirm()
+{
+  MESSAGE="$1"
+  DEFAULT="$2"
+
+  if [ "${DEFAULT}" = false ]; then
+    echo -n "${MESSAGE} [y/N]: "
+    read resp
+    [[ "${resp}" == "" ]] && resp="n"
+  else
+    echo -n "${MESSAGE} [Y/n]: "
+    read resp
+    [[ "${resp}" == "" ]] && resp="y"
+  fi
+
+  [[ "${resp}" == "y" || "${resp}" == "Y" ]]
+}
+
 function offer_bailout()
 {
-  echo -n "Do you wish to continue? [Y/n]: "
-  read resp
-
-  [[ "${resp}" != "" && "${resp}" != "y" && "${resp}" != "Y" ]] && exit 1
+  confirm "Do you wish to continue?" || exit 1
 }

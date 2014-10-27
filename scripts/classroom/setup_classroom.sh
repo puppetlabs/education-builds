@@ -27,25 +27,29 @@ BACKUP_DIR=$(mktemp -d)
 cp "$HOSTS" "$BACKUP_DIR"
 cp "$NETWORK" "$BACKUP_DIR"
 
+function validate_name
+{
+  name="$1"
+
+  [[ "${name}" =~ ^[a-z0-9][a-z0-9_]+$ &&
+     "${name}" =~ [a-z]+               &&
+     "${name}" != "root"               &&
+     "${name}" != "master" ]]
+}
+
 ipaddr=`hostname -I | awk '{print $1}'`
 echo "Your IP address appears to be ${ipaddr}"
 echo "If this is not correct, cancel now."
 offer_bailout
 
 while : ; do
-  echo -n "Please choose a username: "
+  echo -n "Please choose a name for this node: "
   read username
 
-  if [[ "$username" =~ \. ]]
-  then
-    echo 'WARNING: Periods in the username are unsupported in the classroom except'
-    echo 'WARNING: when creating a secondary agent in the Architect course.'
-    offer_bailout
-  fi
+  validate_name $username && break
 
-  [[ "$username" =~ ^[a-z0-9][a-z0-9._]+$ && "$username" =~ [a-z]+ && "$username" != "root" ]] && break
-
-  echo "Usernames must be lowercase alphanumeric with at least one letter and not 'root'."
+  echo "Node names in the classroom must be lowercase alphanumeric; with at least one"
+  echo "letter, no periods, and not a reserved name such as 'root' or 'master'."
   echo "... please try again."
 done
 
@@ -58,28 +62,72 @@ while : ; do
   echo "... that IP is unreachable."
 done
 
+if confirm "Are you creating a secondary agent in the Architect course?" false
+then
+
+  while : ; do
+    echo -n "Please enter the node name you chose for your Master: "
+    read student_master_name
+
+    echo -n "Please enter the IP address for ${student_master_name}.puppetlabs.vm: "
+    read student_master_ip
+
+    ping -c1 -t2 ${student_master_ip} >/dev/null 2>&1 && break
+
+    echo "... that IP is unreachable."
+  done
+
+  hostname="${username}.${student_master_name}"
+  aliases="${username}.${student_master_name} ${username}"
+  install_args="-s agent:ca_server=master.puppetlabs.vm"
+  install_host="${student_master_name}.puppetlabs.vm"
+else
+  hostname="${username}"
+  aliases="${username}"
+  install_host="master.puppetlabs.vm"
+fi
+
+
+################  start configuring the node ###################
 check_success "Adding host record for classroom master"             \
       "$(echo "${master} master.puppetlabs.vm master" >> /etc/hosts 2>&1)"
 
-check_success "Adding host record for ${username}.puppetlabs.vm"    \
-      "$(echo "${ipaddr} ${username}.puppetlabs.vm ${username}" >> /etc/hosts 2>&1)"
+check_success "Adding host record for ${hostname}.puppetlabs.vm"    \
+      "$(echo "${ipaddr} ${hostname}.puppetlabs.vm ${aliases}" >> /etc/hosts 2>&1)"
+
+if [ "${student_master_name}" != "" ]
+then
+  check_success "Adding host record for ${student_master_name}.puppetlabs.vm"    \
+      "$(echo "${student_master_ip} ${student_master_name}.puppetlabs.vm ${student_master_name}" >> /etc/hosts 2>&1)"
+fi
 
 check_success "Configuring hostname"                                \
-      "$(hostname ${username}.puppetlabs.vm 2>&1)"
+      "$(hostname ${hostname}.puppetlabs.vm 2>&1)"
 
 check_success "Setting hostname on boot"                            \
-      "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${username}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
+      "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${hostname}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
 
 check_success "Synchronizing time with the classroom master"        \
       "$(ntpdate -u master.puppetlabs.vm 2>&1)"
 
+
+################  only install puppet if there were no errors ###################
 if [ $ERRORCOUNT -eq 0 ]
 then
   source /etc/profile
 
   # Now actually perform the install. Yay for packages!
-  curl -k https://master.puppetlabs.vm:8140/packages/current/install.bash | bash
+  echo "Installing Puppet Enterprise Agent..."
+  curl -k https://${install_host}:8140/packages/current/install.bash | bash ${install_args}
 
+  [ $? -ne 0 ] && ((++ERRORCOUNT))
+
+  # snapshot $ssldir for engineering debug purposes
+  snapshot.sh ssldir
+fi
+
+if [ $ERRORCOUNT -eq 0 ]
+then
   rm -rf "$BACKUP_DIR"
 else
   echo
