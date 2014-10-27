@@ -38,11 +38,11 @@ check "[[ '`grep processor /proc/cpuinfo | wc -l`' -gt '1' ]]"      \
       "Checking core count for classroom Master"                    \
       "You should give the virtual machine for the classroom Master at least two cores"
 
-check "[[ \"`awk '/MemTotal/{print $2}' /proc/meminfo`\" -ge '1938740' ]]" \
+check "[[ \"`awk '/MemTotal/{print $2}' /proc/meminfo`\" -ge '4019584' ]]"   \
       "Checking available memory for classroom Master"              \
-      "You should give the virtual machine for the classroom Master at least 2GB of memory"
+      "You should give the virtual machine for the classroom Master at least 4GB of memory"
 
 DEFAULT='$1$jrm5tnjw$h8JJ9mCZLmJvIxvDLjw1M/'  # 'puppet'
-check "[[ '$(awk -F ':' '/^root/{print $2}' /etc/shadow)' != '$DEFAULT' ]]" \
-      "Verifying that the default password has been changed"           \
+check "[[ '$(awk -F ':' '/^root/{print $2}' /etc/shadow)' != '$DEFAULT' ]]"  \
+      "Verifying that the default password has been changed"        \
       "You should change root's password before proceeding"
