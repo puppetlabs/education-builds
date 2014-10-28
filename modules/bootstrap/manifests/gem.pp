@@ -16,7 +16,7 @@ define bootstrap::gem(
   exec { "gem fetch ${gem}":
     path    => '/opt/puppet/bin:/usr/local/bin:/usr/bin:/bin',
     cwd     => $cache_dir,
-    unless  => "find /var/cache/gems/ -type f -name '${pattern}.gem' | grep '.*'",
+    unless  => "find ${cache_dir} -type f -name '${pattern}.gem' | grep '.*'",
     require => File[$cache_dir],
     notify  => Exec['rebuild_gem_cache'],
   }
