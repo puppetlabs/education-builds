@@ -1,10 +1,12 @@
 class training {
   # ILT training-specific setup
 
-  # Set up the /root/bin directory.
-  file {'/root/bin':
-    ensure => link,
-    target => '/usr/src/puppetlabs-training-bootstrap/scripts/classroom',
+  # Populate the VM with our helper scripts.
+  file {'/usr/local/bin':
+    ensure  => directory,
+    recurse => true,
+    replace => false,
+    source  => '/usr/src/puppetlabs-training-bootstrap/scripts/classroom',
   }
 
   file { '/usr/src/wordpress':
