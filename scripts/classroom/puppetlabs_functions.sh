@@ -2,18 +2,6 @@ COLUMNS=$(tput cols)
 WIDTH=$[COLUMNS - 12]
 ERRORCOUNT=0
 
-function validate_args()
-{
-  if [ $# -ne 1 ]
-  then
-    echo "Please call this script with the username you provided to the instructor."
-    echo "For example, ${0} <myname>"
-    exit 1
-  fi
-
-  NAME=$1
-}
-
 function success ()
 {
   MESSAGE="$1"
