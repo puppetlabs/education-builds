@@ -1,5 +1,5 @@
 #! /bin/bash
-source functions.sh
+source puppetlabs_functions.sh
 version
 
 echo "This script will automate the setup of the Puppetlabs Training Classroom"

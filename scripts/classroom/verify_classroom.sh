@@ -1,8 +1,15 @@
 #! /bin/sh
 
-source functions.sh
-validate_args $*
+source puppetlabs_functions.sh
 version
+
+if [ $# -ne 1 ]
+then
+  echo "Please call this script with the username you provided to the instructor."
+  echo "For example, ${0} <myname>"
+  exit 1
+fi
+NAME=$1
 
 echo "Verifying Puppet Labs Training classroom setup:"
 
