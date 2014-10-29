@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 require 'yaml'
 
-unless (`facter -p pe_versions`.split('.')[1] > 3 rescue false)
+unless `facter -p pe_version`.split('.')[1].to_i > 3
   puts "This script is deprecated as of Puppet Enterprise 3.7"
   exit 1
 end
