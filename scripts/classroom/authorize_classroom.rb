@@ -1,6 +1,11 @@
 #! /usr/bin/env ruby
 require 'yaml'
 
+unless (`facter -p pe_versions`.split('.')[1] > 3 rescue false)
+  puts "This script is deprecated as of Puppet Enterprise 3.7"
+  exit 1
+end
+
 hosts = {}
 `puppet cert list --all`.split("\n").each do |line|
   if line =~ /^\+\s"(\S*.puppetlabs.vm)"\s.*$/
