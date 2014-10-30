@@ -10,9 +10,7 @@ class classroom::agent::r10k (
         'prefix'  => false,
       }
     },
-    purgedirs         => [ $basedir ],
-    manage_modulepath => true,
-    modulepath        => "${basedir}/\$environment/modules:/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules",
+    purgedirs => [ $basedir ],
+    version   => '1.3.4',
   }
 }
-
