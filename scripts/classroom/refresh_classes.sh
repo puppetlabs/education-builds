@@ -26,7 +26,7 @@ function refresh()
   OPTIONS="--cert ${CERT} --cacert ${CACERT} --key ${PRVKEY}"
   CONSOLE=$(awk '/server =/{print $NF}' ${CONFDIR}/console.conf)
 
-  curl -k -X POST ${OPTIONS} "https://${CONSOLE}:4433/classifier-api/v1/update-classes"
+  curl -s -k -X POST ${OPTIONS} "https://${CONSOLE}:4433/classifier-api/v1/update-classes"
 }
 
 # only run one copy at a time
@@ -34,4 +34,5 @@ for pid in $(pidof -x $(basename $0)); do
   [ $pid != $$ ] && exit 1
 done
 
+echo "Updating list of classes available in the Node Classifier..."
 refresh &
