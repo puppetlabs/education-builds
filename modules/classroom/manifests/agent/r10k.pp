@@ -11,6 +11,6 @@ class classroom::agent::r10k (
       }
     },
     purgedirs => [ $basedir ],
-    version   => '1.3.4',
+    version   => present,
   }
 }
