@@ -45,7 +45,7 @@ check "[[ '`grep processor /proc/cpuinfo | wc -l`' -gt '1' ]]"      \
       "Checking core count for classroom Master"                    \
       "You should give the virtual machine for the classroom Master at least two cores"
 
-check "[[ \"`awk '/MemTotal/{print $2}' /proc/meminfo`\" -ge '4019584' ]]"   \
+check "[[ \"`awk '/MemTotal/{print $2}' /proc/meminfo`\" -ge '4000000' ]]"   \
       "Checking available memory for classroom Master"              \
       "You should give the virtual machine for the classroom Master at least 4GB of memory"
 
@@ -53,3 +53,7 @@ DEFAULT='$1$jrm5tnjw$h8JJ9mCZLmJvIxvDLjw1M/'  # 'puppet'
 check "[[ '$(awk -F ':' '/^root/{print $2}' /etc/shadow)' != '$DEFAULT' ]]"  \
       "Verifying that the default password has been changed"        \
       "You should change root's password before proceeding"
+
+check "ntpdate time.nist.gov"                                       \
+      "Attempting to synchronize time..."                           \
+      "Network time server unavailable. You should run class in offline mode"
