@@ -1,5 +1,5 @@
 define bootstrap::gem(
-  $cache_dir = '/var/cache/gems',
+  $cache_dir = '/var/cache/rubygems/gems',
   $version   = undef
 ) {
 
