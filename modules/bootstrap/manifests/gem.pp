@@ -5,7 +5,7 @@ define bootstrap::gem(
 
   if $version {
     $gem     = "${name} -v ${version}"
-    $pattern = $gem
+    $pattern = "${name}-${version}"
   }
   else {
     $gem     = $name
