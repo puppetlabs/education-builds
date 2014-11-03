@@ -8,12 +8,17 @@ class bootstrap::cache_gems (
   file { $cache_dir :
     ensure => directory,
   }
-  
+
+  file { '/tmp/gems':
+    ensure => directory,
+  }
+
   file { "${cache_dir}/gems" :
     ensure => directory,
     recurse => true,
     source => "/tmp/gems",
-    require => File[$cache_dir]
+    require => File[$cache_dir],
+    require => File['/tmp/gems'],
   }
 
 
