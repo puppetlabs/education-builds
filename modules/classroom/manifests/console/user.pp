@@ -14,6 +14,13 @@ define classroom::console::user ( $password, $role = 'Operator' ) {
       default           => 3,
     }
     $arguments = "LOGIN=${name} EMAIL=${name}@puppetlabs.com DISPLAYNAME=${name} ROLEIDS=${roleid}"
+
+    exec { "reset console password for ${name}":
+      path        => '/usr/local/bin',
+      command     => "console_password_reset.rb ${name} ${password}",
+      subscribe   => Exec["add_console_user_${name}"],
+      refreshonly => true,
+    }
   }
   else {
     $permission = downcase($role) ? {
