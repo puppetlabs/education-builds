@@ -18,6 +18,7 @@ require 'openssl'
 require 'socket'
 require 'yaml'
 require 'puppet'
+require 'optparse'
 
 class SimpleClassifier
   class HttpClient
@@ -88,6 +89,25 @@ end
 
 ############ Now start execution ############
 
+output = :json
+optparse = OptionParser.new { |opts|
+  opts.banner = "Usage : external_node.rb [--output yaml|json] <node name>
+
+"
+
+  opts.on("-o FORMAT", "--output FORMAT", "Choose the output format (yaml or json).") do |arg|
+    output = arg.downcase.to_sym
+  end
+
+  opts.separator('')
+
+  opts.on("-h", "--help", "Displays this help") do
+    puts opts
+    exit
+  end
+}
+optparse.parse!
+
 if ARGV.size != 1
   puts "Please call this script with the name of a node."
   puts "  example usage: external_node.rb <node name>"
@@ -95,8 +115,14 @@ if ARGV.size != 1
 end
 
 Puppet.initialize_settings
-classifier = SimpleClassifier.new
+data = SimpleClassifier.new.classify(ARGV[0])
 
-puts JSON.pretty_generate(classifier.classify(ARGV[0]))
-
+case output
+when :json
+  puts JSON.pretty_generate(data)
+when :yaml
+  puts data.to_yaml
+else
+  puts "Unknown render format: #{output}"
+end
 # root@master $ ./external_node.rb <node>
