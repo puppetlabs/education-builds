@@ -30,7 +30,7 @@ function refresh()
 }
 
 # only run one copy at a time
-for pid in $(pidof -x $(basename $0)); do
+for pid in $(/sbin/pidof -x $(basename $0)); do
   [ $pid != $$ ] && exit 1
 done
 
