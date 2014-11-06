@@ -25,7 +25,7 @@ function extract()
 }
 
 cd '/root'
-installer=$(find /root -maxdepth 1 -type f -name 'puppet-enterprise-*-i386.tar*')
+installer=$(find /root -maxdepth 1 -type f -name 'puppet-enterprise-*.tar*' -not -name '*agent*')
 archivefile="${installer##*/}"
 dirname="${archivefile%.tar*}"
 
