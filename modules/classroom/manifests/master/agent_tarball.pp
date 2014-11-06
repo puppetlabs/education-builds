@@ -11,7 +11,9 @@ class classroom::master::agent_tarball (
 ) inherits classroom::params {
   if versioncmp($::pe_version, '3.4.0') >= 0 {
     $filename = "puppet-enterprise-${version}-${platform}-agent.tar.gz"
-    $download = "https://pm.puppetlabs.com/puppet-enterprise/${version}/${filename}"
+    #$download = "https://pm.puppetlabs.com/puppet-enterprise/${version}/${filename}"
+    # hackyhacky for testing purposes
+    $download = "http://pe-releases.puppetlabs.lan/3.7.0/puppet-enterprise-3.7.0-el-6-i386-agent.tar.gz"
 
     file { [$cachedir, "${cachedir}/${version}"]:
       ensure => directory,
@@ -20,9 +22,9 @@ class classroom::master::agent_tarball (
       mode   => '0755',
     }
 
-    pe_staging::file { $filename:
-      source      => $download,
-      target      => "${cachedir}/${version}/${filename}",
+    pe_staging::file { "${cachedir}/${version}/${filename}":
+      source    => $download,
+      target    => "${cachedir}/${version}/${filename}",
     }
 
     # Secondary masters should get the tarball from the classroom master
