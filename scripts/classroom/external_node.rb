@@ -114,7 +114,7 @@ if ARGV.size != 1
   exit 1
 end
 
-Puppet.initialize_settings
+Puppet.initialize_settings(['--confdir', '/etc/puppetlabs/puppet'])
 data = SimpleClassifier.new.classify(ARGV[0])
 
 case output
@@ -125,4 +125,4 @@ when :yaml
 else
   puts "Unknown render format: #{output}"
 end
-# root@master $ ./external_node.rb <node>
+
