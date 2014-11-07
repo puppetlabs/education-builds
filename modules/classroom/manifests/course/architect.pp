@@ -41,6 +41,9 @@ class classroom::course::architect (
 
     # The student masters should export a balancermember
     include classroom::master::balancermember
+
+    # The autoscaling seems to assume that you'll sync this out from the MoM
+    include classroom::master::student_environment
   }
 
   # manual fiddling not needed on current PE
