@@ -17,9 +17,6 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'puppetlabs-concat':
     version => '1.1.1',
   }
-  bootstrap::forge { 'camptocamp-augeasfacter':
-    version => '0.1.0',
-  }
   bootstrap::forge { 'domcleal-augeasproviders':
     version => '1.2.0',
   }
@@ -46,6 +43,12 @@ class bootstrap::cache_modules(
   }
   bootstrap::forge { 'puppetlabs-haproxy':
     version => '1.0.0',
+  }
+  bootstrap::forge { 'puppetlabs-inifile':
+    version => '1.2.0',
+  }
+  bootstrap::forge { 'puppetlabs-stdlib':
+    version => '4.3.2',
   }
   bootstrap::forge { 'jamtur01-irc':
     version => '0.0.7',
