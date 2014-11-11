@@ -13,6 +13,7 @@ class classroom::master::student_environment inherits classroom::params {
   }
 
   file { [
+    $environmentpath,
     "${environment}",
     "${environment}/manifests",
     "${environment}/modules",
@@ -33,7 +34,6 @@ class classroom::master::student_environment inherits classroom::params {
     section => 'main',
     setting => 'environment_timeout',
     value   => '0',
-    notify  => Service['pe-puppetserver'],
   }
 
   # Ensure the environmentpath is configured and restart if needed
@@ -43,6 +43,5 @@ class classroom::master::student_environment inherits classroom::params {
     section => 'main',
     setting => 'environmentpath',
     value   => $environmentpath,
-    notify  => Service['pe-puppetserver'],
   }
 }
