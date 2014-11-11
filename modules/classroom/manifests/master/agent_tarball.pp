@@ -5,26 +5,31 @@
 # GIANT WARNING: add any other platform repositories to the classroom master!
 #
 class classroom::master::agent_tarball (
-  $version  = $::pe_version,
-  $platform = $::platform_tag,
-  $cachedir = $classroom::params::agent_cachedir,
+  $version   = $::pe_version,
+  $platform  = $::platform_tag,
+  $cachedir  = $classroom::params::cachedir,
+  $publicdir = $classroom::params::publicdir,
 ) inherits classroom::params {
   if versioncmp($::pe_version, '3.4.0') >= 0 {
     $filename = "puppet-enterprise-${version}-${platform}-agent.tar.gz"
-    #$download = "https://pm.puppetlabs.com/puppet-enterprise/${version}/${filename}"
-    # hackyhacky for testing purposes
-    $download = "http://pe-releases.puppetlabs.lan/3.7.0/puppet-enterprise-3.7.0-el-6-i386-agent.tar.gz"
+    $download = "https://pm.puppetlabs.com/puppet-enterprise/${version}/${filename}"
 
-    file { [$cachedir, "${cachedir}/${version}"]:
+    file { [$publicdir, "${publicdir}/${version}"]:
       ensure => directory,
       owner  => 'root',
       group  => 'root',
       mode   => '0755',
     }
 
-    pe_staging::file { "${cachedir}/${version}/${filename}":
-      source    => $download,
-      target    => "${cachedir}/${version}/${filename}",
+    pe_staging::file { "${cachedir}/${filename}":
+      source => $download,
+      target => "${cachedir}/${filename}",
+      before => File["${publicdir}/${version}/${filename}"],
+    }
+
+    file { "${publicdir}/${version}/${filename}":
+      ensure => file,
+      source => "${cachedir}/${filename}",
     }
 
     # Secondary masters should get the tarball from the classroom master
