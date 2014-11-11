@@ -10,7 +10,6 @@ class bootstrap::cache_modules(
   }
 
   bootstrap::forge { 'domcleal-augeasproviders':         version => '1.2.0' }
-  bootstrap::forge { 'hunner-charybdis':                 version => '1.0.0' }
   bootstrap::forge { 'hunner-wordpress':                 version => '0.6.0' }
   bootstrap::forge { 'jamtur01-irc':                     version => '0.0.7' }
   bootstrap::forge { 'nanliu-staging':                   version => '1.0.0' }
@@ -24,7 +23,6 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'puppetlabs-pe_gem':                version => '0.0.1' }
   bootstrap::forge { 'puppetlabs-stdlib':                version => '4.3.2' }
   bootstrap::forge { 'puppetlabs-vcsrepo':               version => '1.1.0' }
-  bootstrap::forge { 'preben/conffile':                  version => '0.1.0' }
   bootstrap::forge { 'razorsedge-vmwaretools':           version => '4.7.0' }
   bootstrap::forge { 'stahnma-epel':                     version => '1.0.0' }
   bootstrap::forge { 'thias-vsftpd':                     version => '0.2.1' }
