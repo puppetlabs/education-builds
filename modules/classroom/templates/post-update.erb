@@ -8,3 +8,5 @@ echo "Updating modulepath: <%= @name %>"
 
 git fetch --all
 git reset --hard origin/master
+
+[[ -f '/usr/local/bin/refresh_classes.sh' ]] && refresh_classes.sh

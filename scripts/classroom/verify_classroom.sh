@@ -1,8 +1,15 @@
 #! /bin/sh
 
-source functions.sh
-validate_args $*
+source puppetlabs_functions.sh
 version
+
+if [ $# -ne 1 ]
+then
+  echo "Please call this script with the username you provided to the instructor."
+  echo "For example, ${0} <myname>"
+  exit 1
+fi
+NAME=$1
 
 echo "Verifying Puppet Labs Training classroom setup:"
 
@@ -38,11 +45,15 @@ check "[[ '`grep processor /proc/cpuinfo | wc -l`' -gt '1' ]]"      \
       "Checking core count for classroom Master"                    \
       "You should give the virtual machine for the classroom Master at least two cores"
 
-check "[[ \"`awk '/MemTotal/{print $2}' /proc/meminfo`\" -ge '1938740' ]]" \
+check "[[ \"`awk '/MemTotal/{print $2}' /proc/meminfo`\" -ge '4000000' ]]"   \
       "Checking available memory for classroom Master"              \
-      "You should give the virtual machine for the classroom Master at least 2GB of memory"
+      "You should give the virtual machine for the classroom Master at least 4GB of memory"
 
 DEFAULT='$1$jrm5tnjw$h8JJ9mCZLmJvIxvDLjw1M/'  # 'puppet'
-check "[[ '$(awk -F ':' '/^root/{print $2}' /etc/shadow)' != '$DEFAULT' ]]" \
-      "Verifying that the default password has been changed"           \
+check "[[ '$(awk -F ':' '/^root/{print $2}' /etc/shadow)' != '$DEFAULT' ]]"  \
+      "Verifying that the default password has been changed"        \
       "You should change root's password before proceeding"
+
+check "ntpdate time.nist.gov"                                       \
+      "Attempting to synchronize time..."                           \
+      "Network time server unavailable. You should run class in offline mode"

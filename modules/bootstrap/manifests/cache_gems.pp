@@ -63,6 +63,7 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'systemu':                        version => '2.5.2'  }
   bootstrap::gem { 'rake':                           version => '10.3.2' }
   bootstrap::gem { 'puppet-syntax':                  version => '1.3.0'  }
+  bootstrap::gem { 'hocon':                          version => '0.0.6'  }
 
 
   Bootstrap::Gem <| |> -> File['/root/.gemrc']

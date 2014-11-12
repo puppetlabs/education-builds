@@ -1,4 +1,4 @@
-# This is a wrapper class to include all the bits needed for Practitioner
+# This is a wrapper class to include all the bits needed for Architect
 #
 class classroom::course::architect (
   $offline   = $classroom::params::offline,
@@ -22,16 +22,16 @@ class classroom::course::architect (
     include classroom::master::ircd
     include classroom::master::puppetdb
 
-    # prepare mcollective certs & config for syncronization
-    include classroom::mcollective::master
-
     # Include the Irssi setup and collect all hosts
     include classroom::agent::irc
     include classroom::agent::hosts
+
+    # Configure the classroom so that any secondary masters will get the
+    # agent tarball from the classroom master.
+    include classroom::master::agent_tarball
   }
   elsif $role == 'agent' {
-    # synchronize mcollective certs & config to client node
-    include classroom::mcollective::client
+    # tools used in class
     include classroom::agent::r10k
     include classroom::master::reporting_tools
 
@@ -41,5 +41,13 @@ class classroom::course::architect (
 
     # The student masters should export a balancermember
     include classroom::master::balancermember
+
+    # The autoscaling seems to assume that you'll sync this out from the MoM
+    include classroom::master::student_environment
+  }
+
+  # manual fiddling not needed on current PE
+  if versioncmp($::pe_version, '3.4.0') < 0 {
+    include classroom::mcollective
   }
 }
