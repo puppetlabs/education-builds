@@ -74,7 +74,7 @@ class classroom::master (
     section => 'main',
     setting => 'environment_timeout',
     value   => '0',
-    notify  => Service['pe-puppetserver'],
+#    notify  => Service['pe-puppetserver'],
   }
 
   # Anything that needs to be top scope
@@ -107,8 +107,14 @@ class classroom::master (
     # and waits for the service to resume servicing requests before allowing
     # the run to complete
     include classroom::master::wait_for_startup
+
+    # service name change
+    Ini_setting['environment timeout'] -> Service['pe-puppetserver']
   }
   else {
+    # service name change
+    Ini_setting['environment timeout'] -> Service['pe-httpd']
+
     # Remainder of manifest is manual fiddling not needed on current PE
 
     # create environments direectory and directory or production environment
