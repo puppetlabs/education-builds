@@ -14,6 +14,7 @@ define classroom::console::user ( $password, $role = 'Operator' ) {
       default           => 3,
     }
     $arguments = "LOGIN=${name} EMAIL=${name}@puppetlabs.com DISPLAYNAME=${name} ROLEIDS=${roleid}"
+    $unless    = "${userlist} | grep ',${name},'"
 
     exec { "reset console password for ${name}":
       path        => '/usr/local/bin',
@@ -29,6 +30,8 @@ define classroom::console::user ( $password, $role = 'Operator' ) {
       default           => 'Read-Only',
     }
     $arguments = "USERNAME=${name}@puppetlabs.com PASSWORD=${password} ROLE=${permission}"
+    $unless    = "${userlist} | grep ',${name}@puppetlabs.com,'"
+
   }
 
   exec { "add_console_user_${name}":
@@ -36,6 +39,6 @@ define classroom::console::user ( $password, $role = 'Operator' ) {
     cwd         => '/opt/puppet/share/puppet-dashboard',
     environment => 'RAILS_ENV=production',
     command     => "${command} ${arguments}",
-    unless      => "${userlist} | grep ${name}",
+    unless      => $unless,
   }
 }
