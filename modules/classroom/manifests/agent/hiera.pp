@@ -3,26 +3,40 @@
 # how to configure it.
 class classroom::agent::hiera (
   $managerepos = $classroom::managerepos,
+  $workdir     = $classroom::workdir,
+  $etcpath     = $classroom::etcpath,
 ) inherits classroom {
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
+
+  # Set defaults depending on os
+  case $::osfamily {
+    'windows' : {
+      File {
+        owner => 'Administrator',
+        group => 'Users',
+      }
+    }
+    default   : {
+      File {
+        owner => 'root',
+        group => 'root',
+        mode  => '0644',
+      }
+    }
   }
 
   if $managerepos {
-    file { '/etc/puppetlabs/puppet/hieradata':
+    file { "${etcpath}/hieradata":
       ensure => link,
-      target => '/root/puppetcode/hieradata',
+      target => "${workdir}/hieradata",
     }
 
-    file { '/etc/puppetlabs/puppet/hiera.yaml':
+    file { "${etcpath}/hiera.yaml":
       ensure => link,
-      target => '/root/puppetcode/hiera.yaml',
+      target => "${workdir}/hiera.yaml",
       force  => true,
     }
 
-    file { '/root/puppetcode/hiera.yaml':
+    file { "${workdir}/hiera.yaml":
       ensure => file,
       source => 'puppet:///modules/classroom/hiera.agent.yaml',
       replace => false,
@@ -30,18 +44,18 @@ class classroom::agent::hiera (
 
   }
   else {
-    file { '/etc/puppetlabs/puppet/hieradata':
+    file { "${etcpath}/hieradata":
       ensure => directory,
     }
 
     # Because PE writes a default, we cannot use replace => false
-    file { '/etc/puppetlabs/puppet/hiera.yaml':
+    file { "${etcpath}/hiera.yaml":
       ensure => file,
       source => 'puppet:///modules/classroom/hiera.agent.yaml',
     }
   }
 
-  file { '/etc/puppetlabs/puppet/hieradata/defaults.yaml':
+  file { "${etcpath}/hieradata/defaults.yaml":
     ensure  => file,
     source  => 'puppet:///modules/classroom/defaults.yaml',
     replace => false,

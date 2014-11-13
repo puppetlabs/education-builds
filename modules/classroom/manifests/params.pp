@@ -11,8 +11,13 @@ class classroom::params {
   # list of classes that should be available in the console
   $classes   = [ 'users', 'apache', 'userprefs' ]
 
-  # Name of the student's working directory
-  $workdir   = 'puppetcode'
+  # Path to the student's working directory
+  if $::osfamily == 'windows' {
+    $workdir = 'c:/puppetcode'
+  }
+  else {
+    $workdir   = '/root/puppetcode'
+  }
 
   # default user password
   $password  = '$1$Tge1IxzI$kyx2gPUvWmXwrCQrac8/m0' # puppetlabs
@@ -39,9 +44,22 @@ class classroom::params {
   # list of module repositorites that should be precreated for the virtual courses
   $precreated_repositories = [ 'critical_policy', 'registry', 'profiles' ]
 
+  # set path to /etc/puppet - incase agent is running on windows
+  if $::osfamily == 'windows' {
+    $etcpath = 'C:/ProgramData/PuppetLabs/puppet/etc'
+  }
+  else {
+    $etcpath = '/etc/puppetlabs/puppet'
+  }
+
   # is this a student's tier3 agent in Architect?
   if $domain != 'puppetlabs.vm' {
-    $role = 'tier3'
+    if $::osfamily == 'Windows' {
+      $role = 'agent'
+    }
+    else {
+      $role = 'tier3'
+    }
   }
   else {
     $role = $hostname ? {

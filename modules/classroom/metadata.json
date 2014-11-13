@@ -32,12 +32,14 @@
     {"name":"puppetlabs/haproxy",   "version_requirement":">= 1.0.0"},
     {"name":"puppetlabs/inifile",   "version_requirement":">= 1.0.0"},
     {"name":"puppetlabs/mysql",     "version_requirement":">= 2.3.1"},
+    {"name":"puppetlabs/registry",  "version_requirement":">= 1.0.3"},
     {"name":"puppetlabs/ntp",       "version_requirement":">= 3.2.0"},
     {"name":"puppetlabs/stdlib",    "version_requirement":">= 4.0.0"},
     {"name":"puppetlabs/pe_gem",    "version_requirement":">= 0.0.1"},
     {"name":"puppetlabs/vcsrepo",   "version_requirement":">= 1.1.0"},
     {"name":"pltraining/userprefs", "version_requirement":">= 0.0.3"},
     {"name":"hunner/wordpress",     "version_requirement":">= 0.6.0"},
+    {"name":"jordan/win_git",       "version_requirement":">= 1.5.1"},
     {"name":"zack/r10k",            "version_requirement":">= 2.3.0"},
     {"name":"zack/exports",         "version_requirement":">= 0.0.4"}
   ]

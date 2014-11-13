@@ -12,6 +12,7 @@
 #
 class classroom::agent::teams (
   $autosetup = $classroom::autosetup,
+  $etcpath   = $classroom::etcpath,
 ) inherits classroom {
 
   # If we have teams defined for this student, build a working directory for each.
@@ -26,7 +27,7 @@ class classroom::agent::teams (
     if(size($teams) == 1) {
       $team = $teams[0]
 
-      file { '/etc/puppetlabs/puppet/modules':
+      file { "${etcpath}/modules":
         ensure => link,
         target => "/root/${team}/modules",
         force  => true,
@@ -35,7 +36,7 @@ class classroom::agent::teams (
       if $autosetup {
         ini_setting { "environment":
           ensure  => present,
-          path    => '/etc/puppetlabs/puppet/puppet.conf',
+          path    => "${etcpath}/puppet.conf",
           section => 'agent',
           setting => 'environment',
           value   => $team,
@@ -43,7 +44,7 @@ class classroom::agent::teams (
       }
     }
   } else {
-    file { '/etc/puppetlabs/puppet/modules':
+    file { "${etcpath}/modules":
       ensure => link,
       target => "/root/${workdir}/modules",
       force  => true,
@@ -52,7 +53,7 @@ class classroom::agent::teams (
     if $autosetup {
       ini_setting { "environment":
         ensure  => present,
-        path    => '/etc/puppetlabs/puppet/puppet.conf',
+        path    => "${etcpath}/puppet.conf",
         section => 'agent',
         setting => 'environment',
         value   => $::hostname,
