@@ -40,7 +40,7 @@ class classroom::params {
   $precreated_repositories = [ 'critical_policy', 'registry', 'profiles' ]
 
   # is this a student's tier3 agent in Architect?
-  if $domain != 'puppetlabs.vm' {
+  if (versioncmp($::pe_version, '3.4.0') < 0 and $domain != 'puppetlabs.vm') {
     $role = 'tier3'
   }
   else {
