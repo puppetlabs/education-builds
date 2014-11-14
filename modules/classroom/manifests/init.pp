@@ -34,6 +34,7 @@ class classroom (
   $workdir      = $classroom::params::workdir,
   $password     = $classroom::params::password,
   $consolepw    = $classroom::params::consolepw,
+  $etcpath      = $classroom::params::etcpath,
 ) inherits classroom::params {
 
   # variables are available to included classes by the evil power of inheritance
