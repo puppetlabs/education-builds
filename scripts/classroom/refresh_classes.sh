@@ -35,4 +35,4 @@ for pid in $(/sbin/pidof -x $(basename $0)); do
 done
 
 echo "Updating list of classes available in the Node Classifier..."
-refresh &
+refresh
