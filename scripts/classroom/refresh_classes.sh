@@ -30,9 +30,8 @@ function refresh()
 }
 
 # only run one copy at a time
-for pid in $(/sbin/pidof -x $(basename $0)); do
-  [ $pid != $$ ] && exit 1
-done
-
-echo "Updating list of classes available in the Node Classifier..."
-refresh
+if [ ! "$(/sbin/pidof -x curl)" ]
+then
+  echo "Updating list of classes available in the Node Classifier..."
+  refresh
+fi
