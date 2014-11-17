@@ -26,7 +26,7 @@ function refresh()
   OPTIONS="--cert ${CERT} --cacert ${CACERT} --key ${PRVKEY}"
   CONSOLE=$(awk '/server =/{print $NF}' ${CONFDIR}/console.conf)
 
-  curl -s -k -X POST ${OPTIONS} "https://${CONSOLE}:4433/classifier-api/v1/update-classes"
+  curl -s -k -X POST ${OPTIONS} "https://${CONSOLE}:4433/classifier-api/v1/update-classes" & disown
 }
 
 # only run one copy at a time
