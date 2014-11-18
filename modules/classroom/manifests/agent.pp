@@ -57,4 +57,9 @@ class classroom::agent (
       force   => true,
     }
   }
+
+  # windows goodies
+  if $::osfamily  == 'windows' {
+    include classroom::agent::chocolatey
+  }
 }
