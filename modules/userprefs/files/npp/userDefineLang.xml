@@ -1,0 +1,36 @@
+<NotepadPlus>
+    <UserLang name="Puppet" ext="pp">
+        <Settings>
+            <Global caseIgnored="no" escapeChar="\" />
+            <TreatAsSymbol comment="no" commentLine="no" />
+            <Prefix words1="no" words2="no" words3="no" words4="yes" />
+        </Settings>
+        <KeywordLists>
+            <Keywords name="Delimiters">&apos;&quot;0&apos;&quot;0</Keywords>
+            <Keywords name="Folder+">{</Keywords>
+            <Keywords name="Folder-">}</Keywords>
+            <Keywords name="Operators">- ! + &lt;</Keywords>
+            <Keywords name="Comment"> 1/* 2*/ 0#</Keywords>
+            <Keywords name="Words1">and case class default define else elsif false if in import inherits node or true undef unless =&gt; == != &lt; &gt; &lt;= &gt;= =~ !~</Keywords>
+            <Keywords name="Words2">augeas computer cron exec file filebucket group host interface k5login macauthorization mailalias maillist mcx mount nagios_command nagios_contact nagios_contactgroup nagios_host nagios_hostdependency nagios_hostescalation nagios_hostextinfo nagios_hostgroup nagios_service nagios_servicedependency nagios_serviceescalation nagios_serviceextinfo nagios_servicegroup nagios_timeperiod notify package resources router schedule scheduled_task selboolean selmodule service ssh_authorized_key sshkey stage tidy user vlan yumrepo zfs zone zpool ATTRIBUTESSS: absent adminfile aix allowcdrom allowdupe appdmg apt aptitude aptrpm atboot attribute_membership attributes auth_membership auths backup binary blastwave blockdevice category checksum command comment configfiles content control creates ctime cwd debian description device directoryservice dpkg dump enable ensure  environment expiry false fink flavor force freebsd fstype gem gid git group groupadd groups hasrestart hasstatus home host_aliases hour ia_load_module ignore init install_options instance ip key_membership keys ldap links logoutput managehome manifest members membership message minute mode month monthday msi mtime name  onlyif options owner pass password password_max_age password_min_age path  pattern period periodmatch posix present profile_membership profiles project provider purge pw range recurse recurselimit refresh refreshonly remounts repeat replace responsefile restart returns role role_membership roles root rpm runnint selinux_ignore_defaults selrange selrole seltype seluser shell source sourceselect special start status stop stopped system target targettype timeout tries true try_sleep uid uninstall_options unless_system_user upstart user vendor weekday windows windows_adsi withpath yum</Keywords>
+            <Keywords name="Words3">FUNCTIONSS: alert create_resources crit debug defined emerg err extlookup fail file fqdn_rand generate hiera hiera_array hiera_hash hiera_include include info inline_template md5 notice realize regsubst require search sha1 shellquote split sprintf tag tagged template versioncmp METAPARAMSS: warning alias audit before loglevel noop notify require schedule stage subscribe tag</Keywords>
+            <Keywords name="Words4">$ ${</Keywords>
+        </KeywordLists>
+        <Styles>
+            <WordsStyle name="DEFAULT" styleID="11" fgColor="000000" bgColor="FFFFFF" fontStyle="0" />
+            <WordsStyle name="FOLDEROPEN" styleID="12" fgColor="808080" bgColor="FFFFFF" fontStyle="0" />
+            <WordsStyle name="FOLDERCLOSE" styleID="13" fgColor="808080" bgColor="FFFFFF" fontStyle="0" />
+            <WordsStyle name="KEYWORD1" styleID="5" fgColor="0000FF" bgColor="FFFFFF" fontStyle="0" />
+            <WordsStyle name="KEYWORD2" styleID="6" fgColor="008080" bgColor="FFFFFF" fontStyle="0" />
+            <WordsStyle name="KEYWORD3" styleID="7" fgColor="FF0000" bgColor="FFFFFF" fontStyle="0" />
+            <WordsStyle name="KEYWORD4" styleID="8" fgColor="FF8000" bgColor="FFFFFF" fontStyle="0" />
+            <WordsStyle name="COMMENT" styleID="1" fgColor="8080C0" bgColor="FFFFFF" fontStyle="0" />
+            <WordsStyle name="COMMENT LINE" styleID="2" fgColor="8080C0" bgColor="FFFFFF" fontStyle="0" />
+            <WordsStyle name="NUMBER" styleID="4" fgColor="000000" bgColor="FFFFFF" fontStyle="0" />
+            <WordsStyle name="OPERATOR" styleID="10" fgColor="800000" bgColor="FFFFFF" fontStyle="1" />
+            <WordsStyle name="DELIMINER1" styleID="14" fgColor="FF00FF" bgColor="FFFFFF" fontStyle="0" />
+            <WordsStyle name="DELIMINER2" styleID="15" fgColor="FF00FF" bgColor="FFFFFF" fontStyle="1" />
+            <WordsStyle name="DELIMINER3" styleID="16" fgColor="000000" bgColor="FFFFFF" fontStyle="0" />
+        </Styles>
+    </UserLang>
+</NotepadPlus>
