@@ -280,8 +280,9 @@ Find the line that reads:</p>
 <p>Type the following code in above your file resource in file <code>/root/sshd.pp</code></p>
 
 <div class="highlight"><pre><code class="puppet"><span class="nc">package</span> <span class="p">{</span> <span class="s1">'openssh-server'</span><span class="p">:</span>
-  <span class="nt">ensure</span> <span class="p">=&gt;</span> <span class="ss">present</span><span class="p">,</span>
-  <span class="nt">before</span> <span class="p">=&gt;</span> <span class="nc">File</span><span class="p">[</span><span class="s1">'/etc/ssh/sshd_config'</span><span class="p">],</span>
+  <span class="nt">ensure</span>        <span class="p">=&gt;</span> <span class="ss">present</span><span class="p">,</span>
+  <span class="nt">before</span>        <span class="p">=&gt;</span> <span class="nc">File</span><span class="p">[</span><span class="s1">'/etc/ssh/sshd_config'</span><span class="p">],</span>
+  <span class="nt">allow_virtual</span> <span class="p">=&gt;</span> <span class="ss">false</span><span class="p">,</span>
 <span class="p">}</span>
 </code></pre></div>
 
