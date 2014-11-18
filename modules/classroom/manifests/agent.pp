@@ -50,9 +50,16 @@ class classroom::agent (
   }
 
   # /etc/puppet/ssl is confusing to have around. Sloppy. Kill.
-  file {'/etc/puppet':
-    ensure  => absent,
-    recurse => true,
-    force   => true,
+  unless $::osfamily == 'windows' {
+    file {'/etc/puppet':
+      ensure  => absent,
+      recurse => true,
+      force   => true,
+    }
+  }
+
+  # windows goodies
+  if $::osfamily  == 'windows' {
+    include classroom::agent::chocolatey
   }
 }

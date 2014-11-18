@@ -6,20 +6,37 @@
 # $username: the username for git operations. Defaults to $name
 # $populate: add starter code
 define classroom::agent::workdir (
-  $ensure   = 'present',
-  $username = $name,
-  $populate = true,
+  $ensure     = 'present',
+  $username   = $name,
+  $populate   = true,
 ) {
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
+
+  # Set defaults depending on os
+  case $::osfamily {
+    'windows' : {
+      $environment = undef
+      $path = 'C:\Program Files (x86)\Git\bin'
+      File {
+        owner => 'Administrator',
+        group => 'Users',
+      }
+    }
+    default   : {
+      $environment = 'HOME=/root'
+      $path = '/usr/bin:/bin:/user/sbin:/usr/sbin'
+      File {
+        owner => 'root',
+        group => 'root',
+        mode  => '0644',
+      }
+    }
   }
   Exec {
-    environment => 'HOME=/root',
-    path        => '/usr/bin:/bin:/user/sbin:/usr/sbin',
+    environment => $environment,
+    path        => $path,
   }
-  $workdir = "/root/${name}"
+
+  $workdir = $name
 
   if $ensure == 'present' {
     file { $workdir:
