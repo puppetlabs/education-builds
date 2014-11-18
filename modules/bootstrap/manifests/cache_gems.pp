@@ -40,8 +40,8 @@ class bootstrap::cache_gems (
 
   bootstrap::gem { 'addressable':                    version => '2.3.6'  }
   bootstrap::gem { 'carrier-pigeon':                 version => '0.7.0'  }
-  bootstrap::gem { 'rack-protection':                version => '1.4'    }
-  bootstrap::gem { 'rack':                           version => '1.4'    }
+  bootstrap::gem { 'rack-protection':                version => '1.4.0'  }
+  bootstrap::gem { 'rack':                           version => '1.4.0'  }
   bootstrap::gem { 'sinatra':                        version => '1.4.5'  }
   bootstrap::gem { 'tilt':                           version => '1.3.4'  }
   bootstrap::gem { 'formatr':                        version => '1.10.1' }
@@ -61,7 +61,7 @@ class bootstrap::cache_gems (
   bootstrap::gem { 'rspec-core':                     version => '2.99.0' }
   bootstrap::gem { 'rspec-mocks':                    version => '2.99.0' }
   bootstrap::gem { 'rspec-expectations':             version => '2.99.0' }
-  bootstrap::gem { 'specinfra':                      version => '1.27'   }
+  bootstrap::gem { 'specinfra':                      version => '1.27.0' }
   bootstrap::gem { 'r10k':                           version => '1.3.4'  }
   bootstrap::gem { 'colored':                        version => '1.2'    }
   bootstrap::gem { 'cri':                            version => '2.5.0'  }
