@@ -70,6 +70,7 @@ define localrepo::pkgsync ($pkglist = $name, $source="", $server = "mirrors.cat.
     }
     exec { "get_${name}":
       command => "${syncer} ${syncops_real} `cat /tmp/${name}list`",
+      require => Package['yum-utils'],
     }
   } else {
     fail("localrepo error: ${syncer} syncer is unknown")

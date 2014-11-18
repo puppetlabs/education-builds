@@ -20,6 +20,9 @@ class bootstrap ($print_console_login = false) {
   package { 'yum-utils':
     ensure => installed,
   }
+  package { 'wget':
+    ensure => installed,
+  }
   augeas { 'enable_yum_priorities':
     context => '/files/etc/yum/pluginconf.d/priorities.conf/main',
     changes => [
