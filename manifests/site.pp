@@ -2,6 +2,12 @@ node default {
   include bootstrap
   include localrepo
   include training
+  class { 'staging':
+     path  => '/usr/src/installer/',
+     owner => 'root',
+     group => 'root',
+   }
+  include bootstrap::get_pe
 }
 
 node /learn/ {

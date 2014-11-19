@@ -3,34 +3,21 @@
 # Stage agent installer.
 # -------
 
-define bootstrap::get_pe(
-  $staging_dir = '/usr/src/installer',
-  $version   = undef
+class bootstrap::get_pe(
+  $version   = 'latest'
 ) {
   $pe_destination = "/root/"
-  $pe_file = "puppet-enterprise-${ver}-el-6-i386.tar.gz"
-  $agent_file = "puppet-enterprise-${ver}-agent-el-6-i386.tar.gz"
-  $url      = "https://s3.amazonaws.com/pe-builds/released/${ver}/${filename}"
-  
-  class { 'staging':
-    path  => $staging_dir,
-    owner => 'puppet',
-    group => 'puppet',
-  }
-
-  if $version {
-    $ver = $version
-  } else {
-    $ver = 'latest'
-  }
-
+  $architecture   = 'i386'
+  $pe_file        = "puppet-enterprise-${version}-el-6-${architecture}.tar.gz"
+  $agent_file     = "puppet-enterprise-${version}-el-6-${architecture}-agent.tar.gz"
+  $url            = "https://s3.amazonaws.com/pe-builds/released/${version}"
 
   staging::file{ $agent_file:
-    source => $url,
+    source => "${url}/${agent_file}",
   }
 
-  staging::deploy{ $pe_file:
-    source => $url,
+  staging::file{ $pe_file:
+    source => "${url}/${pe_file}",
     target => $pe_destination,
   }
 }
