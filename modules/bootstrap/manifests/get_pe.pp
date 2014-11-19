@@ -14,7 +14,7 @@ class bootstrap::get_pe(
   $url            = "https://s3.amazonaws.com/pe-builds/released/${version}"
 
   staging::file{ $agent_file:
-    source => "${url}/${agent_file}.tar.gz",
+    source => "${url}/${agent_file}",
   }
 
   staging::deploy{ $pe_file:
