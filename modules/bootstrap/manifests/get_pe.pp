@@ -18,7 +18,7 @@ class bootstrap::get_pe(
   }
 
   staging::deploy{ $pe_file:
-    source => "${url}/${pe_file}.tar.gz",
+    source => "${url}/${pe_file}",
     target => $pe_destination,
   }
 
