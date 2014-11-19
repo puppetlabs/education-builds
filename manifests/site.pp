@@ -7,7 +7,7 @@ node default {
      owner => 'root',
      group => 'root',
    }
-  include bootstrap::get_pe
+  class { 'bootstrap::get_pe': version => '3.7.0' }
 }
 
 node /learn/ {
