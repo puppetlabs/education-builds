@@ -8,16 +8,23 @@ class bootstrap::get_pe(
 ) {
   $pe_destination = "/root/"
   $architecture   = 'i386'
-  $pe_file        = "puppet-enterprise-${version}-el-6-${architecture}.tar.gz"
+  $pe_dir        = "puppet-enterprise-${version}-el-6-${architecture}"
+  $pe_file        = "${pe_dir}.tar.gz"
   $agent_file     = "puppet-enterprise-${version}-el-6-${architecture}-agent.tar.gz"
   $url            = "https://s3.amazonaws.com/pe-builds/released/${version}"
 
   staging::file{ $agent_file:
-    source => "${url}/${agent_file}",
+    source => "${url}/${agent_file}.tar.gz",
   }
 
-  staging::file{ $pe_file:
-    source => "${url}/${pe_file}",
+  staging::deploy{ $pe_file:
+    source => "${url}/${pe_file}.tar.gz",
     target => $pe_destination,
+  }
+
+  file { "${pe_destination}/puppet-enterprise":
+    ensure => link,
+    target => "${pe_destination}/${pe_dir}",
+    require => Staging::Deploy[ $pe_file ],
   }
 }
