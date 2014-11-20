@@ -69,6 +69,10 @@ task :student_pre do
   %x{echo 'prepend domain-search "puppetlabs.vm"' >> /etc/dhcp/dhclient-eth0.conf}
 end
 
+desc "Apply bootstrap manifest"
+task :training do
+  %x{RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp}
+end
 
 def download(url,path)
   u = URI.parse(url)
