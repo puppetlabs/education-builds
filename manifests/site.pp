@@ -12,6 +12,12 @@ node default {
 }
 
 node /learn/ {
+  class { 'staging':
+     path  => '/usr/src/installer/',
+     owner => 'root',
+     group => 'root',
+   }
+  include epel
   include bootstrap
   include localrepo
   include learning
