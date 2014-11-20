@@ -89,7 +89,7 @@ end
 desc "Full Training VM Build"
 task :training do
   Rake::Task["init"].execute
-  Rake::Task["traiing_pre"].execute
+  Rake::Task["training_pre"].execute
   Rake::Task["build"].execute
 end
 
