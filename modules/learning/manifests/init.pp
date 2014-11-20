@@ -20,6 +20,7 @@ class learning {
 
   package { 'tmux':
     ensure => present,
+    require => Class['epel']
   }
 
   file { '/root/.tmux.conf':
