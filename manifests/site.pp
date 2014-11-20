@@ -17,6 +17,7 @@ node /learn/ {
      owner => 'root',
      group => 'root',
    }
+  class { 'bootstrap::get_pe': version => '3.7.0' }
   include epel
   include bootstrap
   include localrepo
