@@ -44,6 +44,32 @@ task :init do
   STDOUT.flush
 end
 
+desc "Training VM pre-install setup"
+task :training_pre do
+  # Set the dns info and hostname; must be done before puppet
+  cputs "Setting hostname training.puppetlabs.vm"
+  %x{hostname training.puppetlabs.vm}
+  cputs  "Editing /etc/hosts"
+  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 training.puppetlabs.vm training localhost localhost.localdomain localhost4/" /etc/hosts}
+  cputs "Editing /etc/sysconfig/network"
+  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=training.puppetlabs.vm/" /etc/sysconfig/network}
+  %x{echo 'prepend domain-search "puppetlabs.vm"' >> /etc/dhcp/dhclient-eth0.conf}
+
+end
+
+desc "Student VM pre-install setup"
+task :student_pre do
+  # Set the dns info and hostname; must be done before puppet
+  cputs "Setting hostname student.puppetlabs.vm"
+  %x{hostname student.puppetlabs.vm}
+  cputs  "Editing /etc/hosts"
+  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 student.puppetlabs.vm training localhost localhost.localdomain localhost4/" /etc/hosts}
+  cputs "Editing /etc/sysconfig/network"
+  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=student.puppetlabs.vm/" /etc/sysconfig/network}
+  %x{echo 'prepend domain-search "puppetlabs.vm"' >> /etc/dhcp/dhclient-eth0.conf}
+end
+
+
 def download(url,path)
   u = URI.parse(url)
   net = Net::HTTP.new(u.host, u.port)
