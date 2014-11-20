@@ -56,6 +56,18 @@ task :training_pre do
   %x{echo 'prepend domain-search "puppetlabs.vm"' >> /etc/dhcp/dhclient-eth0.conf}
 
 end
+desc "Learning VM pre-install setup"
+task :learning_pre do
+  # Set the dns info and hostname; must be done before puppet
+  cputs "Setting hostname learning.puppetlabs.vm"
+  %x{hostname learning.puppetlabs.vm}
+  cputs  "Editing /etc/hosts"
+  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 learning.puppetlabs.vm training localhost localhost.localdomain localhost4/" /etc/hosts}
+  cputs "Editing /etc/sysconfig/network"
+  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=learning.puppetlabs.vm/" /etc/sysconfig/network}
+  %x{echo 'prepend domain-search "puppetlabs.vm"' >> /etc/dhcp/dhclient-eth0.conf}
+
+end
 
 desc "Student VM pre-install setup"
 task :student_pre do
