@@ -19,6 +19,7 @@ class bootstrap ($print_console_login = false) {
   }
   package { 'yum-utils':
     ensure => installed,
+    before => Class['localrepo'],
   }
   package { 'wget':
     ensure => installed,
@@ -76,6 +77,11 @@ class bootstrap ($print_console_login = false) {
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
+  }
+
+  # Make sure the firewall isn't running
+  service { 'iptables':
+    enable => false,
   }
   # Add a few extra packages for convenience
   package { [ 'patch', 'screen', 'telnet', 'tree' ] :
