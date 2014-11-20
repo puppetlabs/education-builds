@@ -86,6 +86,20 @@ task :build do
   %x{RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp}
 end
 
+desc "Full Training VM Build"
+task :training do
+  Rake::Task["init"].execute
+  Rake::Task["traiing_pre"].execute
+  Rake::Task["build"].execute
+end
+
+desc "Full Learning VM Build"
+task :learning do
+  Rake::Task["init"].execute
+  Rake::Task["learning_pre"].execute
+  Rake::Task["build"].execute
+end
+
 def download(url,path)
   u = URI.parse(url)
   net = Net::HTTP.new(u.host, u.port)
