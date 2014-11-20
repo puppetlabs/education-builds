@@ -64,5 +64,14 @@ class learning {
     recurse => true,
   }
 
+  file { '/var/lib/hiera':
+    ensure => directory,
+  }
+  file { '/var/lib/hiera/defaults.yaml':
+    ensure => file,
+    source => 'puppet:///modules/learning/defaults.yaml',
+    require => File['/var/lib/hiera'],
+  }
+
 }
 
