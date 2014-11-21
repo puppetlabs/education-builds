@@ -19,7 +19,7 @@ $script = <<SCRIPT
 		git clone https://github.com/joshsamuelson/puppetlabs-training-bootstrap -b automation
 		cd /usr/src/puppetlabs-training-bootstrap/
 
-		rake VMTYPE
+		rake -f Rakefile.new VMTYPE
 SCRIPT
 
 	config.vm.define :training, autostart: false do |training_config|
