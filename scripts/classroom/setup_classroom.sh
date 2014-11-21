@@ -37,10 +37,20 @@ function validate_name
      "${name}" != "master" ]]
 }
 
-ipaddr=`hostname -I | awk '{print $1}'`
-echo "Your IP address appears to be ${ipaddr}"
-echo "If this is not correct, cancel now."
-offer_bailout
+IP_FOUND=false
+for ipaddr in `hostname -I`; do
+  if confirm "Your IP address appears to be ${ipaddr} is this correct" true
+  then
+    IP_FOUND=true
+    break
+  fi
+done
+
+if [ $IP_FOUND != 'true' ]
+then
+  echo 'You must specify an ipaddress to set up agent'
+  exit 3
+fi
 
 while : ; do
   echo -n "Please choose a name for this node: "
