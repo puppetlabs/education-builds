@@ -24,4 +24,6 @@ node /learn/ {
   include learning
   stage { 'pe_install': require => Stage['main'], }
   class { 'learning::install': stage => pe_install, }
+  stage { 'post_install': require => Stage['pe_install'],}
+  class { 'learning::set_defaults': stage => post_install, }
 }
