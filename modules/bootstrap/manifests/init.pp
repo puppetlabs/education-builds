@@ -17,6 +17,13 @@ class bootstrap ($print_console_login = false) {
   package { 'yum-plugin-priorities':
     ensure => installed,
   }
+  package { 'yum-utils':
+    ensure => installed,
+    before => Class['localrepo'],
+  }
+  package { 'wget':
+    ensure => installed,
+  }
   augeas { 'enable_yum_priorities':
     context => '/files/etc/yum/pluginconf.d/priorities.conf/main',
     changes => [
@@ -24,7 +31,7 @@ class bootstrap ($print_console_login = false) {
     ],
     require => Package['yum-plugin-priorities'],
   }
-  yumrepo { ['epel', 'updates', 'base', 'extras']:
+  yumrepo { [ 'updates', 'base', 'extras']:
     enabled  => '0',
     priority => '99',
     skip_if_unavailable => '1',
@@ -70,6 +77,11 @@ class bootstrap ($print_console_login = false) {
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
+  }
+
+  # Make sure the firewall isn't running
+  service { 'iptables':
+    enable => false,
   }
   # Add a few extra packages for convenience
   package { [ 'patch', 'screen', 'telnet', 'tree' ] :

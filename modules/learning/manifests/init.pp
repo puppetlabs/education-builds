@@ -20,6 +20,7 @@ class learning {
 
   package { 'tmux':
     ensure => present,
+    require => Class['epel']
   }
 
   file { '/root/.tmux.conf':
@@ -61,6 +62,15 @@ class learning {
     source  => 'puppet:///modules/learning/setup',
     mode    => '0755',
     recurse => true,
+  }
+
+  file { '/var/lib/hiera':
+    ensure => directory,
+  }
+  file { '/var/lib/hiera/defaults.yaml':
+    ensure => file,
+    source => 'puppet:///modules/learning/defaults.yaml',
+    require => File['/var/lib/hiera'],
   }
 
 }
