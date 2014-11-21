@@ -29,6 +29,7 @@ SCRIPT
 		training_config.vm.provider "virtualbox" do |v|
 			v.memory = 4096
 			v.cpus = 2
+			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
 
 		$script.sub! 'VMTYPE', 'training'
@@ -43,6 +44,7 @@ SCRIPT
 		student_config.vm.provider "virtualbox" do |v|
 			v.memory = 1024
 			v.cpus = 2
+			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
 
 		$script.sub! 'VMTYPE', 'student'
@@ -61,6 +63,7 @@ SCRIPT
 		learning_config.vm.provider "virtualbox" do |v|
 			v.memory = 2048
 			v.cpus = 2
+			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
 		$script.sub! 'VMTYPE', 'learning'
 
