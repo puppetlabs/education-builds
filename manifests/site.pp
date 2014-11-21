@@ -11,6 +11,10 @@ node default {
   include training
 }
 
+node /student/ {
+  include student
+}
+
 node /learn/ {
   class { 'staging':
      path  => '/usr/src/installer/',
