@@ -102,6 +102,14 @@ task :learning do
   Rake::Task["build"].execute
 end
 
+desc "Full Student VM Build"
+task :student do
+  cputs "Building Student VM"
+  Rake::Task["init"].execute
+  Rake::Task["student_pre"].execute
+  Rake::Task["build"].execute
+end
+
 def download(url,path)
   u = URI.parse(url)
   net = Net::HTTP.new(u.host, u.port)

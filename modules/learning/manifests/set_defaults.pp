@@ -3,7 +3,7 @@
 class learning::set_defaults {
   file { '/etc/puppetlabs/puppet/hieradata/defaults.yaml':
     ensure => present,
-    source => '/var/lib/hiera/defaults.yaml',
+    source => 'puppet:///modules/learning/defaults.yaml',
   }
 }
 
