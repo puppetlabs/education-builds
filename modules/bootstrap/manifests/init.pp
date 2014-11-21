@@ -32,7 +32,7 @@ class bootstrap ($print_console_login = false) {
     require => Package['yum-plugin-priorities'],
   }
   yumrepo { [ 'updates', 'base', 'extras']:
-    enabled  => '1',
+    enabled  => '0',
     priority => '99',
     skip_if_unavailable => '1',
   }
