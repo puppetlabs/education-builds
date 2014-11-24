@@ -16,10 +16,12 @@ $script = <<SCRIPT
 		gem install rake json
 
 		cd /usr/src/
-		git clone https://github.com/joshsamuelson/puppetlabs-training-bootstrap -b automation
+		git clone https://github.com/joshsamuelson/puppetlabs-training-bootstrap -b vagrant_cache
 		cd /usr/src/puppetlabs-training-bootstrap/
 
 		rake -f Rakefile.new VMTYPE
+		
+		rm -rf /tmp/{gems,installers}
 SCRIPT
 
 
@@ -33,9 +35,6 @@ SCRIPT
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
 	
-		training_config.vm.provision "file", source: "./file_cache/installers/", destination: "/tmp/installers/"
-		training_config.vm.provision "file", source: "./file_cache/gems/", destination: "/tmp/gems/"
-
 		$script.sub! 'VMTYPE', 'training'
 		training_config.vm.provision "shell", inline: $script
 	end
@@ -63,13 +62,10 @@ SCRIPT
 		learning_config.vm.network "forwarded_port", guest: 443, host: 8443
 
 		learning_config.vm.provider "virtualbox" do |v|
-			v.memory = 2048
+			v.memory = 4096
 			v.cpus = 2
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
-		
-		learning_config.vm.provision "file", source: "./file_cache/installers/", destination: "/tmp/installers/"
-		learning_config.vm.provision "file", source: "./file_cache/gems/", destination: "/tmp/gems/"
 		
 		$script.sub! 'VMTYPE', 'learning'
 		learning_config.vm.provision "shell", inline: $script 
