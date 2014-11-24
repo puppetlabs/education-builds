@@ -39,6 +39,6 @@ class bootstrap::get_pe(
   file { "${pe_destination}/puppet-enterprise":
     ensure => link,
     target => "${pe_destination}/${pe_dir}",
-    require => Staging::Deploy[ $pe_file ],
+    require => Staging::Extract[ $pe_file ],
   }
 }
