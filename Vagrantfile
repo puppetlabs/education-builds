@@ -22,6 +22,7 @@ $script = <<SCRIPT
 		rake -f Rakefile.new VMTYPE
 SCRIPT
 
+
 	config.vm.define :training, autostart: false do |training_config|
 		training_config.vm.box = "puppetlabs/centos-6.5-32-nocm"
 		training_config.vm.network "public_network"
@@ -31,9 +32,11 @@ SCRIPT
 			v.cpus = 2
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
+	
+		training_config.vm.provision "file", source: "./file_cache/installers/", destination: "/tmp/installers/"
+		training_config.vm.provision "file", source: "./file_cache/gems/", destination: "/tmp/gems/"
 
 		$script.sub! 'VMTYPE', 'training'
-
 		training_config.vm.provision "shell", inline: $script
 	end
 
@@ -48,7 +51,6 @@ SCRIPT
 		end
 
 		$script.sub! 'VMTYPE', 'student'
-
 		student_config.vm.provision "shell", inline: $script
 	end
 
@@ -65,8 +67,11 @@ SCRIPT
 			v.cpus = 2
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
+		
+		learning_config.vm.provision "file", source: "./file_cache/installers/", destination: "/tmp/installers/"
+		learning_config.vm.provision "file", source: "./file_cache/gems/", destination: "/tmp/gems/"
+		
 		$script.sub! 'VMTYPE', 'learning'
-
 		learning_config.vm.provision "shell", inline: $script 
 	end
 end
