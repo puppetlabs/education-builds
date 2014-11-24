@@ -5,14 +5,14 @@
 
 class bootstrap::get_pe(
   $version   = 'latest'
-  $pe_destination = "/root/"
+  $pe_destination = '/root/'
   $architecture   = 'i386'
+  $file_cache     = '/vagrant/file_cache'
+) {
   $pe_dir        = "puppet-enterprise-${version}-el-6-${architecture}"
   $pe_file        = "${pe_dir}.tar.gz"
   $agent_file     = "puppet-enterprise-${version}-el-6-${architecture}-agent.tar.gz"
   $url            = "https://s3.amazonaws.com/pe-builds/released/${version}"
-  $file_cache     = "/vagrant/file_cache"
-) {
 
   # Check if there is a locally cached copy from the build
   if file_exists ("${file_cache}/installers/") == 1 {
