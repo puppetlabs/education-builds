@@ -13,7 +13,6 @@ class classroom::master::student_environment inherits classroom::params {
   }
 
   file { [
-    $environmentpath,
     "${environment}",
     "${environment}/manifests",
     "${environment}/modules",
