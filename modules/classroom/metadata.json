@@ -16,7 +16,7 @@
     }
   ],
   "name": "pltraining-classroom",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "pltraining",
   "summary": "Manages Puppet Labs training classroom environments",
   "license": "Apache 2.0",
@@ -25,6 +25,7 @@
   "issues_url": "https://github.com/puppetlabs/puppetlabs-training-bootstrap/issues",
   "description": "Important! This is not the module you are looking for\n    unless you are a trainer teaching Puppet Labs training courses!\n    - Configures and sets up classroom environment for Puppet Classroom trainings.",
   "dependencies": [
+    {"name":"hunner/wordpress",     "version_requirement":">= 0.6.0"},
     {"name":"jamtur01/irc",         "version_requirement":">= 0.0.7"},
     {"name":"puppetlabs/apache",    "version_requirement":">= 1.1.1"},
     {"name":"puppetlabs/concat",    "version_requirement":">= 1.0.4"},
@@ -32,16 +33,14 @@
     {"name":"puppetlabs/haproxy",   "version_requirement":">= 1.0.0"},
     {"name":"puppetlabs/inifile",   "version_requirement":">= 1.0.0"},
     {"name":"puppetlabs/mysql",     "version_requirement":">= 2.3.1"},
-    {"name":"puppetlabs/registry",  "version_requirement":">= 1.0.3"},
     {"name":"puppetlabs/ntp",       "version_requirement":">= 3.2.0"},
+    {"name":"puppetlabs/registry",  "version_requirement":">= 1.0.3"},
     {"name":"puppetlabs/stdlib",    "version_requirement":">= 4.0.0"},
     {"name":"puppetlabs/pe_gem",    "version_requirement":">= 0.0.1"},
     {"name":"puppetlabs/vcsrepo",   "version_requirement":">= 1.1.0"},
     {"name":"pltraining/userprefs", "version_requirement":">= 0.0.3"},
-    {"name":"hunner/wordpress",     "version_requirement":">= 0.6.0"},
-    {"name":"jordan/win_git",       "version_requirement":">= 1.5.1"},
     {"name":"rismoney/chocolatey",  "version_requirement":">= 0.0.3"},
-    {"name":"zack/r10k",            "version_requirement":">= 2.3.0"},
     {"name":"zack/exports",         "version_requirement":">= 0.0.4"}
+    {"name":"zack/r10k",            "version_requirement":">= 2.3.0"},
   ]
 }
