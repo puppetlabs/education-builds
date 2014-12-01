@@ -5,14 +5,14 @@ node default {
      group => 'root',
    }
   class { 'bootstrap::get_pe': version => '3.7.0' }
-  include epel
+  class { 'epel': epel_enabled => false }
   include bootstrap
   include localrepo
   include training
 }
 
 node /student/ {
-  include student
+  class { 'student': }
 }
 
 node /learn/ {
