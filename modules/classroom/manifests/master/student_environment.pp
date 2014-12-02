@@ -14,7 +14,7 @@ class classroom::master::student_environment inherits classroom::params {
 
   # we need this check because the $environmentpath doesn't exist until the
   # node is classified as a PE Master, so we can't put files into it.
-  if defined(Class['puppet_enterprise::profile::master') {
+  if defined(Class['puppet_enterprise::profile::master']) {
     file { [
       $environment,
       "${environment}/manifests",
