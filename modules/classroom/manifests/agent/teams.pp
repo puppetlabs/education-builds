@@ -46,7 +46,7 @@ class classroom::agent::teams (
   } else {
     file { "${etcpath}/modules":
       ensure => link,
-      target => "/root/${workdir}/modules",
+      target => "${workdir}/modules",
       force  => true,
     }
 
