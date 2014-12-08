@@ -43,9 +43,14 @@ function parse_git_dirty() {
 }
 
 function parse_git_branch() {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
+  git_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/")
+  if [ $git_branch == "master" ]
+    then
+      git_branch=""
+  fi
+  echo $git_branch
 }
-export PS1="\[${ORANGE}\][\[${BOLD}${MAGENTA}\]\u@\h \[${GREEN}\]\w\[${BOLD}\]\$(is_on_git && [[ -n \$(git branch 2> /dev/null) ]] && echo \":\")\[${PURPLE}\]\$(parse_git_branch)\[${RESET}\]\[${ORANGE}\]]\[${RESET}\]# "
+export PS1="\[${ORANGE}\][\[${BOLD}${MAGENTA}\]\u@\h \[${GREEN}\]\w\[${BOLD}\]\$(is_on_git && [[ -n \$(git branch 2> /dev/null) ]] && echo \" \"\[${PURPLE}\]\$(parse_git_branch))\[${RESET}\]\[${ORANGE}\]]\[${RESET}\]# "
 
 <% if @hostname =~ /learn/ -%>
 export PROMPT_COMMAND='history -a; history -r'
