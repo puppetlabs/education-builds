@@ -59,6 +59,3 @@ end
 describe file('/etc/puppet/ssl') do
   it {should_not be_directory }
 end
-describe file('/etc/ssh/sshd_config') do
-  it { should contain('^GSSAPIAuthentication no') }
-end

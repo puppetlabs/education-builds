@@ -5,6 +5,7 @@ require 'net/https'
 require 'rubygems'
 require 'gpgme'
 require 'nokogiri'
+require 'yaml'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
@@ -56,15 +57,18 @@ task :init do
       FileUtils.mkdir_p(dir)
     end
   end
+  
+  versions     = YAML.load_file('version.yaml')
+  @ptb_version = "#{versions[:major]}.#{versions[:minor]}"
 
   ['Ubuntu','Centos'].each do |vmos|
     case vmos
     when 'Ubuntu'
       pe_install_suffix = '-ubuntu-12.04-i386'
-      @ubuntu_pe_tarball = get_pe(pe_install_suffix)
+      @ubuntu_pe_tarball, @ubuntu_agent_tarball = get_pe(pe_install_suffix)
     when 'Centos'
       pe_install_suffix = '-el-6-i386'
-      @centos_pe_tarball = get_pe(pe_install_suffix)
+      @centos_pe_tarball, @centos_agent_tarball = get_pe(pe_install_suffix)
     end
     cputs "Getting PE tarballs for #{vmos}"
   end
@@ -171,63 +175,65 @@ task :createiso, [:vmos,:vmtype] do |t,args|
   prompt_vmos(args.vmos)
   prompt_vmtype(args.vmtype)
   case $settings[:vmos]
-  when 'Ubuntu'
-    # Parse templates and output in BUILDDIR
-    $settings[:pe_install_suffix] = '-ubuntu-12.04-i386'
-    $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
-    $settings[:pe_tarball] = @ubuntu_pe_tarball
-    # No variables
-    build_file('lang')
-    build_file('txt.cfg')
-    build_file('isolinux.cfg')
-    #template_path = "#{BASEDIR}/#{$settings[:vmos]}/#{filename}.erb"
-    # Uses hostname, pe_install_suffix
-    build_file('preseed.cfg')
+    when 'Ubuntu'
+      # Parse templates and output in BUILDDIR
+      $settings[:pe_install_suffix] = '-ubuntu-12.04-i386'
+      $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
+      $settings[:pe_tarball] = @ubuntu_pe_tarball
+      # No variables
+      build_file('lang')
+      build_file('txt.cfg')
+      build_file('isolinux.cfg')
+      #template_path = "#{BASEDIR}/#{$settings[:vmos]}/#{filename}.erb"
+      # Uses hostname, pe_install_suffix
+      build_file('preseed.cfg')
 
-    # Define ISO file targets
-    files = {
-      "#{BUILDDIR}/Ubuntu/lang"                       => '/isolinux/lang',
-      "#{BUILDDIR}/Ubuntu/txt.cfg"                    => '/isolinux/txt.cfg',
-      "#{BUILDDIR}/Ubuntu/isolinux.cfg"               => '/isolinux/isolinux.cfg',
-      "#{BUILDDIR}/Ubuntu/preseed.cfg"                => '/puppet/preseed.cfg',
-      "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
-      "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
-      "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
-      "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
-    }
-    iso_glob = 'ubuntu-12.04.4-server*'
-    iso_url = 'http://mirrors.cat.pdx.edu/ubuntu-releases/12.04.4/ubuntu-12.04.4-server-i386.iso'
-  when 'Centos'
-    # Parse templates and output in BUILDDIR
-    $settings[:pe_install_suffix] = '-el-6-i386'
-    $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
+      # Define ISO file targets
+      files = {
+        "#{BUILDDIR}/Ubuntu/lang"                       => '/isolinux/lang',
+        "#{BUILDDIR}/Ubuntu/txt.cfg"                    => '/isolinux/txt.cfg',
+        "#{BUILDDIR}/Ubuntu/isolinux.cfg"               => '/isolinux/isolinux.cfg',
+        "#{BUILDDIR}/Ubuntu/preseed.cfg"                => '/puppet/preseed.cfg',
+        "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
+        "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
+        "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
+        "#{CACHEDIR}/#{$settings[:pe_tarball]}"                     => "/puppet/#{$settings[:pe_tarball]}",
+      }
+      iso_glob = 'ubuntu-12.04.4-server*'
+      iso_url = 'http://mirrors.cat.pdx.edu/ubuntu-releases/12.04.4/ubuntu-12.04.4-server-i386.iso'
+    when 'Centos'
+      # Parse templates and output in BUILDDIR
+      $settings[:pe_install_suffix] = '-el-6-i386'
+      $settings[:hostname] = "#{$settings[:vmtype]}.puppetlabs.vm"
 
-    $settings[:pe_tarball]    = @centos_pe_tarball
+      $settings[:pe_tarball]    = @centos_pe_tarball
+      $settings[:agent_tarball] = @centos_agent_tarball
 
-    # No variables
-    build_file('isolinux.cfg')
-    # Uses hostname, pe_install_suffix
-    build_file('ks.cfg')
+      # No variables
+      build_file('isolinux.cfg')
+      # Uses hostname, pe_install_suffix
+      build_file('ks.cfg')
 
-    unless File.exist?("#{CACHEDIR}/epel-release.rpm")
-      cputs "Downloading EPEL rpm"
-      #download "http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
-      download "http://mirrors.cat.pdx.edu/epel/6/i386/epel-release-6-8.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
-    end
+      unless File.exist?("#{CACHEDIR}/epel-release.rpm")
+        cputs "Downloading EPEL rpm"
+        #download "http://mirrors.cat.pdx.edu/epel/5/i386/epel-release-5-4.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
+        download "http://mirrors.cat.pdx.edu/epel/6/i386/epel-release-6-8.noarch.rpm", "#{CACHEDIR}/epel-release.rpm"
+      end
 
-    # Define ISO file targets
-    files = {
-      "#{BUILDDIR}/Centos/isolinux.cfg"               => '/isolinux/isolinux.cfg',
-      "#{BUILDDIR}/Centos/ks.cfg"                     => '/puppet/ks.cfg',
-      "#{CACHEDIR}/epel-release.rpm"                  => '/puppet/epel-release.rpm',
-      "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
-      "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
-      "#{CACHEDIR}/hiera.git"                         => '/puppet/hiera.git',
-      "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
-      "#{CACHEDIR}/#{$settings[:pe_tarball]}"         => "/puppet/#{$settings[:pe_tarball]}",
-    }
-    iso_glob = 'CentOS-6.5-*'
-    iso_url = 'http://mirror.tocici.com/centos/6/isos/i386/CentOS-6.5-i386-bin-DVD1.iso'
+      # Define ISO file targets
+      files = {
+        "#{BUILDDIR}/Centos/isolinux.cfg"               => '/isolinux/isolinux.cfg',
+        "#{BUILDDIR}/Centos/ks.cfg"                     => '/puppet/ks.cfg',
+        "#{CACHEDIR}/epel-release.rpm"                  => '/puppet/epel-release.rpm',
+        "#{CACHEDIR}/puppet.git"                        => '/puppet/puppet.git',
+        "#{CACHEDIR}/facter.git"                        => '/puppet/facter.git',
+        "#{CACHEDIR}/hiera.git"                         => '/puppet/hiera.git',
+        "#{CACHEDIR}/puppetlabs-training-bootstrap.git" => '/puppet/puppetlabs-training-bootstrap.git',
+        "#{CACHEDIR}/#{$settings[:pe_tarball]}"         => "/puppet/#{$settings[:pe_tarball]}",
+        "#{CACHEDIR}/#{$settings[:agent_tarball]}"      => "/puppet/#{$settings[:agent_tarball]}",
+      }
+      iso_glob = 'CentOS-6.5-*'
+      iso_url = 'http://mirror.tocici.com/centos/6/isos/i386/CentOS-6.5-i386-bin-DVD1.iso'
   end
 
   iso_file = Dir.glob("#{CACHEDIR}/#{iso_glob}").first || ENV['iso_file']
@@ -329,10 +335,6 @@ end
 
 desc "Build a release VM"
 task :release do
-  require 'yaml'
-
-  versions     = YAML.load_file('version.yaml')
-  @ptb_version = "#{versions[:major]}.#{versions[:minor]}"
   cputs "Current release version #{@ptb_version}"
 
   release = env_prompt('Increment the release version? [Y/n]: ', 'RELEASE')
@@ -713,6 +715,6 @@ def get_pe(pe_install_suffix)
     cputs "Verifying installer signature"
     raise ('Installer verification failed') unless system("gpg --verify --always-trust #{installer}.asc #{installer}")
   end
-  return pe_tarball
+  return [ pe_tarball, agent_tarball ]
 end
 # vim: set sw=2 sts=2 et tw=80 :
