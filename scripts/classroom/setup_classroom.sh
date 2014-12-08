@@ -36,10 +36,20 @@ function validate_name
      "${name}" != "root"               &&
      "${name}" != "master" ]]
 }
-
 IP_FOUND=false
-for ipaddr in `hostname -I`; do
-  if confirm "Your IP address appears to be ${ipaddr} is this correct" true
+IP_LIST=(`hostname -I`)
+IP_COUNT=${#IP_LIST[*]}
+
+if [ ${IP_COUNT} -ge 2 ]
+then
+  echo "There are ${IP_COUNT} IP Addresses associated with this system."
+  for i in `seq ${IP_COUNT}`; do
+    echo $i ":" ${IP_LIST[(${i} - 1)]}
+  done
+fi
+
+for ipaddr in ${IP_LIST[*]}; do
+  if confirm "Is ${ipaddr} your primary IP Address? " true
   then
     IP_FOUND=true
     break
