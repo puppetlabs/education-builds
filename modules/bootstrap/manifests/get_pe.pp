@@ -4,9 +4,9 @@
 # -------
 
 class bootstrap::get_pe(
-  $version   = 'latest'
-  $pe_destination = '/root/'
-  $architecture   = 'i386'
+  $version   = 'latest',
+  $pe_destination = '/root/',
+  $architecture   = 'i386',
   $file_cache     = '/vagrant/file_cache'
 ) {
   $pe_dir        = "puppet-enterprise-${version}-el-6-${architecture}"
