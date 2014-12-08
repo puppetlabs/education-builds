@@ -20,7 +20,10 @@ $script = <<SCRIPT
 		cd /usr/src/puppetlabs-training-bootstrap/
 
 		rake -f Rakefile.new VMTYPE
+		
+		rm -rf /tmp/{gems,installers}
 SCRIPT
+
 
 	config.vm.define :training, autostart: false do |training_config|
 		training_config.vm.box = "puppetlabs/centos-6.5-32-nocm"
@@ -31,9 +34,8 @@ SCRIPT
 			v.cpus = 2
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
-
+	
 		$script.sub! 'VMTYPE', 'training'
-
 		training_config.vm.provision "shell", inline: $script
 	end
 
@@ -48,7 +50,6 @@ SCRIPT
 		end
 
 		$script.sub! 'VMTYPE', 'student'
-
 		student_config.vm.provision "shell", inline: $script
 	end
 
@@ -65,8 +66,8 @@ SCRIPT
 			v.cpus = 2
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
+		
 		$script.sub! 'VMTYPE', 'learning'
-
 		learning_config.vm.provision "shell", inline: $script 
 	end
 end
