@@ -50,7 +50,17 @@ function parse_git_branch() {
   fi
   echo $git_branch
 }
-export PS1="\[${ORANGE}\][\[${BOLD}${MAGENTA}\]\u@\h \[${GREEN}\]\w\[${BOLD}\]\$(is_on_git && [[ -n \$(git branch 2> /dev/null) ]] && echo \" \"\[${PURPLE}\]\$(parse_git_branch))\[${RESET}\]\[${ORANGE}\]]\[${RESET}\]# "
+function pre_prompt() {
+  user_name=$(whoami)
+  if [ $user_name == root ]
+  then
+    echo $(hostname -s)
+  else
+    echo $user_name "@" $(hostname -s)
+  fi
+}
+
+export PS1="\[${ORANGE}\][\[${BOLD}${MAGENTA}\]\$(pre_prompt) \[${GREEN}\]\w\[${BOLD}\]\$(is_on_git && [[ -n \$(git branch 2> /dev/null) ]] && echo \" \"\[${PURPLE}\]\$(parse_git_branch))\[${RESET}\]\[${ORANGE}\]]\[${RESET}\]# "
 
 <% if @hostname =~ /learn/ -%>
 export PROMPT_COMMAND='history -a; history -r'
