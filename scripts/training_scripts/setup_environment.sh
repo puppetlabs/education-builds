@@ -1,6 +1,0 @@
-export PE_STATUS="release"
-export PE_VERSION="3.7.0"
-export RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib"
-export TRAINING_REPO="https://github.com/puppetlabs/puppetlabs-training-bootstrap.git"
-export TRAINING_BRANCH="master"
-export VM_TYPE="training"
