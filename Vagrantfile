@@ -61,7 +61,7 @@ SCRIPT
 		learning_config.vm.network "forwarded_port", guest: 443, host: 8443
 
 		learning_config.vm.provider "virtualbox" do |v|
-			v.memory = 2048
+			v.memory = 4096
 			v.cpus = 2
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
