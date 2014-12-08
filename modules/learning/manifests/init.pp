@@ -25,6 +25,7 @@ class learning {
   # Install apache2 httpd so the directories exist
   package { 'httpd':
     ensure => present,
+    require => Class['epel']
   }
 
   # Create docroot for lvmguide files, so the website files
@@ -67,6 +68,15 @@ class learning {
     command => '/root/bin/quest update',
     creates => '/root/.testing/VERSION',
     require => File['/root/bin/quest'],
+  }
+
+  file { '/var/lib/hiera':
+    ensure => directory,
+  }
+  file { '/var/lib/hiera/defaults.yaml':
+    ensure => file,
+    source => 'puppet:///modules/learning/defaults.yaml',
+    require => File['/var/lib/hiera'],
   }
 
 }

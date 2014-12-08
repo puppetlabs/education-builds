@@ -1,46 +1,72 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$user = ENV['USER']
 
-Vagrant.configure("2") do |config|
+# Vagrant File for all Education VMs
+# 
+#
+#
+
+VAGRANTFILE_API_VERSION = "2"
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+$script = <<SCRIPT
+		yum install -y git yum-utils ruby-devel ruby rubygems
+		gem install rake json
+
+		cd /usr/src/
+		git clone https://github.com/puppetlabs/puppetlabs-training-bootstrap
+		cd /usr/src/puppetlabs-training-bootstrap/
+
+		rake -f Rakefile.new VMTYPE
+SCRIPT
+
+	config.vm.define :training, autostart: false do |training_config|
+		training_config.vm.box = "puppetlabs/centos-6.5-32-nocm"
+		training_config.vm.network "public_network"
+
+		training_config.vm.provider "virtualbox" do |v|
+			v.memory = 4096
+			v.cpus = 2
+			v.customize ["modifyvm", :id, "--ioapic", "on"]
+		end
+
+		$script.sub! 'VMTYPE', 'training'
+
+		training_config.vm.provision "shell", inline: $script
+	end
+
+	config.vm.define :student do |student_config|
+		student_config.vm.box = "puppetlabs/centos-6.5-32-nocm"
+		student_config.vm.network "public_network"
+
+		student_config.vm.provider "virtualbox" do |v|
+			v.memory = 1024
+			v.cpus = 2
+			v.customize ["modifyvm", :id, "--ioapic", "on"]
+		end
+
+		$script.sub! 'VMTYPE', 'student'
+
+		student_config.vm.provision "shell", inline: $script
+	end
 
 
-  # Fundamentals
-  config.vm.define :master do |master_config|
-    master_config.vm.box = "master"
-    master_config.vm.box_url = "file:///Users/#{$user}/Sites/build/vagrant/centos-latest.box"
-    master_config.vm.network :private_network, ip: "10.0.0.101"
-    master_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
-    master_config.vm.provision :shell,
-      :path => "scripts/master_install.sh"
-  end
+	config.vm.define :learning, autostart: false do |learning_config|
+		learning_config.vm.box = "puppetlabs/centos-6.5-32-nocm"
 
-  config.vm.define :fundamentals do |fundamentals_config|
-    fundamentals_config.vm.box = "fundamentals"
-    fundamentals_config.vm.box_url = "file:///Users/#{$user}/Sites/build/vagrant/centos-latest.box"
-    fundamentals_config.vm.network :private_network, ip: "10.0.0.102"
-    fundamentals_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
-    fundamentals_config.vm.provision :shell,
-            :path => "scripts/fundamentals_install.sh"
-  end
+		#Uncomment this line to use bridged networking
+		#learning_config.vm.network "public_network"
+		learning_config.vm.network "forwarded_port", guest: 443, host: 8443
 
-  # Advanced
-  config.vm.define :classroom do |classroom_config|
-    classroom_config.vm.box = "classroom"
-    classroom_config.vm.box_url = "file:///Users/#{$user}/Sites/build/vagrant/centos-latest.box"
-    classroom_config.vm.network :private_network, ip: "10.0.0.201"
-    classroom_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
-    classroom_config.vm.provision :shell,
-      :path => "scripts/classroom_install.sh"
-  end
+		learning_config.vm.provider "virtualbox" do |v|
+			v.memory = 4096
+			v.cpus = 2
+			v.customize ["modifyvm", :id, "--ioapic", "on"]
+		end
+		$script.sub! 'VMTYPE', 'learning'
 
-  config.vm.define :advanced do |advanced_config|
-    advanced_config.vm.box = "advanced"
-    advanced_config.vm.box_url = "file:///Users/#{$user}/Sites/build/vagrant/centos-latest.box"
-    advanced_config.vm.network :private_network, ip: "10.0.0.202"
-    advanced_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
-    advanced_config.vm.provision :shell,
-            :path => "scripts/advanced_install.sh"
-  end
+		learning_config.vm.provision "shell", inline: $script 
+	end
 end

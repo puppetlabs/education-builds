@@ -36,11 +36,31 @@ function validate_name
      "${name}" != "root"               &&
      "${name}" != "master" ]]
 }
+IP_FOUND=false
+IP_LIST=(`hostname -I`)
+IP_COUNT=${#IP_LIST[*]}
 
-ipaddr=`hostname -I | awk '{print $1}'`
-echo "Your IP address appears to be ${ipaddr}"
-echo "If this is not correct, cancel now."
-offer_bailout
+if [ ${IP_COUNT} -ge 2 ]
+then
+  echo "There are ${IP_COUNT} IP Addresses associated with this system."
+  for i in `seq ${IP_COUNT}`; do
+    echo $i ":" ${IP_LIST[(${i} - 1)]}
+  done
+fi
+
+for ipaddr in ${IP_LIST[*]}; do
+  if confirm "Is ${ipaddr} your primary IP Address? " true
+  then
+    IP_FOUND=true
+    break
+  fi
+done
+
+if [ $IP_FOUND != 'true' ]
+then
+  echo 'You must specify an ipaddress to set up agent'
+  exit 3
+fi
 
 while : ; do
   echo -n "Please choose a name for this node: "
