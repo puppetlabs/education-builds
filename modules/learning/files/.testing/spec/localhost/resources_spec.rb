@@ -14,7 +14,7 @@ end
 
 describe "user byte" do
   it 'should be created' do
-    file('/root/.bash_history').should contain 'useradd byte'
+    user('byte').should exist
   end
 end
 
@@ -32,18 +32,13 @@ end
 
 describe "The diretory /home/byte/tools" do
   it "should be created" do
-    file('/root/.bash_history').should contain 'mkdir /home/byte/tools'
-  end
-end
-
-describe "user byte's password" do
-  it 'should be changed' do
-    file('/root/.bash_history').should contain 'passwd byte'
+    file('/root/.bash_history').should be_directory
   end
 end
 
 describe "The directory /home/byte/tools" do
-  it 'should be owned by byte' do
-    file('/root/.bash_history').should contain 'chown -R byte:byte /home/byte/tools'
+  it 'should be owned by byte new' do
+    file('/home/byte/tools').should be_owned_by 'byte'
+    file('/home/byte/tools').should be_grouped_into 'byte'
   end
 end
