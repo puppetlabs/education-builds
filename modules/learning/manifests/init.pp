@@ -25,7 +25,7 @@ class learning {
   # Install apache2 httpd so the directories exist
   package { 'httpd':
     ensure => present,
-    require => Class['epel']
+    require => Class['localrepo']
   }
 
   # Create docroot for lvmguide files, so the website files
@@ -40,6 +40,7 @@ class learning {
 
   package { 'tmux':
     ensure => present,
+    require => Class['localrepo']
   }
 
   file { '/root/README':
