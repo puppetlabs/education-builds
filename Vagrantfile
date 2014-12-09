@@ -45,15 +45,6 @@ SCRIPT
 		student_config.vm.box = "puppetlabs/centos-6.5-32-nocm"
 		student_config.vm.network "public_network"
 
-		$script.sub! 'VMTYPE', 'training'
-
-		training_config.vm.provision "shell", inline: $script
-	end
-
-	config.vm.define :student do |student_config|
-		student_config.vm.box = "puppetlabs/centos-6.5-32-nocm"
-		student_config.vm.network "public_network"
-
 		student_config.vm.provider "virtualbox" do |v|
 			v.memory = 1024
 			v.cpus = 2
@@ -61,7 +52,7 @@ SCRIPT
 		end
 		
 		student_config.vm.provider "vmware_fusion" do |v|
-			v.vmx["memsize"] = "4096"
+			v.vmx["memsize"] = "1024"
   		v.vmx["numvcpus"] = "2"
 		end
 
