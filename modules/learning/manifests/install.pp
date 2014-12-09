@@ -64,6 +64,21 @@ class learning::install {
   exec { 'install serverspec':
     command => '/opt/puppet/bin/gem install serverspec -v 1.16.0',
     unless  => '/opt/puppet/bin/gem list serverspec -i',
+    require => Exec['install rspec-its'],
+  }
+  exec { 'install rspec-its':
+    command => '/opt/puppet/bin/gem install rspec-its -v 1.0.1',
+    unless  => '/opt/puppet/bin/gem list rspec-its -i',
+    require => Exec['install rspec-core'],
+  }
+  exec { 'install rspec-core':
+    command => '/opt/puppet/bin/gem install rspec-core -v 2.99.0',
+    unless  => '/opt/puppet/bin/gem list rspec -i',
+    require => Exec['install rspec'],
+  }
+  exec { 'install rspec':
+    command => '/opt/puppet/bin/gem install rspec -v 2.99.0',
+    unless  => '/opt/puppet/bin/gem list rspec -i',
     require => Exec['install-pe'],
   }
 
