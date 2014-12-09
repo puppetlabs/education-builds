@@ -19,8 +19,8 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'hunner-charybdis':                 version => '1.0.0' }
   bootstrap::forge { 'hunner-wordpress':                 version => '0.6.0' }
   bootstrap::forge { 'jamtur01-irc':                     version => '0.0.7' }
-  bootstrap::forge { 'nanliu-staging':                   version => '1.0.0' }
-  bootstrap::forge { 'puppetlabs-apache':                version => '1.1.1' }
+  bootstrap::forge { 'nanliu-staging':                   version => '1.0.2' }
+  bootstrap::forge { 'puppetlabs-apache':                version => '1.2.0' }
   bootstrap::forge { 'puppetlabs-concat':                version => '1.1.1' }
   bootstrap::forge { 'puppetlabs/git':                   version => '0.2.0' }
   bootstrap::forge { 'puppetlabs-haproxy':               version => '1.0.0' }
