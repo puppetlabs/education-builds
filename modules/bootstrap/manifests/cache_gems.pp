@@ -1,5 +1,6 @@
 class bootstrap::cache_gems (
   $cache_dir = '/var/cache/rubygems'
+  $file_cache = '/vagrant/file_cache'
 ) {
   Bootstrap::Gem {
     cache_dir => "${cache_dir}/gems",
@@ -9,17 +10,21 @@ class bootstrap::cache_gems (
     ensure => directory,
   }
 
-  file { '/tmp/gems':
-    ensure => directory,
+  #Check for local build file cache from packer or vagrant
+  if file_exists ("${file_cache}/") == 1 {
+    file { "${cache_dir}/gems" :
+      ensure => directory,
+      recurse => true,
+      source => "${file_cache}/gems",
+      require => [File[$cache_dir],
+    }
   }
-
-  file { "${cache_dir}/gems" :
-    ensure => directory,
-    recurse => true,
-    source => "/tmp/gems",
-    require => [File[$cache_dir],File['/tmp/gems']],
+  else {
+    file { "${cache_dir}/gems" :
+      ensure => directory,
+      require => [File[$cache_dir],
+    }
   }
-
 
   package { 'builder':
     ensure   => present,
