@@ -1,6 +1,6 @@
 class bootstrap::cache_gems (
   $cache_dir = '/var/cache/rubygems'
-  $file_cache = '/vagrant/'
+  $file_cache = '/vagrant/file_cache'
 ) {
   Bootstrap::Gem {
     cache_dir => "${cache_dir}/gems",
