@@ -16,7 +16,7 @@ class bootstrap::cache_gems (
       ensure => directory,
       recurse => true,
       source => "${file_cache}/gems",
-      require => [File[$cache_dir],
+      require => [File[$cache_dir]],
     }
   }
   else {
