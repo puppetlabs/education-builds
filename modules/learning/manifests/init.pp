@@ -56,7 +56,6 @@ class learning {
     ensure   => present,
     provider => git,
     source   => 'git://github.com/puppetlabs/courseware-lvm.git',
-    revision => 'upcoming',
   }
 
 
