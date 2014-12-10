@@ -1,5 +1,4 @@
 class learning::install {
-  include learning
   exec {'install-pe':
     # This is a workaround for PE 3.2.0+ offline installations to work"
     # If you don't reset the rubylib, it'll inherit the one used during kickstart and the installer will blow up.
@@ -8,6 +7,7 @@ class learning::install {
     creates     => '/usr/local/bin/puppet',
     logoutput   => true,
     timeout     => '14400',
+    require     => Class['bootstrap::get_pe'],
   }
 
 
