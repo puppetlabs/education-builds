@@ -52,17 +52,19 @@ class learning {
     ensure => directory,
   }
 
-  exec { 'download_quest_tool':
-    command => 'wget --no-check-certificate https://raw.githubusercontent.com/puppetlabs/courseware-lvm/master/quest_tool/bin/quest',
-    cwd     => '/root/bin',
-    creates => '/root/bin/quest',
-    require => File['/root/bin'],
+  vcsrepo { "/usr/src/courseware-lvm":
+    ensure   => present,
+    provider => git,
+    source   => 'git://github.com/puppetlabs/courseware-lvm.git',
+    revision => 'upcoming',
   }
+
 
   file { '/root/bin/quest':
     ensure  => file,
     mode    => '0755',
-    require => Exec['download_quest_tool'],
+    source  => "/usr/src/courseware-lvm/quest_tool/bin/quest",
+    require => Vcsrepo['/usr/src/courseware-lvm'],
   }
 
   exec { 'update_content':
