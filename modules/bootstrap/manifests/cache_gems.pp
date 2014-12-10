@@ -16,13 +16,13 @@ class bootstrap::cache_gems (
       ensure => directory,
       recurse => true,
       source => "${file_cache}/gems",
-      require => [File[$cache_dir]],
+      require => File[$cache_dir],
     }
   }
   else {
     file { "${cache_dir}/gems" :
       ensure => directory,
-      require => [File[$cache_dir],
+      require => File[$cache_dir],
     }
   }
 
