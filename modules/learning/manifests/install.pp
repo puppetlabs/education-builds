@@ -7,6 +7,7 @@ class learning::install {
     creates     => '/usr/local/bin/puppet',
     logoutput   => true,
     timeout     => '14400',
+    require     => Class['learning']
   }
 
 
