@@ -9,15 +9,6 @@ class learning::install {
     timeout     => '14400',
   }
 
-  # This rake task exists now! Hurray.
-  exec {'reduce-activemq-heap':
-    command     => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile node:variables name="learning.puppetlabs.vm" variables="activemq_heap_mb=\"256\"" RAILS_ENV=production',
-    logoutput   => true,
-    environment => "RUBYLIB=''",
-    require     => Exec['install-pe'],
-    timeout     => '14400',
-  }
-
 
   # Add script that can print console login. Bootstrap will optionally call this in the rc.local file.
   file {'/root/.console_login.sh':
