@@ -1,12 +1,12 @@
 #PE3.4
 puppet_enterprise::profile::puppetdb::listen_address: '0.0.0.0'
-puppet_enterprise::profile::amq::broker::heap_mb: '32'
+puppet_enterprise::profile::amq::broker::heap_mb: '256'
 puppet_enterprise::profile::master::java_args:
   Xmx: '256m'
   Xms: '32m'
 puppet_enterprise::profile::puppetdb::java_args:
-  Xmx: '32m'
+  Xmx: '256'
   Xms: '16m'
 puppet_enterprise::profile::console::java_args:
-  Xmx: '32m'
+  Xmx: '256m'
   Xms: '16m'
