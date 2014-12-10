@@ -69,7 +69,7 @@ class learning {
   exec { 'update_content':
     command => '/root/bin/quest update',
     creates => '/root/.testing/VERSION',
-    require => File['/root/bin/quest'],
+    require => [File['/root/bin/quest'],File['/var/www/html/lvmguide']],
   }
 
   file { '/var/lib/hiera':
