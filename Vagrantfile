@@ -31,9 +31,13 @@ SCRIPT
 			v.cpus = 2
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
-
+		
+		training_config.vm.provider "vmware_fusion" do |v|
+			v.vmx["memsize"] = "4096"
+  		v.vmx["numvcpus"] = "2"
+		end
+	
 		$script.sub! 'VMTYPE', 'training'
-
 		training_config.vm.provision "shell", inline: $script
 	end
 
@@ -45,6 +49,11 @@ SCRIPT
 			v.memory = 1024
 			v.cpus = 2
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
+		end
+		
+		student_config.vm.provider "vmware_fusion" do |v|
+			v.vmx["memsize"] = "1024"
+  		v.vmx["numvcpus"] = "2"
 		end
 
 		$script.sub! 'VMTYPE', 'student'
@@ -65,6 +74,12 @@ SCRIPT
 			v.cpus = 2
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
+
+		learning_config.vm.provider "vmware_fusion" do |v|
+			v.vmx["memsize"] = "4096"
+  		v.vmx["numvcpus"] = "2"
+		end
+		
 		$script.sub! 'VMTYPE', 'learning'
 
 		learning_config.vm.provision "shell", inline: $script 

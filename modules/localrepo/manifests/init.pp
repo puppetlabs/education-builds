@@ -87,6 +87,7 @@ class localrepo {
     syncer   => "yumdownloader",
     source   => "epel",
     notify   => Repobuild["epel_local"],
+    require  => Class['epel']
   }
 
   localrepo::repobuild { "epel_local":

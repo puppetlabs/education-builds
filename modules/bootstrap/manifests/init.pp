@@ -90,6 +90,7 @@ class bootstrap ($print_console_login = false) {
   # Make sure the firewall isn't running
   service { 'iptables':
     enable => false,
+    ensure => stopped,
   }
   # Add a few extra packages for convenience
   package { [ 'patch', 'screen', 'telnet', 'tree' ] :

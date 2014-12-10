@@ -2,32 +2,14 @@ class learning::install {
   exec {'install-pe':
     # This is a workaround for PE 3.2.0+ offline installations to work"
     # If you don't reset the rubylib, it'll inherit the one used during kickstart and the installer will blow up.
-    environment => ["q_tarball_server=/usr/src/installer/","RUBYLIB=''"],
+    environment => ["RUBYLIB=''"],
     command     => "/root/puppet-enterprise/puppet-enterprise-installer -D -a /root/learning.answers",
     creates     => '/usr/local/bin/puppet',
     logoutput   => true,
     timeout     => '14400',
+    require     => Class['bootstrap::get_pe'],
   }
 
-  # This rake task exists now! Hurray.
-  exec {'reduce-activemq-heap':
-    command     => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile node:variables name="learning.puppetlabs.vm" variables="activemq_heap_mb=\"256\"" RAILS_ENV=production',
-    logoutput   => true,
-    environment => "RUBYLIB=''",
-    require     => Exec['install-pe'],
-    timeout     => '14400',
-  }
-
-  # So we'll make sure it exists:
-  exec {'ensure learning.puppetlabs.vm exists in console':
-    command     => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile node:add name="learning.puppetlabs.vm" RAILS_ENV=production',
-    returns     => [0,1], # It returns 1 if the node already exists, but the command is actually idempotent, so that's fine.
-    logoutput   => true,
-    environment => "RUBYLIB=''",
-    require     => Exec['install-pe'],
-    before      => Exec['reduce-activemq-heap'],
-    timeout     => '14400',
-  }
 
   # Add script that can print console login. Bootstrap will optionally call this in the rc.local file.
   file {'/root/.console_login.sh':
@@ -64,6 +46,21 @@ class learning::install {
   exec { 'install serverspec':
     command => '/opt/puppet/bin/gem install serverspec -v 1.16.0',
     unless  => '/opt/puppet/bin/gem list serverspec -i',
+    require => Exec['install rspec-its'],
+  }
+  exec { 'install rspec-its':
+    command => '/opt/puppet/bin/gem install rspec-its -v 1.0.1',
+    unless  => '/opt/puppet/bin/gem list rspec-its -i',
+    require => Exec['install rspec-core'],
+  }
+  exec { 'install rspec-core':
+    command => '/opt/puppet/bin/gem install rspec-core -v 2.99.0',
+    unless  => '/opt/puppet/bin/gem list rspec -i',
+    require => Exec['install rspec'],
+  }
+  exec { 'install rspec':
+    command => '/opt/puppet/bin/gem install rspec -v 2.99.0',
+    unless  => '/opt/puppet/bin/gem list rspec -i',
     require => Exec['install-pe'],
   }
 

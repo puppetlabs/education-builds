@@ -25,7 +25,7 @@ class learning {
   # Install apache2 httpd so the directories exist
   package { 'httpd':
     ensure => present,
-    require => Class['epel']
+    require => Class['localrepo']
   }
 
   # Create docroot for lvmguide files, so the website files
@@ -40,6 +40,7 @@ class learning {
 
   package { 'tmux':
     ensure => present,
+    require => Class['localrepo']
   }
 
   file { '/root/README':
@@ -51,17 +52,18 @@ class learning {
     ensure => directory,
   }
 
-  exec { 'download_quest_tool':
-    command => 'wget --no-check-certificate https://raw.githubusercontent.com/puppetlabs/courseware-lvm/master/quest_tool/bin/quest',
-    cwd     => '/root/bin',
-    creates => '/root/bin/quest',
-    require => File['/root/bin'],
+  vcsrepo { "/usr/src/courseware-lvm":
+    ensure   => present,
+    provider => git,
+    source   => 'git://github.com/puppetlabs/courseware-lvm.git',
   }
+
 
   file { '/root/bin/quest':
     ensure  => file,
     mode    => '0755',
-    require => Exec['download_quest_tool'],
+    source  => "/usr/src/courseware-lvm/quest_tool/bin/quest",
+    require => Vcsrepo['/usr/src/courseware-lvm'],
   }
 
   exec { 'update_content':
