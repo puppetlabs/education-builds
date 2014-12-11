@@ -68,6 +68,7 @@ SCRIPT
 		#Uncomment this line to use bridged networking
 		#learning_config.vm.network "public_network"
 		learning_config.vm.network "forwarded_port", guest: 443, host: 8443
+		learning_config.vm.network "forwarded_port", guest: 80, host: 8080
 
 		learning_config.vm.provider "virtualbox" do |v|
 			v.memory = 4096
