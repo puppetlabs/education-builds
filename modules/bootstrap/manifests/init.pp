@@ -75,7 +75,6 @@ class bootstrap ($print_console_login = false) {
     augeas { "GSSAPI_enable":
       context => '/files/etc/ssh/sshd_config',
       changes => 'set GSSAPIAuthentication yes',
-      require => Package['sshd']
     }
 
   }
