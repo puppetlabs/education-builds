@@ -43,6 +43,11 @@ class learning {
     require => Class['localrepo']
   }
 
+  package { 'unzip':
+    ensure => present,
+    require => Class['localrepo']
+  }
+
   file { '/root/README':
     ensure => file,
     source => 'puppet:///modules/learning/README',
@@ -69,7 +74,7 @@ class learning {
   exec { 'update_content':
     command => '/root/bin/quest update',
     creates => '/root/.testing/VERSION',
-    require => [File['/root/bin/quest'],File['/var/www/html/lvmguide']],
+    require => [File['/root/bin/quest'],File['/var/www/html/lvmguide'],Package['unzip']],
   }
 
   file { '/var/lib/hiera':
