@@ -31,7 +31,7 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'puppetlabs-stdlib':                version => '4.3.2' }
   bootstrap::forge { 'puppetlabs-vcsrepo':               version => '1.1.0' }
   bootstrap::forge { 'razorsedge-vmwaretools':           version => '4.7.0' }
-  bootstrap::forge { 'stahnma-epel':                     version => '1.0.0' }
+  bootstrap::forge { 'stahnma-epel':                     version => '1.0.2' }
   bootstrap::forge { 'thias-vsftpd':                     version => '0.2.1' }
   bootstrap::forge { 'zack/exports':                     version => '0.0.4' }
   bootstrap::forge { 'zack/r10k':                        version => '2.3.0' }

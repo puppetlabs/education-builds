@@ -17,6 +17,17 @@ Other repositories that will setup but disabled (as per the epel-release setup)
   * epel-testing-debuginfo
   * epel-testing-source
 
+# Usage
+
+In nearly all cases, you can simply _include epel_ or classify your nodes with
+the epel class. There are quite a few paramters available if you need to modify
+the default settings for the epel repository such having your own mirror, an
+http proxy, disable gpg checking.
+
+You can also use a puppet one-liner to get epel onto a system.
+
+    puppet apply -e 'include epel'
+
 # Proxy
 If you have an http proxy required to access the internet, you can use either
 a class parameter in the _epel_ class, or edit the $proxy variable in the
@@ -45,6 +56,8 @@ included with EPEL release, this will not have them.
 
 # ChangeLog
 
+  * Update README with usage section.
+  * Fix regression when os_maj_version fact was required
   * Ready for 1.0 - replace Modulefile with metadata.json
   * Replace os_maj_version custom fact with operatingsystemmajrelease
   * Works for EPEL7 now as well.

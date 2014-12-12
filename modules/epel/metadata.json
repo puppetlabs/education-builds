@@ -1,6 +1,6 @@
 {
   "name": "stahnma-epel",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "author": "stahnma",
   "summary": "Setup the EPEL package repo",
   "license": "Apache License, Version 2.0",
@@ -59,7 +59,7 @@
       "version_requirement": ">= 3.0.0"
     }
   ],
-  "description": "Setup the EPEL package repo on Centos/RHEL et all",
+  "description": "Setup the EPEL package repo on Centos/RHEL et al",
   "dependencies": [
   
   ]
