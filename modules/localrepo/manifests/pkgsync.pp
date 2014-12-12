@@ -16,13 +16,13 @@
 # Example:
 #   pkgsync { "base_pkgs":
 #     pkglist  => "httpd*\nperl-DBI*\nlibart_lgpl*\napr*\nruby-rdoc*\nntp*\n",
-#     repopath => "/var/yum/mirror/centos/5/os/i386",
-#     source   => "::centos/5/os/i386/CentOS/",
+#     repopath => "/var/yum/mirror/centos/5/os/$::architecture",
+#     source   => "::centos/5/os/$::architecture/CentOS/",
 #     notify   => Repobuild["base"]
 #   }
 #
 #   repobuild { "base":
-#     repopath => "${base}/mirror/centos/5/os/i386",
+#     repopath => "${base}/mirror/centos/5/os/$::architecture",
 #   }
 
 define localrepo::pkgsync ($pkglist = $name, $source="", $server = "mirrors.cat.pdx.edu", $syncer = "rsync", $syncops = "default", $repopath) {
