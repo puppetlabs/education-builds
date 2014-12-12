@@ -1,6 +1,6 @@
 *.vagrant
 *.swp
-*.DS_Store
+.DS_Store
 *.un~
 modules/*/pkg/
 Gemfile.lock
