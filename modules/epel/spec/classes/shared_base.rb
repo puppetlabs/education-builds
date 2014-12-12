@@ -11,7 +11,19 @@ shared_context :base do
   end
 end
 
-shared_context :base_6 do
+shared_examples_for :base_7 do
+  include_context :base
+
+  it do
+    should contain_yumrepo('epel').with({
+      'mirrorlist'     => "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-7&arch=$basearch",
+      'gpgkey'         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7",
+      'descr'          => "Extra Packages for Enterprise Linux 7 - $basearch",
+    })
+  end
+end
+
+shared_examples_for :base_6 do
   include_context :base
 
   it do
@@ -23,7 +35,7 @@ shared_context :base_6 do
   end
 end
 
-shared_context :base_5 do
+shared_examples_for :base_5 do
   include_context :base
 
   it do
