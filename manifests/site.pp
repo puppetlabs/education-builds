@@ -21,6 +21,7 @@ node /learn/ {
       swapfile     => '/swapfile',
       swapfilesize => '4.0 GB',
     }
+    include learning::set_swap
   }
 
   class { 'staging':
