@@ -18,7 +18,7 @@ node /student/ {
 node /learn/ {
   if $::memorysize_mb <= 4096 {
     class { 'swap_file':
-      swapfile     => '/swapfile/swap1',
+      swapfile     => '/swapfile',
       swapfilesize => '4.0 GB',
     }
   }
