@@ -48,6 +48,15 @@ end
 if ENV['vmtype'] && ENV['vmtype'] !~ /^(training|learning)$/
   abort("ERROR: Unrecognized vmtype parameter: #{ENV['vmtype']}")
 end
+desc "Default, menu of available rake tasks, and description"
+task :default do
+  puts ""
+  puts "To turn the current machine or VM into one of the Education environments. NOTE: This changes the hostname and should probably only be done from within a Centos 6.5 32bit base VM. The old Rakefile will soon be deprecated."
+  puts "" 
+  puts ""
+  system("rake -T")
+  puts ""
+end
 
 desc "Build and populate data directory"
 task :init do
