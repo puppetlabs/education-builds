@@ -16,7 +16,7 @@ $script = <<SCRIPT
 		gem install rake json
 
 		cd /usr/src/
-		git clone https://github.com/puppetlabs/puppetlabs-training-bootstrap
+		git clone https://github.com/joshsamuelson/puppetlabs-training-bootstrap -b lvm/swap
 		cd /usr/src/puppetlabs-training-bootstrap/
 
 		rake -f Rakefile.new VMTYPE
@@ -71,13 +71,13 @@ SCRIPT
 		learning_config.vm.network "forwarded_port", guest: 80, host: 8080
 
 		learning_config.vm.provider "virtualbox" do |v|
-			v.memory = 4096
+			v.memory = 1024
 			v.cpus = 2
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
 
 		learning_config.vm.provider "vmware_fusion" do |v|
-			v.vmx["memsize"] = "4096"
+			v.vmx["memsize"] = "1024"
   		v.vmx["numvcpus"] = "2"
 		end
 		
