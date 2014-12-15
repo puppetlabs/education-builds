@@ -1,10 +1,6 @@
 source "https://rubygems.org"
 
 gem 'beaker-rspec'
-gem 'erb'
-gem 'uri'
-gem 'net/http'
-gem 'net/https'
-gem 'rubygems'
+#gems to support rake
 gem 'gpgme'
 gem 'nokogiri'
