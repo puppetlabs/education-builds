@@ -4,7 +4,7 @@ node default {
     owner => 'root',
     group => 'root',
   }
-  class { 'bootstrap::get_pe': version => '3.7.0' }
+  class { 'bootstrap::get_pe': version => '3.7.1' }
   class { 'epel': epel_enabled => false }
   include bootstrap
   include localrepo
