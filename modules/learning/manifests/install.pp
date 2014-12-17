@@ -10,6 +10,14 @@ class learning::install {
     require     => [Class['bootstrap::get_pe'],Class['localrepo']],
   }
 
+  augeas { "environment timeout":
+    context => "/files/etc/puppetlabs/puppet/puppet.conf/agent",
+    changes => [
+      "set environment_timeout 0",
+    ],
+    require => Exec['install-pe'],
+  }
+
 
   # Add script that can print console login. Bootstrap will optionally call this in the rc.local file.
   file {'/root/.console_login.sh':
