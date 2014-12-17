@@ -6,7 +6,7 @@ class learning::set_swap {
     ],
     before => Class['learning::install'],
   }
-  exec { 'setctl -p':
+  exec { 'sysctl -p':
     path => '/sbin/',
     require => Augeas['swap settings'],
   }
