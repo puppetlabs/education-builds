@@ -62,12 +62,21 @@
   ],
   "post-processors": [
     {
-      "type": "compress",
-      "format": "zip",
-      "output": "{{user `vm_name`}}-ptb{{user `ptb_version`}}-{{user `vm_type`}}.zip"
+      "type": "vagrant",
+      "output": "{{user `vm_name`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
+      "keep_input_artifact": true
     }
   ],
   "provisioners": [
+    {
+      "type": "shell", 
+      "inline": ["sudo mkdir -p /vagrant/file_cache;sudo chown -R vagrant:vagrant /vagrant"]
+    },
+    {
+      "type": "file",
+      "source": "../file_cache/",
+      "destination": "/vagrant/file_cache"
+    },
     {
       "environment_vars": [
         "PE_STATUS={{user `pe_status`}}",
@@ -82,7 +91,7 @@
         "scripts/base.sh",
         "scripts/vagrant.sh",
         "scripts/sshd.sh",
-	"scripts/rake_build.sh",
+	"scripts/{{user `vm_type`}}_build.sh",
         "scripts/vmtools.sh",
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"

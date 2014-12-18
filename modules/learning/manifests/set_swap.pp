@@ -5,6 +5,6 @@ class learning::set_swap {
       "set vm.overcommit_memory 2",
       "set vm.swapiness 75",
     ],
-    before => Class['learning::install'],
+    before => [Class['learning::install'],Class['bootstrap::get_pe'],
   }
 }

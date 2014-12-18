@@ -9,3 +9,4 @@ sed -i -e "/^HWADDR.*/d" /etc/sysconfig/network-scripts/ifcfg-eth0
 yum clean all -y
 
 rm -rf /tmp/*
+rm -rf /vagrant
