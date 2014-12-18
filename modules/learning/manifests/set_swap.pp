@@ -5,7 +5,7 @@ class learning::set_swap {
       "set vm.overcommit_memory 2",
       "set vm.swappiness 75",
     ],
-    before => [Class['learning::install'],Class['bootstrap::get_pe'],
+    before => [Class['learning::install'],Class['bootstrap::get_pe']],
   }
   exec { 'sysctl -p':
     path => '/sbin/',
