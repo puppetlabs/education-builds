@@ -77,7 +77,7 @@ while : ; do
   echo -n "Please enter the classroom Master's IP address: "
   read master
 
-  ping -c1 -t2 ${master} >/dev/null 2>&1 && break
+  ping -c1 -W2 ${master} >/dev/null 2>&1 && break
 
   echo "... that IP is unreachable."
 done
@@ -92,7 +92,7 @@ then
     echo -n "Please enter the IP address for ${student_master_name}.puppetlabs.vm: "
     read student_master_ip
 
-    ping -c1 -t2 ${student_master_ip} >/dev/null 2>&1 && break
+    ping -c1 -W2 ${student_master_ip} >/dev/null 2>&1 && break
 
     echo "... that IP is unreachable."
   done
