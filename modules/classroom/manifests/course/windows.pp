@@ -9,9 +9,11 @@ class classroom::course::windows (
 ) inherits classroom::params {
 
   # Admin user for consistency
-  user { 'Administrator':
-    ensure => present,
-    groups => ['Administrators'],
+  if $::osfamily == 'windows'{
+    user { 'Administrator':
+      ensure => present,
+      groups => ['Administrators'],
+    }
   }
 
 #   exec { 'install Chocolatey':
