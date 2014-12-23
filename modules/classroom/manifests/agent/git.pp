@@ -16,13 +16,20 @@ class classroom::agent::git {
     path        => $path,
   }
 
-  class { '::git':
-    before => [ File[$sshpath], Exec['generate_key'] ],
-  }
-
   if $::osfamily == 'windows'{
+    Package { provider => 'chocolatey' }
+    package { 'git':
+      ensure => present,
+      before => [ File[$sshpath], Exec['generate_key'] ],
+    }
+
     package { 'poshgit':
       ensure => present,
+    }
+  }
+  else {
+    class { '::git':
+      before => [ File[$sshpath], Exec['generate_key'] ],
     }
   }
 
