@@ -61,5 +61,7 @@ class classroom::agent (
   # windows goodies
   if $::osfamily  == 'windows' {
     include classroom::agent::chocolatey
+    include classroom::agent::notepad
+    include classroom::agent::console2
   }
 }

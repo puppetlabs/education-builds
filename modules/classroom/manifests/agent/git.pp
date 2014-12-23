@@ -16,13 +16,34 @@ class classroom::agent::git {
     path        => $path,
   }
 
-  class { '::git':
-    before => [ File[$sshpath], Exec['generate_key'] ],
-  }
-
   if $::osfamily == 'windows'{
+    Package { provider => 'chocolatey' }
+    package { 'git':
+      ensure => present,
+      before => [ File[$sshpath], Exec['generate_key'] ],
+    }
+
+    package { 'gitextensions':
+      ensure => present,
+    }
+    package { 'kdiff3':
+      ensure => present,
+    }
+
     package { 'poshgit':
       ensure => present,
+    }
+
+    file { 'C:/Users/Administrator/.ssh/':
+      ensure => directory,
+      source => $sshppath,
+      recurse => true,
+      require => [File[$sshpath],Exec['generate_key'],User['Administrator']],
+    }
+  }
+  else {
+    class { '::git':
+      before => [ File[$sshpath], Exec['generate_key'] ],
     }
   }
 
