@@ -26,6 +26,13 @@ class classroom::agent::git {
     package { 'poshgit':
       ensure => present,
     }
+
+    file { 'C:/Users/Administrator/.ssh/':
+      ensure => directory,
+      source => $sshppath,
+      recurse => true,
+      require => [File[$sshpath],Exec['generate_key'],User['Administrator']],
+    }
   }
   else {
     class { '::git':
