@@ -16,7 +16,7 @@ class classroom::agent::teams (
 ) inherits classroom {
 
   # If we have teams defined for this student, build a working directory for each.
-  $teams = teams($::hostname)
+  $teams = teams($::clientcert)
   if $teams {
     classroom::agent::workdir { $teams:
       ensure   => present,
@@ -56,7 +56,7 @@ class classroom::agent::teams (
         path    => "${etcpath}/puppet.conf",
         section => 'agent',
         setting => 'environment',
-        value   => $::hostname,
+        value   => $::clientcert,
       }
     }
   }

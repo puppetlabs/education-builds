@@ -28,12 +28,12 @@ class fundamentals::agent (
     require => File['/root/.ssh'],
   }
 
-  exec { "git config --global user.name '${::hostname}'":
+  exec { "git config --global user.name '${::clientcert}'":
     unless  => 'git config --global user.name',
     require => Package['git'],
   }
 
-  exec { "git config --global user.email ${::hostname}@puppetlabs.vm":
+  exec { "git config --global user.email ${::clientcert}@puppetlabs.vm":
     unless  => 'git config --global user.email',
     require => Package['git'],
   }
@@ -52,11 +52,11 @@ class fundamentals::agent (
 
   fundamentals::agent::workdir { $workdir:
     ensure   => present,
-    username => $::hostname,
+    username => $::clientcert,
   }
 
   # If we have teams defined, build a working directory for each.
-  $teams = teams($::hostname)
+  $teams = teams($::clientcert)
   if $teams {
     fundamentals::agent::workdir { $teams:
       ensure   => present,
@@ -98,7 +98,7 @@ class fundamentals::agent (
         path    => '/etc/puppetlabs/puppet/puppet.conf',
         section => 'agent',
         setting => 'environment',
-        value   => $::hostname,
+        value   => $::clientcert,
       }
     }
 
@@ -109,7 +109,7 @@ class fundamentals::agent (
   # !!!! THIS WILL EXPORT AN EMPTY KEY ON THE FIRST RUN !!!!
   #
   # On the second run, the ssh key will exist and so this fact will be set.
-  @@fundamentals::user { $::hostname:
+  @@fundamentals::user { $::clientcert:
     key => $::root_ssh_key,
   }
 }
