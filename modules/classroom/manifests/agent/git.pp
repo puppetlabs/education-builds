@@ -58,12 +58,14 @@ class classroom::agent::git {
     require => File[$sshpath],
   }
 
-  exec { "git config --global user.name '${::clientcert}'":
+  $machine_name = get_machine_name($::clientcert)
+
+  exec { "git config --global user.name '${machine_name}'":
     unless  => 'git config --global user.name',
     require => Exec['generate_key'],
   }
 
-  exec { "git config --global user.email ${::clientcert}@puppetlabs.vm":
+  exec { "git config --global user.email ${machine_name}@puppetlabs.vm":
     unless  => 'git config --global user.email',
     require => Exec['generate_key'],
   }

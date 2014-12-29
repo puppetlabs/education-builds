@@ -41,7 +41,7 @@ class classroom::agent (
   if $managerepos {
     classroom::agent::workdir { $workdir:
       ensure   => present,
-      username => $::hostname,
+      username => get_machine_name($::clientcert),
       require  => Class['classroom::agent::git'],
     }
 
