@@ -9,7 +9,7 @@ hostname is ${fqdn}, but you might not be able to reach it there
 from your host machine. It is running ${operatingsystem} ${operatingsystemrelease}.
 Web console login:
   URL: https://${ipaddress_eth0}
-  User: puppet@example.com
+  User: admin
   Password: learningpuppet
 ",
 }
