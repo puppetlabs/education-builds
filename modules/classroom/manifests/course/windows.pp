@@ -8,34 +8,6 @@ class classroom::course::windows (
   $manageyum = $classroom::params::manageyum,
 ) inherits classroom::params {
 
-  # Admin user for consistency
-  if $::osfamily == 'windows'{
-    user { 'Administrator':
-      ensure => present,
-      groups => ['Administrators'],
-    }
-  }
-
-#   exec { 'install Chocolatey':
-#     command  => "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))",
-#     provider => 'powershell',
-#     creates  => 'C:\Chocolatey',
-#   }
-#
-#   windows_env {'ChocolateyInstall':
-#   	ensure    => present,
-#   	mergemode => clobber,
-#   	value     => 'C:\Chocolatey',
-#   	require   => Exec['install Chocolatey'],
-#   }
-#
-#   windows_env {'PATH':
-#   	ensure    => present,
-#   	mergemode => append,
-#   	value     => '%systemdrive%\chocolatey\bin',
-#   	require   => Exec['install Chocolatey'],
-#   }
-
   # just wrap the classroom class
   class { 'classroom':
     offline   => $offline,
@@ -43,6 +15,5 @@ class classroom::course::windows (
     autoteam  => $autoteam,
     role      => $role,
     manageyum => $manageyum,
-#    require   => Windows_env['PATH'],
   }
 }
