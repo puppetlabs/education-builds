@@ -19,7 +19,7 @@ define classroom::master::repository (
 
   # A valid hostname is not necessarily a valid Puppet environment name!
   # Check for valid Puppet environment name.
-  validate_re($name, '^[a-zA-Z0-9_]+$')
+  validate_re($name, '^(?=.*[a-z])\A[a-z0-9][a-z0-9._]+\z')
 
   File {
     owner => $repo_user,
