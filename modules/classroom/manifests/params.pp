@@ -50,9 +50,14 @@ class classroom::params {
   $precreated_repositories = [ 'critical_policy', 'registry', 'profiles' ]
 
   # Certname and machine name from cert
-  $full_machine_name = split($::clientcert,'[.]')
-  $machine_name = $full_machine_name[0]
-
+  if is_domain_name("${::clientcert}") {
+    $full_machine_name = split($::clientcert,'[.]')
+    $machine_name = $full_machine_name[0]
+  }
+  else {
+    $machine_name = $::clientcert
+  }
+  
   # is this a student's tier3 agent in Architect?
   if $fqdn =~ /^\S+\.\S+\.puppetlabs\.vm$/ {
     $role = 'tier3'
