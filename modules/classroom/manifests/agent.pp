@@ -14,6 +14,17 @@ class classroom::agent (
   # A valid clientcert is not necessarily a valid Puppet environment name!
   validate_re($classroom::params::machine_name, '^(?=.*[a-z])\A[a-z0-9][a-z0-9._]+\z', "The classroom environment supports lowercase alphanumeric names only. ${name} is not a valid name. Please ask your instructor for assistance.")
 
+  # windows goodies
+  if $::osfamily  == 'windows' {
+    user { 'Administrator':
+      ensure => present,
+      groups => ['Administrators'],
+    }
+    include classroom::agent::chocolatey
+    include userprefs::npp
+    include classroom::agent::console2
+  }
+
   # make sure our git environment is set up and usable
   include classroom::agent::git
 
@@ -30,7 +41,7 @@ class classroom::agent (
   # !!!! THIS WILL EXPORT AN EMPTY KEY ON THE FIRST RUN !!!!
   #
   # On the second run, the ssh key will exist and so this fact will be set.
-  @@classroom::user { $::hostname:
+  @@classroom::user { $::classroom::params::machine_name:
     key        => $::root_ssh_key,
     password   => $password,
     consolepw  => $consolepw,
@@ -59,10 +70,4 @@ class classroom::agent (
     }
   }
 
-  # windows goodies
-  if $::osfamily  == 'windows' {
-    include classroom::agent::chocolatey
-    include userprefs::npp
-    include classroom::agent::console2
-  }
 }
