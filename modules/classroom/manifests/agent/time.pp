@@ -19,7 +19,7 @@ class classroom::agent::time {
       subscribe   => Service['W32Time'],
     }
     registry::value { 'ntp poll interval':
-      key     => 'HKLM\SYSTEM\ControlSet001\Services \W32Time\TimeProviders\NtpClient',
+      key     => 'HKLM\SYSTEM\ControlSet001\Services\W32Time\TimeProviders\NtpClient',
       value   => 'SpecialPollInterval',
       type    => dword,
       data    => '300',
