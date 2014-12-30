@@ -12,7 +12,7 @@ class classroom::agent (
   $consolepw   = $classroom::consolepw,
 ) inherits classroom {
   # A valid clientcert is not necessarily a valid Puppet environment name!
-  validate_re($::clientcert, '^(?=.*[a-z])\A[a-z0-9][a-z0-9._]+\z', "The classroom environment supports lowercase alphanumeric names only. ${name} is not a valid name. Please ask your instructor for assistance.")
+  validate_re($classroom::params::machine_name, '^(?=.*[a-z])\A[a-z0-9][a-z0-9._]+\z', "The classroom environment supports lowercase alphanumeric names only. ${name} is not a valid name. Please ask your instructor for assistance.")
 
   # make sure our git environment is set up and usable
   include classroom::agent::git
