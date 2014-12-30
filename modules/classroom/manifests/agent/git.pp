@@ -17,7 +17,11 @@ class classroom::agent::git {
   }
 
   if $::osfamily == 'windows'{
-    Package { provider => 'chocolatey' }
+    require classroom::agent::chocolatey
+
+    Package { 
+      provider => 'chocolatey',
+    }
     package { 'git':
       ensure => present,
       before => [ File[$sshpath], Exec['generate_key'] ],
@@ -36,7 +40,7 @@ class classroom::agent::git {
 
     file { 'C:/Users/Administrator/.ssh/':
       ensure => directory,
-      source => $sshppath,
+      source => $sshpath,
       recurse => true,
       require => [File[$sshpath],Exec['generate_key'],User['Administrator']],
     }
