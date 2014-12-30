@@ -49,6 +49,10 @@ class classroom::params {
   # list of module repositorites that should be precreated for the virtual courses
   $precreated_repositories = [ 'critical_policy', 'registry', 'profiles' ]
 
+  # Certname and machine name from cert
+  $full_machine_name = split($::clientcert,'[.]')
+  $machine_name = $full_machine_name[0]
+
   # is this a student's tier3 agent in Architect?
   if $fqdn =~ /^\S+\.\S+\.puppetlabs\.vm$/ {
     $role = 'tier3'

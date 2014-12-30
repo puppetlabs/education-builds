@@ -39,9 +39,10 @@ class classroom::agent (
 
   # if we are managing git repositories, then build out all this
   if $managerepos {
+    
     classroom::agent::workdir { $workdir:
       ensure   => present,
-      username => get_machine_name($::clientcert),
+      username => $classroom::param::machine_name,
       require  => Class['classroom::agent::git'],
     }
 
