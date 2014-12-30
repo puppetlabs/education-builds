@@ -56,7 +56,7 @@ class classroom::agent::teams (
         path    => "${etcpath}/puppet.conf",
         section => 'agent',
         setting => 'environment',
-        value   => $machine_name,
+        value   => $classroom::params::machine_name,
       }
     }
   }

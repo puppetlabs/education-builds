@@ -42,7 +42,7 @@ class classroom::agent (
     
     classroom::agent::workdir { $workdir:
       ensure   => present,
-      username => $classroom::param::machine_name,
+      username => $classroom::params::machine_name,
       require  => Class['classroom::agent::git'],
     }
 
