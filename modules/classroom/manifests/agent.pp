@@ -23,6 +23,19 @@ class classroom::agent (
     include classroom::agent::chocolatey
     include userprefs::npp
     include classroom::agent::console2
+    # Disable Internet Explorer ESC for users and admins, both
+    registry::value { 'IE ESC':
+      key    => 'hklm\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}',
+      value  => 'IsInstalled',
+      type   => dword,
+      data   => '0',
+    }
+    registry::value { 'IE ESC':
+      key    => 'hklm\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}',
+      value  => 'IsInstalled',
+      type   => dword,
+      data   => '0',
+    }
   }
 
   # make sure our git environment is set up and usable
