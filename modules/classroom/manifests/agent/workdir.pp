@@ -88,13 +88,14 @@ define classroom::agent::workdir (
       require => Exec["initialize ${name} repo"],
     }
 
-    if $osfamily != 'windows' { 
+    if $osfamily != 'windows' {
       file { "${workdir}/.git/hooks/pre-commit":
         ensure  => file,
         source  => 'puppet:///modules/classroom/pre-commit',
         mode    => '0755',
         require => Exec["initialize ${name} repo"],
       }
+    }
 
     file { "${workdir}/.gitignore":
       ensure  => file,
