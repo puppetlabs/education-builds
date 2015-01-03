@@ -43,5 +43,6 @@
     {"name":"zack/exports",         "version_requirement":">= 0.0.4"},
     {"name":"zack/r10k",            "version_requirement":">= 2.3.0"}
     {"name":"puppetlabs/powershell","version_requirement":">= 1.0.4"}
+    {"name":"jriviere/windows_ad"  ,"version_requirement":">= 0.2.0"}
   ]
 }
