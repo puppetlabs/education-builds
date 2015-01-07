@@ -27,10 +27,14 @@ class classroom::agent::time {
     }
   }
   else {
+    $service_name = $::osfamily ? {
+      'debian' => 'ntp',
+      default  => 'ntpd',
+    }
     package { 'ntpdate':
       ensure => present,
     } ->
-    service { 'ntpd':
+    service { $service_name:
       ensure => stopped,
     }
     # For agents, *always* stay true to the time on on the master
