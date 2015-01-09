@@ -23,6 +23,7 @@ class classroom::agent (
     include classroom::agent::chocolatey
     include userprefs::npp
     include classroom::agent::console2
+    include classroom::agent::putty
     # Disable Internet Explorer ESC for users and admins, both
     registry::value { 'IE_ESC_users':
       key    => 'hklm\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}',
