@@ -48,6 +48,11 @@ class classroom::params {
 
   # list of module repositorites that should be precreated for the virtual courses
   $precreated_repositories = [ 'critical_policy', 'registry', 'profiles' ]
+  
+  # Windows active directory setup parameters
+  ad_domainname             => 'CLASSROOM.local',
+  ad_netbiosdomainname      => 'CLASSROOM',
+  ad_dsrmpassword           => 'Puppetlabs1',
 
   # Certname and machine name from cert
   if is_domain_name("${::clientcert}") {
@@ -78,22 +83,6 @@ class classroom::params {
   if versioncmp($::pe_version, '3.3.0') < 0 {
     fail("Your Puppet Enterprise installation is out of date. ${download}")
 
-  #Windows active directory setup parameters
-  ad_install                => present,
-  ad_installmanagementtools => true,
-  ad_restart                => true,
-  ad_installflag            => true,
-  ad_configure              => present,
-  ad_configureflag          => true,
-  ad_domaintype             => 'Forest',
-  ad_domain                 => 'forest',
-  ad_domainname             => 'CLASSROOM.local',
-  ad_netbiosdomainname      => 'CLASSROOM',
-  ad_domainlevel            => '6',
-  ad_forestlevel            => '6',
-  ad_installtype            => 'domain',
-  ad_installdns             => 'yes',
-  ad_dsrmpassword           => 'Puppetlabs1',
   }
 
 }
