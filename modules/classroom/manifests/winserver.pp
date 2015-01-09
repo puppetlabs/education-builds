@@ -1,21 +1,21 @@
 class classroom::winserver {
 
   class { 'windows_ad' :
-    install                => present,
-    installmanagementtools => true,
-    restart                => true,
-    installflag            => true,
-    configure              => present,
-    configureflag          => true,
-    domaintype             => 'Forest',
-    domain                 => 'forest',
-    domainname             => 'CLASSROOM.local',
-    netbiosdomainname      => 'CLASSROOM',
-    domainlevel            => '6',
-    forestlevel            => '6',
-    installtype            => 'domain',
-    installdns             => 'yes',
-    dsrmpassword           => 'Puppetlabs1',
+    install                    =>    $classroom::params::ad_install                
+    installmanagementtools     =>    $classroom::params::ad_installmanagementtools 
+    restart                    =>    $classroom::params::ad_restart                
+    installflag                =>    $classroom::params::ad_installflag            
+    configure                  =>    $classroom::params::ad_configure              
+    configureflag              =>    $classroom::params::ad_configureflag          
+    domaintype                 =>    $classroom::params::ad_domaintype             
+    domain                     =>    $classroom::params::ad_domain                 
+    domainname                 =>    $classroom::params::ad_domainname             
+    netbiosdomainname          =>    $classroom::params::ad_netbiosdomainname      
+    domainlevel                =>    $classroom::params::ad_domainlevel            
+    forestlevel                =>    $classroom::params::ad_forestlevel            
+    installtype                =>    $classroom::params::ad_installtype            
+    installdns                 =>    $classroom::params::ad_installdns             
+    dsrmpassword               =>    $classroom::params::ad_dsrmpassword           
   }
 
 }
