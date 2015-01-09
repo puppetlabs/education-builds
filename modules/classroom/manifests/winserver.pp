@@ -1,4 +1,4 @@
-class classroom::winserver {
+class classroom::winserver inherits classroom::params {
 
   class { 'windows_ad' :
     install                => present,
@@ -18,5 +18,4 @@ class classroom::winserver {
     dsrmpassword           => $classroom::params::ad_dsrmpassword           
   }
 
-}
 }
