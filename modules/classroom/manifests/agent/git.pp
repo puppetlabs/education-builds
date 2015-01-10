@@ -27,9 +27,6 @@ class classroom::agent::git {
       before => [ File[$sshpath], Exec['generate_key'] ],
     }
 
-    package { 'gitextensions':
-      ensure => present,
-    }
     package { 'kdiff3':
       ensure => present,
     }
