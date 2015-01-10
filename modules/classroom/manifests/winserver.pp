@@ -1,4 +1,4 @@
-class classroom::winserver {
+class classroom::winserver inherits classroom::params {
 
   class { 'windows_ad' :
     install                => present,
@@ -9,13 +9,13 @@ class classroom::winserver {
     configureflag          => true,
     domaintype             => 'Forest',
     domain                 => 'forest',
-    domainname             => 'CLASSROOM.local',
-    netbiosdomainname      => 'CLASSROOM',
+    domainname             => $classroom::params::ad_domainname             
+    netbiosdomainname      => $classroom::params::ad_netbiosdomainname      
     domainlevel            => '6',
     forestlevel            => '6',
     installtype            => 'domain',
-    installdns             => 'yes',
-    dsrmpassword           => 'Puppetlabs1',
+    installdns             => 'no',
+    dsrmpassword           => $classroom::params::ad_dsrmpassword           
   }
 
 }
