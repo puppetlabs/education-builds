@@ -22,7 +22,6 @@ class classroom::agent (
     }
     include classroom::agent::chocolatey
     include userprefs::npp
-    include classroom::agent::console2
     include classroom::agent::putty
     # Disable Internet Explorer ESC for users and admins, both
     registry::value { 'IE_ESC_users':
