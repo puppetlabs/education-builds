@@ -50,9 +50,9 @@ class classroom::params {
   $precreated_repositories = [ 'critical_policy', 'registry', 'profiles' ]
   
   # Windows active directory setup parameters
-  ad_domainname           = 'CLASSROOM.local'
-  ad_netbiosdomainname    = 'CLASSROOM'
-  ad_dsrmpassword         = 'Puppetlabs1'
+  $ad_domainname           = 'CLASSROOM.local'
+  $ad_netbiosdomainname    = 'CLASSROOM'
+  $ad_dsrmpassword         = 'Puppetlabs1'
 
   # Certname and machine name from cert
   if is_domain_name("${::clientcert}") {
