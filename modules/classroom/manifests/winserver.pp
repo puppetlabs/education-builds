@@ -26,7 +26,7 @@ class classroom::winserver inherits classroom::params {
   }
 
   # Export AD server IP to be DNS server for agents
-  @@classroom::dns_server { 'title':
+  @@classroom::dns_server { 'primary_ip':
     ip => $::ipaddress,
   } 
 }
