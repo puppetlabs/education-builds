@@ -16,6 +16,12 @@ class classroom::winserver inherits classroom::params {
     installtype            => 'domain',
     installdns             => 'no',
     dsrmpassword           => $classroom::params::ad_dsrmpassword,     
+    require                => Exec['RequirePassword'],
   }
-
+  # Local administrator is required to have a password before AD will install
+  exec { 'RequirePassword':
+    command => 'net user Administrator /passwordreq:yes',
+    unless => 'if (net user Administrator |select-string -pattern "Password required.*yes)',
+    provider => powershell,
+  }
 }
