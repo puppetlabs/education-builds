@@ -36,7 +36,7 @@ class classroom::agent (
       type   => dword,
       data   => '0',
     }
-    Classroom::Dns_Server <<||>>
+    Classroom::Dns_server <<||>>
   }
 
   # make sure our git environment is set up and usable

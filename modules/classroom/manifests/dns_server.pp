@@ -6,7 +6,7 @@ define classroom::dns_server (
     if $::osfamily  == 'windows' {
       exec { 'set_dns':
         command   => "set-DnsClientServerAddress -interfacealias Ethernet0 -serveraddresses $ip",
-        unless    => "if ((Get-DnsClientServerAddress -addressfamily ipv4 -interfacealias Ethernet0).serveraddresses -ceq '$ip')",
+        unless    => "if ((Get-DnsClientServerAddress -addressfamily ipv4 -interfacealias Ethernet0).serveraddresses -ceq '$ip'){exit 1}",
         provider  => powershell,
       }
     }
