@@ -21,7 +21,7 @@ class classroom::winserver inherits classroom::params {
   # Local administrator is required to have a password before AD will install
   exec { 'RequirePassword':
     command => 'net user Administrator /passwordreq:yes',
-    unless => 'if (net user Administrator |select-string -pattern "Password required.*yes)',
+    unless => 'if (net user Administrator |select-string -pattern "Password required.*no"){exit 1}',
     provider => powershell,
   }
 
