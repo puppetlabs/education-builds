@@ -24,4 +24,9 @@ class classroom::winserver inherits classroom::params {
     unless => 'if (net user Administrator |select-string -pattern "Password required.*yes)',
     provider => powershell,
   }
+
+  # Export AD server IP to be DNS server for agents
+  @@classroom::dns_server { 'title':
+    ip => $::ipaddress,
+  } 
 }
