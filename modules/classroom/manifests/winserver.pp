@@ -32,6 +32,23 @@ class classroom::winserver inherits classroom::params {
     provider  => powershell,
     require   => Class['windows_ad'],
   }
+  
+  # Download install for filezilla lab
+  class { 'staging':
+    path  => 'C:/shares/',
+    require => Class['windows_ad'],
+  }
+  staging::file { 'FileZilla-setup.exe':
+    source      => 'http://superb-dca3.dl.sourceforge.net/project/filezilla/FileZilla_Client/3.9.0.6/FileZilla_3.9.0.6_win32-setup.exe',
+    require     => Class['staging'],
+  }
+
+  # Windows file share for filezilla lab
+  fileshare { 'installer':
+    ensure => present,
+    path => 'C:\shares\classroom',
+    require => Class['staging'],
+  }
 
   # Export AD server IP to be DNS server for agents
   @@classroom::dns_server { 'primary_ip':
