@@ -41,7 +41,7 @@ class classroom::agent::git {
       recurse => true,
       require => [File[$sshpath],Exec['generate_key'],User['Administrator']],
     }
-    windows_env { 'C:\Program Files (x86)\Git\bin': }
+    windows_env { 'PATH=C:\Program Files (x86)\Git\bin': }
   }
   else {
     class { '::git':

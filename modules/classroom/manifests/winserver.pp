@@ -21,8 +21,16 @@ class classroom::winserver inherits classroom::params {
   # Local administrator is required to have a password before AD will install
   exec { 'RequirePassword':
     command => 'net user Administrator /passwordreq:yes',
-    unless => 'if (net user Administrator |select-string -pattern "Password required.*yes)',
+    unless => 'if (net user Administrator |select-string -pattern "Password required.*no"){exit 1}',
     provider => powershell,
+  }
+
+  # Increase the number of machines that a single user can join to the domain
+  exec { 'SetMachineQuota':
+    command   => 'get-addomain |set-addomain -Replace @{\'ms-DS-MachineAccountQuota\'=\'99\'}',
+    unless    => 'if ((get-addomain | get-adobject -prop \'ms-DS-MachineAccountQuota\' | select -exp \'ms-DS-MachineAccountQuota\') -lt 99) {exit 1}',
+    provider  => powershell,
+    require   => Class['windows_ad'],
   }
 
   # Export AD server IP to be DNS server for agents
