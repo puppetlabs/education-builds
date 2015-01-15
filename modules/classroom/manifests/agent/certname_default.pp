@@ -1,4 +1,4 @@
-class classroom::agent::cetname_default (
+class classroom::agent::certname_default (
   $timeout = $classroom::params::timeout,
 ) inherits classroom::params {
 
