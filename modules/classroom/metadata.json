@@ -44,6 +44,7 @@
     {"name":"zack/r10k",            "version_requirement":">= 2.3.0"},
     {"name":"puppetlabs/powershell","version_requirement":">= 1.0.4"},
     {"name":"jriviere/windows_ad"  ,"version_requirement":">= 0.2.0"},
-    {"name":"badgerious/windows_env"  ,"version_requirement":">= 2.2.1"}
+    {"name":"badgerious/windows_env"  ,"version_requirement":">= 2.2.1"},
+    {"name":"jordan/fileshare"  ,"version_requirement":">= 1.1.1"}
   ]
 }
