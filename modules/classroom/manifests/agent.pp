@@ -23,6 +23,7 @@ class classroom::agent (
     include classroom::agent::chocolatey
     include userprefs::npp
     include classroom::agent::putty
+    include classroom::agent::geotrust
     include classroom::agent::password_policy
     include classroom::agent::shortcuts
     include classroom::agent::certname_default
