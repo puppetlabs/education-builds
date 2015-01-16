@@ -54,4 +54,18 @@ class classroom::winserver inherits classroom::params {
   @@classroom::dns_server { 'primary_ip':
     ip => $::ipaddress,
   } 
+  # Add "CLASSROOM\admin" user to domain
+  windows_ad::user{'Add_user':
+    ensure               => present,
+    domainname           => 'CLASSROM.local',
+    path                 => 'OU=Users,DC=CLASSROOM,DC=local',
+    accountname          => 'admin',
+    lastname             => 'Admin',
+    firstname            => 'Classroom',
+    passwordneverexpires => true,
+    passwordlength       => 15,
+    password             => 'M1Gr3atP@ssw0rd',
+    emailaddress         => 'admin@CLASSROOM.local',
+    require              => Class['windows_ad'],
+  }
 }
