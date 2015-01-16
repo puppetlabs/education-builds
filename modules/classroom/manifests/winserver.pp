@@ -62,10 +62,18 @@ class classroom::winserver inherits classroom::params {
     ip => $::ipaddress,
   } 
   # Add "CLASSROOM\admin" user to domain
-  windows_ad::user{'Add_user':
+    # Create OU for classroom
+  windows_ad::organisationalunit{'STUDENTS':
+    ensure       => present,
+    path         => 'DC=CLASSROOM,DC=LOCAL',
+    ouName       => 'STUDENTS',
+    require      => Class['windows_ad'],
+  }
+  # Add "CLASSROOM\admin" user to domain
+  windows_ad::user{'admin':
     ensure               => present,
     domainname           => 'CLASSROM.local',
-    path                 => 'OU=Users,DC=CLASSROOM,DC=local',
+    path                 => 'OU=STUDENTS,DC=CLASSROOM,DC=local',
     accountname          => 'admin',
     lastname             => 'Admin',
     firstname            => 'Classroom',
@@ -73,6 +81,6 @@ class classroom::winserver inherits classroom::params {
     passwordlength       => 15,
     password             => 'M1Gr3atP@ssw0rd',
     emailaddress         => 'admin@CLASSROOM.local',
-    require              => Class['windows_ad'],
+    require              => Windows_ad::Organisationalunit['STUDENTS'],
   }
 }
