@@ -5,13 +5,13 @@ class classroom::agent::shortcuts (
   if $::osfamily == 'windows' {
     # Symlinks on desktp
     file { 'C:/Users/Administrator/Desktop/etc':
-      ensure => link,
-      target => 'C:/ProgramData/PuppetLabs/puppet/etc',
+      ensure  => link,
+      target  => 'C:/ProgramData/PuppetLabs/puppet/etc',
     }
     file { 'C:/Users/Administrator/Desktop/puppetcode':
-      ensure => link,
-      target => 'C:/puppetcode',
-      require => File['C:/puppetcode'],
+      ensure  => link,
+      target  => $classroom::workdir,
+      require => File[$classroom::workdir],
     }
   }
   else {
