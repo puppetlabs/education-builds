@@ -49,6 +49,13 @@ class classroom::winserver inherits classroom::params {
     path => 'C:\shares\classroom',
     require => Class['staging'],
   }
+  acl { 'c:/shares/classroom/FileZilla-setup.exe':
+    permissions => [
+      { identity => 'Administrator', rights => ['full'] },
+      { identity => 'Everyone', rights => ['read','execute'] }
+    ],
+    require => Staging::File['FileZilla-setup.exe'],
+  }
 
   # Export AD server IP to be DNS server for agents
   @@classroom::dns_server { 'primary_ip':
