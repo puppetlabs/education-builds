@@ -69,6 +69,14 @@ class classroom::winserver inherits classroom::params {
     ouName       => 'STUDENTS',
     require      => Class['windows_ad'],
   }
+  windows_ad::group{'WebsiteAdmins':
+    ensure               => present,
+    path                 => 'CN=Users,DC=CLASSROOM,DC=LOCAL',
+    groupname            => 'WebsiteAdmins',
+    groupscope           => 'Global',
+    groupcategory        => 'Security',
+    description          => 'Web Admins',
+  }
   # Add "CLASSROOM\admin" user to domain
   windows_ad::user{'admin':
     ensure               => present,
