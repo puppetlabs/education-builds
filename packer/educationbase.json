@@ -94,6 +94,7 @@
 	"scripts/{{user `vm_type`}}_build.sh",
         "scripts/vmtools.sh",
         "scripts/cleanup.sh",
+	"scripts/{{user `vm_type`}}_cleanup.sh",
         "scripts/zerodisk.sh"
       ],
       "type": "shell"
