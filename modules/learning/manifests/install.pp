@@ -20,6 +20,13 @@ class learning::install {
     ],
     require => Exec['install-pe'],
   }
+  augeas { "disable deprecation warnings":
+    context => "/files/etc/puppetlabs/puppet/puppet.conf/agent",
+    changes => [
+      "set disable_warnings deprecations",
+    ],
+    require => Exec['install-pe'],
+  }
 
 
   # Add script that can print console login. Bootstrap will optionally call this in the rc.local file.
