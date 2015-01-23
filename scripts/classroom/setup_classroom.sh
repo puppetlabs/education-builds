@@ -127,6 +127,9 @@ check_success "Configuring hostname"                                \
 check_success "Setting hostname on boot"                            \
       "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${hostname}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
 
+check_success "Setting hostname on boot"                            \
+      "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${hostname}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
+
 check_success "Synchronizing time with the classroom master"        \
       "$(ntpdate -u master.puppetlabs.vm 2>&1)"
 
