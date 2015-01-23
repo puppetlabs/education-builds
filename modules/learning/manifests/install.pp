@@ -21,7 +21,7 @@ class learning::install {
     require => Exec['install-pe'],
   }
   augeas { "disable deprecation warnings":
-    context => "/files/etc/puppetlabs/puppet/puppet.conf/agent",
+    context => "/files/etc/puppetlabs/puppet/puppet.conf/main",
     changes => [
       "set disable_warnings deprecations",
     ],
