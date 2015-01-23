@@ -127,11 +127,8 @@ check_success "Configuring hostname"                                \
 check_success "Setting hostname on boot"                            \
       "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${hostname}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
 
-      # Set immutable permissions so that dhclient doesn't set search domain
-      # To remove use `chattr -i /etc/resolv.conf`
-check_success "Setting default search domain"			    \
-	"$(chattr -i /etc/resolv.conf && sed -i "s/^search.*$/search puppetlabs.vm/" /etc/resolv.conf 2>&1 && chattr +i /etc/resolv.conf)"
-      
+check_success "Setting hostname on boot"                            \
+      "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${hostname}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
 
 check_success "Synchronizing time with the classroom master"        \
       "$(ntpdate -u master.puppetlabs.vm 2>&1)"
