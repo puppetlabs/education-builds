@@ -7,8 +7,8 @@ define classroom::master::team ($teams) {
   $members = prefix($teams[$name], "$name:")
 
   classroom::user { $name:
-    password         => '!!',
-    console_password => undef,
+    password  => '!!',
+    consolepw => undef,
   }
 
   # set each user's membership in this team

@@ -71,13 +71,13 @@ SCRIPT
 		learning_config.vm.network "forwarded_port", guest: 80, host: 8080
 
 		learning_config.vm.provider "virtualbox" do |v|
-			v.memory = 4096
+			v.memory = 1024
 			v.cpus = 2
 			v.customize ["modifyvm", :id, "--ioapic", "on"]
 		end
 
 		learning_config.vm.provider "vmware_fusion" do |v|
-			v.vmx["memsize"] = "4096"
+			v.vmx["memsize"] = "1024"
   		v.vmx["numvcpus"] = "2"
 		end
 		

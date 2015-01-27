@@ -11,7 +11,7 @@ class bootstrap::cache_gems (
   }
 
   #Check for local build file cache from packer or vagrant
-  if file_exists ("${file_cache}/") == 1 {
+  if file_exists ("${file_cache}/gems") == 1 {
     file { "${cache_dir}/gems" :
       ensure => directory,
       recurse => true,

@@ -59,8 +59,7 @@ function pre_prompt() {
     echo $user_name "@" $(hostname -s)
   fi
 }
-
-export PS1="\[${ORANGE}\][\[${BOLD}${MAGENTA}\]\$(pre_prompt) \[${GREEN}\]\w\[${BOLD}\]\$(is_on_git && [[ -n \$(git branch 2> /dev/null) ]] && echo \" \"\[${PURPLE}\]\$(parse_git_branch))\[${RESET}\]\[${ORANGE}\]]\[${RESET}\]# "
+export PS1="\[${ORANGE}\][\[${BOLD}${MAGENTA}\]\$(pre_prompt) \[${GREEN}\]\w\[${BOLD}\]\[${PURPLE}\]\$(is_on_git && [[ -n \$(git branch 2> /dev/null) ]] && echo \" \" \$(parse_git_branch))\[${RESET}\]\[${ORANGE}\]]\[${RESET}\]# "
 
 <% if @hostname =~ /learn/ -%>
 #- to be used with new 'quest' command and .tmux.conf

@@ -1,0 +1,9 @@
+{
+	"hostname": "training",
+	"ks_file": "ks-training",
+	"training_branch": "master",
+	"training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
+	"vm_memsize": "4096",
+	"vm_cores": "2",
+	"ptb_version": "2.14"
+}

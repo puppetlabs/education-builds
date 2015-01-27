@@ -1,4 +1,7 @@
 class learning::install {
+  
+  $prod_module_path = '/etc/puppetlabs/puppet/environments/production/modules'
+
   exec {'install-pe':
     # This is a workaround for PE 3.2.0+ offline installations to work"
     # If you don't reset the rubylib, it'll inherit the one used during kickstart and the installer will blow up.
@@ -8,6 +11,14 @@ class learning::install {
     logoutput   => true,
     timeout     => '14400',
     require     => [Class['bootstrap::get_pe'],Class['localrepo']],
+  }
+
+  augeas { "environment timeout":
+    context => "/files/etc/puppetlabs/puppet/puppet.conf/agent",
+    changes => [
+      "set environment_timeout 0",
+    ],
+    require => Exec['install-pe'],
   }
 
 
@@ -27,7 +38,16 @@ class learning::install {
     recurse => true,
   }
 
-  file {'/etc/puppetlabs/puppet/modules/lvmguide':
+  file {[ "$prod_module_path", 
+          "${prod_module_path}/cowsayings",
+          "${prod_module_path}/cowsayings/manifests",
+          "${prod_module_path}/cowsayings/tests",
+        ]: 
+    ensure => directory,
+    require  => Exec['install-pe'],
+  }
+
+  file { "$prod_module_path/lvmguide" :
     ensure   => directory,
     source   => "puppet:///modules/${module_name}/lvmguide",
     recurse  => true,

@@ -48,7 +48,21 @@ class classroom::params {
 
   # list of module repositorites that should be precreated for the virtual courses
   $precreated_repositories = [ 'critical_policy', 'registry', 'profiles' ]
+  
+  # Windows active directory setup parameters
+  $ad_domainname           = 'CLASSROOM.local'
+  $ad_netbiosdomainname    = 'CLASSROOM'
+  $ad_dsrmpassword         = 'Puppetlabs1'
 
+  # Certname and machine name from cert
+  if is_domain_name("${::clientcert}") {
+    $full_machine_name = split($::clientcert,'[.]')
+    $machine_name = $full_machine_name[0]
+  }
+  else {
+    $machine_name = $::clientcert
+  }
+  
   # is this a student's tier3 agent in Architect?
   if $fqdn =~ /^\S+\.\S+\.puppetlabs\.vm$/ {
     $role = 'tier3'
@@ -68,5 +82,7 @@ class classroom::params {
 
   if versioncmp($::pe_version, '3.3.0') < 0 {
     fail("Your Puppet Enterprise installation is out of date. ${download}")
+
   }
+
 }

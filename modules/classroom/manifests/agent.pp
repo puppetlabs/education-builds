@@ -11,8 +11,37 @@ class classroom::agent (
   $password    = $classroom::password,
   $consolepw   = $classroom::consolepw,
 ) inherits classroom {
-  # A valid hostname is not necessarily a valid Puppet environment name!
-  validate_re($::hostname, '^(?=.*[a-z])\A[a-z0-9][a-z0-9._]+\z', "The classroom environment supports lowercase alphanumeric hostnames only. ${name} is not a valid name. Please ask your instructor for assistance.")
+  # A valid clientcert is not necessarily a valid Puppet environment name!
+  validate_re($classroom::params::machine_name, '^(?=.*[a-z])\A[a-z0-9][a-z0-9._]+\z', "The classroom environment supports lowercase alphanumeric names only. ${name} is not a valid name. Please ask your instructor for assistance.")
+
+  # windows goodies
+  if $::osfamily  == 'windows' {
+    user { 'Administrator':
+      ensure => present,
+      groups => ['Administrators'],
+    }
+    include classroom::agent::chocolatey
+    include userprefs::npp
+    include classroom::agent::putty
+    include classroom::agent::geotrust
+    include classroom::agent::password_policy
+    include classroom::agent::shortcuts
+    include classroom::agent::certname_default
+    # Disable Internet Explorer ESC for users and admins, both
+    registry::value { 'IE_ESC_users':
+      key    => 'hklm\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}',
+      value  => 'IsInstalled',
+      type   => dword,
+      data   => '0',
+    }
+    registry::value { 'IE_ESC_admin':
+      key    => 'hklm\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}',
+      value  => 'IsInstalled',
+      type   => dword,
+      data   => '0',
+    }
+    Classroom::Dns_server <<||>>
+  }
 
   # make sure our git environment is set up and usable
   include classroom::agent::git
@@ -30,7 +59,7 @@ class classroom::agent (
   # !!!! THIS WILL EXPORT AN EMPTY KEY ON THE FIRST RUN !!!!
   #
   # On the second run, the ssh key will exist and so this fact will be set.
-  @@classroom::user { $::hostname:
+  @@classroom::user { $::classroom::params::machine_name:
     key        => $::root_ssh_key,
     password   => $password,
     consolepw  => $consolepw,
@@ -39,9 +68,10 @@ class classroom::agent (
 
   # if we are managing git repositories, then build out all this
   if $managerepos {
+    
     classroom::agent::workdir { $workdir:
       ensure   => present,
-      username => $::hostname,
+      username => $classroom::params::machine_name,
       require  => Class['classroom::agent::git'],
     }
 
@@ -58,8 +88,4 @@ class classroom::agent (
     }
   }
 
-  # windows goodies
-  if $::osfamily  == 'windows' {
-    include classroom::agent::chocolatey
-  }
 }

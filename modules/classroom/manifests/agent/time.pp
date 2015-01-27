@@ -19,7 +19,7 @@ class classroom::agent::time {
       subscribe   => Service['W32Time'],
     }
     registry::value { 'ntp poll interval':
-      key     => 'HKLM\SYSTEM\ControlSet001\Services \W32Time\TimeProviders\NtpClient',
+      key     => 'HKLM\SYSTEM\ControlSet001\Services\W32Time\TimeProviders\NtpClient',
       value   => 'SpecialPollInterval',
       type    => dword,
       data    => '300',
@@ -27,10 +27,14 @@ class classroom::agent::time {
     }
   }
   else {
+    $service_name = $::osfamily ? {
+      'debian' => 'ntp',
+      default  => 'ntpd',
+    }
     package { 'ntpdate':
       ensure => present,
     } ->
-    service { 'ntpd':
+    service { $service_name:
       ensure => stopped,
     }
     # For agents, *always* stay true to the time on on the master
