@@ -10,7 +10,7 @@
     }
   ],
   "name": "pltraining-rbac",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "pltraining",
   "summary": "Exposes Puppet Enterprise Console RBAC APIs to the Puppet DSL",
   "license": "Apache 2.0",

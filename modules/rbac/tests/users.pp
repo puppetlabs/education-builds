@@ -4,4 +4,5 @@ rbac_user { 'testing account':
     display_name => 'Just a testing account',
     email        => 'testing@puppetlabs.com',
     password     => 'puppetlabs',
+    roles        => [ 'Operators' ],
 }

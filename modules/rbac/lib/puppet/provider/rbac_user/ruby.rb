@@ -71,7 +71,7 @@ Puppet::Type.type(:rbac_user).provide(:ruby, :parent => Puppet::Provider::Rbac_a
     @property_hash[:ensure] = :absent
   end
 
-  [ :name, :display_name, :email, :password ].each do |param|
+  [ :name, :display_name, :email ].each do |param|
     define_method "#{param}=" do |value|
       fail "The #{param} parameter cannot be changed after creation."
     end
@@ -81,6 +81,10 @@ Puppet::Type.type(:rbac_user).provide(:ruby, :parent => Puppet::Provider::Rbac_a
     define_method "#{param}=" do |value|
       fail "The #{param} parameter is read-only."
     end
+  end
+
+  def password=(should)
+    Puppet.debug 'Ignoring password attribute as we do not have the ability to manage it'
   end
 
   def flush
@@ -104,18 +108,38 @@ Puppet::Type.type(:rbac_user).provide(:ruby, :parent => Puppet::Provider::Rbac_a
     Puppet::Provider::Rbac_api::put_response("/rbac-api/v1/users/#{@property_hash[:id]}", user)
   end
 
-private
+  def normalize_roles(list)
+    roles = nil
+    list.collect! do |item|
+      next item if item.to_i != 0
+
+      # lazy load the available roles. Avoid the API call unless needed
+      roles ||= Puppet::Provider::Rbac_api::get_response('/rbac-api/v1/roles')
+
+      begin
+        roles.find {|r| r['display_name'].downcase == item.downcase }['id']
+      rescue NoMethodError => e
+        fail "Role #{item} does not exist"
+      end
+    end
+  end
 
   def revoked?
     @property_hash[:ensure] == :absent
   end
 
+private
+
   def set_password(id, password)
     Puppet.debug "Setting password for #{id}"
 
     if id.class == String
-      users = Puppet::Provider::Rbac_api::get_response('/rbac-api/v1/users')
-      id    = users.select { |user| user['login'] == id }.first['id']
+      begin
+        users = Puppet::Provider::Rbac_api::get_response('/rbac-api/v1/users')
+        id    = users.select { |user| user['login'] == id }.first['id']
+       rescue NoMethodError => e
+        fail "User #{id} does not exist"
+      end
 
       Puppet.debug "Retrieved user id of #{id}"
     end
@@ -130,14 +154,4 @@ private
     Puppet::Provider::Rbac_api::post_response("/rbac-api/v1/auth/reset", reset)
   end
 
-  def normalize_roles(list)
-    roles = nil
-    list.collect! do |item|
-      next item if item.is_a? Fixnum
-
-      # lazy load the available roles. Avoid the API call unless needed
-      roles ||= Puppet::Provider::Rbac_api::get_response('/rbac-api/v1/roles')
-      roles.find {|r| r['display_name'].downcase == item.downcase }['id']
-    end
-  end
 end

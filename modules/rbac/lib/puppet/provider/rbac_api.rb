@@ -9,7 +9,8 @@ class Puppet::Provider::Rbac_api < Puppet::Provider
 
   confine :exists => CONFIGFILE
 
-  CONF = YAML.load_file(CONFIGFILE)
+  # This is autoloaded by the master, so rescue the permission exception.
+  CONF = YAML.load_file(CONFIGFILE) rescue {}
 
   def self.build_auth(uri)
     https = Net::HTTP.new(uri.host, uri.port)
