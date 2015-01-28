@@ -10,7 +10,7 @@ if [ ! -f ~/.complete ]
 then
   echo "Updating sample content:"
   git clone https://github.com/puppetlabs/courseware-lms-content.git --quiet
-  mv courseware-lms-content/modules/* /etc/puppetlabs/puppet/modules/
+  mv courseware-lms-content/modules /etc/puppetlabs/puppet/
   mv courseware-lms-content/hiera/hiera.yaml /etc/puppetlabs/puppet/
   mv courseware-lms-content/hiera/hieradata /etc/puppetlabs/puppet/
   rm -rf courseware-lms-content
