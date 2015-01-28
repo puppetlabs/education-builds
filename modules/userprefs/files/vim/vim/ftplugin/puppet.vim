@@ -4,6 +4,13 @@
 " Last Change:  2009 Aug 19
 " vim: set sw=4 sts=4:
 
+setl ts=2
+setl sts=2
+setl sw=2
+setl et
+setl keywordprg=puppet\ describe\ --providers
+setl iskeyword=-,:,@,48-57,_,192-255
+
 if exists("b:did_ftplugin")
     finish
 endif
