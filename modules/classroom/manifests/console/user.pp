@@ -1,44 +1,36 @@
-# creates a user in the console
+# creates a user in the PE Console
 #
-# Make this rake business go away when we don't have to support PE <= 3.3
-#
-define classroom::console::user ( $password, $role = 'Operator' ) {
-  # Rake tasks to create and list users
-  $command   = 'bundle exec rake -f /opt/puppet/share/console-auth/Rakefile db:create_user '
-  $userlist  = 'bundle exec rake -f /opt/puppet/share/console-auth/Rakefile db:users:list'
+define classroom::console::user ( $password, $role = 'Operators' ) {
 
   if versioncmp($::pe_version, '3.4.0') >= 0 {
-    $roleid = downcase($role) ? {
-      /administrators?/ => 1,
-      /operators?/      => 2,
-      default           => 3,
-    }
-    $arguments = "LOGIN=${name} EMAIL=${name}@puppetlabs.com DISPLAYNAME=${name} ROLEIDS=${roleid}"
-    $unless    = "${userlist} | grep ',${name},'"
-
-    exec { "reset console password for ${name}":
-      path        => '/usr/local/bin',
-      command     => "console_password_reset.rb ${name} ${password}",
-      subscribe   => Exec["add_console_user_${name}"],
-      refreshonly => true,
+    rbac_user { $name:
+      ensure       => present,
+      password     => $password,
+      display_name => $name,
+      email        => "${name}@puppetlabs.vm",
+      roles        => $role,
     }
   }
   else {
+    # Here there be dragons.
+
     $permission = downcase($role) ? {
       /administrators?/ => 'Admin',
       /operators?/      => 'Read-Write',
       default           => 'Read-Only',
     }
-    $arguments = "USERNAME=${name}@puppetlabs.com PASSWORD=${password} ROLE=${permission}"
-    $unless    = "${userlist} | grep ',${name}@puppetlabs.com,'"
+    # Rake tasks to create and list users
+    $command   = 'bundle exec rake -f /opt/puppet/share/console-auth/Rakefile db:create_user '
+    $userlist  = 'bundle exec rake -f /opt/puppet/share/console-auth/Rakefile db:users:list'
+    $arguments = "USERNAME=${name}@puppetlabs.vm PASSWORD=${password} ROLE=${permission}"
+    $unless    = "${userlist} | grep ',${name}@puppetlabs.vm,'"
 
-  }
-
-  exec { "add_console_user_${name}":
-    path        => '/opt/puppet/bin:/usr/bin:/bin',
-    cwd         => '/opt/puppet/share/puppet-dashboard',
-    environment => 'RAILS_ENV=production',
-    command     => "${command} ${arguments}",
-    unless      => $unless,
+    exec { "add_console_user_${name}":
+      path        => '/opt/puppet/bin:/usr/bin:/bin',
+      cwd         => '/opt/puppet/share/puppet-dashboard',
+      environment => 'RAILS_ENV=production',
+      command     => "${command} ${arguments}",
+      unless      => $unless,
+    }
   }
 }
