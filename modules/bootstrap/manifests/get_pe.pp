@@ -15,21 +15,20 @@ class bootstrap::get_pe(
   $url            = "https://s3.amazonaws.com/pe-builds/released/${version}"
 
   # Check if there is a locally cached copy from the build
-  if file_exists ("${file_cache}/installers/") == 1 {
+  if file_exists ("${file_cache}/installers/${agent_file}") == 1 {
     staging::file{ $agent_file:
       source => "${file_cache}/installers/${agent_file}",
     }
-
-    staging::file{ $pe_file:
-      source => "${file_cache}/installers/${pe_file}",
-    }
-  }
   else {
     staging::file{ $agent_file:
       source => "${url}/${agent_file}",
-    }
-
+  }
+  if file_exists ("${file_cache}/installers/${agent_file}") == 1 {
     staging::file{ $pe_file:
+      source => "${file_cache}/installers/${pe_file}",
+    }
+  else {
+   staging::file{ $pe_file:
       source => "${url}/${pe_file}",
     }
   }
