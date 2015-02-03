@@ -19,16 +19,19 @@ class bootstrap::get_pe(
     staging::file{ $agent_file:
       source => "${file_cache}/installers/${agent_file}",
     }
+  }
   else {
     staging::file{ $agent_file:
       source => "${url}/${agent_file}",
+    }
   }
   if file_exists ("${file_cache}/installers/${agent_file}") == 1 {
     staging::file{ $pe_file:
       source => "${file_cache}/installers/${pe_file}",
     }
+  }
   else {
-   staging::file{ $pe_file:
+    staging::file{ $pe_file:
       source => "${url}/${pe_file}",
     }
   }
