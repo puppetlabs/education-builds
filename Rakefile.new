@@ -53,7 +53,7 @@ task :training_pre do
   %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 training.puppetlabs.vm training localhost localhost.localdomain localhost4/" /etc/hosts}
   cputs "Editing /etc/sysconfig/network"
   %x{sed -ie "s/HOSTNAME.*/HOSTNAME=training.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{echo 'prepend domain-search "puppetlabs.vm"' >> /etc/dhcp/dhclient-eth0.conf}
+  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
 
 end
 desc "Learning VM pre-install setup"
@@ -65,7 +65,7 @@ task :learning_pre do
   %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 learning.puppetlabs.vm localhost localhost.localdomain localhost4/" /etc/hosts}
   cputs "Editing /etc/sysconfig/network"
   %x{sed -ie "s/HOSTNAME.*/HOSTNAME=learning.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{echo 'prepend domain-search "puppetlabs.vm"' >> /etc/dhcp/dhclient-eth0.conf}
+  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
 
 end
 
@@ -78,7 +78,7 @@ task :student_pre do
   %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 student.puppetlabs.vm training localhost localhost.localdomain localhost4/" /etc/hosts}
   cputs "Editing /etc/sysconfig/network"
   %x{sed -ie "s/HOSTNAME.*/HOSTNAME=student.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{echo 'prepend domain-search "puppetlabs.vm"' >> /etc/dhcp/dhclient-eth0.conf}
+  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
 end
 
 desc "Apply bootstrap manifest"

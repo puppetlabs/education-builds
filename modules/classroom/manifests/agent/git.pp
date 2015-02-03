@@ -31,9 +31,6 @@ class classroom::agent::git {
       ensure => present,
     }
 
-    package { 'poshgit':
-      ensure => present,
-    }
 
     file { 'C:/Users/Administrator/.ssh/':
       ensure => directory,
