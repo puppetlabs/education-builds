@@ -16,13 +16,13 @@
 # Example:
 #   pkgsync { "base_pkgs":
 #     pkglist  => "httpd*\nperl-DBI*\nlibart_lgpl*\napr*\nruby-rdoc*\nntp*\n",
-#     repopath => "/var/yum/mirror/centos/6/os/i386",
-#     source   => "::centos/6/os/i386/CentOS/",
+#     repopath => "/var/yum/mirror/centos/6/os/$::architecture",
+#     source   => "::centos/6/os/$::architecture/CentOS/",
 #     notify   => Repobuild["base"]
 #   }
 #
 #   repobuild { "base":
-#     repopath => "${base}/mirror/centos/6/os/i386",
+#     repopath => "${base}/mirror/centos/6/os/$::architecture",
 #   }
 
 class localrepo {
@@ -53,14 +53,14 @@ class localrepo {
   ## Build the "base" repo
   localrepo::pkgsync { "base_pkgs":
     pkglist  => template("localrepo/base_pkgs.erb"),
-    repopath => "${base}/mirror/centos/6/os/i386",
+    repopath => "${base}/mirror/centos/6/os/$::architecture",
     syncer   => "yumdownloader",
     source   => "base",
     notify   => Repobuild["base_local"],
   }
 
   localrepo::repobuild { "base_local":
-    repopath => "${base}/mirror/centos/6/os/i386",
+    repopath => "${base}/mirror/centos/6/os/$::architecture",
     require  => Package["createrepo"],
     notify   => Exec["makecache"],
   }
@@ -68,14 +68,14 @@ class localrepo {
   ## Build the "updates" repo
   localrepo::pkgsync { "updates_pkgs":
     pkglist  => template("localrepo/updates_pkgs.erb"),
-    repopath => "${base}/mirror/centos/6/updates/i386",
+    repopath => "${base}/mirror/centos/6/updates/$::architecture",
     syncer   => "yumdownloader",
     source   => "base",
     notify   => Repobuild["updates_local"],
   }
 
   localrepo::repobuild { "updates_local":
-    repopath => "${base}/mirror/centos/6/updates/i386",
+    repopath => "${base}/mirror/centos/6/updates/$::architecture",
     require  => Package["createrepo"],
     notify   => Exec["makecache"],
   }
@@ -83,7 +83,7 @@ class localrepo {
   ## Build the "epel" repo
   localrepo::pkgsync { "epel_pkgs":
     pkglist  => template("localrepo/epel_pkgs.erb"),
-    repopath => "${base}/mirror/epel/6/local/i386",
+    repopath => "${base}/mirror/epel/6/local/$::architecture",
     syncer   => "yumdownloader",
     source   => "epel",
     notify   => Repobuild["epel_local"],
@@ -91,7 +91,7 @@ class localrepo {
   }
 
   localrepo::repobuild { "epel_local":
-    repopath => "${base}/mirror/epel/6/local/i386",
+    repopath => "${base}/mirror/epel/6/local/$::architecture",
     require  => Package["createrepo"],
     notify   => Exec["makecache"],
   }
