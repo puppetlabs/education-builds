@@ -4,4 +4,8 @@ do
   service $s stop
 done
 
+# Clean up PE installer files
+rm -rf /root/puppet-enterprise*
+rm -y /root/puppet-enterprise
+rm -rf /usr/src/installer
 
