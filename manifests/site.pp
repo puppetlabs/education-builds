@@ -12,7 +12,7 @@ node default {
 }
 
 node /student/ {
-  class { 'student': }
+  include student
 }
 
 node /learn/ {

@@ -4,14 +4,14 @@
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
       ],
-      "disk_size": 10140,
+      "disk_size": 20480,
       "disk_type_id": "0",  
       "guest_os_type": "centos",
       "http_directory": "http",
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_checksum_type": "sha1",
       "iso_url": "{{ user `iso_url` }}",
-      "output_directory": "{{ user `vm_type` }}-vmware",
+      "output_directory": "{{ user `vm_type` }}-{{ user `hostname` }}-vmware",
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
@@ -29,14 +29,14 @@
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
       ],
-      "disk_size": 10140,
+      "disk_size": 20480,
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "guest_os_type": "RedHat",
       "http_directory": "http",
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_checksum_type": "sha1",
       "iso_url": "{{ user `iso_url` }}",
-      "output_directory": "{{ user `vm_type` }}-ovf-virtualbox",
+      "output_directory": "{{ user `vm_type` }}-{{ user `hostname` }}-ovf-virtualbox",
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "ssh_password": "vagrant",
       "ssh_username": "vagrant",
