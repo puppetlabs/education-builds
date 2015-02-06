@@ -4,7 +4,7 @@
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
       ],
-      "disk_size": 10140,
+      "disk_size": 20480,
       "disk_type_id": "0",  
       "guest_os_type": "centos",
       "http_directory": "http",
@@ -29,7 +29,7 @@
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
       ],
-      "disk_size": 10140,
+      "disk_size": 20480,
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "guest_os_type": "RedHat",
       "http_directory": "http",
