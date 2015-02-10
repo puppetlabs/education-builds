@@ -12,3 +12,4 @@ puppet_enterprise::profile::console:
 puppet_enterprise::profile::console::java_args:
   Xmx: '512m'
   Xms: '256m'
+puppet_enterprise::master::puppetserver::jruby_max_active_instances: 1
