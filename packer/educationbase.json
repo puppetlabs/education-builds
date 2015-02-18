@@ -29,7 +29,7 @@
   "post-processors": [{
     "type": "ovftool",
     "format": "ova",
-    "output": "{{ user `vm_type` }}.ova"
+    "target": "{{ user `vm_type` }}.ova"
   }],
   "provisioners": [
     {
