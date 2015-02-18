@@ -26,6 +26,10 @@
       }
     }
   ],
+  "post-processors": [{
+    "type": "ovftool",
+    "format": "ova"
+  }],
   "provisioners": [
     {
       "type": "shell", 
