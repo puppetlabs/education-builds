@@ -78,6 +78,7 @@ task :student_pre do
   %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 student.puppetlabs.vm training localhost localhost.localdomain localhost4/" /etc/hosts}
   cputs "Editing /etc/sysconfig/network"
   %x{sed -ie "s/HOSTNAME.*/HOSTNAME=student.puppetlabs.vm/" /etc/sysconfig/network}
+  %x{printf '\nrequest host-name";\n' >> /etc/dhcp/dhclient-eth0.conf}
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
 end
 
