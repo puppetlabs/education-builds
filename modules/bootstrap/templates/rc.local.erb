@@ -13,7 +13,7 @@ touch /var/lock/subsys/local
 <% end -%>
 
 <% if @hostname == "student" -%>
-if ! puppet -V; then
+if ! hash puppet 2>/dev/null; then
   curl -k https://master.puppetlabs.vm:8140/packages/current/install.bash | sudo bash
 fi
 <% end -%>
