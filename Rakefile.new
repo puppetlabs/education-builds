@@ -89,7 +89,6 @@ task :skytap_post do
   cputs "Editing /etc/sysconfig/network"
   %x{sed -ie "s/HOSTNAME.*//" /etc/sysconfig/network}
   %x{printf '\nrequest host-name domain-name;\n' >> /etc/dhcp/dhclient-eth0.conf}
-  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
 end  
 
 desc "Apply bootstrap manifest"
