@@ -4,14 +4,14 @@
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
       ],
-      "disk_size": 20480,
+      "disk_size": 10240,
       "disk_type_id": "0",  
       "guest_os_type": "centos",
       "http_directory": "http",
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_checksum_type": "sha1",
       "iso_url": "{{ user `iso_url` }}",
-      "output_directory": "{{ user `vm_type` }}-{{ user `hostname` }}-vmware",
+      "output_directory": "output/{{ user `vm_type` }}-vmware",
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
@@ -24,49 +24,12 @@
         "memsize": "{{user `vm_memsize`}}",
         "numvcpus": "{{user `vm_cores`}}"
       }
-    },
-    {
-      "boot_command": [
-        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
-      ],
-      "disk_size": 20480,
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-      "guest_os_type": "RedHat",
-      "http_directory": "http",
-      "iso_checksum": "{{ user `iso_checksum` }}",
-      "iso_checksum_type": "sha1",
-      "iso_url": "{{ user `iso_url` }}",
-      "output_directory": "{{ user `vm_type` }}-{{ user `hostname` }}-ovf-virtualbox",
-      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
-      "ssh_password": "vagrant",
-      "ssh_username": "vagrant",
-      "ssh_wait_timeout": "10000s",
-      "type": "virtualbox-iso",
-      "vboxmanage": [
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--memory",
-	  "{{user `vm_memsize`}}"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--cpus",
-	  "{{user `vm_cores`}}"
-        ]
-      ],
-      "virtualbox_version_file": ".vbox_version",
-      "vm_name": "{{user `vm_name`}}"
     }
   ],
-  "post-processors": [
-    {
-      "type": "vagrant",
-      "output": "{{user `vm_name`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
-      "keep_input_artifact": true
-    }
-  ],
+  "post-processors": [{
+    "type": "ovftool",
+    "format": "ova"
+  }],
   "provisioners": [
     {
       "type": "shell", 
@@ -91,10 +54,10 @@
         "scripts/base.sh",
         "scripts/vagrant.sh",
         "scripts/sshd.sh",
-	"scripts/{{user `vm_type`}}_build.sh",
+        "scripts/{{user `vm_type`}}_build.sh",
         "scripts/vmtools.sh",
         "scripts/cleanup.sh",
-	"scripts/{{user `vm_type`}}_cleanup.sh",
+        "scripts/{{user `vm_type`}}_cleanup.sh",
         "scripts/zerodisk.sh"
       ],
       "type": "shell"

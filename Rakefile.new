@@ -81,6 +81,16 @@ task :student_pre do
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
 end
 
+desc "Skytap vm post install setup"
+task :skytap_post do
+  # Skytap provides DHCP and DNS so vms should be set to get hostnames from DHCP
+  cputs "Setting hostname to localhost for dhcp"
+  %x{hostname localhost.localdomain}
+  cputs "Editing /etc/sysconfig/network"
+  %x{sed -ie "s/HOSTNAME.*//" /etc/sysconfig/network}
+  %x{printf '\nrequest host-name domain-name;\n' >> /etc/dhcp/dhclient-eth0.conf}
+end  
+
 desc "Apply bootstrap manifest"
 task :build do
  system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
@@ -92,6 +102,15 @@ task :training do
   Rake::Task["init"].execute
   Rake::Task["training_pre"].execute
   Rake::Task["build"].execute
+end
+
+desc "Full Training Skytap VM Build"
+task :training_skytap do
+  cputs "Building Training VM"
+  Rake::Task["init"].execute
+  Rake::Task["training_pre"].execute
+  Rake::Task["build"].execute
+  Rake::Task["skytap_post"].execute
 end
 
 desc "Full Learning VM Build"
@@ -109,6 +128,16 @@ task :student do
   Rake::Task["student_pre"].execute
   Rake::Task["build"].execute
 end
+
+desc "Full Student Skytap VM Build"
+task :student_skytap do
+  cputs "Building Student VM"
+  Rake::Task["init"].execute
+  Rake::Task["student_pre"].execute
+  Rake::Task["build"].execute
+  Rake::Task["skytap_post"].execute
+end
+
 
 def download(url,path)
   u = URI.parse(url)
