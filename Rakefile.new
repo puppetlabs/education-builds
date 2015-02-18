@@ -78,9 +78,19 @@ task :student_pre do
   %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 student.puppetlabs.vm training localhost localhost.localdomain localhost4/" /etc/hosts}
   cputs "Editing /etc/sysconfig/network"
   %x{sed -ie "s/HOSTNAME.*/HOSTNAME=student.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{printf '\nrequest host-name";\n' >> /etc/dhcp/dhclient-eth0.conf}
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
 end
+
+desc "Skytap vm post install setup"
+task :skytap_post do
+  # Skytap provides DHCP and DNS so vms should be set to get hostnames from DHCP
+  cputs "Setting hostname to localhost for dhcp"
+  %x{hostname localhost.localdomain}
+  cputs "Editing /etc/sysconfig/network"
+  %x{sed -ie "s/HOSTNAME.*//" /etc/sysconfig/network}
+  %x{printf '\nrequest host-name domain-name;\n' >> /etc/dhcp/dhclient-eth0.conf}
+  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
+end  
 
 desc "Apply bootstrap manifest"
 task :build do
@@ -93,6 +103,15 @@ task :training do
   Rake::Task["init"].execute
   Rake::Task["training_pre"].execute
   Rake::Task["build"].execute
+end
+
+desc "Full Training Skytap VM Build"
+task :training_skytap do
+  cputs "Building Training VM"
+  Rake::Task["init"].execute
+  Rake::Task["training_pre"].execute
+  Rake::Task["build"].execute
+  Rake::Task["skytap_post"].execute
 end
 
 desc "Full Learning VM Build"
@@ -110,6 +129,16 @@ task :student do
   Rake::Task["student_pre"].execute
   Rake::Task["build"].execute
 end
+
+desc "Full Student Skytap VM Build"
+task :student_skytap do
+  cputs "Building Student VM"
+  Rake::Task["init"].execute
+  Rake::Task["student_pre"].execute
+  Rake::Task["build"].execute
+  Rake::Task["skytap_post"].execute
+end
+
 
 def download(url,path)
   u = URI.parse(url)
