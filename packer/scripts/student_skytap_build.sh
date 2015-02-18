@@ -2,7 +2,7 @@ yum install -y git yum-utils ruby-devel ruby rubygems
 gem install rake json
 
 cd /usr/src/
-git clone https://github.com/joshsamuelson/puppetlabs-training-bootstrap -b studentvm
+git clone https://github.com/puppetlabs/puppetlabs-training-bootstrap
 cd /usr/src/puppetlabs-training-bootstrap/
 
-rake -f Rakefile.new student
+rake -f Rakefile.new student_skytap

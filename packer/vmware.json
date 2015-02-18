@@ -11,7 +11,7 @@
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_checksum_type": "sha1",
       "iso_url": "{{ user `iso_url` }}",
-      "output_directory": "output/{{ user `hostname` }}-vmware",
+      "output_directory": "output/{{ user `vm_type` }}-vmware",
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
@@ -50,10 +50,10 @@
         "scripts/base.sh",
         "scripts/vagrant.sh",
         "scripts/sshd.sh",
-	"scripts/{{user `hostname`}}_build.sh",
+        "scripts/{{user `vm_type`}}_build.sh",
         "scripts/vmtools.sh",
         "scripts/cleanup.sh",
-	"scripts/{{user `vm_type`}}_cleanup.sh",
+        "scripts/{{user `vm_type`}}_cleanup.sh",
         "scripts/zerodisk.sh"
       ],
       "type": "shell"
