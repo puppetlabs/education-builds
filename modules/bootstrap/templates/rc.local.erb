@@ -12,3 +12,8 @@ touch /var/lock/subsys/local
 /root/.ssh_keygen.sh &
 <% end -%>
 
+<% if @hostname == "student" -%>
+if ! puppet -V; then
+  curl -k https://master.puppetlabs.vm:8140/packages/current/install.bash | sudo bash
+fi
+<% end -%>
