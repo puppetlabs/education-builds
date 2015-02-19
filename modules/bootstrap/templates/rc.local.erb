@@ -12,4 +12,8 @@ touch /var/lock/subsys/local
 /root/.ssh_keygen.sh &
 <% end -%>
 
-/usr/src/puppetlabs-training-bootstrap/scripts/extract_pe.sh &
+<% if @hostname == "student" -%>
+if ! hash puppet 2>/dev/null; then
+  curl -k https://master.puppetlabs.vm:8140/packages/current/install.bash | sudo bash
+fi
+<% end -%>
