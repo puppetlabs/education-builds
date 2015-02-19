@@ -1,11 +1,23 @@
+# Get the lastest quest
+quest update
+
 # Stop all PE processes to free up memory
 for s in `find /etc/init.d/ -name pe* -type f -printf "%f\n"`
 do
   service $s stop
 done
 
-# Drop and recreate swap to reduce size
-swapoff -a
-dd if=/dev/zero of=/swapfile bs=1M count=4096
-mkswap /swapfile
+# Clean up PE installer files
+rm -rf /root/puppet-enterprise*
+rm -y /root/puppet-enterprise
+rm -rf /usr/src/installer
+
+# Remove packages PE will regenerate agent installer
+rm -rf /opt/puppet/packages
+
+# Clean up other random files
+rm -rf /usr/src/puppetlabs-training-bootstrap
+rm -rf /usr/src/puppet
+rm -rf /usr/share/doc/*
+rm -rf /usr/src/kernels
 
