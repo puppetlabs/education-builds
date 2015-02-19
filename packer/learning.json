@@ -7,5 +7,5 @@
 	"training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
 	"vm_memsize": "1024",
 	"vm_disk_size": "20480",
-	"vm_cores": "11"
+	"vm_cores": "1"
 }
