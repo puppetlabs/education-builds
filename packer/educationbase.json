@@ -24,47 +24,13 @@
         "memsize": "{{user `vm_memsize`}}",
         "numvcpus": "{{user `vm_cores`}}"
       }
-    },
-    {
-      "boot_command": [
-        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
-      ],
-      "disk_size": 20480,
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-      "guest_os_type": "RedHat",
-      "http_directory": "http",
-      "iso_checksum": "{{ user `iso_checksum` }}",
-      "iso_checksum_type": "sha1",
-      "iso_url": "{{ user `iso_url` }}",
-      "output_directory": "{{ user `vm_type` }}-{{ user `hostname` }}-ovf-virtualbox",
-      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
-      "ssh_password": "vagrant",
-      "ssh_username": "vagrant",
-      "ssh_wait_timeout": "10000s",
-      "type": "virtualbox-iso",
-      "vboxmanage": [
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--memory",
-	  "{{user `vm_memsize`}}"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--cpus",
-	  "{{user `vm_cores`}}"
-        ]
-      ],
-      "virtualbox_version_file": ".vbox_version",
-      "vm_name": "{{user `vm_name`}}"
     }
   ],
   "post-processors": [
     {
-      "type": "vagrant",
-      "output": "{{user `vm_name`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
-      "keep_input_artifact": true
+      "type": "ovftool",
+      "format": "ova",
+      "target": "{{ user `vm_type` }}.ova"
     }
   ],
   "provisioners": [
@@ -102,8 +68,8 @@
   ],
   "variables": {
     "hostname": "vagrant",
-    "iso_checksum": "67ea68068ae53d1f23431072ec0288b3e1abfe4d",
-    "iso_url": "http://mirrors.kernel.org/centos/6.5/isos/i386/CentOS-6.5-i386-bin-DVD1.iso",
+    "iso_checksum": "4199f9106ea5e01f66ec691d8628af54",
+    "iso_url": "http://mirrors.kernel.org/centos/6.6/isos/i386/CentOS-6.6-i386-bin-DVD1.iso",
     "ks_file": "ks.cfg",
     "os_name": "CentOS-6.5",
     "pe_status": "release",
