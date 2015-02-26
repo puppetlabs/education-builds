@@ -7,7 +7,9 @@
 touch /var/lock/subsys/local
 
 IP_ADDRESS=$(/sbin/ifconfig | grep "inet addr" | grep -v "127.0.0.1" | awk '{ print $2 }' | awk -F: '{ print $2 }')
-GREETING="Welcome to the PuppetLabs <% (@hostname).capitalize -%> VM
+
+echo \
+"Welcome to the PuppetLabs <%= @hostname.capitalize -%> VM
 For the best experience please login via SSH
 
 IP: $IP_ADDRESS
@@ -15,9 +17,7 @@ username: root
 password: puppet
 
 
-" 
-
-echo $GREETING > /etc/issue
+" > /etc/issue
 
 <% if @print_console_login == true -%>
 /root/.console_login.sh & 
