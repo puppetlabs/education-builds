@@ -5,7 +5,17 @@
 # want to do the full Sys V style init stuff.
 
 touch /var/lock/subsys/local
-/root/.ip_info.sh &
+
+IP_ADDRESS=$(/sbin/ifconfig | grep "inet addr" | grep -v "127.0.0.1" | awk '{ print $2 }' | awk -F: '{ print $2 }')
+
+echo \
+"Welcome to the <% @hostname.capitalize -%> VM
+For the best experience please login via SSH
+
+IP: $IP_ADDRESS
+username: root
+password: puppet" > /etc/issue
+
 <% if @print_console_login == true -%>
 /root/.console_login.sh & 
 <% else -%>
