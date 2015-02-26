@@ -13,7 +13,7 @@ cd /usr/src/
 git clone https://github.com/puppetlabs/puppetlabs-training-bootstrap
 cd /usr/src/puppetlabs-training-bootstrap/
 
-rake -f Rakefile.new learning
+rake learning
 
 #Disable update for pre-release build
 #rm -rf /root/.testing

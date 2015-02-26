@@ -5,4 +5,4 @@ cd /usr/src/
 git clone https://github.com/puppetlabs/puppetlabs-training-bootstrap
 cd /usr/src/puppetlabs-training-bootstrap/
 
-rake -f Rakefile.new student_skytap
+rake student_skytap
