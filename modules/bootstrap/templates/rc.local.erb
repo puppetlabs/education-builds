@@ -9,7 +9,7 @@ touch /var/lock/subsys/local
 IP_ADDRESS=$(/sbin/ifconfig | grep "inet addr" | grep -v "127.0.0.1" | awk '{ print $2 }' | awk -F: '{ print $2 }')
 
 echo \
-"Welcome to the <% @hostname.capitalize -%> VM
+"Welcome to <% (@hostname).capitalize -%>
 For the best experience please login via SSH
 
 IP: $IP_ADDRESS
