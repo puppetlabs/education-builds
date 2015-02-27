@@ -29,7 +29,7 @@ class classroom::params {
   $manageyum = true
 
   # Upstream yum repositories
-  $repositories = [ 'base', 'extras', 'updates', 'epel' ]
+  $repositories = [ 'base', 'extras', 'updates' ]
 
   # manage git repositories for the student and the master
   $managerepos = true
