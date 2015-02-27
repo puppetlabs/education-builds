@@ -8,10 +8,10 @@
 
 ## Step 2: Build
  * **Note: If this is the first time you are building a VM this way it will be a slow process. Packer will download the CentOS ISO which is about 3G.**
- * **Secondary Note: Because of the way Packer currently works this will download the PE Installer and tarball on every build. There is a [PR](https://github.com/mitchellh/packer/issues/351) out there that we can use to fix it but, currently, it has not been merged.**
- * `cd` into the product-vagrant-boxes directory
- * Run `cd packer/centos/`
+ * `cd` into the packer directory
  * If you are a building a training VM run the following command:
-   `packer build -var-file=training.json trainingvm.json`
+   `packer build -var-file=student.json educationbase.json`
+ * If you are a building a training VM run the following command:
+   `packer build -var-file=training.json educationbase.json`
  * If you are building a learning VM run the following command:
-   `packer build -var-file learning.json trainingvm.json`
+   `packer build -var-file=learning.json educationbase.json`

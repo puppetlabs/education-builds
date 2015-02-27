@@ -1,3 +1,8 @@
+2.15
+  * The Rakefile has been refactored to be run on a blank VM.
+  * Added packer scripts to allow building of VM images from a host machine
+  * Lots of additions related to the windows classroom module
+  * Minimal student VM so that students don't have to download full vm
 2.12
   * We've now pinned and cached ALL versions of the Gems required.
   * The timeout for the Console has been set to 1 million seconds.

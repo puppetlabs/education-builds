@@ -4,14 +4,14 @@
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
       ],
-      "disk_size": 20480,
+      "disk_size": "{{ user `vm_disk_size` }}",
       "disk_type_id": "0",  
       "guest_os_type": "centos",
       "http_directory": "http",
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_checksum_type": "sha1",
       "iso_url": "{{ user `iso_url` }}",
-      "output_directory": "output/{{ user `hostname` }}-vmware",
+      "output_directory": "output/{{ user `vm_type` }}-{{ user `arch`}}-vmware",
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
@@ -24,43 +24,14 @@
         "memsize": "{{user `vm_memsize`}}",
         "numvcpus": "{{user `vm_cores`}}"
       }
-    },
-    {
-      "boot_command": [
-        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
-      ],
-      "disk_size": 20480,
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-      "guest_os_type": "RedHat",
-      "http_directory": "http",
-      "iso_checksum": "{{ user `iso_checksum` }}",
-      "iso_checksum_type": "sha1",
-      "iso_url": "{{ user `iso_url` }}",
-      "output_directory": "output/{{ user `hostname` }}-ovf-virtualbox",
-      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
-      "ssh_password": "vagrant",
-      "ssh_username": "vagrant",
-      "ssh_wait_timeout": "10000s",
-      "type": "virtualbox-iso",
-      "vboxmanage": [
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--memory",
-	  "{{user `vm_memsize`}}"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--cpus",
-	  "{{user `vm_cores`}}"
-        ]
-      ],
-      "virtualbox_version_file": ".vbox_version",
-      "vm_name": "{{user `vm_name`}}"
     }
   ],
   "post-processors": [
+    {
+      "type": "ovftool",
+      "format": "ova",
+      "target": "{{ user `vm_type` }}.ova"
+    },
     {
       "type": "vagrant",
       "output": "{{user `vm_name`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
@@ -91,10 +62,10 @@
         "scripts/base.sh",
         "scripts/vagrant.sh",
         "scripts/sshd.sh",
-	"scripts/{{user `vm_type`}}_build.sh",
+        "scripts/{{user `vm_type`}}_build.sh",
         "scripts/vmtools.sh",
         "scripts/cleanup.sh",
-	"scripts/{{user `vm_type`}}_cleanup.sh",
+        "scripts/{{user `vm_type`}}_cleanup.sh",
         "scripts/zerodisk.sh"
       ],
       "type": "shell"
@@ -102,20 +73,22 @@
   ],
   "variables": {
     "hostname": "vagrant",
-    "iso_checksum": "67ea68068ae53d1f23431072ec0288b3e1abfe4d",
-    "iso_url": "http://mirrors.kernel.org/centos/6.5/isos/i386/CentOS-6.5-i386-bin-DVD1.iso",
+    "arch": "i386",
+    "iso_checksum": "d16aa4a8e6f71fb01fcc26d8ae0e3443ed514c8e",
+    "iso_url": "http://mirrors.kernel.org/centos/6.6/isos/i386/CentOS-6.6-i386-bin-DVD1.iso",
     "ks_file": "ks.cfg",
-    "os_name": "CentOS-6.5",
+    "os_name": "CentOS-6.6",
     "pe_status": "release",
-    "pe_version": "3.7.1",
+    "pe_version": "3.7.2",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "vagrant",
     "system_user_password": "vagrant",
     "training_branch": "master",
     "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
-    "vm_name": "centos-6.5-pe-3.7.1",
+    "vm_name": "centos-6.6-pe-3.7.2",
     "vm_type": "training",
     "vm_memsize": "4096",
+    "vm_disk_size": "20480",
     "vm_cores": "2",
     "ptb_version": "2.14"
   }

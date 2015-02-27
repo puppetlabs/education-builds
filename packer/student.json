@@ -1,11 +1,12 @@
 {
-	"vm_type": "learning",
-	"vm_name": "learn_puppet_centos-6.6",
-	"hostname": "learning",
-	"ks_file": "ks-learning",
+	"vm_type": "student",
+	"vm_name": "student-3.7.2",
+	"hostname": "student",
+  "pe_version": "3.7.2",
+	"ks_file": "ks-student",
 	"training_branch": "master",
 	"training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
 	"vm_memsize": "1024",
-	"vm_disk_size": "20480",
+	"vm_disk_size": "10240",
 	"vm_cores": "1"
 }

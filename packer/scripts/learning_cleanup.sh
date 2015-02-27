@@ -1,5 +1,5 @@
 # Get the lastest quest
-quest update
+/root/bin/quest update
 
 # Stop all PE processes to free up memory
 for s in `find /etc/init.d/ -name pe* -type f -printf "%f\n"`
@@ -9,7 +9,7 @@ done
 
 # Clean up PE installer files
 rm -rf /root/puppet-enterprise*
-rm -y /root/puppet-enterprise
+rm -rf /root/puppet-enterprise
 rm -rf /usr/src/installer
 
 # Remove packages PE will regenerate agent installer
