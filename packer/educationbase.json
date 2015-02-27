@@ -73,14 +73,9 @@
   ],
   "variables": {
     "hostname": "vagrant",
-<<<<<<< HEAD
-    "iso_checksum": "67ea68068ae53d1f23431072ec0288b3e1abfe4d",
-    "iso_url": "http://mirrors.kernel.org/centos/6.5/isos/i386/CentOS-6.5-i386-bin-DVD1.iso",
     "arch": "i386",
-=======
     "iso_checksum": "d16aa4a8e6f71fb01fcc26d8ae0e3443ed514c8e",
     "iso_url": "http://mirrors.kernel.org/centos/6.6/isos/i386/CentOS-6.6-i386-bin-DVD1.iso",
->>>>>>> 528558078a0e265901267e3355080d6312628fcb
     "ks_file": "ks.cfg",
     "os_name": "CentOS-6.6",
     "pe_status": "release",
@@ -90,11 +85,7 @@
     "system_user_password": "vagrant",
     "training_branch": "master",
     "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
-<<<<<<< HEAD
-    "vm_name": "centos-6.5-pe-3.7.2",
-=======
     "vm_name": "centos-6.6-pe-3.7.2",
->>>>>>> 528558078a0e265901267e3355080d6312628fcb
     "vm_type": "training",
     "vm_memsize": "4096",
     "vm_disk_size": "20480",
