@@ -4,7 +4,7 @@ class classroom::agent::chocolatey (
 
   if $::osfamily == 'windows' {
     file { 'C:\install.ps1':
-      source => 'puppet:///classroom/install.ps1',
+      source => 'puppet:///modules/classroom/install.ps1',
     }
     exec { 'install-chocolatey':
       command  => 'C:\install.ps1 >$null 2>&1',
