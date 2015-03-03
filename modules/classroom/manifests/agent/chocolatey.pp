@@ -3,8 +3,11 @@ class classroom::agent::chocolatey (
 ) inherits classroom::params {
 
   if $::osfamily == 'windows' {
+    file { 'C:\install.ps1':
+      source => 'puppet:///classroom/install.ps1',
+    }
     exec { 'install-chocolatey':
-      command  => '( iex ((new-object net.webclient).DownloadString("https://chocolatey.org/install.ps1")) ) >$null 2>&1',
+      command  => 'C:\install.ps1 >$null 2>&1',
       creates  => ['C:\Chocolatey','C:\ProgramData\chocolatey'],
       provider => powershell,
       timeout  => $timeout,
