@@ -21,6 +21,7 @@ class bootstrap::cache_modules(
   bootstrap::forge { 'jamtur01-irc':                     version => '0.0.7' }
   bootstrap::forge { 'nanliu-staging':                   version => '1.0.2' }
   bootstrap::forge { 'pltraining-classroom':             version => '1.2.5' }
+  bootstrap::forge { 'pltraining-rbac':                  version => '0.0.2' }
   bootstrap::forge { 'puppetlabs-apache':                version => '1.2.0' }
   bootstrap::forge { 'puppetlabs-concat':                version => '1.1.1' }
   bootstrap::forge { 'puppetlabs/git':                   version => '0.2.0' }
