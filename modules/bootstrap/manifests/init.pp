@@ -34,6 +34,10 @@ class bootstrap ($print_console_login = false) {
     priority => '99',
     skip_if_unavailable => '1',
   }
+  # Include epel but leave it disabled.
+  class { 'epel':
+    epel_enabled = '0',
+  }
 
   # Moving the root user declaration to the userprefs module.
   # user { 'root':
