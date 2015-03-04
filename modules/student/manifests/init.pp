@@ -150,5 +150,4 @@ class student {
   # create local repos
   include localrepo
 
-  include epel
 }
