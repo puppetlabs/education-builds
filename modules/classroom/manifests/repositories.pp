@@ -12,6 +12,12 @@ class classroom::repositories (
         false => '1',
       },
     }
+    # Don't choke if another module has "include epel"
+    if ! defined(Class['epel']) {
+      class { 'epel':
+        epel_enabled => $offline,
+      }
+    }
   }
 
 }
