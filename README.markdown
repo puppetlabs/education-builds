@@ -17,12 +17,17 @@ e.g. for a training VM for classroom use:
 Packer scripts are provided in the `packer` directory. These depend on vmware fusion and the ovftool post-processor plugin from here: https://github.com/iancmcc/packer-post-processor-ovftool
 
 The common configuration options have been set up in educationbase.json and vm specific variables are set in VMNAME.json
+After the base VM is provisioned according to the settings in VMNAME.json, the bootstrap can be applied using educationbuild.json.
 
-To initiate a packer build of the student vm:
+First create a base VM without any bootstrap applied:
 - `packer build -var-file=student.json educationbase.json`
+
+To initiate a packer build of the student vm on the base vm:
+- `packer build -var-file=student.json educationbuild.json`
 
 For the training vm:
 - `packer build -var-file=training.json educationbase.json`
+- `packer build -var-file=training.json educationbuild.json`
 
 ## Vagrant
 There is a Vagrantfile that automates this process and builds on the puppetlabs/centos-6.5-32-nocm base box.
