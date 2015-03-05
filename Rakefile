@@ -89,12 +89,18 @@ task :build do
  system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
 end
 
+desc "Post build cleanup tasks"
+task :post do
+  system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/post.pp')
+end
+
 desc "Full Training VM Build"
 task :training do
   cputs "Building Training VM"
   Rake::Task["standalone_puppet"].execute
   Rake::Task["training_pre"].execute
   Rake::Task["build"].execute
+  Rake::Task["post"].execute
 end
 
 desc "Full Learning VM Build"
@@ -103,6 +109,7 @@ task :learning do
   Rake::Task["standalone_puppet"].execute
   Rake::Task["learning_pre"].execute
   Rake::Task["build"].execute
+  Rake::Task["post"].execute
 end
 
 desc "Full Student VM Build"
@@ -111,6 +118,7 @@ task :student do
   Rake::Task["standalone_puppet"].execute
   Rake::Task["student_pre"].execute
   Rake::Task["build"].execute
+  Rake::Task["post"].execute
 end
 
 def download(url,path)
