@@ -37,6 +37,7 @@ class bootstrap ($print_console_login = false) {
   # Include epel but leave it disabled.
   class { 'epel':
     epel_enabled => '0',
+    before => Class['localrepo'],
   }
 
   # Moving the root user declaration to the userprefs module.
