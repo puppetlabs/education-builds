@@ -29,6 +29,7 @@
     "provisioners": [
     {
       "scripts": [
+        "scripts/pre_build.sh",
         "scripts/cleanup.sh"
       ],
       "type": "shell"

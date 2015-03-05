@@ -25,7 +25,8 @@ First create a base VM without any bootstrap applied:
 To initiate a packer build of the student vm on the base vm:
 - `packer build -var-file=student.json educationbuild.json`
 
-For the training vm:
+
+For the training vm follow the same two steps but with training.json:
 - `packer build -var-file=training.json educationbase.json`
 - `packer build -var-file=training.json educationbuild.json`
 
