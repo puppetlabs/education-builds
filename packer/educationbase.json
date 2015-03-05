@@ -29,6 +29,8 @@
     "provisioners": [
     {
       "scripts": [
+        "scripts/base.sh",
+        "scripts/sshd.sh",
         "scripts/pre_build.sh",
         "scripts/cleanup.sh"
       ],
