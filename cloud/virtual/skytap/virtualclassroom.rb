@@ -5,10 +5,10 @@ require 'yaml'
 
 API_TOKEN = ENV['SKYTAP_API_TOKEN']
 HEADERS = { 
-						:Authorization => API_TOKEN,
-						:accept => :json, 
-            :content_type => :json
-					}
+  :Authorization => API_TOKEN,
+  :accept => :json, 
+  :content_type => :json
+}
 URL = 'https://cloud.skytap.com/'
 CONFIGURATION_URL = URL + 'configurations/'
 
@@ -53,24 +53,24 @@ def output_classroom(environment_id)
 
 
   classroom_info =
-    {
-      'environment_id' => environment['id'],
-      'environment_name' => environment['name'],
-      'publish_sets' => [],
-      'vms' => []
-    }
+  {
+    'environment_id' => environment['id'],
+    'environment_name' => environment['name'],
+    'publish_sets' => [],
+    'vms' => []
+  }
 
-  environment['publish_sets'].each do |publish_set|
-    classroom_info['publish_sets'] << { 'name' => publish_set['name'], 'url' => publish_set['desktops_url'] }
-  end
+    environment['publish_sets'].each do |publish_set|
+      classroom_info['publish_sets'] << { 'name' => publish_set['name'], 'url' => publish_set['desktops_url'] }
+    end
 
-  environment['vms'].each do |vm|
-    classroom_info['vms'].push({
-      'name' => vm['name'],
-      'services' => vm['interfaces'][0]['services']
-    })
-  end
-  return classroom_info
+    environment['vms'].each do |vm|
+      classroom_info['vms'].push({
+        'name' => vm['name'],
+        'services' => vm['interfaces'][0]['services']
+      })
+    end
+    return classroom_info
 end
 
 # Load classroom information from yaml file 
