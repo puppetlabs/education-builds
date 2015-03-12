@@ -1,0 +1,14 @@
+---
+title: Fundamentals Classroom
+master_template_id: 526369 
+master_ports:
+  - 22
+  - 443
+  - 3000
+student_template_id: 530213
+student_ports:
+  - 22
+  - 80
+students:
+  - foo
+  - bar
