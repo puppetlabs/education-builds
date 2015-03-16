@@ -23,7 +23,7 @@ $script = <<SCRIPT
 SCRIPT
 
 	config.vm.define :training, autostart: false do |training_config|
-		training_config.vm.box = "puppetlabs/centos-6.5-32-nocm"
+		training_config.vm.box = "puppetlabs/centos-6.6-32-nocm"
 		training_config.vm.network "public_network"
 
 		training_config.vm.provider "virtualbox" do |v|
