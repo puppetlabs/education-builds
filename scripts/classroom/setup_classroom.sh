@@ -33,6 +33,7 @@ function validate_name
 
   [[ "${name}" =~ ^[a-z0-9][a-z0-9_]+$ &&
      "${name}" =~ [a-z]+               &&
+     "${name}" =~ ^\S+.+\S$            &&
      "${name}" != "root"               &&
      "${name}" != "master" ]]
 }
