@@ -16,7 +16,7 @@ $script = <<SCRIPT
 		gem install rake json
 
 		cd /usr/src/
-		git clone -b r10kgems_update https://github.com/casharma/puppetlabs-training-bootstrap
+		git clone https://github.com/puppetlabs/puppetlabs-training-bootstrap
 		cd /usr/src/puppetlabs-training-bootstrap/
 
 		rake VMTYPE
