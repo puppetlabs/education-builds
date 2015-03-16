@@ -1,7 +1,0 @@
-:backtrace: false
-:benchmark: false
-:bulk_threshold: 1000
-:sources:
-- file:///var/cache/rubygems/
-:update_sources: true
-:verbose: true
