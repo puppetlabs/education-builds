@@ -41,6 +41,14 @@ class classroom::agent (
       data   => '0',
     }
     Classroom::Dns_server <<||>>
+    # Set certname 
+    ini_setting { "certname":
+      ensure  => present,
+      path    => 'C:\ProgramData\PuppetLabs\puppet\etc\puppet.conf',
+      section => 'main',
+      setting => 'certname',
+      value   => "${::hostname}.puppetlabs.vm",
+    }
   }
 
   # make sure our git environment is set up and usable
@@ -68,7 +76,7 @@ class classroom::agent (
 
   # if we are managing git repositories, then build out all this
   if $managerepos {
-    
+
     classroom::agent::workdir { $workdir:
       ensure   => present,
       username => $classroom::params::machine_name,
