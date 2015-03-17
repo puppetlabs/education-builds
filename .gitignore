@@ -7,5 +7,6 @@ Gemfile.lock
 spec/log
 .bundle
 packer/output
+packer/output-vmware-vmx
 packer/packer_cache
 file_cache
