@@ -12,11 +12,11 @@
     {
       "type": "ovftool",
       "format": "ova",
-      "target": "{{ user `vm_type` }}.ova"
+      "target": "output/{{ user `vm_type` }}.ova"
     },
     {
       "type": "vagrant",
-      "output": "{{user `vm_name`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
+      "output": "output/{{user `vm_name`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
       "keep_input_artifact": true
     }
   ],
