@@ -44,7 +44,9 @@ end
 
 def map_vm_ports(vm,ports)
   ports.each do |port|
-    RestClient.post( URL + 'vms/' + vm['id'] + '/interfaces/' + vm['interfaces'][0]['id'] + '/services', { 'port' => port } , HEADERS)
+    unless vm['interfaces'][0]['services'].any? { |vm_port| vm_port['internal_port'] == port }
+      RestClient.post( URL + 'vms/' + vm['id'] + '/interfaces/' + vm['interfaces'][0]['id'] + '/services', { 'port' => port } , HEADERS)
+    end
   end
 end
 
@@ -95,7 +97,7 @@ environment['vms'].each do |vm|
     # Add only Student VMs to student publish set
     student_vms.push( { 'vm_ref' => URL + 'vms/' + vm['id'], 'access' => 'use' } )
   else
-    set_vm_name(vm,'master')
+    set_vm_name(vm,classroom['master_name'])
     map_vm_ports(vm,classroom['master_ports'])
   end
   # Add all vms to Instructor publish set
