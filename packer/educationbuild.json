@@ -5,7 +5,8 @@
       "source_path": "output/{{ user `vm_type` }}-base-vmware/{{ user `vm_name` }}-base.vmx",
       "ssh_username": "root",
       "ssh_password": "puppet",
-      "shutdown_command": "halt"
+      "shutdown_command": "halt",
+      "output_directory": "output/{{ user `vm_type`}}-vmware/"
     }
   ],
   "post-processors": [
