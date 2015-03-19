@@ -3,20 +3,21 @@
     {
       "type": "vmware-vmx",
       "source_path": "output/{{ user `vm_type` }}-base-vmware/{{ user `vm_name` }}-base.vmx",
-      "ssh_username": "root",
-      "ssh_password": "puppet",
-      "shutdown_command": "halt"
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "shutdown_command": "sudo halt",
+      "output_directory": "output/{{ user `vm_type`}}-vmware/"
     }
   ],
   "post-processors": [
     {
       "type": "ovftool",
       "format": "ova",
-      "target": "{{ user `vm_type` }}.ova"
+      "target": "output/{{ user `vm_type` }}.ova"
     },
     {
       "type": "vagrant",
-      "output": "{{user `vm_name`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
+      "output": "output/{{user `vm_name`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
       "keep_input_artifact": true
     }
   ],
@@ -43,7 +44,6 @@
       "scripts": [
         "scripts/vagrant.sh",
         "scripts/{{user `vm_type`}}_build.sh",
-        "scripts/vmtools.sh",
         "scripts/cleanup.sh",
         "scripts/{{user `vm_type`}}_cleanup.sh",
         "scripts/zerodisk.sh"

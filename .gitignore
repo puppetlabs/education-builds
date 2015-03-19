@@ -6,4 +6,6 @@ modules/*/pkg/
 Gemfile.lock
 spec/log
 .bundle
-
+packer/output
+packer/packer_cache
+file_cache
