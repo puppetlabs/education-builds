@@ -30,34 +30,34 @@ mod 'localrepo',
 mod 'student',
   :git => 'https://github.com/puppetlabs/pltraining-student'
 
-mod 'pltraining/classroom', :latest
+mod 'pltraining/classroom', '1.2.5'
 #mod 'classroom', 
 #  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
 
-mod 'pltraining/rbac', :latest
+mod 'pltraining/rbac', '0.0.2'
 #mod 'rbac', 
 #  :git => 'https://github.com/puppetlabs/pltraining-rbac'
 
-mod 'pltraining/userprefs', :latest
+mod 'pltraining/userprefs', '1.0.2'
 #mod 'userprefs', 
 #  :git => 'https://github.com/puppetlabs/pltraining-userprefs'
 
-mod 'puppetlabs/concat', :latest
+mod 'puppetlabs/concat', '1.2.0'
 #mod 'concat', 
 #  :git => 'https://github.com/puppetlabs/puppetlabs-concat'
 
-mod 'puppetlabs/stdlib', :latest
+mod 'puppetlabs/stdlib', '4.5.1'
 #mod 'stdlib', 
 #  :git => 'https://github.com/puppetlabs/puppetlabs-stdlib'
 
-mod 'puppetlabs/vcsrepo', :latest
+mod 'puppetlabs/vcsrepo', '1.2.0'
 #mod 'vcsrepo',
 #  :git => 'https://github.com/puppetlabs/puppetlabs-vcsrepo'
 
-mod 'stahnma/epel', :latest
+mod 'stahnma/epel', '1.0.2'
 #mod 'epel', 
 #  :git => 'https://github.com/stahnma/puppet-module-epel'  
 
-mod 'nanliu/staging', :latest
+mod 'nanliu/staging', '1.0.3'
 #mod 'staging', 
 #  :git => 'https://github.com/nanliu/puppet-staging'  
