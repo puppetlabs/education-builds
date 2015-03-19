@@ -30,7 +30,7 @@ mod 'localrepo',
 mod 'student',
   :git => 'https://github.com/puppetlabs/pltraining-student'
 
-mod 'pltraining/classroom', '1.2.5'
+mod 'pltraining/classroom', '1.2.6'
 #mod 'classroom', 
 #  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
 
@@ -38,7 +38,7 @@ mod 'pltraining/rbac', '0.0.2'
 #mod 'rbac', 
 #  :git => 'https://github.com/puppetlabs/pltraining-rbac'
 
-mod 'pltraining/userprefs', '1.0.2'
+mod 'pltraining/userprefs', '1.0.5'
 #mod 'userprefs', 
 #  :git => 'https://github.com/puppetlabs/pltraining-userprefs'
 
