@@ -1,7 +1,0 @@
-; $Id: puppet_report.info,v 1.6 2010/02/22 00:30:24 hass Exp $
-name = Puppet Report handler
-description = "Provides endpoint for posting simple reports to an HTTP URI."
-core = 7.x
-version = "7.x-1.x-dev"
-package = "puppet"
-project = "puppet"

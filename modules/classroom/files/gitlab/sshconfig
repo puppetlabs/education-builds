@@ -1,4 +1,0 @@
-Host gitlab.puppetlabs.vm
-    HostName gitlab.puppetlabs.vm
-    User git
-    IdentityFile ~/.ssh/gitlab_rsa
