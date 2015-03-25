@@ -13,8 +13,8 @@ SRCDIR = ENV['SRCDIR'] || '/usr/src'
 PUPPET_VER = '3.6.2'
 FACTER_VER = '1.7.5'
 HIERA_VER = '1.3.4'
-RELEASE = ENV['RELEASE'] || `git rev-parse --short HEAD`.chomp
 VMTYPE = ENV['VMTYPE'] || 'training'
+PTBVERSION = YAML.load_file('version.yaml')
 
 ## These are used by the shipping tasks
 SITESDIR = "/srv/builder/Sites" || ENV["SITESDIR"]
@@ -221,7 +221,7 @@ def cprint(string)
 end
 
 def retrieve_vm_as_ova(vmname)
-  ovaname = "puppet-#{VMTYPE}vm-#{PEVERSION}-#{RELEASE}"
+  ovaname = "puppet-#{PEVERSION}-#{VMTYPE}vm-#{PTBVERSION[:major]}.#{PTBVERSION[:minor]}"
   vcenter_config = File.join(CACHEDIR, ".vmwarecfg.yml") || ENV["VCENTER_CONFIG"]
   vcenter_settings = YAML::load(File.open(vcenter_config))
   FileUtils.rm_rf(OVFDIR) if File.directory?(OVFDIR)
@@ -265,6 +265,7 @@ end
 
 def ship_vm_to_dir(vmpath, destination)
   FileUtils.cp(vmpath, destination)
+  FileUtils.chmod(0644, File.join(destination, File.basename(vmpath)))
 end
 
 # vim: set sw=2 sts=2 et tw=80 :
