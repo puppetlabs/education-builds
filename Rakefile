@@ -3,6 +3,7 @@ require 'uri'
 require 'net/http'
 require 'net/https'
 require 'rubygems'
+require 'yaml'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
@@ -12,14 +13,22 @@ SRCDIR = ENV['SRCDIR'] || '/usr/src'
 PUPPET_VER = '3.6.2'
 FACTER_VER = '1.7.5'
 HIERA_VER = '1.3.4'
+VMTYPE = ENV['VMTYPE'] || 'training'
+PTBVERSION = YAML.load_file('version.yaml')
+
+## These are used by the shipping tasks
+SITESDIR = "/srv/builder/Sites" || ENV["SITESDIR"]
+CACHEDIR = File.join(SITESDIR, "cache")
+BUILDDIR = File.join(SITESDIR, "build")
+OVFDIR = File.join(BUILDDIR, "ovf")
 
 $settings = Hash.new
 
 hostos = `uname -s`
 
-# Bail if handed a 'vmtype' that's not supported.
-if ENV['vmtype'] && ENV['vmtype'] !~ /^(training|learning|student)$/
-  abort("ERROR: Unrecognized vmtype parameter: #{ENV['vmtype']}")
+# Bail if handed a 'VMTYPE' that's not supported.
+if VMTYPE !~ /^(training|learning|student)$/
+  abort("ERROR: Unrecognized VMTYPE parameter: #{VMTYPE}")
 end
 
 desc "Print list of rake tasks"
@@ -125,6 +134,22 @@ task :student do
   Rake::Task["post"].execute
 end
 
+## The job that calls this needs to be tied to a builder with ovftool and the int-resources NFS export mounted.
+## Currently just pe-vm-builder-1
+desc "Package and ship a VM"
+task :ship do
+  vmname = ENV['VMNAME'].split(".").first || fail("VMNAME not set, usually set via a properties file from the build job")
+  cputs "Exporting #{vmname} from vSphere"
+  ovapath = retrieve_vm_as_ova(vmname)
+  ovaname = File.basename(ovapath)
+  cputs "Exporting #{ovaname} to vSphere as \"#{VMTYPE}\""
+  ship_vm_to_vmware(ovapath)
+  cputs "Copying #{ovaname} to int-resources"
+  ship_vm_to_dir(ovapath, "/mnt/nfs/EducationVMS/#{VMTYPE}")
+  cputs "#{ovaname} is now available at http://int-resources.ops.puppetlabs.net/EducationVMS/#{VMTYPE}/#{ovaname}"
+end
+  
+
 def download(url,path)
   u = URI.parse(url)
   net = Net::HTTP.new(u.host, u.port)
@@ -194,4 +219,53 @@ end
 def cprint(string)
   print "\033[1m#{string}\033[0m"
 end
+
+def retrieve_vm_as_ova(vmname)
+  ovaname = "puppet-#{PEVERSION}-#{VMTYPE}vm-#{PTBVERSION[:major]}.#{PTBVERSION[:minor]}"
+  vcenter_config = File.join(CACHEDIR, ".vmwarecfg.yml") || ENV["VCENTER_CONFIG"]
+  vcenter_settings = YAML::load(File.open(vcenter_config))
+  FileUtils.rm_rf(OVFDIR) if File.directory?(OVFDIR)
+  FileUtils.mkdir_p(OVFDIR)
+  Dir.chdir(BUILDDIR) do
+    verbose(false) do
+      sh(%Q</usr/bin/ovftool --noSSLVerify --targetType=OVA --compress=9 --name=#{ovaname} --powerOffSource vi://#{vcenter_settings['username']}\\@puppetlabs.com:#{vcenter_settings['password']}@vmware-vc2.ops.puppetlabs.net/opdx2/vm/vmpooler/centos-6-i386/#{vmname}  #{OVFDIR}/>)
+    end
+  end
+  File.join(OVFDIR, ovaname) + ".ova"
+end
+
+def ship_vm_to_vmware(vmpath)
+  require 'rbvmomi'
+  vcenter_config = File.join(CACHEDIR, ".vmwarecfg.yml") || ENV["VCENTER_CONFIG"]
+  vcenter_settings = YAML::load(File.open(vcenter_config))
+  Dir.chdir(BUILDDIR) do
+    verbose(false) do
+      sh(%Q</usr/bin/ovftool --noSSLVerify --network='delivery' --datastore='instance1' -o --powerOffTarget -n=#{VMTYPE} #{vmpath} vi://#{vcenter_settings['username']}\@puppetlabs.com:#{vcenter_settings['password']}@vmware-vc2.ops.puppetlabs.net/opdx2/host/mac1>)
+    end
+  end
+  vim = RbVmomi::VIM.connect(
+    :host => 'vmware-vc2.ops.puppetlabs.net', 
+    :user => "#{vcenter_settings['username']}\@puppetlabs.com", 
+    :password => "#{vcenter_settings['password']}", 
+    :insecure => 'true')
+  rootFolder = vim.serviceInstance.content.rootFolder
+  dc = rootFolder.childEntity.grep(RbVmomi::VIM::Datacenter).find { |x| x.name == "opdx2" } or fail "datacenter not found"
+  vm = dc.find_vm(VMTYPE) or fail "VM not found"
+  cputs "Powering on VM"
+  vm.PowerOnVM_Task.wait_for_completion
+  vm_ip = nil
+  5.times do
+    vm_ip = vm.guest_ip
+    cputs "#{VMTYPE} IP is #{vm_ip}"
+    break unless vm_ip == nil
+    sleep 60
+  end
+  fail "Did not receive an IP address" if vm_ip == nil
+end
+
+def ship_vm_to_dir(vmpath, destination)
+  FileUtils.cp(vmpath, destination)
+  FileUtils.chmod(0644, File.join(destination, File.basename(vmpath)))
+end
+
 # vim: set sw=2 sts=2 et tw=80 :
