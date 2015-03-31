@@ -10,3 +10,4 @@ sudo yum clean all -y
 
 sudo rm -rf /tmp/*
 sudo rm -rf /vagrant
+sudo rm -rf /etc/puppet
