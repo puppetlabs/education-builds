@@ -4,8 +4,12 @@ node default {
     owner => 'root',
     group => 'root',
   }
-  class { 'bootstrap::get_pe': version => '3.7.2' }
-  class { 'bootstrap::get_32bit_agent': version => '3.7.2' }
+  class { 'bootstrap::get_pe': 
+    version => '3.7.2' 
+  }
+  class { 'bootstrap::get_32bit_agent': 
+    version => '3.7.2' 
+  }
   include epel
   include bootstrap
   include localrepo
@@ -23,7 +27,9 @@ node /learn/ {
     owner => 'root',
     group => 'root',
   }
-  class { 'bootstrap::get_pe': version => '3.7.2' }
+  class { 'bootstrap::get_pe': 
+    version => '3.7.2' 
+  }
   include epel
   include bootstrap
   include localrepo
