@@ -1,5 +1,5 @@
 # Bootstrap CentOS VMs for training
-Installs the training, student, or learning envirnments on an existing VM.
+Installs the training, student, or learning environments on an existing VM.
 
 ## Usage
 To turn the current machine or VM into one of the Education environments.
