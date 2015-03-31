@@ -5,6 +5,7 @@ node default {
     group => 'root',
   }
   class { 'bootstrap::get_pe': version => '3.7.2' }
+  class { 'bootstrap::get_32bit_agent': version => '3.7.2' }
   include epel
   include bootstrap
   include localrepo
