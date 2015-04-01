@@ -54,6 +54,7 @@
   "variables": {
     "hostname": "vagrant",
     "arch": "i386",
+    "guest_os_type": "centos",
     "iso_checksum": "d16aa4a8e6f71fb01fcc26d8ae0e3443ed514c8e",
     "iso_url": "http://mirrors.kernel.org/centos/6.6/isos/i386/CentOS-6.6-i386-bin-DVD1.iso",
     "ks_file": "ks.cfg",

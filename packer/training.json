@@ -1,5 +1,6 @@
 {
   "vm_type": "training",
+  "guest_os_type": "centos-64",
   "hostname": "training",
   "ks_file": "ks-training",
   "training_branch": "master",
