@@ -40,7 +40,6 @@ node /learn/ {
 
 node /lms/ {
   include epel
-  include bootstrap
   include localrepo
   class { 'lms': }
 }
