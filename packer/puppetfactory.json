@@ -1,0 +1,15 @@
+{
+  "vm_type": "puppetfactory",
+  "guest_os_type": "centos-64",
+  "hostname": "training",
+  "ks_file": "ks-puppetfactory",
+  "training_branch": "master",
+  "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
+  "vm_memsize": "8192",
+  "vm_disk_size": "40960",
+  "vm_cores": "4",
+  "ptb_version": "2.16",
+  "arch": "x86_64",
+  "iso_checksum": "08be09fd7276822bd3468af8f96198279ffc41f0",
+  "iso_url": "http://ftp.osuosl.org/pub/centos/6/isos/x86_64/CentOS-6.6-x86_64-bin-DVD1.iso"
+}
