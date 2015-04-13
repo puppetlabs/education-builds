@@ -39,7 +39,5 @@ node /learn/ {
 }
 
 node /lms/ {
-  include epel
-  include localrepo
   class { 'lms': }
 }
