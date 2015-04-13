@@ -37,3 +37,8 @@ node /learn/ {
   include learning::install
   include learning::set_defaults
 }
+
+node /lms/ {
+  include epel
+  include bootstrap
+}
