@@ -93,6 +93,18 @@ task :student_pre do
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
 end
 
+desc "LMS VM pre-install setup"
+task :lms_pre do
+  # Set the dns info and hostname; must be done before puppet
+  cputs "Setting hostname lms.puppetlabs.vm"
+  %x{hostname lms.puppetlabs.vm}
+  cputs  "Editing /etc/hosts"
+  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 lms.puppetlabs.vm localhost localhost.localdomain localhost4/" /etc/hosts}
+  cputs "Editing /etc/sysconfig/network"
+  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=lms.puppetlabs.vm/" /etc/sysconfig/network}
+  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
+end
+
 desc "Apply bootstrap manifest"
 task :build do
  system('gem install r10k --no-RI --no-RDOC')
@@ -134,6 +146,15 @@ task :student do
   Rake::Task["post"].execute
 end
 
+desc "Full LMS VM Build"
+task :lms do
+  cputs "Building LMS VM"
+  Rake::Task["standalone_puppet"].execute
+  Rake::Task["lms_pre"].execute
+  Rake::Task["build"].execute
+  Rake::Task["post"].execute
+end
+
 ## The job that calls this needs to be tied to a builder with ovftool and the int-resources NFS export mounted.
 ## Currently just pe-vm-builder-1
 desc "Package and ship a VM"
@@ -148,7 +169,6 @@ task :ship do
   ship_vm_to_dir(ovapath, "/mnt/nfs/EducationVMS/#{VMTYPE}")
   cputs "#{ovaname} is now available at http://int-resources.ops.puppetlabs.net/EducationVMS/#{VMTYPE}/#{ovaname}"
 end
-  
 
 def download(url,path)
   u = URI.parse(url)
