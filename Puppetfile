@@ -24,8 +24,11 @@ mod 'training',
 mod 'learning',
   :git => 'https://github.com/puppetlabs/pltraining-learning'
 
+#mod 'lms',
+#  :git => 'https://github.com/puppetlabs/pltraining-lms'
 mod 'lms',
-  :git => 'https://github.com/puppetlabs/pltraining-lms'
+  :git => 'https://github.com/joshsamuelson/pltraining-lms'
+  :ref => 'pe_agent_install'
 
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
