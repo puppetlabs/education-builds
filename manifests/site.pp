@@ -42,5 +42,5 @@ node /lms/ {
   include epel
   include bootstrap
   include localrepo
-  include lms
+  class { 'lms': }
 }
