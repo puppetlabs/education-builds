@@ -64,7 +64,7 @@ then
 fi
 
 while : ; do
-  echo -n "Please choose a name for this node: "
+  echo -n "Please choose a name for this node and for your console username: "
   read username
 
   validate_name $username && break
