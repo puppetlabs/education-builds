@@ -31,9 +31,10 @@ function validate_name
 {
   name="$1"
 
-  [[ "${name}" =~ ^[a-z0-9][a-z0-9]{2,}$ &&
-     "${name}" =~ [a-z]+               &&
-     "${name}" != "root"               &&
+  [[ "${name}" =~ ^[a-z0-9][a-z0-9]{3,}$  &&
+     "${name}" =~ [a-z]+                  &&
+     "${name}" != "root"                  &&
+     "${name}" != "student"               &&
      "${name}" != "master" ]]
 }
 IP_FOUND=false
@@ -63,7 +64,7 @@ then
 fi
 
 while : ; do
-  echo -n "Please choose a name for this node: "
+  echo -n "Please choose a name for this node and for your console username: "
   read username
 
   validate_name $username && break
