@@ -31,7 +31,7 @@ function validate_name
 {
   name="$1"
 
-  [[ "${name}" =~ ^[a-z0-9][a-z0-9]{2,}$  &&
+  [[ "${name}" =~ ^[a-z0-9][a-z0-9]{3,}$  &&
      "${name}" =~ [a-z]+                  &&
      "${name}" != "root"                  &&
      "${name}" != "student"               &&
