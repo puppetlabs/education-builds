@@ -47,4 +47,5 @@ node /puppetfactory/ {
   class { 'bootstrap::get_pe': 
     version => '3.7.2' 
   }  
+  include bootstrap
 }
