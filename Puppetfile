@@ -18,7 +18,7 @@ moduledir './modules/'
 mod 'bootstrap', 
   #:git => 'https://github.com/puppetlabs/pltraining-bootstrap'
   :git => 'https://github.com/joshsamuelson/pltraining-bootstrap',
-  :ref => 'multiplatform'
+  :ref => 'reusable'
 
 mod 'training',
   :git => 'https://github.com/puppetlabs/pltraining-training'
@@ -27,9 +27,7 @@ mod 'learning',
   :git => 'https://github.com/puppetlabs/pltraining-learning'
 
 mod 'localrepo',
-  #:git => 'https://github.com/puppetlabs/pltraining-localrepo'
-  :git => 'https://github.com/joshsamuelson/pltraining-localrepo',
-  :ref => 'multiplatform'
+  :git => 'https://github.com/puppetlabs/pltraining-localrepo'
 
 mod 'student',
   :git => 'https://github.com/puppetlabs/pltraining-student'

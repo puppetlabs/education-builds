@@ -47,6 +47,7 @@ node /puppetfactory/ {
   class { 'bootstrap::get_pe': 
     version => '3.7.2' 
   }  
+  class { 'bootstrap::install_pe':}
   include epel
   include bootstrap
   include localrepo
