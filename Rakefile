@@ -93,6 +93,18 @@ task :student_pre do
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
 end
 
+desc "Puppetfactory VM pre-install setup"
+task :puppetfactory_pre do
+  # Set the dns info and hostname; must be done before puppet
+  cputs "Setting hostname puppetfactory.puppetlabs.vm"
+  %x{hostname puppetfactory.puppetlabs.vm}
+  cputs  "Editing /etc/hosts"
+  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 puppetfactory.puppetlabs.vm puppetfactory localhost localhost.localdomain localhost4/" /etc/hosts}
+  cputs "Editing /etc/sysconfig/network"
+  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=puppetfactory.puppetlabs.vm/" /etc/sysconfig/network}
+  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
+end
+
 desc "Apply bootstrap manifest"
 task :build do
  system('gem install r10k --no-RI --no-RDOC')
@@ -130,6 +142,15 @@ task :student do
   cputs "Building Student VM"
   Rake::Task["standalone_puppet"].execute
   Rake::Task["student_pre"].execute
+  Rake::Task["build"].execute
+  Rake::Task["post"].execute
+end
+
+desc "Full Puppetfactory VM Build"
+task :puppetfactory do
+  cputs "Building Puppetfactory VM"
+  Rake::Task["standalone_puppet"].execute
+  Rake::Task["puppetfactory_pre"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
 end
