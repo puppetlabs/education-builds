@@ -1,7 +1,9 @@
 {
   "vm_type": "puppetfactory",
   "guest_os_type": "centos-64",
-  "hostname": "training",
+  "os_name": "CentOS-7",
+  "vm_name": "centos-7-pe-3.7.2",
+  "hostname": "puppetfactory",
   "ks_file": "ks-puppetfactory",
   "training_branch": "master",
   "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
@@ -10,6 +12,6 @@
   "vm_cores": "4",
   "ptb_version": "2.16",
   "arch": "x86_64",
-  "iso_checksum": "08be09fd7276822bd3468af8f96198279ffc41f0",
-  "iso_url": "http://ftp.osuosl.org/pub/centos/6/isos/x86_64/CentOS-6.6-x86_64-bin-DVD1.iso"
+  "iso_checksum": "1795184136b8bdddabe50453cc2cc2d46f0f7c5e",
+  "iso_url": "http://ftp.osuosl.org/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1503-01.iso"
 }
