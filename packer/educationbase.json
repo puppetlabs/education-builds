@@ -15,6 +15,7 @@
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "ssh_username": "root",
       "ssh_password": "puppet",
+      "skip_compaction": "true",
       "ssh_wait_timeout": "10000s",      
       "tools_upload_flavor": "linux",
       "type": "vmware-iso",
