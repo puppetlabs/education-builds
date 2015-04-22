@@ -1,6 +1,6 @@
 {
   "vm_type": "puppetfactory",
-  "guest_os_type": "centos-64",
+  "guest_os_type": "rhel7-64",
   "os_name": "CentOS-7",
   "vm_name": "centos-7-pe-3.7.2",
   "hostname": "puppetfactory",
