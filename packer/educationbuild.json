@@ -3,9 +3,10 @@
     {
       "type": "vmware-vmx",
       "source_path": "output/{{ user `vm_type` }}-base-vmware/{{ user `vm_name` }}-base.vmx",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
-      "shutdown_command": "sudo halt",
+      "ssh_username": "root",
+      "ssh_password": "puppet",
+      "skip_compaction": "true",
+      "shutdown_command": "shutdown -h now",
       "output_directory": "output/{{ user `vm_type`}}-vmware/"
     }
   ],
