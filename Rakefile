@@ -109,7 +109,7 @@ desc "Apply bootstrap manifest"
 task :build do
  system('gem install r10k --no-RI --no-RDOC')
  Dir.chdir('/usr/src/puppetlabs-training-bootstrap') do
-  system('RUBYLIB="$RUBYLIB:/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" PATH="$PATH:/usr/local/bin:/usr/src/puppet/bin" r10k puppetfile install')
+  system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib:$RUBYLIB" PATH="$PATH:/usr/local/bin:/usr/src/puppet/bin" r10k puppetfile install')
  end
  system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
 end
