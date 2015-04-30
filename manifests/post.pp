@@ -11,9 +11,9 @@ yumrepo { [ 'updates', 'base', 'extras', 'epel']:
 file { [
         '/root/install.log',
         '/root/install.log.syslog',
-        'linux.iso',
-        'post.log',
-        'anaconda-ks.cfg'
+        '/root/linux.iso',
+        '/root/post.log',
+        '/root/anaconda-ks.cfg'
        ]:
   ensure => absent,
 }
