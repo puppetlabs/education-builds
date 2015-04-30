@@ -42,3 +42,9 @@ To start a training vagrant box for instructor use:
 
 To start a learning vagrant box:
 - `vagrant up learning`
+
+## Internal-only pre-release PE version builds
+Download the PE master and agent installers and place them in the `/vagrant/file_cache`
+directory. Update `version` for class `bootstrap::get_pe` and `bootstrap::get_32bit_agent`
+in `manifests/site.pp` to match the version string for the installers you downloaded.
+
