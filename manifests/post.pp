@@ -6,3 +6,14 @@ yumrepo { [ 'updates', 'base', 'extras', 'epel']:
   priority => '99',
   skip_if_unavailable => '1',
 }
+
+# Delete cruft left by install process
+file { [
+        '/root/install.log',
+        '/root/install.log.syslog',
+        'linux.iso',
+        'post.log',
+        'anaconda-ks.cfg'
+       ]:
+  ensure => absent,
+}
