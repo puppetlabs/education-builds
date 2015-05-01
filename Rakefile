@@ -116,6 +116,9 @@ end
 
 desc "Post build cleanup tasks"
 task :post do
+  # Put version file in place on VM
+  FileUtils.copy('version.yaml','/etc/vm-version')
+  # Run cleanup manifest
   system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/post.pp')
 end
 
