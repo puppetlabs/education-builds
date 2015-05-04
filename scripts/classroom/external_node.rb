@@ -89,7 +89,7 @@ end
 
 ############ Now start execution ############
 
-output = :json
+output = :yaml
 optparse = OptionParser.new { |opts|
   opts.banner = "Usage : external_node.rb [--output yaml|json] <node name>
 
