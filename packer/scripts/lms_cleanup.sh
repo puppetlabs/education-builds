@@ -13,6 +13,7 @@ done
 
 # Clean up PE installer files
 rm -rf /usr/src/puppet-enterprise*
+rm -rf /etc/yum.repos.d/puppet_enterprise.repo
 rm -rf /usr/src/puppet-enterprise
 rm -rf /usr/src/installer
 
