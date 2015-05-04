@@ -44,8 +44,7 @@ mod 'pltraining/rbac', '0.0.2'
 
 #mod 'pltraining/userprefs', '1.0.5'
 mod 'userprefs', 
-  :git => 'https://github.com/joshsamuelson/pltraining-userprefs',
-  :ref => 'path_fix'
+  :git => 'https://github.com/master/pltraining-userprefs',
 
 mod 'puppetlabs/concat', '1.2.0'
 #mod 'concat', 
