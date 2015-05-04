@@ -26,7 +26,7 @@ mod 'learning',
 
 mod 'lms',
   :git => 'https://github.com/joshsamuelson/pltraining-lms',
-  :ref => '3.8'
+  :ref => 'low_memory'
 
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
