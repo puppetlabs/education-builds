@@ -143,6 +143,9 @@ then
 
   [ $? -ne 0 ] && ((++ERRORCOUNT))
 
+  # create environments directory so we can populate it later
+  mkdir -p /etc/puppetlabs/puppet/environments
+
   # snapshot $ssldir for engineering debug purposes
   snapshot.sh ssldir
 fi
