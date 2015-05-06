@@ -7,7 +7,7 @@ require 'yaml'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
-PEVERSION = ENV['PEVERSION'] || '3.7.2'
+PEVERSION = ENV['PEVERSION'] || '3.8.0'
 PESTATUS = ENV['PESTATUS'] || 'release'
 SRCDIR = ENV['SRCDIR'] || '/usr/src'
 PUPPET_VER = '3.6.2'
