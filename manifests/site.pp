@@ -21,6 +21,7 @@ node /student/ {
   class { 'student': } 
 }
 
+
 node /learn/ {
   class { 'staging':
     path  => '/usr/src/installer/',
@@ -51,4 +52,8 @@ node /puppetfactory/ {
   include epel
   include bootstrap
   include localrepo
+}
+
+node /lms/ {
+  class { 'lms': }
 }

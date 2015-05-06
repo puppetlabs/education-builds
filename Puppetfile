@@ -24,13 +24,16 @@ mod 'training',
 mod 'learning',
   :git => 'https://github.com/puppetlabs/pltraining-learning'
 
+mod 'lms',
+  :git => 'https://github.com/puppetlabs/pltraining-lms',
+
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
 
 mod 'student',
   :git => 'https://github.com/puppetlabs/pltraining-student'
 
-mod 'pltraining/classroom', '1.2.6'
+mod 'pltraining/classroom', '1.2.8'
 #mod 'classroom', 
 #  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
 
@@ -38,7 +41,7 @@ mod 'pltraining/rbac', '0.0.2'
 #mod 'rbac', 
 #  :git => 'https://github.com/puppetlabs/pltraining-rbac'
 
-mod 'pltraining/userprefs', '1.0.5'
+mod 'pltraining/userprefs', '1.0.6'
 #mod 'userprefs', 
 #  :git => 'https://github.com/puppetlabs/pltraining-userprefs'
 
