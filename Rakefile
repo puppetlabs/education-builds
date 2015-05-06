@@ -66,6 +66,8 @@ task :training_pre do
   cputs "Editing /etc/sysconfig/network"
   %x{sed -ie "s/HOSTNAME.*/HOSTNAME=training.puppetlabs.vm/" /etc/sysconfig/network}
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
+  # Include /etc/hostname for centos7+
+  File.open('/etc/hostname', 'w') { |file| file.write("training.puppetlabs.vm") }
 
 end
 desc "Learning VM pre-install setup"
@@ -78,6 +80,8 @@ task :learning_pre do
   cputs "Editing /etc/sysconfig/network"
   %x{sed -ie "s/HOSTNAME.*/HOSTNAME=learning.puppetlabs.vm/" /etc/sysconfig/network}
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
+  # Include /etc/hostname for centos7+
+  File.open('/etc/hostname', 'w') { |file| file.write("learning.puppetlabs.vm") }
 
 end
 
@@ -91,6 +95,8 @@ task :student_pre do
   cputs "Editing /etc/sysconfig/network"
   %x{sed -ie "s/HOSTNAME.*/HOSTNAME=student.puppetlabs.vm/" /etc/sysconfig/network}
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
+  # Include /etc/hostname for centos7+
+  File.open('/etc/hostname', 'w') { |file| file.write("student.puppetlabs.vm") }
 end
 
 desc "Puppetfactory VM pre-install setup"
@@ -103,6 +109,8 @@ task :puppetfactory_pre do
   cputs "Editing /etc/sysconfig/network"
   %x{sed -ie "s/HOSTNAME.*/HOSTNAME=puppetfactory.puppetlabs.vm/" /etc/sysconfig/network}
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
+  # Include /etc/hostname for centos7+
+  File.open('/etc/hostname', 'w') { |file| file.write("puppetfactory.puppetlabs.vm") }
 end
 
 desc "LMS VM pre-install setup"
@@ -115,6 +123,8 @@ task :lms_pre do
   cputs "Editing /etc/sysconfig/network"
   %x{sed -ie "s/HOSTNAME.*/HOSTNAME=lms.puppetlabs.vm/" /etc/sysconfig/network}
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
+  # Include /etc/hostname for centos7+
+  File.open('/etc/hostname', 'w') { |file| file.write("lms.puppetlabs.vm") }
 end
 
 desc "Apply bootstrap manifest"
