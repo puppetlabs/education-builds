@@ -64,3 +64,6 @@ mod 'stahnma/epel', '1.0.2'
 mod 'nanliu/staging', '1.0.3'
 #mod 'staging', 
 #  :git => 'https://github.com/nanliu/puppet-staging'  
+
+mod 'puppetlabs/apache', '1.4.1'
+
