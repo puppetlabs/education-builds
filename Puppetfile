@@ -22,7 +22,8 @@ mod 'training',
   :git => 'https://github.com/puppetlabs/pltraining-training'
 
 mod 'learning',
-  :git => 'https://github.com/puppetlabs/pltraining-learning'
+  :git => 'https://github.com/joshsamuelson/pltraining-learning',
+  :ref => 'cleanup'
 
 mod 'lms',
   :git => 'https://github.com/puppetlabs/pltraining-lms'
