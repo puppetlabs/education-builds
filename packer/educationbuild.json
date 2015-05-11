@@ -47,7 +47,8 @@
         "scripts/{{user `vm_type`}}_build.sh",
         "scripts/cleanup.sh",
         "scripts/{{user `vm_type`}}_cleanup.sh",
-        "scripts/zerodisk.sh"
+        "scripts/zerodisk.sh",
+        "scripts/final.sh"
       ],
       "type": "shell"
     }
