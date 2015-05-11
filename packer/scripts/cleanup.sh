@@ -11,3 +11,6 @@ sudo yum clean all -y
 sudo rm -rf /tmp/*
 sudo rm -rf /vagrant
 sudo rm -rf /etc/puppet
+
+# Restore bash tweaks and tmux
+mv /root/bashrc.puppet /root/.bashrc.puppet

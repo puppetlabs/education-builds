@@ -18,7 +18,7 @@ file { [
   ensure => absent,
 }
 
-# Stop tmux so that packer can log in to LVM to finish build
-service { 'tmux':
-  ensure => stopped,
+# Disable additional bashrc tweaks until the build is done
+exec { 'mv /root/.bashrc.puppet /root/bashrc.puppet':
+  path => '/bin',
 }
