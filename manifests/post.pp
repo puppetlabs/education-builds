@@ -17,3 +17,8 @@ file { [
        ]:
   ensure => absent,
 }
+
+# Stop tmux so that packer can log in to LVM to finish build
+service { 'tmux':
+  ensure => stopped,
+}
