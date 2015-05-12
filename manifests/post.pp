@@ -18,7 +18,3 @@ file { [
   ensure => absent,
 }
 
-# Disable additional bashrc tweaks until the build is done
-exec { 'mv /root/.bashrc.puppet /root/bashrc.puppet':
-  path => '/bin',
-}
