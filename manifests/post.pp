@@ -17,3 +17,4 @@ file { [
        ]:
   ensure => absent,
 }
+
