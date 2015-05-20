@@ -51,9 +51,9 @@ function check ()
 
 function version ()
 {
- if [ -f /etc/puppetlabs-release ]
+ if [ -f /etc/vm-version ]
  then
-  echo "Version: `cat /etc/puppetlabs-release`"
+  echo "Version: `cat /etc/vm-version`"
   echo
  fi
 }
