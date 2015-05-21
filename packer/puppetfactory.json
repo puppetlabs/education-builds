@@ -10,7 +10,7 @@
   "vm_memsize": "8192",
   "vm_disk_size": "40960",
   "vm_cores": "4",
-  "ptb_version": "2.17",
+  "ptb_version": "2.18",
   "arch": "x86_64",
   "iso_checksum": "1795184136b8bdddabe50453cc2cc2d46f0f7c5e",
   "iso_url": "http://ftp.osuosl.org/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1503-01.iso"
