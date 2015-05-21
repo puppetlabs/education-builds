@@ -1,5 +1,5 @@
 # Get the lastest quest
-/root/bin/quest update
+yes| /root/bin/quest update
 
 # Stop all PE processes to free up memory
 for s in `find /etc/init.d/ -name pe* -type f -printf "%f\n"`

@@ -35,8 +35,8 @@ node /learn/ {
   include bootstrap
   include localrepo
   include learning
-  include learning::install
-  include learning::set_defaults
+  include bootstrap::install_pe
+  include bootstrap::set_defaults
 }
 
 node /puppetfactory/ {

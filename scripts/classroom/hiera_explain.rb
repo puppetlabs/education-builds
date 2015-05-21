@@ -9,13 +9,9 @@ hiera = Hiera.new(:config => "/etc/puppetlabs/puppet/hiera.yaml")
 unless ARGV.empty?
   ARGV.each do |arg|
     if arg =~ /^(.+?)=(.+?)$/
-      options[:scope][$1] = $2
+      scope[$1] = $2
     else
-      unless options[:default]
-        options[:default] = arg.dup
-      else
-        STDERR.puts "Don't know how to parse scope argument: #{arg}"
-      end
+      STDERR.puts "Don't know how to parse scope argument: #{arg}"
     end
   end
 end
