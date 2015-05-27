@@ -129,10 +129,13 @@ end
 
 desc "Apply bootstrap manifest"
 task :build do
+ cputs "Installing R10k"
  system('gem install r10k --no-RI --no-RDOC')
  Dir.chdir('/usr/src/puppetlabs-training-bootstrap') do
+  cputs "Running r10k Puppetfile install"
   system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib:$RUBYLIB" PATH="$PATH:/usr/local/bin:/usr/src/puppet/bin" r10k puppetfile install')
  end
+ cputs "Running puppet apply on site.pp"
  system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
 end
 
@@ -140,11 +143,14 @@ desc "Post build cleanup tasks"
 task :post do
   version = YAML.load(File.read('version.yaml'))
   # Put version file in place on VM
+  cputs "Editing /etc/vm-version"
   FileUtils.copy('version.yaml','/etc/vm-version')
+  cputs "Editing /etc/puppetlabs-release"
   File.open('/etc/puppetlabs-release', 'w') do |file|
     file.write "#{version[:major]}.#{version[:minor]}"
   end
   # Run cleanup manifest
+  cputs "Running cleanup manifest"
   system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/post.pp')
 end
 
