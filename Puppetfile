@@ -28,8 +28,7 @@ mod 'lms',
   :git => 'https://github.com/puppetlabs/pltraining-lms'
 
 mod 'localrepo',
-  :git => 'https://github.com/joshsamuelson/pltraining-localrepo',
-  :ref => 'centos7'
+  :git => 'https://github.com/puppetlabs/pltraining-localrepo'
 
 mod 'student',
   :git => 'https://github.com/puppetlabs/pltraining-student'
