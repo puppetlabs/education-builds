@@ -12,8 +12,8 @@ ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 $script = <<SCRIPT
-		yum install -y git yum-utils ruby-devel ruby rubygems
-		gem install rake json
+		yum install -y git yum-utils ruby-devel ruby rubygems gcc ntpdate
+		gem install rake json --no-rdoc --no-ri
 
 		cd /usr/src/
 		git clone https://github.com/puppetlabs/puppetlabs-training-bootstrap
