@@ -24,7 +24,8 @@ end
 def create_base_environment(name, base_template)
   env_config = {
     'template_id' => base_template, 
-    'name' => name 
+    'name' => name,
+    'suspend_on_idle' => 3600
   }
   return JSON.parse(RestClient.post(CONFIGURATION_URL, JSON.generate(env_config), HEADERS))
 end
@@ -88,6 +89,7 @@ environment = add_student_vms(environment['id'],classroom['students'],classroom[
 # Configure student machines hostnames, names, and mapped ports
 student_vms = []
 all_vms = []
+view_vms = []
 students = classroom['students']
 environment['vms'].each do |vm|
   if vm['id'] != master_vm_id then
@@ -96,6 +98,9 @@ environment['vms'].each do |vm|
     map_vm_ports(vm,classroom['student_ports'])
     # Add only Student VMs to student publish set
     student_vms.push( { 'vm_ref' => URL + 'vms/' + vm['id'], 'access' => 'use' } )
+
+    # Add students to the View Only publish set
+    #view_vms.push( { 'vm_ref' => URL + 'vms/' + vm['id'], 'access' => 'view_only' } )
   else
     set_vm_name(vm,classroom['master_name'])
     map_vm_ports(vm,classroom['master_ports'])
@@ -105,6 +110,7 @@ environment['vms'].each do |vm|
 end
 
 # Create published sets for classroom evironment
+#publish_view_vms = create_publish_set( environment['id'], all_vms, 'View Only' )
 publish_student_vms = create_publish_set( environment['id'], student_vms, 'Student VMs' )
 publish_all_vms = create_publish_set( environment['id'], all_vms, 'Instructor Dashboard' )
 
