@@ -1,6 +1,6 @@
 ---
 title: Windows Esstentials Apr23
-master_template_id: 554849 
+master_template_id: 596249
 master_name: master
 master_ports:
   - 22
@@ -12,10 +12,4 @@ student_vm_id:
 student_ports:
   - 80
 students:
-  - christianp
-  - adams
-  - paulf
-  - paulc
-  - iano
-  - toms
   - carthik
