@@ -13,6 +13,7 @@ ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 $script = <<SCRIPT
 		yum install -y git yum-utils ruby-devel ruby rubygems gcc ntpdate
+    yum clean all
 		gem install rake json --no-rdoc --no-ri
 
 		cd /usr/src/
