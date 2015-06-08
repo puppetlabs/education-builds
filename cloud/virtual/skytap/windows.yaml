@@ -1,5 +1,5 @@
 ---
-title: Windows Esstentials Test
+title: Windows Esstentials
 master_template_id: 596249
 master_name: master
 master_ports:
@@ -12,4 +12,5 @@ student_vm_id:
 student_ports:
   - 80
 students:
-  - carthik
+  - instructor
+  - adserver
