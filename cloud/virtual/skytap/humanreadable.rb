@@ -4,6 +4,15 @@ require 'yaml'
 # Load classroom information from yaml file 
 classroom = YAML.load(File.read(ARGV[0]))
 
+puts classroom['environment_name']
+puts '-------------------------'
+puts classroom['publish_sets'][0]['name'] + ":"
+puts classroom['publish_sets'][0]['url']
+puts classroom['publish_sets'][2]['name'] + ":"
+puts classroom['publish_sets'][2]['url']
+puts '-------------------------'
+puts
+
 classroom['vms'].each do |vm|
   puts vm['name']
   puts '-------------------------'
