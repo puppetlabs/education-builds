@@ -1,3 +1,6 @@
+## Version 2.20
+* Smaller VM footprint for LMS vm
+
 ## Version 2.19
 * Centos 7 build for puppetfactory/infrastructure base VM
 * Rakefile outputs progress
