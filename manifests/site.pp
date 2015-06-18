@@ -5,10 +5,10 @@ node default {
     group => 'root',
   }
   class { 'bootstrap::get_pe': 
-    version => '3.8.0' 
+    version => '3.8.1'
   }
   class { 'bootstrap::get_32bit_agent': 
-    version => '3.8.0' 
+    version => '3.8.1' 
   }
   include epel
   include bootstrap
@@ -29,7 +29,7 @@ node /learn/ {
     group => 'root',
   }
   class { 'bootstrap::get_pe': 
-    version => '3.8.0' 
+    version => '3.8.1' 
   }
   include epel
   include bootstrap
@@ -46,7 +46,7 @@ node /puppetfactory/ {
     group => 'root',
   }
   class { 'bootstrap::get_pe': 
-    version => '3.8.0' 
+    version => '3.8.1' 
   }  
   class { 'bootstrap::install_pe':}
   include epel
