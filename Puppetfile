@@ -23,6 +23,7 @@ mod 'training',
 
 mod 'learning',
   :git => 'https://github.com/puppetlabs/pltraining-learning'
+  :ref => 'pe-repo_fix'
 
 mod 'lms',
   :git => 'https://github.com/puppetlabs/pltraining-lms'
