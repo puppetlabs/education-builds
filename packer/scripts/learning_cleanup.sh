@@ -9,8 +9,6 @@ rm -rf /root/puppet-enterprise*
 rm -rf /root/puppet-enterprise
 rm -rf /usr/src/installer
 
-# Remove packages PE will regenerate agent installer
-rm -rf /opt/puppet/packages
 
 # Clean up other random files
 rm -rf /usr/src/puppetlabs-training-bootstrap
