@@ -1,8 +1,8 @@
 {
 	"vm_type": "student",
-	"vm_name": "student-3.8.0",
+	"vm_name": "student-3.8.1",
 	"hostname": "student",
-  "pe_version": "3.8.0",
+  "pe_version": "3.8.1",
 	"ks_file": "ks-student",
 	"training_branch": "master",
 	"training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",

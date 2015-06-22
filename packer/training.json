@@ -8,7 +8,6 @@
   "vm_memsize": "4096",
   "vm_disk_size": "20480",
   "vm_cores": "2",
-  "ptb_version": "2.17",
   "arch": "x86_64",
   "iso_checksum": "08be09fd7276822bd3468af8f96198279ffc41f0",
   "iso_url": "http://ftp.osuosl.org/pub/centos/6/isos/x86_64/CentOS-6.6-x86_64-bin-DVD1.iso"
