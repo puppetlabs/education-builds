@@ -1,3 +1,6 @@
+## Version 2.21
+* PE 3.8.1 support
+
 ## Version 2.20
 * Smaller VM footprint for LMS vm
 
