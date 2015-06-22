@@ -34,7 +34,9 @@ node /learn/ {
   include epel
   include bootstrap
   include localrepo
-  include learning
+  class { 'learning':
+    git_branch => 'master'
+  }
   include bootstrap::install_pe
   include bootstrap::set_defaults
 }
