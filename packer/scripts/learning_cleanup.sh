@@ -16,3 +16,5 @@ rm -rf /usr/src/puppet
 rm -rf /usr/share/doc/*
 rm -rf /usr/src/kernels
 
+# Exec bash to enable bash history
+exec bash
