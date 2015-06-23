@@ -54,7 +54,7 @@ node /puppetfactory/ {
   include epel
   include bootstrap
   include localrepo
-  include lms
+  include lms::labdeps
 }
 
 node /lms/ {
