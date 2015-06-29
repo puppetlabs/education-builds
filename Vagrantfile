@@ -43,7 +43,7 @@ SCRIPT
 	end
 
 	config.vm.define :student do |student_config|
-		student_config.vm.box = "puppetlabs/centos-6.5-32-nocm"
+		student_config.vm.box = "puppetlabs/centos-6.6-32-nocm"
 		student_config.vm.network "public_network"
 
 		student_config.vm.provider "virtualbox" do |v|
@@ -64,7 +64,7 @@ SCRIPT
 
 
 	config.vm.define :learning, autostart: false do |learning_config|
-		learning_config.vm.box = "puppetlabs/centos-6.5-32-nocm"
+		learning_config.vm.box = "puppetlabs/centos-6.6-32-nocm"
 
 		#Uncomment this line to use bridged networking
 		#learning_config.vm.network "public_network"
