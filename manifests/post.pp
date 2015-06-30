@@ -1,6 +1,8 @@
+node /(lms|training)/ {
 # Put LMS files in place
 include lms::lab_repo
 include lms::course_selector
+}
 
 # Manifest for post build cleanup
 
