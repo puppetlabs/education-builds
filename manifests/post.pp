@@ -1,25 +1,27 @@
-node /(lms|training)/ {
-# Put LMS files in place
-include lms::lab_repo
-include lms::course_selector
-}
-
 # Manifest for post build cleanup
 
-# Disable non-local yum repos
-yumrepo { [ 'updates', 'base', 'extras', 'epel']:
-  enabled  => '0',
-  priority => '99',
-  skip_if_unavailable => '1',
-}
+node default {
+  node /(lms|training)/ {
+    # Put LMS files in place
+    include lms::lab_repo
+    include lms::course_selector
+  }
 
-# Delete cruft left by install process
-file { [
-  '/root/install.log',
-  '/root/install.log.syslog',
-  '/root/linux.iso',
-  '/root/post.log',
-  '/root/anaconda-ks.cfg'
-]:
-  ensure => absent,
+  # Disable non-local yum repos
+  yumrepo { [ 'updates', 'base', 'extras', 'epel']:
+    enabled  => '0',
+    priority => '99',
+    skip_if_unavailable => '1',
+  }
+
+  # Delete cruft left by install process
+  file { [
+    '/root/install.log',
+    '/root/install.log.syslog',
+    '/root/linux.iso',
+    '/root/post.log',
+    '/root/anaconda-ks.cfg'
+  ]:
+    ensure => absent,
+  }
 }
