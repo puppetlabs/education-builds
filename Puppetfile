@@ -32,7 +32,8 @@ mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
 
 mod 'student',
-  :git => 'https://github.com/puppetlabs/pltraining-student'
+  :git => 'https://github.com/joshsamuelson/pltraining-student',
+  :ref => 'roles'
 
 mod 'pltraining/classroom', '1.2.8'
 #mod 'classroom', 
