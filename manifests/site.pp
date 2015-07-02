@@ -4,14 +4,8 @@ node default {
     owner => 'root',
     group => 'root',
   }
-  class { 'bootstrap::get_pe': 
-    version => '3.8.1'
-  }
-  class { 'bootstrap::get_32bit_agent': 
-    version => '3.8.1' 
-  }
   include epel
-  include bootstrap
+  include bootstrap::role::training
   include localrepo
   include training
 }
@@ -28,17 +22,12 @@ node /learn/ {
     owner => 'root',
     group => 'root',
   }
-  class { 'bootstrap::get_pe': 
-    version => '3.8.1' 
-  }
   include epel
-  include bootstrap
+  include bootstrap::role::learning
   include localrepo
   class { 'learning':
     git_branch => 'master'
   }
-  include bootstrap::install_pe
-  include bootstrap::set_defaults
 }
 
 node /puppetfactory/ {
@@ -47,12 +36,8 @@ node /puppetfactory/ {
     owner => 'root',
     group => 'root',
   }
-  class { 'bootstrap::get_pe': 
-    version => '3.8.1' 
-  }  
-  class { 'bootstrap::install_pe':}
   include epel
-  include bootstrap
+  include bootstrap::role::puppetfactory
   include localrepo
 }
 
