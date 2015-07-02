@@ -12,7 +12,7 @@ node default {
 
 node /student/ {
   include epel
-  class { 'student': } 
+  include bootstrap::role::student
 }
 
 
