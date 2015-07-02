@@ -23,14 +23,14 @@ mod 'training',
   :git => 'https://github.com/puppetlabs/pltraining-training'
 
 mod 'learning',
-  :git => 'https://github.com/puppetlabs/pltraining-learning'
+  :git => 'https://github.com/joshsamuelson/pltraining-learning',
+  :ref => 'roles'
 
 mod 'lms',
   :git => 'https://github.com/puppetlabs/pltraining-lms'
 
 mod 'localrepo',
-  :git => 'https://github.com/joshsamuelson/pltraining-localrepo',
-  :ref => 'yum_utils'
+  :git => 'https://github.com/puppetlabs/pltraining-localrepo'
 
 mod 'student',
   :git => 'https://github.com/joshsamuelson/pltraining-student',
