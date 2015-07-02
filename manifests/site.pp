@@ -12,11 +12,8 @@ node /student/ {
 
 node /learn/ {
   include epel
-  include bootstrap::role::learning
   include localrepo
-  class { 'learning':
-    git_branch => 'master'
-  }
+  include bootstrap::role::learning
 }
 
 node /puppetfactory/ {
