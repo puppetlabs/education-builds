@@ -29,7 +29,8 @@ mod 'lms',
   :git => 'https://github.com/puppetlabs/pltraining-lms'
 
 mod 'localrepo',
-  :git => 'https://github.com/puppetlabs/pltraining-localrepo'
+  :git => 'https://github.com/joshsamuelson/pltraining-localrepo',
+  :ref => 'yum_utils'
 
 mod 'student',
   :git => 'https://github.com/joshsamuelson/pltraining-student',
