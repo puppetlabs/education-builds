@@ -16,12 +16,10 @@ moduledir './modules/'
 
 
 mod 'bootstrap', 
-  :git => 'https://github.com/joshsamuelson/pltraining-bootstrap',
-  :ref => 'init_refactor'
+  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
 
 mod 'learning',
-  :git => 'https://github.com/joshsamuelson/pltraining-learning',
-  :ref => 'roles'
+  :git => 'https://github.com/puppetlabs/pltraining-learning'
 
 mod 'lms',
   :git => 'https://github.com/puppetlabs/pltraining-lms'
