@@ -19,8 +19,8 @@ mod 'bootstrap',
   :git => 'https://github.com/joshsamuelson/pltraining-bootstrap',
   :ref => 'init_refactor'
 
-mod 'training',
-  :git => 'https://github.com/puppetlabs/pltraining-training'
+#mod 'training',
+#  :git => 'https://github.com/puppetlabs/pltraining-training'
 
 mod 'learning',
   :git => 'https://github.com/joshsamuelson/pltraining-learning',
@@ -32,9 +32,9 @@ mod 'lms',
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
 
-mod 'student',
-  :git => 'https://github.com/joshsamuelson/pltraining-student',
-  :ref => 'roles'
+#mod 'student',
+#  :git => 'https://github.com/joshsamuelson/pltraining-student',
+#  :ref => 'roles'
 
 mod 'pltraining/classroom', '1.2.8'
 #mod 'classroom', 
