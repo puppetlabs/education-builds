@@ -1,3 +1,7 @@
+## Version 2.22
+
+* Refactored to use roles
+
 ## Version 2.21
 * PE 3.8.1 support
 
