@@ -14,7 +14,8 @@
     {
       "type": "ovftool",
       "format": "ova",
-      "target": "output/puppet-{{user `pe_version`}}-{{ user `vm_type` }}-{{ user `ptb_version` }}.ova"
+      "target": "output/puppet-{{user `pe_version`}}-{{ user `vm_type` }}-{{ user `ptb_version` }}.ova",
+      "compression": "9"
     },
     {
       "type": "vagrant",
@@ -72,6 +73,6 @@
     "vm_memsize": "4096",
     "vm_disk_size": "20480",
     "vm_cores": "2",
-    "ptb_version": "2.22"
+    "ptb_version": "2.23"
   }
 }
