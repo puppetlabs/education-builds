@@ -17,8 +17,6 @@ rm -rf /usr/share/doc/*
 rm -rf /usr/src/kernels
 rm -rf /var/cache/yum
 rm -rf /opt/puppet/share/ri
-rm -rf /usr/src/facter
-rm -rf /usr/src/hiera
 rm -rf /home/vagrant/linux.iso
 
 yum clean all
