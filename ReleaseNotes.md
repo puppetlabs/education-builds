@@ -1,3 +1,7 @@
+## Version 2.23
+* Build using Puppet 3.8.1 and Facter 1.7.5
+* Clean yum cache at the end of build to save space
+
 ## Version 2.22
 
 * Refactored to use roles
