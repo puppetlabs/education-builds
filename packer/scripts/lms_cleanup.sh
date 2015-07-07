@@ -26,3 +26,4 @@ rm -rf /usr/src/puppet
 rm -rf /usr/share/doc/*
 rm -rf /usr/src/kernels
 
+yum clean all
