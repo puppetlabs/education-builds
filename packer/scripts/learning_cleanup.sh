@@ -15,5 +15,6 @@ rm -rf /usr/src/puppetlabs-training-bootstrap
 rm -rf /usr/src/puppet
 rm -rf /usr/share/doc/*
 rm -rf /usr/src/kernels
+rm -rf /var/cache/yum
 
 yum clean all
