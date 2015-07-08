@@ -1,8 +1,3 @@
-if $::hostname == "lms" {
-  # Put LMS files in place
-  include lms::lab_repo
-  include lms::course_selector
-}
 # Disable non-local yum repos
 yumrepo { [ 'updates', 'base', 'extras', 'epel']:
   enabled  => '0',

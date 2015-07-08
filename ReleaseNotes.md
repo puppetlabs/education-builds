@@ -1,3 +1,6 @@
+## Version 2.24
+* Using role for LMS
+
 ## Version 2.23
 * Build using Puppet 3.8.1 and Facter 2.4.4
 * Clean yum cache at the end of build to save space
