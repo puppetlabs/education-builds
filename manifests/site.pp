@@ -11,5 +11,5 @@ node /puppetfactory/ {
   include bootstrap::role::puppetfactory
 }
 node /lms/ {
-  class { 'lms': }
+  include bootstrap::role::lms
 }
