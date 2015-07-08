@@ -33,6 +33,7 @@
         "scripts/base.sh",
         "scripts/sshd.sh",
         "scripts/pre_build.sh",
+        "scripts/vmtools.sh",
         "scripts/cleanup.sh"
       ],
       "type": "shell"
