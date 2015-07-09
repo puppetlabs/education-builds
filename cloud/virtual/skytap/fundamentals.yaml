@@ -1,14 +1,14 @@
 ---
 title: Fundamentals Classroom
-master_template_id: 554849 
+master_template_id: 624037 
 master_name: master
 master_ports:
   - 22
   - 443
   - 3000
-student_template_id: 554853
+student_template_id: 624041
 student_vm_id:
-  - 5039920
+  - 6079760
 student_ports:
   - 22
   - 80
