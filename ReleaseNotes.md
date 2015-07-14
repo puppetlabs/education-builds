@@ -1,3 +1,6 @@
+## Version 2.25
+* Rebuild offline yum cache at the end of the build
+
 ## Version 2.24
 * Using role for LMS
 
