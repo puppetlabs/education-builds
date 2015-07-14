@@ -35,7 +35,7 @@ mod 'pltraining/rbac', '0.0.2'
 #mod 'rbac', 
 #  :git => 'https://github.com/puppetlabs/pltraining-rbac'
 
-mod 'pltraining/userprefs', '1.0.6'
+mod 'pltraining/userprefs', '1.0.7'
 #mod 'userprefs', 
 #  :git => 'https://github.com/puppetlabs/pltraining-userprefs'
 
