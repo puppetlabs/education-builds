@@ -14,8 +14,7 @@
     {
       "type": "ovftool",
       "format": "ova",
-      "target": "output/puppet-{{user `pe_version`}}-{{ user `vm_type` }}-{{ user `ptb_version` }}.ova",
-      "compression": "9"
+      "target": "output/puppet-{{user `pe_version`}}-{{ user `vm_type` }}-{{ user `ptb_version` }}.ova"
     },
     {
       "type": "vagrant",
