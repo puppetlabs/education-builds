@@ -22,16 +22,14 @@ def build_auth(uri)
   https
 end
 
-def make_uri(path)
-  # if the caller included a slash prefix, then remove it
-  path.sub!(/^\//, '')
-  URI.parse("https://#{CONF['server']}:#{CONF['port']}/rbac-api/v1/#{path}")
+def make_uri(path, prefix = '/rbac-api/v1')
+  URI.parse("https://#{CONF['server']}:#{CONF['port']}#{prefix}#{path}")
 end
 
 def fetch_redirect(uri_str, limit = 10)
   raise ArgumentError, 'HTTP redirection has reached the limit beyond 10' if limit == 0
 
-  uri   = make_uri(uri_str)
+  uri   = make_uri(uri_str, nil)
   https = build_auth(uri)
 
   request = Net::HTTP::Get.new(uri.request_uri)
