@@ -1,12 +1,12 @@
 #! /usr/bin/env ruby
 require 'fileutils'
 
-WIDTH = `tput cols`.to_i - 12
-
 def run_with_notice(command, message)
+  width = `tput cols`.to_i - 12
+
   printf("\r#{message}")
   system("#{command} >/dev/null")
-  printf("\r%-#{WIDTH}s[\033[32m  OK  \033[0m]\n", message)
+  printf("\r%-#{width}s[\033[32m  OK  \033[0m]\n", message)
 end
 
 # make sure we've got an ssldir to work with
