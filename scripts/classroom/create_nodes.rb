@@ -2,10 +2,10 @@
 require 'fileutils'
 
 def run_with_notice(command, message)
-  width = `tput cols`.to_i - 12
-
   printf("\r#{message}")
   system("#{command} >/dev/null")
+
+  width = `tput cols`.to_i - 12
   printf("\r%-#{width}s[\033[32m  OK  \033[0m]\n", message)
 end
 
