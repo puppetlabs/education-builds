@@ -1,3 +1,6 @@
+## Version 2.26
+* Run puppet after learning VM build
+
 ## Version 2.25
 * Rebuild offline yum cache at the end of the build
 
