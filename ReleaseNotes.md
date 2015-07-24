@@ -1,3 +1,6 @@
+## Version 2.26
+* 2015.2 build and removing defunct root certs
+
 ## Version 2.25
 * Rebuild offline yum cache at the end of the build
 
