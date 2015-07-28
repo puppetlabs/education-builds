@@ -1,3 +1,7 @@
+# Run puppet once
+/usr/local/bin/puppet agent -t
+
+
 # Stop all PE processes to free up memory
 for s in `find /etc/init.d/ -name pe* -type f -printf "%f\n"`
 do
