@@ -1,1 +1,0 @@
-verify_classroom.sh

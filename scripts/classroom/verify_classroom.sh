@@ -3,43 +3,37 @@
 source puppetlabs_functions.sh
 version
 
-if [ $# -ne 1 ]
+if [ $# -eq 1 ]
 then
-  echo "Please call this script with the username you provided to the instructor."
-  echo "For example, ${0} <myname>"
+  if [ $1 != "master" ]
+  then
+    echo "This script should be run with no arguments."
+    echo "('master' is still accepted for backwards compatibility, but it's ignored.)"
+    exit 1
+  fi
+fi
+if [ $# -gt 1 ]
+then
+  echo "This script should be run with no arguments."
   exit 1
 fi
-NAME=$1
 
 echo "Verifying Puppet Labs Training classroom setup:"
+echo
 
 ###### start running checks ######
 
-check "[ '`hostname`' == '${NAME}.puppetlabs.vm' ]"                 \
+check "[ '`hostname`' == 'master.puppetlabs.vm' ]"                 \
       "Checking hostname"                                           \
-      "You should set the hostname to ${NAME}.puppetlabs.vm"
+      "You should set the hostname to master.puppetlabs.vm"
 
-# `hostname -s` should be alphanumeric, can contain underscores, and
-# contain at least one alphabetical character, with no caps, and finally,
-# not be composed of all numerals:
-check "echo `hostname -s` | grep -Pq '^(?=.*[a-z])\A[a-z0-9][a-z0-9._]+\z' " \
-      "Checking hostname validity"                                  \
-      "Hostnames should be alphanumeric with at least one alphabetical character"
-
-check "grep HOSTNAME=${NAME}.puppetlabs.vm /etc/sysconfig/network"  \
+check "grep HOSTNAME=master.puppetlabs.vm /etc/sysconfig/network"  \
       "Checking that the hostname will be set on boot"              \
-      "You should set HOSTNAME=${NAME}.puppetlabs.vm in /etc/sysconfig/network"
+      "You should set HOSTNAME=master.puppetlabs.vm in /etc/sysconfig/network"
 
-check "ping -c1 master.puppetlabs.vm"                               \
-      "Checking master name resolves and is pingable"               \
-      "You should have an entry in /etc/hosts for master.puppetlabs.vm"
-
-check "ping -c1 ${NAME}.puppetlabs.vm"                              \
+check "ping -c1 master.puppetlabs.vm"                              \
       "Checking local hostname resolution"                          \
-      "You should have an entry in /etc/hosts for ${NAME}.puppetlabs.vm"
-
-# Checks for only the master go below this line
-[[ "`hostname`" != 'master.puppetlabs.vm' ]]  && exit 0
+      "You should have an entry in /etc/hosts for master.puppetlabs.vm"
 
 check "[[ '`grep processor /proc/cpuinfo | wc -l`' -gt '1' ]]"      \
       "Checking core count for classroom Master"                    \

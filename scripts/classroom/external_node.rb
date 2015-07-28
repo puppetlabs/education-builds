@@ -1,4 +1,4 @@
-#!/opt/puppet/bin/ruby
+#!/opt/puppetlabs/puppet/bin/ruby
 #
 # The /nodes endpoint is now authenticated, and has an actual terminus.
 # As such, the external_nodes script was deprecated. It was, however,
@@ -66,14 +66,14 @@ class SimpleClassifier
       line.split('=').map(&:strip)
     end
     puppetdb = Hash[puppetdb]
-    @puppetdb = HttpClient.new(URI.parse("https://#{puppetdb['server']}:#{puppetdb['port']}"))
+    @puppetdb = HttpClient.new(URI.parse(puppetdb['server_urls'].split(',').first))
 
     classifier = YAML.load_file(File.join(confdir, 'classifier.yaml'))
     @classifier = HttpClient.new(URI.parse("https://#{classifier['server']}:#{classifier['port']}#{classifier['prefix']}"))
   end
 
   def facts(node)
-    facts = @puppetdb.get("/v4/nodes/#{node}/facts")
+    facts = @puppetdb.get("/pdb/query/v4/nodes/#{node}/facts")
     facts.inject { |h,fact| h.merge!(fact['name'] => fact['value']) }
   end
 

@@ -1,9 +1,9 @@
-#! /opt/puppet/bin/ruby
+#! /opt/puppetlabs/puppet/bin/ruby
 require 'hiera'
 
 # Use MCO's fact cache because all nodes will have them
 scope = YAML.load_file("/etc/puppetlabs/mcollective/facts.yaml")
-hiera = Hiera.new(:config => "/etc/puppetlabs/puppet/hiera.yaml")
+hiera = Hiera.new(:config => "/etc/puppetlabs/code/hiera.yaml")
 
 # Cribbed from Hiera source to ensure we're parsing the same way.
 unless ARGV.empty?
