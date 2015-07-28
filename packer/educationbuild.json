@@ -2,7 +2,7 @@
   "builders": [
     {
       "type": "vmware-vmx",
-      "source_path": "output/{{ user `vm_type` }}-base-vmware/{{ user `vm_name` }}-base.vmx",
+      "source_path": "output/{{ user `vm_type` }}-base-vmware/{{ user `vm_type` }}-base.vmx",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "skip_compaction": "true",
@@ -18,7 +18,7 @@
     },
     {
       "type": "vagrant",
-      "output": "output/{{user `vm_name`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
+      "output": "output/{{user `vm_type`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
       "keep_input_artifact": true
     }
   ],
@@ -61,17 +61,16 @@
     "ks_file": "ks.cfg",
     "os_name": "CentOS-6.6",
     "pe_status": "release",
-    "pe_version": "3.8.1",
+    "pe_version": "2015.2.0",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "vagrant",
     "system_user_password": "vagrant",
     "training_branch": "master",
     "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
-    "vm_name": "centos-6.6-pe-3.8.1",
     "vm_type": "training",
     "vm_memsize": "4096",
     "vm_disk_size": "20480",
     "vm_cores": "2",
-    "ptb_version": "2.25"
+    "ptb_version": "2.26"
   }
 }

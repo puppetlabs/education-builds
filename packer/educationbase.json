@@ -19,7 +19,7 @@
       "ssh_wait_timeout": "10000s",      
       "tools_upload_flavor": "linux",
       "type": "vmware-iso",
-      "vm_name": "{{user `vm_name`}}-base",
+      "vm_name": "{{user `vm_type`}}-base",
       "vmx_data": {
         "cpuid.coresPerSocket": "1",
         "memsize": "{{user `vm_memsize`}}",
@@ -47,18 +47,15 @@
     "ks_file": "ks.cfg",
     "os_name": "CentOS-6.6",
     "guest_os_type": "centos",
-    "pe_status": "release",
-    "pe_version": "3.8.1",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "vagrant",
     "system_user_password": "vagrant",
     "training_branch": "master",
     "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
-    "vm_name": "centos-6.6-pe-3.8.1",
     "vm_type": "training",
     "vm_memsize": "4096",
     "vm_disk_size": "20480",
     "vm_cores": "2",
-    "ptb_version": "2.21"
+    "ptb_version": "2.26"
   }
 }

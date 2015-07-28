@@ -1,4 +1,5 @@
 ## Version 2.26
+* 2015.2 build and removing defunct root certs
 * Run puppet after learning VM build
 
 ## Version 2.25
