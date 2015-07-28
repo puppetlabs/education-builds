@@ -61,7 +61,7 @@ cp /etc/puppetlabs/puppet/ssl/private_keys/${CERTNAME}.pem /etc/puppetlabs/puppe
 chown -R pe-puppetdb:pe-puppetdb /etc/puppetlabs/puppetdb/ssl
 echo "PuppetDB certificates regenerated"
 
-rm -rf /opt/puppet/var/lib/pgsql/9.2/data/certs/*
+rm -rf /opt/puppetlabs/server/data/postgresql/9.4/data/certs/*
 cp /etc/puppetlabs/puppet/ssl/certs/${CERTNAME}.pem /opt/puppetlabs/server/data/postgresql/9.4/data/certs/${CERTNAME}.cert.pem
 cp /etc/puppetlabs/puppet/ssl/public_keys/${CERTNAME}.pem /opt/puppetlabs/server/data/postgresql/9.4/data/certs/${CERTNAME}.public_key.pem
 cp /etc/puppetlabs/puppet/ssl/private_keys/${CERTNAME}.pem /opt/puppetlabs/server/data/postgresql/9.4/data/certs/${CERTNAME}.private_key.pem
@@ -69,7 +69,7 @@ chmod 400 /opt/puppetlabs/server/data/postgresql/9.4/data/certs/*
 chown pe-postgres:pe-postgres /opt/puppetlabs/server/data/postgresql/9.4/data/certs/*
 echo "PostgreSQL certificates regenerated"
 
-rm -rf /opt/puppet/share/console-services/certs/*
+rm -rf /opt/puppetlabs/server/data/console-services/certs/*
 cp /etc/puppetlabs/puppet/ssl/certs/pe-internal-classifier.pem /opt/puppetlabs/server/data/console-services/certs/pe-internal-classifier.cert.pem
 cp /etc/puppetlabs/puppet/ssl/public_keys/pe-internal-classifier.pem /opt/puppetlabs/server/data/console-services/certs/pe-internal-classifier.public_key.pem
 cp /etc/puppetlabs/puppet/ssl/private_keys/pe-internal-classifier.pem /opt/puppetlabs/server/data/console-services/certs/pe-internal-classifier.private_key.pem
@@ -82,7 +82,6 @@ cp /etc/puppetlabs/puppet/ssl/private_keys/pe-internal-dashboard.pem /opt/puppet
 chown -R pe-console-services:pe-console-services /opt/puppetlabs/server/data/console-services/certs
 echo "Puppet Enterprise Console Services certificates regenerated"
 
-rm -rf /opt/puppet/share/puppet-dashboard/certs/*
 cp /etc/puppetlabs/puppet/ssl/certs/pe-internal-dashboard.pem /opt/puppetlabs/server/data/console-services/certs/pe-internal-dashboard.cert.pem
 cp /etc/puppetlabs/puppet/ssl/public_keys/pe-internal-dashboard.pem /opt/puppetlabs/server/data/console-services/certs/pe-internal-dashboard.public_key.pem
 cp /etc/puppetlabs/puppet/ssl/private_keys/pe-internal-dashboard.pem /opt/puppetlabs/server/data/console-services/certs/pe-internal-dashboard.private_key.pem
