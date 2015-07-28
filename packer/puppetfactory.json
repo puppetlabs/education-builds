@@ -2,7 +2,6 @@
   "vm_type": "puppetfactory",
   "guest_os_type": "rhel7-64",
   "os_name": "CentOS-7",
-  "vm_name": "centos-7-pe-3.8.1",
   "hostname": "puppetfactory",
   "ks_file": "ks-puppetfactory",
   "training_branch": "master",
