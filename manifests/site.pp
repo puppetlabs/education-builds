@@ -11,5 +11,5 @@ node /puppetfactory/ {
   include bootstrap::role::puppetfactory
 }
 node /lms/ {
-  include bootstrap::role::lms
+  include bootstrap::role::lms_vm
 }
