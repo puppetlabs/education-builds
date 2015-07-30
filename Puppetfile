@@ -64,3 +64,5 @@ mod 'puppetlabs/apache', '1.5.0'
 # Dependencies for docker/beaker on Self paced
 mod 'garethr/docker'
 mod 'puppetlabs/apt'
+
+mod 'jfryman/nginx', '0.2.7'
