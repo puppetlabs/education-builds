@@ -1,3 +1,8 @@
+## Version 2.27
+* 2015.2 offline classroom support
+* Learning VM 2015.2 build
+* LMS Centos7/2015.2 build
+
 ## Version 2.26
 * 2015.2 build and removing defunct root certs
 * Run puppet after learning VM build
