@@ -27,11 +27,11 @@ mod 'lms',
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
 
-mod 'pltraining/classroom', '1.2.12'
+mod 'pltraining/classroom', '1.3.2'
 #mod 'classroom', 
 #  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
 
-mod 'pltraining/rbac', '0.0.3'
+mod 'pltraining/rbac', '0.0.4'
 #mod 'rbac', 
 #  :git => 'https://github.com/puppetlabs/pltraining-rbac'
 
@@ -39,15 +39,17 @@ mod 'pltraining/userprefs', '1.0.7'
 #mod 'userprefs', 
 #  :git => 'https://github.com/puppetlabs/pltraining-userprefs'
 
-mod 'puppetlabs/concat', '1.2.3'
+mod 'pltraining/dirtree'
+
+mod 'puppetlabs/concat', '1.2.4'
 #mod 'concat', 
 #  :git => 'https://github.com/puppetlabs/puppetlabs-concat'
 
-mod 'puppetlabs/stdlib', '4.6.0'
+mod 'puppetlabs/stdlib', '4.7.0'
 #mod 'stdlib', 
 #  :git => 'https://github.com/puppetlabs/puppetlabs-stdlib'
 
-mod 'puppetlabs/vcsrepo', '1.3.0'
+mod 'puppetlabs/vcsrepo', '1.3.1'
 #mod 'vcsrepo',
 #  :git => 'https://github.com/puppetlabs/puppetlabs-vcsrepo'
 
