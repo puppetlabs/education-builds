@@ -130,7 +130,7 @@ end
 desc "Apply bootstrap manifest"
 task :build do
  cputs "Installing R10k"
- system('gem install r10k -v 1.5.1 --no-RI --no-RDOC')
+ system('gem install r10k --no-RI --no-RDOC')
  Dir.chdir('/usr/src/puppetlabs-training-bootstrap') do
   cputs "Running r10k Puppetfile install"
   system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib:$RUBYLIB" PATH="$PATH:/usr/local/bin:/usr/src/puppet/bin" r10k puppetfile install')
