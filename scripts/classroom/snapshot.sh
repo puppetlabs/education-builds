@@ -8,7 +8,7 @@ TIMESTAMP=`date +%s`
 
 case $1 in
   ssldir|ssl)
-    tar -C / -czf ${CHECKPOINTS}/ssldir-${TIMESTAMP}.tar.gz etc/puppetlabs/puppet/ssl/
+    tar -C / -czf ${CHECKPOINTS}/ssldir-${TIMESTAMP}.tar.gz /etc/puppetlabs/puppet/ssl/
     ;;
   submit)
     [[ "`hostname`" =~ ([a-z0-9]+).puppetlabs.vm$ ]]
