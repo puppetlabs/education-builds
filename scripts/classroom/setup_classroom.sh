@@ -103,8 +103,9 @@ then
   install_args="-s agent:ca_server=master.puppetlabs.vm"
   install_host="${student_master_name}.puppetlabs.vm"
 else
-  hostname="${username}"
+  hostname="${username}":
   aliases="${username}"
+  install_args="-s main:user=pe-puppet -s main:group=pe-puppet -s main:mkusers=true"
   install_host="master.puppetlabs.vm"
 fi
 
