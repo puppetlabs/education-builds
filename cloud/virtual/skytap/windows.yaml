@@ -1,6 +1,6 @@
 ---
 title: Windows Esstentials
-master_template_id: 624037
+master_template_id: 640441
 master_name: master
 master_ports:
   - 22
@@ -14,3 +14,5 @@ student_ports:
 students:
   - instructor
   - adserver
+  - student1
+  - student2
