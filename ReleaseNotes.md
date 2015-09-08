@@ -1,3 +1,6 @@
+## Version 2.31
+* Timezone fix for base VMs
+
 ## Version 2.29
 * Learning VM memory improvments
 
