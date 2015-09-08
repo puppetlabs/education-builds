@@ -23,7 +23,8 @@
       "vmx_data": {
         "cpuid.coresPerSocket": "1",
         "memsize": "{{user `vm_memsize`}}",
-        "numvcpus": "{{user `vm_cores`}}"
+        "numvcpus": "{{user `vm_cores`}}",
+        "rtc.diffFromUTC": "0"
       }
     }
   ],

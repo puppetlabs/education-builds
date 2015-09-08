@@ -1,5 +1,5 @@
 ## Version 2.31
-* Notes about timezone fix for base VMs
+* Timezone fix for base VMs
 
 ## Version 2.29
 * Learning VM memory improvments

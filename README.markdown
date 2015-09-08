@@ -26,10 +26,6 @@ After the base VM is provisioned according to the settings in VMNAME.json, the b
 First create a base VM without any bootstrap applied:
 - `packer build -var-file=student.json educationbase.json`
 
-**There is a VMware bug related to timezones, which needs to be fixed by adding the following line to the .vmx file of the base VM.**
-
-    rtc.diffFromUTC=0
-
 To initiate a packer build of the student vm on the base vm:
 - `packer build -var-file=student.json educationbuild.json`
 
