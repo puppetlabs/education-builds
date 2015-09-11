@@ -12,7 +12,7 @@ metric_names.each do |metric_name|
    if match = name_property.match(/^puppetlabs\..*compiler.evaluate_resource\.(.*)$/)
       mbean = client[metric_name]
       rname = match[1]
-      mean = mbean["Mean"]
+      mean = mbean["Mean"].nan? ? 0 : mbean["Mean"]
       count = mbean["Count"]
       resources << {:name => rname,
                     :mean => mean.round(2),

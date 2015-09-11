@@ -1,19 +1,28 @@
 #! /bin/sh
 
-METRIC=$(basename $1 .rb) # strip the extension, just in case
 PORT='9010'
 SCRIPTS='/usr/local/bin/metrics'
 JAVA='/opt/puppetlabs/server/bin/java'
 GEM_HOME='/opt/puppetlabs/server/data/puppetserver/jruby-gems'
 CLASSPATH='/opt/puppetlabs/server/apps/puppetserver/puppet-server-release.jar org.jruby.Main'
-SERVER=$(puppet master --configprint server)
+
+while getopts ":l" opt; do
+  case $opt in
+    l)
+      SERVER=$(facter fqdn)
+      ;;
+  esac
+done
+shift $((OPTIND - 1))
 
 if [ "$#" -ne 1 ]
 then
-  echo "Usage: $0 <name of metric to display>"
+  echo "Usage: $0 [-l] <name of metric to display>"
   echo
   echo "Collect and display metrics from a running Puppet Master."
   echo "This requires an unauthenticated JMX remote listening on port ${PORT}."
+  echo
+  echo "Pass -l to run against your local server. Defaults to classroom master."
   echo
   echo "Available metrics:"
   for i in ${SCRIPTS}/*; do echo -e "\t* $(basename $i .rb)"; done
@@ -21,5 +30,13 @@ then
   exit 1
 fi
 
-export GEM_HOME
-exec ${JAVA} -cp ${CLASSPATH} ${SCRIPTS}/${METRIC}.rb ${SERVER} ${PORT}
+METRIC=$(basename $1 .rb) # strip the extension, just in case
+[[ $SERVER ]] || SERVER=$(puppet master --configprint server)
+
+if [ -f "${JAVA}" ]; then
+  export GEM_HOME
+  exec ${JAVA} -cp ${CLASSPATH} ${SCRIPTS}/${METRIC}.rb ${SERVER} ${PORT}
+else
+  # run directly. Untested.
+  exec ${SCRIPTS}/${METRIC}.rb ${SERVER} ${PORT}
+fi

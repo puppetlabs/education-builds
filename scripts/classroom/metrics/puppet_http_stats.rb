@@ -32,7 +32,7 @@ end
 
 def request_count_info(request_type)
    mbean = metric("http.#{canonical(request_type)}-requests")
-   mean = mbean["Mean"]
+   mean = mbean["Mean"].nan? ? 0 : mbean["Mean"]
    count = mbean["Count"]
    {:name => request_type,
     :mean => mean.round(2),

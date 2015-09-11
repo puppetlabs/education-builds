@@ -12,7 +12,7 @@ metric_names.each do |metric_name|
    if match = name_property.match(/^puppetlabs\..*functions\.(.*)$/)
       mbean = client[metric_name]
       fname = match[1]
-      mean = mbean["Mean"]
+      mean = mbean["Mean"].nan? ? 0 : mbean["Mean"]
       count = mbean["Count"]
       functions << {:name => fname,
                     :mean => mean.round(2),
