@@ -1,0 +1,21 @@
+---
+title: Infrastructure Design
+master_template_id: 638605
+master_name: master
+master_ports:
+  - 22
+  - 443
+  - 3000
+student_template_id: 638605
+student_vm_id:
+  - 6332742
+student_ports:
+  - 22
+  - 80
+  - 10080
+  - 20080
+  - 30080
+  - 40080
+students:
+  - foo
+  - bar
