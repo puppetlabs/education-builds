@@ -12,7 +12,10 @@ student_vm_id:
 student_ports:
   - 22
   - 80
+  - 9090
 students:
+  - proxy
+  - instructor
   - student1
   - student2
   - student3
@@ -25,3 +28,9 @@ students:
   - student10
   - student11
   - student12
+  - student13
+  - student14
+  - student15
+  - student16
+  - student17
+  - student18
