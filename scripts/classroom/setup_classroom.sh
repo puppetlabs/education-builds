@@ -105,7 +105,7 @@ then
 else
   hostname="${username}"
   aliases="${username}"
-  install_args="-s main:user=pe-puppet -s main:group=pe-puppet -s main:mkusers=true"
+  install_args="-s main:user=pe-puppet main:group=pe-puppet main:mkusers=true"
   install_host="master.puppetlabs.vm"
 fi
 
