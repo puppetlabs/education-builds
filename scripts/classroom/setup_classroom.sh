@@ -83,51 +83,18 @@ while : ; do
   echo "... that IP is unreachable."
 done
 
-if confirm "Are you creating a secondary agent in the Architect course?" false
-then
-
-  while : ; do
-    echo -n "Please enter the node name you chose for your Master: "
-    read student_master_name
-
-    echo -n "Please enter the IP address for ${student_master_name}.puppetlabs.vm: "
-    read student_master_ip
-
-    ping -c1 ${student_master_ip} >/dev/null 2>&1 && break
-
-    echo "... that IP is unreachable."
-  done
-
-  hostname="${username}.${student_master_name}"
-  aliases="${username}.${student_master_name} ${username}"
-  install_args="-s agent:ca_server=master.puppetlabs.vm"
-  install_host="${student_master_name}.puppetlabs.vm"
-else
-  hostname="${username}"
-  aliases="${username}"
-  install_args="-s main:user=pe-puppet main:group=pe-puppet main:mkusers=true"
-  install_host="master.puppetlabs.vm"
-fi
-
-
 ################  start configuring the node ###################
 check_success "Adding host record for classroom master"             \
       "$(echo "${master} master.puppetlabs.vm master" >> /etc/hosts 2>&1)"
 
-check_success "Adding host record for ${hostname}.puppetlabs.vm"    \
-      "$(echo "${ipaddr} ${hostname}.puppetlabs.vm ${aliases}" >> /etc/hosts 2>&1)"
-
-if [ "${student_master_name}" != "" ]
-then
-  check_success "Adding host record for ${student_master_name}.puppetlabs.vm"    \
-      "$(echo "${student_master_ip} ${student_master_name}.puppetlabs.vm ${student_master_name}" >> /etc/hosts 2>&1)"
-fi
+check_success "Adding host record for ${username}.puppetlabs.vm"    \
+      "$(echo "${ipaddr} ${username}.puppetlabs.vm ${username}" >> /etc/hosts 2>&1)"
 
 check_success "Configuring hostname"                                \
-      "$(hostname ${hostname}.puppetlabs.vm 2>&1)"
+      "$(hostname ${username}.puppetlabs.vm 2>&1)"
 
 check_success "Setting hostname on boot"                            \
-      "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${hostname}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
+      "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${username}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
 
 check_success "Synchronizing time with the classroom master"        \
       "$(ntpdate -u master.puppetlabs.vm 2>&1)"
@@ -140,7 +107,8 @@ then
 
   # Now actually perform the install. Yay for packages!
   echo "Installing Puppet Enterprise Agent..."
-  curl -k https://${install_host}:8140/packages/current/install.bash | bash ${install_args}
+  install_args="-s main:user=pe-puppet main:group=pe-puppet main:mkusers=true"
+  curl -k https://master.puppetlabs.vm:8140/packages/current/install.bash | bash ${install_args}
 
   [ $? -ne 0 ] && ((++ERRORCOUNT))
 
