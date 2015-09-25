@@ -43,10 +43,10 @@
   "variables": {
     "hostname": "vagrant",
     "arch": "i386",
-    "iso_checksum": "d16aa4a8e6f71fb01fcc26d8ae0e3443ed514c8e",
-    "iso_url": "http://mirrors.kernel.org/centos/6.6/isos/i386/CentOS-6.6-i386-bin-DVD1.iso",
+    "iso_checksum": "f3aa74fd6ddc7b14ed4cf81db8135aee57814791",
+    "iso_url": "http://mirrors.kernel.org/centos/6.7/isos/i386/CentOS-6.7-i386-bin-DVD1.iso",
     "ks_file": "ks.cfg",
-    "os_name": "CentOS-6.6",
+    "os_name": "CentOS-6.7",
     "guest_os_type": "centos",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "vagrant",
@@ -57,6 +57,6 @@
     "vm_memsize": "4096",
     "vm_disk_size": "20480",
     "vm_cores": "2",
-    "ptb_version": "2.31"
+    "ptb_version": "2.32"
   }
 }

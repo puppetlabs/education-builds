@@ -1,3 +1,8 @@
+## Version 2.32
+
+* Support for CentOS 6.7
+* Support for 2015.2.1
+
 ## Version 2.31
 * Timezone fix for base VMs
 
