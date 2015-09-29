@@ -1,3 +1,8 @@
+## Versione 2.33
+
+* Some additional cached gems
+
+
 ## Version 2.32
 
 * Support for CentOS 6.7
