@@ -48,6 +48,6 @@ check "[[ '$(awk -F ':' '/^root/{print $2}' /etc/shadow)' != '$DEFAULT' ]]"  \
       "Verifying that the default password has been changed"        \
       "You should change root's password before proceeding"
 
-check "ntpdate time.nist.gov"                                       \
+check "ntpdate pool.ntp.org"                                       \
       "Attempting to synchronize time..."                           \
       "Network time server unavailable. You should run class in offline mode"

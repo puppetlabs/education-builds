@@ -97,7 +97,7 @@ check_success "Setting hostname on boot"                            \
       "$(sed -i "s/^HOSTNAME=.*$/HOSTNAME=${username}.puppetlabs.vm/" /etc/sysconfig/network 2>&1)"
 
 check_success "Synchronizing time with the classroom master"        \
-      "$(ntpdate -u master.puppetlabs.vm 2>&1)"
+      "$(ntpdate -u -t 5 master.puppetlabs.vm 2>&1)"
 
 
 ################  only install puppet if there were no errors ###################
