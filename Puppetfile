@@ -67,4 +67,7 @@ mod 'puppetlabs/apache', '1.5.0'
 mod 'garethr/docker'
 mod 'puppetlabs/apt'
 
+# Dependencies for learning VM
 mod 'jfryman/nginx', '0.2.7'
+mod 'maestrodev/wget'
+mod 'ajcrowe/supervisord'
