@@ -10,9 +10,9 @@ BASEDIR = File.dirname(__FILE__)
 PEVERSION = ENV['PEVERSION'] || '3.8.0'
 PESTATUS = ENV['PESTATUS'] || 'release'
 SRCDIR = ENV['SRCDIR'] || '/usr/src'
-PUPPET_VER = '3.8.1'
-FACTER_VER = '2.4.4'
-HIERA_VER = '1.3.4'
+PUPPET_VER = '4.2.2'
+FACTER_VER = '3.1.0'
+HIERA_VER = '3.0.3'
 VMTYPE = ENV['VMTYPE'] || 'training'
 PTBVERSION = YAML.load_file('version.yaml')
 
