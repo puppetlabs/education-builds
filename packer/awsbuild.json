@@ -1,0 +1,69 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "us-west-2",
+      "source_ami": "ami-c7d092f7",
+      "instance_type": "m3.large",
+      "ssh_username": "centos",
+      "ami_name": "packer-quick-start {{timestamp}}"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "ovftool",
+      "format": "ova",
+      "target": "output/puppet-{{user `pe_version`}}-{{ user `vm_type` }}-{{ user `ptb_version` }}.ova"
+    },
+    {
+      "type": "vagrant",
+      "output": "output/{{user `vm_type`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
+      "keep_input_artifact": true
+    }
+  ],
+  "provisioners": [
+    {
+      "environment_vars": [
+        "PE_STATUS={{user `pe_status`}}",
+        "PE_VERSION={{user `pe_version`}}",
+        "RUBY_LIB={{user `rubylib`}}",
+        "TRAINING_REPO={{user `training_repo`}}",
+        "TRAINING_BRANCH={{user `training_branch`}}",
+        "VM_TYPE={{user `vm_type`}}"
+      ],
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/sshd.sh",
+        "scripts/pre_build.sh",
+        "scripts/vagrant.sh",
+        "scripts/{{user `vm_type`}}_build.sh",
+        "scripts/cleanup.sh",
+        "scripts/{{user `vm_type`}}_cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "hostname": "vagrant",
+    "arch": "i386",
+    "guest_os_type": "centos",
+    "iso_checksum": "f3aa74fd6ddc7b14ed4cf81db8135aee57814791",
+    "iso_url": "http://mirrors.kernel.org/centos/6.7/isos/i386/CentOS-6.7-i386-bin-DVD1.iso",
+    "ks_file": "ks.cfg",
+    "os_name": "CentOS-6.7",
+    "pe_status": "release",
+    "pe_version": "2015.2.2",
+    "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
+    "system_user": "vagrant",
+    "system_user_password": "vagrant",
+    "training_branch": "master",
+    "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
+    "vm_type": "training",
+    "vm_memsize": "4096",
+    "vm_disk_size": "20480",
+    "vm_cores": "2",
+    "ptb_version": "2.34"
+  }
+}
