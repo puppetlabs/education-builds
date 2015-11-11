@@ -1,3 +1,8 @@
+## Version 2.34
+
+* Cache hocon gem
+* Move scripts to pltraining-bootstrap
+
 ## Versione 2.33
 
 * Some additional cached gems
