@@ -47,9 +47,18 @@ To start a training vagrant box for instructor use:
 To start a learning vagrant box:
 - `vagrant up learning`
 
-## Internal-only pre-release PE version builds
-Download the PE master and agent installers and place them in a `file_cache` 
-directory in the root of this repository. Update `version` for class `bootstrap::get_pe` 
-and `bootstrap::get_32bit_agent` in `manifests/site.pp` to match the version 
-string for the installers you downloaded.
+## Updating PE version
+The version of PE used to build the VM is determined by the pltraining-bootstrap module.
+To update the version, set the value of `$pe_version` in `bootstrap::params`.
 
+## Internal-only pre-release PE version builds
+For pre-release builds:
+
+1. Make a branch of this repo and of pltraining-bootstrap.
+1. Edit the Puppetfile on this branch to point to your own fork and branch of pltraining-bootstrap.
+1. Edit the build script in `/packer/scripts` to reference the correct branch of this repo at build time.
+  * Note this change does not need to be commited to the branch.
+1. Download the PE master and agent installers and place them in a `file_cache` directory in the root of this repository.
+1. Update the `$pe_version` in `bootstrap::params` in your branch of pltraining-bootstrap.
+1. Make sure to add, commit, and push those changes.
+1. The packer build should run as ususal.
