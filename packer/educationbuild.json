@@ -43,6 +43,7 @@
       ],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [
+        "scripts/ssh_user.sh",
         "scripts/vagrant.sh",
         "scripts/{{user `vm_type`}}_build.sh",
         "scripts/cleanup.sh",
