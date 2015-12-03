@@ -1,5 +1,5 @@
 # Run puppet once
-/usr/local/bin/puppet agent -t
+PATH=/opt/puppetlabs/bin:$PATH puppet agent -t
 
 
 # Stop all PE processes to free up memory
