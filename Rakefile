@@ -42,7 +42,7 @@ end
 desc "Install puppet-agent for VM deployment"
 task :standalone_puppet do
 
-  if VMTYPE == 'student' then
+  if File.read('/etc/redhat-release') =~ /release 6/ then
     cputs "Adding CentOS 6 yum repo"
     %x{rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-6.noarch.rpm}
   else
