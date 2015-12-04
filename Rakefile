@@ -10,9 +10,9 @@ BASEDIR = File.dirname(__FILE__)
 PEVERSION = ENV['PEVERSION'] || '3.8.0'
 PESTATUS = ENV['PESTATUS'] || 'release'
 SRCDIR = ENV['SRCDIR'] || '/usr/src'
-PUPPET_VER = '4.2.2'
-FACTER_VER = '2.4.4'
-HIERA_VER = '3.0.3'
+PUPPET_VER = '4.3.1'
+FACTER_VER = '3.1.2'
+HIERA_VER = '3.0.5'
 VMTYPE = ENV['VMTYPE'] || 'training'
 PTBVERSION = YAML.load_file('version.yaml')
 
@@ -39,18 +39,18 @@ task :default do
         "To use this repo to provision a VM, refer to the files in the packer directory.\n"
 end
 
-desc "Install open source puppet for VM deployment"
+desc "Install puppet-agent for VM deployment"
 task :standalone_puppet do
 
-  cputs "Cloning puppet..."
-  gitclone 'https://github.com/puppetlabs/puppet', "#{SRCDIR}/puppet", 'master', "#{PUPPET_VER}"
+  if File.read('/etc/redhat-release') =~ /release 6/ then
+    cputs "Adding CentOS 6 yum repo"
+    %x{rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-6.noarch.rpm}
+  else
+    cputs "Adding CentOS 7 yum repo"
+    %x{rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm}
+  end
 
-  cputs "Cloning facter..."
-  gitclone 'https://github.com/puppetlabs/facter', "#{SRCDIR}/facter", 'master', "#{FACTER_VER}"
-
-  cputs "Cloning hiera..."
-  gitclone 'https://github.com/puppetlabs/hiera', "#{SRCDIR}/hiera", 'master', "#{HIERA_VER}"
-
+  %x{yum -y install puppet-agent}
 
   STDOUT.sync = true
   STDOUT.flush
@@ -133,10 +133,10 @@ task :build do
  system('gem install r10k -v 1.5.1 --no-RI --no-RDOC')
  Dir.chdir('/usr/src/puppetlabs-training-bootstrap') do
   cputs "Running r10k Puppetfile install"
-  system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib:$RUBYLIB" PATH="$PATH:/usr/local/bin:/usr/src/puppet/bin" r10k puppetfile install')
+  system('PATH=/opt/puppetlabs/bin:/usr/local/bin:$PATH r10k puppetfile install')
  end
  cputs "Running puppet apply on site.pp"
- system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
+ system('PATH=/opt/puppetlabs/bin:$PATH puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
 end
 
 desc "Post build cleanup tasks"
@@ -151,7 +151,13 @@ task :post do
   end
   # Run cleanup manifest
   cputs "Running cleanup manifest"
-  system('RUBYLIB="/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib" /usr/src/puppet/bin/puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/post.pp')
+  system('PATH=/opt/puppetlabs/bin:$PATH puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/post.pp')
+
+  # Uninstall the agent for student and training VMs
+  if ['student','training'].include? VMTYPE then
+    %x{yum -y remove puppet-agent}
+  end
+
 end
 
 desc "Full Training VM Build"
