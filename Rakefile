@@ -58,6 +58,7 @@ end
 
 desc "Training VM pre-install setup"
 task :training_pre do
+  VMTYPE='training'
   # Set the dns info and hostname; must be done before puppet
   cputs "Setting hostname training.puppetlabs.vm"
   %x{hostname training.puppetlabs.vm}
@@ -72,6 +73,7 @@ task :training_pre do
 end
 desc "Learning VM pre-install setup"
 task :learning_pre do
+  VMTYPE='learning'
   # Set the dns info and hostname; must be done before puppet
   cputs "Setting hostname learning.puppetlabs.vm"
   %x{hostname learning.puppetlabs.vm}
@@ -87,6 +89,7 @@ end
 
 desc "Student VM pre-install setup"
 task :student_pre do
+  VMTYPE='student'
   # Set the dns info and hostname; must be done before puppet
   cputs "Setting hostname student.puppetlabs.vm"
   %x{hostname student.puppetlabs.vm}
@@ -101,6 +104,7 @@ end
 
 desc "Puppetfactory VM pre-install setup"
 task :puppetfactory_pre do
+  VMTYPE='puppetfactory'
   # Set the dns info and hostname; must be done before puppet
   cputs "Setting hostname puppetfactory.puppetlabs.vm"
   %x{hostname puppetfactory.puppetlabs.vm}
@@ -115,6 +119,7 @@ end
 
 desc "LMS VM pre-install setup"
 task :lms_pre do
+  VMTYPE='lms'
   # Set the dns info and hostname; must be done before puppet
   cputs "Setting hostname lms.puppetlabs.vm"
   %x{hostname lms.puppetlabs.vm}
