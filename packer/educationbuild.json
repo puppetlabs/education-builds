@@ -61,7 +61,7 @@
     "ks_file": "ks.cfg",
     "os_name": "CentOS-6.7",
     "pe_status": "release",
-    "pe_version": "2015.2.3",
+    "pe_version": "2015.3.0",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "vagrant",
     "system_user_password": "vagrant",
@@ -71,6 +71,6 @@
     "vm_memsize": "4096",
     "vm_disk_size": "20480",
     "vm_cores": "2",
-    "ptb_version": "2.34"
+    "ptb_version": "3.0"
   }
 }

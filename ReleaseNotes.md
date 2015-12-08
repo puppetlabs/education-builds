@@ -1,3 +1,8 @@
+## Version 3.0
+
+* Support for 2015.3
+* Use AIO installer for build
+
 ## Version 2.34
 
 * Cache hocon gem
