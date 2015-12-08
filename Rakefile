@@ -159,7 +159,7 @@ task :post do
   system('PATH=/opt/puppetlabs/bin:$PATH puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/post.pp')
 
   # Uninstall the agent for student and training VMs
-  if ['student','training'].include? VMTYPE then
+  if ['student','training'].include? %x{PATH=/opt/puppetlabs/bin:$PATH facter hostname} then
     %x{yum -y remove puppet-agent}
   end
 
