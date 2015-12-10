@@ -27,7 +27,7 @@ mod 'lms',
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
 
-mod 'pltraining/classroom', '1.3.3'
+mod 'pltraining/classroom'
 #mod 'classroom', 
 #  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
 
@@ -35,7 +35,7 @@ mod 'pltraining/rbac', '0.0.4'
 #mod 'rbac', 
 #  :git => 'https://github.com/puppetlabs/pltraining-rbac'
 
-mod 'pltraining/userprefs', '1.0.7'
+mod 'pltraining/userprefs'
 #mod 'userprefs', 
 #  :git => 'https://github.com/puppetlabs/pltraining-userprefs'
 
