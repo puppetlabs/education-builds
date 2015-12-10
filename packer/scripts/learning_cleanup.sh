@@ -1,4 +1,5 @@
 # Install docker module
+export PATH=$PATH:/opt/puppetlabs/bin/
 puppet module install garethr-docker --modulepath=/etc/puppetlabs/code/modules
 
 # Run puppet once
@@ -20,7 +21,6 @@ rm -rf /usr/src/installer
 # Clean up other random files
 rm -rf /usr/src/puppetlabs-training-bootstrap
 rm -rf /usr/src/puppet
-rm -rf /usr/share/doc/*
 rm -rf /usr/src/kernels
 rm -rf /var/cache/yum
 rm -rf /opt/puppet/share/ri
