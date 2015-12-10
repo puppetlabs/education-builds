@@ -1,5 +1,8 @@
+# Install docker module
+puppet module install garethr-docker --modulepath=/etc/puppetlabs/code/modules
+
 # Run puppet once
-PATH=/opt/puppetlabs/bin:$PATH puppet agent -t
+puppet agent -t
 
 
 # Stop all PE processes to free up memory
