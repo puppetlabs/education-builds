@@ -1,6 +1,6 @@
 cd /usr/src/
 
-git clone https://github.com/joshsamuelson/puppetlabs-training-bootstrap -b puppet_ruby
+git clone https://github.com/puppetlabs/puppetlabs-training-bootstrap
 cd /usr/src/puppetlabs-training-bootstrap/
 
 rake training
