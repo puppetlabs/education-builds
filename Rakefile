@@ -135,13 +135,13 @@ end
 desc "Apply bootstrap manifest"
 task :build do
  cputs "Installing R10k"
- system('gem install r10k -v 1.5.1 --no-RI --no-RDOC')
+ system('PATH=/opt/puppetlabs/puppet/bin:/usr/local/bin:$PATH gem install r10k -v 1.5.1 --no-RI --no-RDOC')
  Dir.chdir('/usr/src/puppetlabs-training-bootstrap') do
   cputs "Running r10k Puppetfile install"
-  system('PATH=/opt/puppetlabs/bin:/usr/local/bin:$PATH r10k puppetfile install')
+  system('PATH=/opt/puppetlabs/puppet/bin:/usr/local/bin:$PATH r10k puppetfile install')
  end
  cputs "Running puppet apply on site.pp"
- system('PATH=/opt/puppetlabs/bin:$PATH puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
+ system('PATH=/opt/puppetlabs/puppet/bin:$PATH puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
 end
 
 desc "Post build cleanup tasks"
