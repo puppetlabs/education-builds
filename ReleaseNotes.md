@@ -1,3 +1,7 @@
+## Version 3.2
+
+* 2015.3.1 build
+
 ## Version 3.1
 
 * Use ruby and gem from AIO installer for r10k
