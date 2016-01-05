@@ -6,4 +6,7 @@ sudo sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 sudo sed -i "s/^\(.*env_keep = \"\)/\1PATH /" /etc/sudoers
 
 # Ensure NFS mounts work properly
-sudo yum install -y nfs-utils
+sudo yum install -y nfs-utils 
+
+# Install devlopment tools
+sudo yum group install -y "Development Tools"
