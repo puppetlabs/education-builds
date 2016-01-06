@@ -1,8 +1,14 @@
+# Run yum update before disabling repos
+exec { 'yum -y update':
+  path => '/bin/yum',
+}
+
 # Disable non-local yum repos
 yumrepo { [ 'updates', 'base', 'extras', 'epel']:
-  enabled  => '0',
-  priority => '99',
+  enabled             => '0',
+  priority            => '99',
   skip_if_unavailable => '1',
+  require             => Exec['yum -y update'],
 }
 
 # Delete cruft left by install process
