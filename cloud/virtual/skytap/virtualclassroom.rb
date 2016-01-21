@@ -53,6 +53,14 @@ def set_vm_name(vm,name)
   puts "  Name complete" if DEBUG_OUTPUT
 end
 
+def set_domain(environment, domain_name)
+  puts "  Setting VM network " + domain_name if DEBUG_OUTPUT
+  RestClient.put( CONFIGURATION_URL + environment['id'] + '/networks/' + environment['networks'][0]['id'], { 'domain' => domain_name }, HEADERS)
+  RestClient.put( CONFIGURATION_URL + environment['id'] + '/networks/' + environment['networks'][0]['id'], { 'name' => domain_name }, HEADERS)
+  RestClient.get( CONFIGURATION_URL + environment['id'] + '/networks/' + environment['networks'][0]['id'], HEADERS)
+  puts "  Network complete" if DEBUG_OUTPUT
+end
+
 def map_vm_ports(vm,ports)
   puts " Mapping ports for " + vm['id'] if DEBUG_OUTPUT
   puts "  Existing VM ports " + vm['interfaces'][0]['services'].to_s if DEBUG_OUTPUT
@@ -100,6 +108,7 @@ environment = create_base_environment(classroom['title'],classroom['master_templ
 master_vm_id = environment['vms'][0]['id']
 puts "Master VM id is " + master_vm_id if DEBUG_OUTPUT
 
+
 # Provision student machines from student_template_id
 environment = add_student_vms(environment['id'],classroom['students'],classroom['student_template_id'],classroom['student_vm_id'])
 
@@ -127,6 +136,9 @@ environment['vms'].each do |vm|
   # Add all vms to Instructor publish set
   all_vms.push( { 'vm_ref' => URL + 'vms/' + vm['id'], 'access' => 'run_and_use' } )
 end
+
+# Set domain name
+set_domain(environment, classroom['domain_name'])
 
 # Create published sets for classroom evironment
 publish_view_vms = create_publish_set( environment['id'], all_vms, 'View Only' )
