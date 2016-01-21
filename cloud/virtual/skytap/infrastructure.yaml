@@ -1,5 +1,6 @@
 ---
 title: Infrastructure Design
+domain_name: puppetlabs.vm
 master_template_id: 672397
 master_name: master
 master_ports:
