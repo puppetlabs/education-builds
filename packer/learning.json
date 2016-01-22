@@ -1,14 +1,14 @@
 {
-	"vm_type": "learning",
+  "vm_type": "learning",
   "guest_os_type": "rhel7-64",
   "os_name": "CentOS-7",
-	"hostname": "learning",
-	"ks_file": "ks-learning",
-	"training_branch": "master",
-	"training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
-	"vm_memsize": "2048",
-	"vm_disk_size": "20480",
-	"vm_cores": "2",
-  "iso_checksum": "1795184136b8bdddabe50453cc2cc2d46f0f7c5e",
-  "iso_url": "http://ftp.osuosl.org/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1503-01.iso"
+  "hostname": "learning",
+  "ks_file": "ks-learning",
+  "training_branch": "master",
+  "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
+  "vm_memsize": "2048",
+  "vm_disk_size": "20480",
+  "vm_cores": "2",
+  "iso_checksum": "4c6c65b5a70a1142dadb3c65238e9e97253c0d3a",
+  "iso_url": "http://ftp.osuosl.org/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1511.iso"
 }
