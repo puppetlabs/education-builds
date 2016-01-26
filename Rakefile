@@ -160,6 +160,7 @@ task :post do
 
   # Uninstall the agent for student and training VMs
   if ['student','training'].include? VMTYPE then
+    %x{puppet resource yumrepo puppetlabs-pc1 enabled=0}
     %x{yum -y remove puppet-agent}
   end
 
