@@ -115,17 +115,22 @@ if ARGV.size != 1
 end
 
 Puppet.initialize_settings(['--confdir', '/etc/puppetlabs/puppet'])
-data = SimpleClassifier.new.classify(ARGV[0])
 
-# Don't force an environment if none is set.
-data.delete('environment') if data['environment'] == 'agent-specified'
-
-case output
-when :json
-  puts JSON.pretty_generate(data)
-when :yaml
-  puts data.to_yaml
-else
-  puts "Unknown render format: #{output}"
+begin
+  data = SimpleClassifier.new.classify(ARGV[0])
+  
+  # Don't force an environment if none is set.
+  data.delete('environment') if data['environment'] == 'agent-specified'
+  
+  case output
+  when :json
+    puts JSON.pretty_generate(data)
+  when :yaml
+    puts data.to_yaml
+  else
+    puts "Unknown render format: #{output}"
+  end
+rescue
+  puts "Empty classification for #{ARGV[0]}!"
 end
 
