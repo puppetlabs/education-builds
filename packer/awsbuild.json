@@ -6,7 +6,8 @@
       "source_ami": "ami-c7d092f7",
       "instance_type": "m3.large",
       "ssh_username": "centos",
-      "ami_name": "PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{timestamp}}"
+      "ami_name": "PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{timestamp}}",
+      "ssh_pty": "true"
     }
   ],
   "post-processors": [
