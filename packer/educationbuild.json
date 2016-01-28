@@ -6,9 +6,9 @@
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "skip_compaction": "true",
-      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -H now",
       "output_directory": "output/{{ user `vm_type`}}-vmware/",
-      "ssh_pty"": "true"
+      "ssh_pty": "true"
     }
   ],
   "post-processors": [
