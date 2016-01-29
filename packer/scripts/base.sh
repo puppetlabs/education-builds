@@ -1,5 +1,5 @@
 # Base install
-sudo yum install -y wget curl
+sudo yum install -y wget curl rake
 
 
 sudo sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
