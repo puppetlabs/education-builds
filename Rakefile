@@ -102,19 +102,19 @@ task :student_pre do
   File.open('/etc/hostname', 'w') { |file| file.write("student.puppetlabs.vm") }
 end
 
-desc "Puppetfactory VM pre-install setup"
-task :puppetfactory_pre do
-  VMTYPE='puppetfactory'
+desc "Master VM pre-install setup"
+task :master_pre do
+  VMTYPE='master'
   # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname puppetfactory.puppetlabs.vm"
-  %x{hostname puppetfactory.puppetlabs.vm}
+  cputs "Setting hostname master.puppetlabs.vm"
+  %x{hostname master.puppetlabs.vm}
   cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 puppetfactory.puppetlabs.vm puppetfactory localhost localhost.localdomain localhost4/" /etc/hosts}
+  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 master.puppetlabs.vm master localhost localhost.localdomain localhost4/" /etc/hosts}
   cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=puppetfactory.puppetlabs.vm/" /etc/sysconfig/network}
+  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=master.puppetlabs.vm/" /etc/sysconfig/network}
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
   # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("puppetfactory.puppetlabs.vm") }
+  File.open('/etc/hostname', 'w') { |file| file.write("master.puppetlabs.vm") }
 end
 
 desc "LMS VM pre-install setup"
@@ -194,10 +194,10 @@ task :student do
 end
 
 desc "Full Puppetfactory VM Build"
-task :puppetfactory do
-  cputs "Building Puppetfactory VM"
+task :master do
+  cputs "Building Master VM"
   Rake::Task["standalone_puppet"].execute
-  Rake::Task["puppetfactory_pre"].execute
+  Rake::Task["master_pre"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
 end
