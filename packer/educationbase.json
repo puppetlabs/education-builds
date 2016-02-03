@@ -4,6 +4,7 @@
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort}}/{{user `ks_file`}}.cfg<enter>"
       ],
+      "ssh_pty":  "true",
       "disk_size": "{{ user `vm_disk_size` }}",
       "disk_type_id": "0",  
       "guest_os_type": "{{ user `guest_os_type` }}",

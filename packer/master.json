@@ -1,9 +1,9 @@
 {
-  "vm_type": "puppetfactory",
+  "vm_type": "master",
   "guest_os_type": "rhel7-64",
   "os_name": "CentOS-7",
-  "hostname": "puppetfactory",
-  "ks_file": "ks-puppetfactory",
+  "hostname": "master",
+  "ks_file": "ks-master",
   "training_branch": "master",
   "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
   "vm_memsize": "4096",
