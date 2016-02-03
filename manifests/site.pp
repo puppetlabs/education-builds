@@ -7,7 +7,7 @@ node /student/ {
 node /learn/ {
   include bootstrap::role::learning
 }
-node /puppetfactory/ {
+node /master/ {
   include bootstrap::role::puppetfactory
 }
 node /lms/ {
