@@ -13,7 +13,7 @@
       "iso_checksum_type": "sha1",
       "iso_url": "{{ user `iso_url` }}",
       "output_directory": "output/{{ user `vm_type` }}-base-vmware",
-      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "shutdown_command": "sudo shutdown now",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "skip_compaction": "true",
