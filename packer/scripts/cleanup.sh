@@ -5,9 +5,9 @@ if uname -r | grep -q el6 ; then
     sudo sed -i -e "/^HWADDR.*/d" /etc/sysconfig/network-scripts/ifcfg-eth0
 else
   # Workaround for Centos 7 bug that sets incorrect device name
-  export INTERFACE=`ip link | awk '/ens/{ gsub(":",""); print $2}`
+  export INTERFACE=`ip link | awk '/ens/{ gsub(":",""); print $2}'`
   sudo mv /etc/sysconfig/network-scripts/ifcfg-ens* /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
-  sudo sed -i "s/ens[0-9]\{2\}/$INTERFACE" /etc/sysconfig/network-scripts/ifcfg=$INTERFACE
+  sudo sed -i "s/ens[0-9]\{2\}/$INTERFACE/" /etc/sysconfig/network-scripts/ifcfg=$INTERFACE
 fi
 sudo rm -rf /dev/.udev/
 
