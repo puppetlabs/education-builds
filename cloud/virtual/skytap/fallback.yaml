@@ -1,7 +1,7 @@
 ---
 title: Fallback Online Classroom
 domain_name: puppetlabs.vm
-master_template_id: 640441
+master_template_id: 746433
 master_name: master
 master_ports:
   - 22
