@@ -59,7 +59,7 @@ end
 
 desc "Install PE Master"
 task :install_pe do
-  hostname = `hostname`
+  hostname = `hostname -s`
   if not File.exist?('/tmp/puppet-enterprise.tar.gz')
     %x{curl -o /tmp/puppet-enterprise.tar.gz -L #{PEURL}}
   end
