@@ -11,6 +11,10 @@ yumrepo { [ 'updates', 'base', 'extras', 'epel']:
   require             => Exec['yum -y update'],
 }
 
+yumrepo { 'puppetlabs-pc1':
+  ensure => absent
+}
+
 # Delete cruft left by install process
 file { [
   '/root/install.log',
