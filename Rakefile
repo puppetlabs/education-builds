@@ -59,12 +59,16 @@ end
 
 desc "Install PE Master"
 task :install_pe do
+  hostname = 'master.puppetlabs.vm'
   if not File.exist?('/tmp/puppet-enterprise.tar.gz')
     %x{curl -o /tmp/puppet-enterprise.tar.gz -L #{PEURL}}
   end
+  File.open('/tmp/answers','w') do |f|
+    f.write ERB.new(File.read('/usr/src/puppetlabs-training-bootstrap/templates/answer.erb')).result(binding)
+  end
   %x{mkdir /tmp/puppet-enterprise}
   %x{tar xf /tmp/puppet-enterprise.tar.gz -C /tmp/puppet-enterprise --strip-components=1} 
-  %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /usr/src/puppetlabs-training-bootstrap/files/answers}
+  %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /tmp/answers}
 end
 
 desc "Training VM pre-install setup"
