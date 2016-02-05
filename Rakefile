@@ -175,7 +175,6 @@ task :post do
 
   # Uninstall the agent for student and training VMs
   if ['student','training'].include? VMTYPE then
-    %x{puppet resource yumrepo puppetlabs-pc1 enabled=0}
     %x{yum -y remove puppet-agent}
   end
 
@@ -193,8 +192,8 @@ end
 desc "Full Learning VM Build"
 task :learning do
   cputs "Building Learning VM"
-  Rake::Task["standalone_puppet"].execute
   Rake::Task["learning_pre"].execute
+  Rake::Task["install_pe"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
 end
