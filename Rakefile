@@ -62,7 +62,8 @@ task :install_pe do
   if not File.exist?('/tmp/puppet-enterprise.tar.gz')
     %x{curl -o /tmp/puppet-enterprise.tar.gz -L #{PEURL}}
   end
-  %x{tar xf /tmp/puppet-enterprise.tar.gz}
+  %x{mkdir /tmp/puppet-enterprise}
+  %x{tar xf /tmp/puppet-enterprise.tar.gz -C /tmp/puppet-enterprise --strip-components=1} 
   %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /usr/src/puppetlabs-training-bootstrap/files/answers}
 end
 
