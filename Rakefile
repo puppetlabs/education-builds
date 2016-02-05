@@ -183,7 +183,7 @@ end
 desc "Full Training VM Build"
 task :training do
   cputs "Building Training VM"
-  Rake::Task["standalone_puppet"].execute
+  Rake::Task["standalone_puppet_agent"].execute
   Rake::Task["training_pre"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
@@ -201,7 +201,7 @@ end
 desc "Full Student VM Build"
 task :student do
   cputs "Building Student VM"
-  Rake::Task["standalone_puppet"].execute
+  Rake::Task["standalone_puppet_agent"].execute
   Rake::Task["student_pre"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
@@ -219,7 +219,7 @@ end
 desc "Full LMS VM Build"
 task :lms do
   cputs "Building LMS VM"
-  Rake::Task["standalone_puppet"].execute
+  Rake::Task["standalone_puppet_agent"].execute
   Rake::Task["lms_pre"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
