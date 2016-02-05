@@ -59,7 +59,7 @@ end
 
 desc "Install PE Master"
 task :install_pe do
-  hostname = 'master.puppetlabs.vm'
+  hostname = `hostname`
   if not File.exist?('/tmp/puppet-enterprise.tar.gz')
     %x{curl -o /tmp/puppet-enterprise.tar.gz -L #{PEURL}}
   end
@@ -211,8 +211,8 @@ end
 desc "Full Puppetfactory VM Build"
 task :master do
   cputs "Building Master VM"
-  Rake::Task["install_pe"].execute
   Rake::Task["master_pre"].execute
+  Rake::Task["install_pe"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
 end
