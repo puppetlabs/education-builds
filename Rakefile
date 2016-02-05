@@ -8,8 +8,8 @@ require 'yaml'
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
 PEVERSION = ENV['PEVERSION'] || '3.8.0'
-PEURL = ENV['PEURL'] || 'https://s3.amazonaws.com/pe-builds/released'
 PESTATUS = ENV['PESTATUS'] || 'release'
+PEURL = ENV['PEURL'] || 'https://pm.puppetlabs.com/cgi-bin/download.cgi?dist=el&rel=7&arch=x86_64&ver=latest'
 SRCDIR = ENV['SRCDIR'] || '/usr/src'
 PUPPET_VER = '4.3.1'
 FACTER_VER = '3.1.2'
@@ -60,9 +60,9 @@ end
 desc "Install PE Master"
 task :install_pe do
   if not File.exist?('/tmp/puppet-enterprise.tar.gz')
-    %x{curl -o /tmp/puppet-enterprise.tar.gz #{PEURL}/puppet-enterprise-#{PEVERSION}-el-7-x86_64.tar.gz}
+    %x{curl -o /tmp/puppet-enterprise.tar.gz -L #{PEURL}}
   end
-  %x{tar -x /tmp/puppet-enterprise.tar.gz}
+  %x{tar xf /tmp/puppet-enterprise.tar.gz}
   %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /usr/src/puppetlabs-training-bootstrap/files/answers}
 end
 
