@@ -8,6 +8,7 @@ require 'yaml'
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
 PEVERSION = ENV['PEVERSION'] || '3.8.0'
+PEURL = ENV['PEURL'] || 'https://s3.amazonaws.com/pe-builds/released'
 PESTATUS = ENV['PESTATUS'] || 'release'
 SRCDIR = ENV['SRCDIR'] || '/usr/src'
 PUPPET_VER = '4.3.1'
@@ -40,7 +41,7 @@ task :default do
 end
 
 desc "Install puppet-agent for VM deployment"
-task :standalone_puppet do
+task :standalone_puppet_agent do
 
   if File.read('/etc/redhat-release') =~ /release 6/ then
     cputs "Adding CentOS 6 yum repo"
@@ -54,6 +55,15 @@ task :standalone_puppet do
 
   STDOUT.sync = true
   STDOUT.flush
+end
+
+desc "Install PE Master"
+task :install_pe do
+  if not File.exist?('/tmp/puppet-enterprise.tar.gz')
+    %x{curl -o /tmp/puppet-enterprise.tar.gz #{PEURL}/puppet-enterprise-#{PEVERSION}-el-7-x86_64.tar.gz}
+  end
+  %x{tar -x /tmp/puppet-enterprise.tar.gz}
+  %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /usr/src/puppetlabs-training-bootstrap/files/answers}
 end
 
 desc "Training VM pre-install setup"
@@ -196,7 +206,7 @@ end
 desc "Full Puppetfactory VM Build"
 task :master do
   cputs "Building Master VM"
-  Rake::Task["standalone_puppet"].execute
+  Rake::Task["install_pe"].execute
   Rake::Task["master_pre"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
