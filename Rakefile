@@ -64,7 +64,7 @@ task :install_pe do
     %x{curl -o /tmp/puppet-enterprise.tar.gz -L #{PEURL}}
   end
   File.open('/tmp/answers','w') do |f|
-    f.write ERB.new(File.read('/usr/src/puppetlabs-training-bootstrap/templates/answer.erb')).result(binding)
+    f.write ERB.new(File.read('/usr/src/puppetlabs-training-bootstrap/templates/answers.erb')).result(binding)
   end
   %x{mkdir /tmp/puppet-enterprise}
   %x{tar xf /tmp/puppet-enterprise.tar.gz -C /tmp/puppet-enterprise --strip-components=1} 
