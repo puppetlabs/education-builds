@@ -8,7 +8,7 @@ node /learn/ {
   include bootstrap::role::learning
 }
 node /master/ {
-  include bootstrap::role::puppetfactory
+  include bootstrap::role::master
 }
 node /lms/ {
   include bootstrap::role::lms_vm
