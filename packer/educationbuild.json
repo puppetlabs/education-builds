@@ -3,8 +3,8 @@
     {
       "type": "vmware-vmx",
       "source_path": "output/{{ user `vm_type` }}-base-vmware/{{ user `vm_type` }}-base.vmx",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
+      "ssh_username": "training",
+      "ssh_password": "training",
       "skip_compaction": "true",
       "shutdown_command": "sudo shutdown now",
       "output_directory": "output/{{ user `vm_type`}}-vmware/",
@@ -26,12 +26,16 @@
   "provisioners": [
     {
       "type": "shell", 
-      "inline": ["sudo mkdir -p /vagrant/file_cache;sudo chown -R vagrant:vagrant /vagrant"]
+      "inline": ["sudo mkdir -p /vagrant/file_cache;sudo chown -R training:training /vagrant"]
     },
     {
       "type": "file",
       "source": "../file_cache/",
       "destination": "/vagrant/file_cache"
+    },
+    {
+      "type": "shell",
+      "inline": ["mv /vagrant/file_cache/installers/puppet-enterprise-{{user `pe_version`}}-el-7-x86_64.tar.gz /tmp/puppet-enterprise.tar.gz"]
     },
     {
       "environment_vars": [
@@ -44,7 +48,6 @@
       ],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [
-        "scripts/vagrant.sh",
         "scripts/{{user `vm_type`}}_build.sh",
         "scripts/cleanup.sh",
         "scripts/{{user `vm_type`}}_cleanup.sh",
@@ -64,8 +67,8 @@
     "pe_status": "release",
     "pe_version": "2015.3.1",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
-    "system_user": "vagrant",
-    "system_user_password": "vagrant",
+    "system_user": "training",
+    "system_user_password": "training",
     "training_branch": "master",
     "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
     "vm_type": "training",
