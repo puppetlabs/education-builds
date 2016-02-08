@@ -41,7 +41,7 @@
     }
   ],
   "variables": {
-    "hostname": "vagrant",
+    "hostname": "training",
     "arch": "i386",
     "iso_checksum": "f3aa74fd6ddc7b14ed4cf81db8135aee57814791",
     "iso_url": "http://mirrors.kernel.org/centos/6.7/isos/i386/CentOS-6.7-i386-bin-DVD1.iso",

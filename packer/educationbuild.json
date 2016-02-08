@@ -26,16 +26,16 @@
   "provisioners": [
     {
       "type": "shell", 
-      "inline": ["sudo mkdir -p /vagrant/file_cache;sudo chown -R training:training /vagrant"]
+      "inline": ["sudo mkdir -p /training/file_cache;sudo chown -R training:training /training"]
     },
     {
       "type": "file",
       "source": "../file_cache/",
-      "destination": "/vagrant/file_cache"
+      "destination": "/training/file_cache"
     },
     {
       "type": "shell",
-      "inline": ["mv /vagrant/file_cache/installers/puppet-enterprise-{{user `pe_version`}}-el-7-x86_64.tar.gz /tmp/puppet-enterprise.tar.gz"]
+      "inline": ["mv /training/file_cache/installers/puppet-enterprise-{{user `pe_version`}}-el-7-x86_64.tar.gz /tmp/puppet-enterprise.tar.gz"]
     },
     {
       "environment_vars": [
