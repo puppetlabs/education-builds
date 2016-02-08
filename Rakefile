@@ -156,7 +156,7 @@ task :build do
   system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
  end
  cputs "Running puppet apply on site.pp"
- system('PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
+ system('PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules:/opt/puppetlabs/puppet/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
 end
 
 desc "Post build cleanup tasks"

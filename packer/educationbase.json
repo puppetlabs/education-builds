@@ -14,8 +14,8 @@
       "iso_url": "{{ user `iso_url` }}",
       "output_directory": "output/{{ user `vm_type` }}-base-vmware",
       "shutdown_command": "sudo shutdown now",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
+      "ssh_username": "training",
+      "ssh_password": "training",
       "skip_compaction": "true",
       "ssh_wait_timeout": "10000s",      
       "tools_upload_flavor": "linux",
@@ -35,14 +35,13 @@
         "scripts/base.sh",
         "scripts/sshd.sh",
         "scripts/pre_build.sh",
-        "scripts/vmtools.sh",
         "scripts/cleanup.sh"
       ],
       "type": "shell"
     }
   ],
   "variables": {
-    "hostname": "vagrant",
+    "hostname": "training",
     "arch": "i386",
     "iso_checksum": "f3aa74fd6ddc7b14ed4cf81db8135aee57814791",
     "iso_url": "http://mirrors.kernel.org/centos/6.7/isos/i386/CentOS-6.7-i386-bin-DVD1.iso",
@@ -50,8 +49,8 @@
     "os_name": "CentOS-6.7",
     "guest_os_type": "centos",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
-    "system_user": "vagrant",
-    "system_user_password": "vagrant",
+    "system_user": "training",
+    "system_user_password": "training",
     "training_branch": "master",
     "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
     "vm_type": "training",
