@@ -9,6 +9,7 @@ STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
 PEVERSION = ENV['PEVERSION'] || '3.8.0'
 PESTATUS = ENV['PESTATUS'] || 'release'
+PEURL = ENV['PEURL'] || 'https://pm.puppetlabs.com/cgi-bin/download.cgi?dist=el&rel=7&arch=x86_64&ver=latest'
 SRCDIR = ENV['SRCDIR'] || '/usr/src'
 PUPPET_VER = '4.3.1'
 FACTER_VER = '3.1.2'
@@ -40,7 +41,7 @@ task :default do
 end
 
 desc "Install puppet-agent for VM deployment"
-task :standalone_puppet do
+task :standalone_puppet_agent do
 
   if File.read('/etc/redhat-release') =~ /release 6/ then
     cputs "Adding CentOS 6 yum repo"
@@ -54,6 +55,20 @@ task :standalone_puppet do
 
   STDOUT.sync = true
   STDOUT.flush
+end
+
+desc "Install PE Master"
+task :install_pe do
+  hostname = `hostname -s`.chomp
+  if not File.exist?('/tmp/puppet-enterprise.tar.gz')
+    %x{curl -o /tmp/puppet-enterprise.tar.gz -L #{PEURL}}
+  end
+  File.open('/tmp/answers','w') do |f|
+    f.write ERB.new(File.read('/usr/src/puppetlabs-training-bootstrap/templates/answers.erb')).result(binding)
+  end
+  %x{mkdir /tmp/puppet-enterprise}
+  %x{tar xf /tmp/puppet-enterprise.tar.gz -C /tmp/puppet-enterprise --strip-components=1} 
+  %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /tmp/answers}
 end
 
 desc "Training VM pre-install setup"
@@ -160,7 +175,6 @@ task :post do
 
   # Uninstall the agent for student and training VMs
   if ['student','training'].include? VMTYPE then
-    %x{puppet resource yumrepo puppetlabs-pc1 enabled=0}
     %x{yum -y remove puppet-agent}
   end
 
@@ -169,7 +183,7 @@ end
 desc "Full Training VM Build"
 task :training do
   cputs "Building Training VM"
-  Rake::Task["standalone_puppet"].execute
+  Rake::Task["standalone_puppet_agent"].execute
   Rake::Task["training_pre"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
@@ -178,8 +192,8 @@ end
 desc "Full Learning VM Build"
 task :learning do
   cputs "Building Learning VM"
-  Rake::Task["standalone_puppet"].execute
   Rake::Task["learning_pre"].execute
+  Rake::Task["install_pe"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
 end
@@ -187,7 +201,7 @@ end
 desc "Full Student VM Build"
 task :student do
   cputs "Building Student VM"
-  Rake::Task["standalone_puppet"].execute
+  Rake::Task["standalone_puppet_agent"].execute
   Rake::Task["student_pre"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
@@ -196,8 +210,8 @@ end
 desc "Full Puppetfactory VM Build"
 task :master do
   cputs "Building Master VM"
-  Rake::Task["standalone_puppet"].execute
   Rake::Task["master_pre"].execute
+  Rake::Task["install_pe"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
 end
@@ -205,7 +219,7 @@ end
 desc "Full LMS VM Build"
 task :lms do
   cputs "Building LMS VM"
-  Rake::Task["standalone_puppet"].execute
+  Rake::Task["standalone_puppet_agent"].execute
   Rake::Task["lms_pre"].execute
   Rake::Task["build"].execute
   Rake::Task["post"].execute
