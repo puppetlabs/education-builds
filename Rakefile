@@ -4,6 +4,7 @@ require 'net/http'
 require 'net/https'
 require 'rubygems'
 require 'yaml'
+require 'open-uri'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
@@ -61,13 +62,19 @@ desc "Install PE Master"
 task :install_pe do
   hostname = `hostname -s`.chomp
   if not File.exist?('/tmp/puppet-enterprise.tar.gz')
-    %x{curl -o /tmp/puppet-enterprise.tar.gz -L #{PEURL}}
+    puts "Downloading Puppet Enterprise"
+    File.open("/tmp/puppet-enterprise.tar.gz","wb") do |saved_file|
+      open(PEURL, "rb") do |read_file|
+        saved_file.write(read_file.read)
+      end
+    end
   end
   File.open('/tmp/answers','w') do |f|
     f.write ERB.new(File.read('/usr/src/puppetlabs-training-bootstrap/templates/answers.erb')).result(binding)
   end
   %x{mkdir /tmp/puppet-enterprise}
   %x{tar xf /tmp/puppet-enterprise.tar.gz -C /tmp/puppet-enterprise --strip-components=1} 
+  puts "Installing Puppet Enterprise"
   %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /tmp/answers}
 end
 
