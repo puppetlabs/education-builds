@@ -155,15 +155,15 @@ task :lms_pre do
 end
 
 desc "Apply bootstrap manifest"
-task :build do
+task :build [:arg1] do |role|
  cputs "Installing R10k"
  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin gem install r10k -v 1.5.1 --no-RI --no-RDOC')
  Dir.chdir('/usr/src/puppetlabs-training-bootstrap') do
   cputs "Running r10k Puppetfile install"
   system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
  end
- cputs "Running puppet apply on site.pp"
- system('PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules:/opt/puppetlabs/puppet/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
+ cputs "Running puppet apply on #{role}.pp"
+ system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules:/opt/puppetlabs/puppet/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/#{role}.pp")
 end
 
 desc "Post build cleanup tasks"
@@ -192,16 +192,14 @@ task :training do
   cputs "Building Training VM"
   Rake::Task["standalone_puppet_agent"].execute
   Rake::Task["training_pre"].execute
-  Rake::Task["build"].execute
+  Rake::Task["build"].invoke("training")
   Rake::Task["post"].execute
 end
 
 desc "Full Learning VM Build"
 task :learning do
   cputs "Building Learning VM"
-  Rake::Task["learning_pre"].execute
-  Rake::Task["install_pe"].execute
-  Rake::Task["build"].execute
+  Rake::Task["build"].invoke("learning")
   Rake::Task["post"].execute
 end
 
@@ -210,7 +208,7 @@ task :student do
   cputs "Building Student VM"
   Rake::Task["standalone_puppet_agent"].execute
   Rake::Task["student_pre"].execute
-  Rake::Task["build"].execute
+  Rake::Task["build"].invoke("student")
   Rake::Task["post"].execute
 end
 
@@ -219,7 +217,7 @@ task :master do
   cputs "Building Master VM"
   Rake::Task["master_pre"].execute
   Rake::Task["install_pe"].execute
-  Rake::Task["build"].execute
+  Rake::Task["build"].invoke("master")
   Rake::Task["post"].execute
 end
 
@@ -228,7 +226,7 @@ task :lms do
   cputs "Building LMS VM"
   Rake::Task["standalone_puppet_agent"].execute
   Rake::Task["lms_pre"].execute
-  Rake::Task["build"].execute
+  Rake::Task["build"].invoke("lms")
   Rake::Task["post"].execute
 end
 
