@@ -199,6 +199,15 @@ end
 desc "Full Learning VM Build"
 task :learning do
   cputs "Building Learning VM"
+  Rake::Task["learning_pre"].execute
+  Rake::Task["install_pe"].execute
+  Rake::Task["build"].invoke("learning")
+  Rake::Task["post"].execute
+end
+
+desc "Learning VM on Master"
+task :learning_master do
+  cputs "Building Learning VM from Master VM"
   Rake::Task["build"].invoke("learning")
   Rake::Task["post"].execute
 end
