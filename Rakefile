@@ -162,8 +162,8 @@ task :build, [:role] do |t,args|
   cputs "Running r10k Puppetfile install"
   system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
  end
- cputs "Running puppet apply on #{args{:role}}.pp"
- system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules:/opt/puppetlabs/puppet/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/#{args{:role}}.pp")
+ cputs "Running puppet apply on #{args[:role]}.pp"
+ system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules:/opt/puppetlabs/puppet/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/#{args[:role]}.pp")
 end
 
 desc "Post build cleanup tasks"
