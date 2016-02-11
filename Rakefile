@@ -155,7 +155,7 @@ task :lms_pre do
 end
 
 desc "Apply bootstrap manifest"
-task :build [:arg1] do |role|
+task :build, [:arg1] do |role|
  cputs "Installing R10k"
  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin gem install r10k -v 1.5.1 --no-RI --no-RDOC')
  Dir.chdir('/usr/src/puppetlabs-training-bootstrap') do
