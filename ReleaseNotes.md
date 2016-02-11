@@ -1,3 +1,10 @@
+## Version 4.0
+
+* New preinstalled VM called "master" to replace training and puppetfactory VM
+* refactor of pltraining-bootstrap and pltraining-learning modules for simpler implementation
+* Install PE using the rake, not using puppet
+* Improved shutdown in packer for LVM
+
 ## Version 3.3
 
 * Cache missing dependency LVM

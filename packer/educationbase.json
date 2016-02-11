@@ -57,6 +57,6 @@
     "vm_memsize": "4096",
     "vm_disk_size": "20480",
     "vm_cores": "2",
-    "ptb_version": "2.34"
+    "ptb_version": "4.0"
   }
 }
