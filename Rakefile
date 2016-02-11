@@ -155,15 +155,15 @@ task :lms_pre do
 end
 
 desc "Apply bootstrap manifest"
-task :build, [:arg1] do |role|
+task :build, [:role] do |t,args|
  cputs "Installing R10k"
  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin gem install r10k -v 1.5.1 --no-RI --no-RDOC')
  Dir.chdir('/usr/src/puppetlabs-training-bootstrap') do
   cputs "Running r10k Puppetfile install"
   system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
  end
- cputs "Running puppet apply on #{role}.pp"
- system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules:/opt/puppetlabs/puppet/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/#{role}.pp")
+ cputs "Running puppet apply on #{args{:role}}.pp"
+ system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules:/opt/puppetlabs/puppet/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/#{args{:role}}.pp")
 end
 
 desc "Post build cleanup tasks"
