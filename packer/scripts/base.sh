@@ -9,4 +9,4 @@ sudo sed -i "s/^\(.*env_keep = \"\)/\1PATH /" /etc/sudoers
 sudo yum install -y nfs-utils 
 
 # Install devlopment tools
-sudo yum group install -y "Development Tools"
+sudo yum groupinstall -y "Development Tools"
