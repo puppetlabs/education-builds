@@ -1,4 +1,5 @@
 {
+  "shutdown_command":"sudo shutdown -P now",
   "vm_type": "master",
   "guest_os_type": "rhel7-64",
   "os_name": "CentOS-7",
