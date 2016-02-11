@@ -1,4 +1,4 @@
 # Student specific cleanup tasks
-yum clean all
-yum makecache
-updatedb
+sudo yum clean all
+sudo yum makecache
+sudo updatedb
