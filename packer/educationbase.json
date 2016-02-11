@@ -13,7 +13,7 @@
       "iso_checksum_type": "sha1",
       "iso_url": "{{ user `iso_url` }}",
       "output_directory": "output/{{ user `vm_type` }}-base-vmware",
-      "shutdown_command": "sudo shutdown now",
+      "shutdown_command": "sudo shutdown -P now",
       "ssh_username": "training",
       "ssh_password": "training",
       "skip_compaction": "true",

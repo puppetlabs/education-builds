@@ -1,4 +1,5 @@
 {
+  "shutdown_command":"",
   "vm_type": "learning",
   "guest_os_type": "rhel7-64",
   "os_name": "CentOS-7",
