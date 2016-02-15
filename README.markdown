@@ -61,4 +61,4 @@ For pre-release builds:
 1. Download the PE master and agent installers and place them in a `file_cache` directory in the root of this repository.
 1. Update the `$pe_version` in `bootstrap::params` in your branch of pltraining-bootstrap.
 1. Make sure to add, commit, and push those changes.
-1. The packer build should run as ususal.
+1. The packer build should run as usual.
