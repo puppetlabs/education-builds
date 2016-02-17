@@ -47,7 +47,7 @@
         "TRAINING_BRANCH={{user `training_branch`}}",
         "VM_TYPE={{user `vm_type`}}"
       ],
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "execute_command": "{{.Vars}} sudo \"PATH=$PATH\" -E -S bash '{{.Path}}'",
       "scripts": [
         "scripts/{{user `vm_type`}}_build.sh",
         "scripts/cleanup.sh",
@@ -58,7 +58,7 @@
     }
   ],
   "variables": {
-    "hostname": "vagrant",
+    "hostname": "trainging",
     "arch": "i386",
     "guest_os_type": "centos",
     "iso_checksum": "f3aa74fd6ddc7b14ed4cf81db8135aee57814791",

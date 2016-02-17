@@ -1,4 +1,5 @@
 {
+  "shutdown_command": "sudo shutdown -P now",
 	"vm_type": "student",
 	"hostname": "student",
 	"ks_file": "ks-student",
