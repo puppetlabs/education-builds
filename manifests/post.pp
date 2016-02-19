@@ -1,6 +1,6 @@
 # Run yum update before disabling repos
 exec { 'yum -y update':
-  path => '/bin',
+  path => '/bin:/usr/bin',
 }
 
 # Disable non-local yum repos

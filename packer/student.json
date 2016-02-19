@@ -5,5 +5,12 @@
 	"ks_file": "ks-student",
 	"vm_memsize": "1024",
 	"vm_disk_size": "10240",
-	"vm_cores": "1"
+	"vm_cores": "1",
+  "guest_os_type": "rhel7-64",
+  "os_name": "CentOS-7",
+  "training_branch": "master",
+  "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
+  "arch": "x86_64",
+  "iso_checksum": "4c6c65b5a70a1142dadb3c65238e9e97253c0d3a",
+  "iso_url": "http://ftp.osuosl.org/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1511.iso"
 }

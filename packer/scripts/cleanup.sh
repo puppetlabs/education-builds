@@ -13,7 +13,7 @@ rm -rf /dev/.udev/
 
 yum clean all -y
 
-rm -rf /vagrant
+rm -rf /training
 rm -rf /etc/puppet
 
 
