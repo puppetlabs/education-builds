@@ -31,6 +31,7 @@
   ],
     "provisioners": [
     {
+      "execute_command": "{{.Vars}} sudo \"PATH=$PATH\" -E -S bash '{{.Path}}'",
       "scripts": [
         "scripts/base.sh",
         "scripts/sshd.sh",

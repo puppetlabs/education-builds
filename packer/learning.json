@@ -1,5 +1,5 @@
 {
-  "shutdown_command":"",
+  "shutdown_command":"sudo shutdown now",
   "vm_type": "learning",
   "guest_os_type": "rhel7-64",
   "os_name": "CentOS-7",
