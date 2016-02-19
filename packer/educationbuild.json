@@ -58,7 +58,7 @@
     }
   ],
   "variables": {
-    "hostname": "trainging",
+    "hostname": "training",
     "arch": "i386",
     "guest_os_type": "centos",
     "iso_checksum": "f3aa74fd6ddc7b14ed4cf81db8135aee57814791",
