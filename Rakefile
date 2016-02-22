@@ -179,12 +179,11 @@ task :post do
   # Run cleanup manifest
   cputs "Running cleanup manifest"
   system('PATH=$PATH:/opt/puppetlabs/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/post.pp')
+end
 
-  # Uninstall the agent for student and training VMs
-  if ['student','training'].include? VMTYPE then
-    %x{yum -y remove puppet-agent}
-  end
-
+desc "Uninstall Puppet"
+task :uninstall do
+  %x{yum -y remove puppet-agent}
 end
 
 desc "Full Training VM Build"
@@ -194,10 +193,25 @@ task :training do
   Rake::Task["training_pre"].execute
   Rake::Task["build"].invoke("training")
   Rake::Task["post"].execute
+  Rake::Task["uninstall"].execute
+end
+
+desc "Learning VM Pre Build"
+task :learning_install do
+  cputs "Building Learning VM"
+  Rake::Task["learning_pre"].execute
+  Rake::Task["install_pe"].execute
+end
+
+desc "Learning VM Build"
+task :learning do
+  cputs "Building Learning VM"
+  Rake::Task["build"].invoke("learning")
+  Rake::Task["post"].execute
 end
 
 desc "Full Learning VM Build"
-task :learning do
+task :learning_full do
   cputs "Building Learning VM"
   Rake::Task["learning_pre"].execute
   Rake::Task["install_pe"].execute
@@ -212,17 +226,47 @@ task :learning_master do
   Rake::Task["post"].execute
 end
 
-desc "Full Student VM Build"
+desc "Student VM Pre Build"
+task :student_install do
+  cputs "Building Student VM"
+  Rake::Task["standalone_puppet_agent"].execute
+  Rake::Task["student_pre"].execute
+end
+
+desc "Student VM Build"
 task :student do
+  cputs "Building Student VM"
+  Rake::Task["build"].invoke("student")
+  Rake::Task["post"].execute
+  Rake::Task["uninstall"].execute
+end
+
+desc "Full Student VM Build"
+task :student_full do
   cputs "Building Student VM"
   Rake::Task["standalone_puppet_agent"].execute
   Rake::Task["student_pre"].execute
   Rake::Task["build"].invoke("student")
   Rake::Task["post"].execute
+  Rake::Task["uninstall"].execute
+end
+
+desc "Master VM Pre Build"
+task :master_install do
+  cputs "Building Master VM"
+  Rake::Task["master_pre"].execute
+  Rake::Task["install_pe"].execute
+end
+
+desc "Master VM Build"
+task :master do
+  cputs "Building Master VM"
+  Rake::Task["build"].invoke("master")
+  Rake::Task["post"].execute
 end
 
 desc "Full Puppetfactory VM Build"
-task :master do
+task :master_full do
   cputs "Building Master VM"
   Rake::Task["master_pre"].execute
   Rake::Task["install_pe"].execute
