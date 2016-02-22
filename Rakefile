@@ -203,9 +203,18 @@ task :learning_install do
   Rake::Task["install_pe"].execute
 end
 
-desc "Full Learning VM Build"
+desc "Learning VM Build"
 task :learning do
   cputs "Building Learning VM"
+  Rake::Task["build"].invoke("learning")
+  Rake::Task["post"].execute
+end
+
+desc "Full Learning VM Build"
+task :learning_full do
+  cputs "Building Learning VM"
+  Rake::Task["learning_pre"].execute
+  Rake::Task["install_pe"].execute
   Rake::Task["build"].invoke("learning")
   Rake::Task["post"].execute
 end
@@ -217,8 +226,22 @@ task :learning_master do
   Rake::Task["post"].execute
 end
 
-desc "Full Student VM Build"
+desc "Student VM Pre Build"
+task :student_install do
+  cputs "Building Student VM"
+  Rake::Task["standalone_puppet_agent"].execute
+  Rake::Task["student_pre"].execute
+end
+
+desc "Student VM Build"
 task :student do
+  cputs "Building Student VM"
+  Rake::Task["build"].invoke("student")
+  Rake::Task["post"].execute
+end
+
+desc "Full Student VM Build"
+task :student_full do
   cputs "Building Student VM"
   Rake::Task["standalone_puppet_agent"].execute
   Rake::Task["student_pre"].execute
@@ -226,8 +249,22 @@ task :student do
   Rake::Task["post"].execute
 end
 
-desc "Full Puppetfactory VM Build"
+desc "Master VM Pre Build"
+task :master_install do
+  cputs "Building Master VM"
+  Rake::Task["master_pre"].execute
+  Rake::Task["install_pe"].execute
+end
+
+desc "Master VM Build"
 task :master do
+  cputs "Building Master VM"
+  Rake::Task["build"].invoke("master")
+  Rake::Task["post"].execute
+end
+
+desc "Full Puppetfactory VM Build"
+task :master_full do
   cputs "Building Master VM"
   Rake::Task["master_pre"].execute
   Rake::Task["install_pe"].execute
