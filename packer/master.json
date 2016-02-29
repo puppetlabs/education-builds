@@ -7,7 +7,7 @@
   "ks_file": "ks-master",
   "training_branch": "master",
   "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
-  "vm_memsize": "4096",
+  "vm_memsize": "6144",
   "vm_disk_size": "40960",
   "vm_cores": "4",
   "arch": "x86_64",
