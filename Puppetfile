@@ -63,6 +63,8 @@ mod 'nanliu/staging', '1.0.3'
 
 mod 'puppetlabs/apache', '1.5.0'
 
+mod 'jfryman/selinux'
+
 # Dependencies for docker/beaker on Self paced
 mod 'garethr/docker'
 mod 'puppetlabs/apt'
