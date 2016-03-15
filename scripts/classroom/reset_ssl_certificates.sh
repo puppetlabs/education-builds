@@ -1,5 +1,8 @@
 #! /bin/sh
-
+#
+# Automate the process of regenerating certificates on a monolithic master
+# https://docs.puppetlabs.com/pe/latest/trouble_regenerate_certs_monolithic.html
+#
 if [[ $(hostname) != "master.puppetlabs.vm" && $(hostname) != "classroom.puppetlabs.vm" ]]
 then
   echo "This tool is intended to be run on the classroom master."
@@ -39,6 +42,8 @@ puppet resource service pe-puppetdb ensure=stopped
 puppet resource service pe-postgresql ensure=stopped
 puppet resource service pe-console-services ensure=stopped
 puppet resource service pe-nginx ensure=stopped
+puppet resource service pe-orchestration-services ensure=stopped
+puppet resource service pxp-agent ensure=stopped
 
 rm -rf /etc/puppetlabs/puppet/ssl/*
 rm -f /opt/puppetlabs/puppet/cache/client_data/catalog/${CERTNAME}.json
@@ -50,6 +55,7 @@ puppet cert generate pe-internal-dashboard
 puppet cert generate pe-internal-mcollective-servers
 puppet cert generate pe-internal-peadmin-mcollective-client
 puppet cert generate pe-internal-puppet-console-mcollective-client
+puppet cert generate pe-internal-orchestrator
 cp /etc/puppetlabs/puppet/ssl/ca/ca_crl.pem /etc/puppetlabs/puppet/ssl/crl.pem
 chown -R pe-puppet:pe-puppet /etc/puppetlabs/puppet/ssl
 echo "Puppet Master certificates regenerated"
@@ -94,6 +100,9 @@ puppet resource service pe-console-services ensure=running
 puppet resource service pe-nginx ensure=running
 puppet resource service pe-activemq ensure=running
 puppet resource service mcollective ensure=running
+puppet resource service puppet ensure=running
+puppet resource service pe-orchestration-services ensure=running
+puppet resource service pxp-agent ensure=running
 
 puppet agent -t
 puppet resource service puppet ensure=running
