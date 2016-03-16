@@ -1,7 +1,7 @@
 ---
 title: Infrastructure Design
 domain_name: puppetlabs.vm
-master_template_id: 672397
+master_template_id: 769269
 master_name: master
 master_ports:
   - 22
@@ -10,9 +10,9 @@ master_ports:
   - 20080
   - 30080
   - 40080 
-student_template_id: 672397
+student_template_id: 769269
 student_vm_id:
-  - 6968164
+  - 9087436
 student_ports:
   - 22
   - 80
