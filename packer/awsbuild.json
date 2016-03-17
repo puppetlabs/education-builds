@@ -25,11 +25,10 @@
         "scripts/base.sh",
         "scripts/sshd.sh",
         "scripts/pre_build.sh",
-        "scripts/vagrant.sh",
+        "scripts/{{user `vm_type`}}_pre_build.sh",
         "scripts/{{user `vm_type`}}_build.sh",
         "scripts/cleanup.sh",
-        "scripts/{{user `vm_type`}}_cleanup.sh",
-        "scripts/zerodisk.sh"
+        "scripts/{{user `vm_type`}}_cleanup.sh"
       ],
       "type": "shell"
     }

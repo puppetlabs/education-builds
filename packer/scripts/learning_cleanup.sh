@@ -3,9 +3,10 @@ export PATH=$PATH:/opt/puppetlabs/bin/
 # Install docker module
 puppet module install garethr-docker --modulepath=/etc/puppetlabs/code/modules
 
-# Run puppet once
+# Run puppet twice
 puppet agent -t
 
+puppet agent -t
 
 # Stop all PE processes to free up memory
 for s in `find /etc/init.d/ -name pe* -type f -printf "%f\n"`

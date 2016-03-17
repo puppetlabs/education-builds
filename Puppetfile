@@ -35,9 +35,9 @@ mod 'pltraining/rbac', '0.0.4'
 #mod 'rbac', 
 #  :git => 'https://github.com/puppetlabs/pltraining-rbac'
 
-mod 'pltraining/userprefs'
-#mod 'userprefs', 
-#  :git => 'https://github.com/puppetlabs/pltraining-userprefs'
+#mod 'pltraining/userprefs'
+mod 'userprefs', 
+  :git => 'https://github.com/puppetlabs/pltraining-userprefs'
 
 mod 'pltraining/dirtree'
 
@@ -63,6 +63,8 @@ mod 'nanliu/staging', '1.0.3'
 
 mod 'puppetlabs/apache', '1.5.0'
 
+mod 'jfryman/selinux'
+
 # Dependencies for docker/beaker on Self paced
 mod 'garethr/docker'
 mod 'puppetlabs/apt'
@@ -71,3 +73,4 @@ mod 'puppetlabs/apt'
 mod 'jfryman/nginx', '0.2.7'
 mod 'maestrodev/wget'
 mod 'ajcrowe/supervisord'
+mod 'puppet/nodejs'
