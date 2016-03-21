@@ -76,7 +76,10 @@ def create_instance(ec2, image, name)
       { :key => 'termination_date', :value => COURSE_INFO["end"] },
     ]
   })
-   
+  
+  #Wait a second for public IP to be assigned
+  sleep(2)
+
   return {
     :ip => ec2.describe_instances({ :instance_ids => [instance_id]}).reservations[0].instances[0].public_ip_address,
     :instance_id => instance_id
@@ -85,18 +88,19 @@ end
 
 ec2 = Aws::EC2::Client.new(region: AWS_CONFIG["region"])
 
-master = {}
-students = {}
+vms = {}
 
 if CLASSROOM_FORMAT["master"] then
   #Provision classroom master VM
-  master = create_instance(ec2, CLASSROOM_FORMAT["master"], "master")
+  vms["master"] = create_instance(ec2, CLASSROOM_FORMAT["master"], "master")
+  vms["master"][:email] = "education@puppetlabs.com"
 end
 if CLASSROOM_FORMAT["student"] then
   COURSE_INFO["students"].each do |student_name, student_email|
     #Provision student VMs
-    students[student_name] = create_instance(ec2, CLASSROOM_FORMAT["student"], student_name)
+    vms[student_name] = create_instance(ec2, CLASSROOM_FORMAT["student"], student_name)
+    vms[student_name][:email] = student_email
   end
 end
 
-puts students.to_json
+puts vms.to_json
