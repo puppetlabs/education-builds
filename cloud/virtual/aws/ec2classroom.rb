@@ -68,7 +68,7 @@ def create_instance(ec2, image, name)
   ec2.create_tags({
     :resources => [resp.instances[0][:instance_id]],
     :tags => [
-      { :key => 'Name',             :value => COURSE_INFO["course_id"] + " - " + name },
+      { :key => 'Name',             :value => COURSE_INFO["title"] + " - " + COURSE_INFO["course_id"] + " - " + name },
       { :key => 'Role',             :value => "Virtual Classroom" },
       { :key => 'department',       :value => "EDU" },
       { :key => 'project',          :value => "Virtual Classroom" },
