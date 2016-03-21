@@ -95,12 +95,15 @@ if CLASSROOM_FORMAT["master"] then
   vms["master"] = create_instance(ec2, CLASSROOM_FORMAT["master"], "master")
   vms["master"][:email] = "education@puppetlabs.com"
 end
-if CLASSROOM_FORMAT["student"] then
-  COURSE_INFO["students"].each do |student_name, student_email|
-    #Provision student VMs
+COURSE_INFO["students"].each do |student_name, student_email|
+  if CLASSROOM_FORMAT["student"] then
+    # Provision student VMs
     vms[student_name] = create_instance(ec2, CLASSROOM_FORMAT["student"], student_name)
-    vms[student_name][:email] = student_email
+  else
+    # Give students the info for the master
+    vms[student_name] = vms["master"]
   end
+  vms[student_name][:email] = student_email
 end
 
 puts vms.to_json
