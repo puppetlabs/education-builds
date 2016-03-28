@@ -1,7 +1,7 @@
 ---
 master:
-  ami: "ami-2051b840"
-  type: "t2.micro"
+  ami: "ami-caa14baa"
+  type: "m4.xlarge"
   key_name: "training"
   security_group_ids:
-    - "sg-688b120f"
+    - "sg-f3b33794"
