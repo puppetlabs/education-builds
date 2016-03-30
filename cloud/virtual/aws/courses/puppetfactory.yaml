@@ -1,6 +1,6 @@
 ---
 master:
-  ami: "ami-caa14baa"
+  ami: "ami-4431db24"
   type: "m4.xlarge"
   key_name: "training"
   security_group_ids:
