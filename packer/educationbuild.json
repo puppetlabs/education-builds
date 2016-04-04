@@ -53,7 +53,7 @@
     "ks_file": "ks.cfg",
     "os_name": "CentOS-6.7",
     "pe_status": "release",
-    "pe_version": "2016.1.0",
+    "pe_version": "2016.1.1",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "training",
     "system_user_password": "training",
