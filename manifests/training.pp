@@ -1,1 +1,1 @@
-include 'bootstrap::role::training'
+include bootstrap::role::training
