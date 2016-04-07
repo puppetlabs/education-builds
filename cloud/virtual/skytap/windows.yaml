@@ -1,7 +1,7 @@
 ---
 title: Windows Essentials
 domain_name: puppetlabs.vm
-master_template_id: 746433
+master_template_id: 782173
 master_name: master
 master_ports:
   - 22

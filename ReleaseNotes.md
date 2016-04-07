@@ -1,3 +1,7 @@
+## Version 4.1
+
+* 2016.1.1 support
+
 ## Version 4.0
 
 * New preinstalled VM called "master" to replace training and puppetfactory VM
