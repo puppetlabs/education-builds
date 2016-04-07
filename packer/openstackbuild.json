@@ -1,13 +1,18 @@
 {
   "builders": [
     {
-      "type": "amazon-ebs",
-      "region": "us-west-2",
-      "source_ami": "ami-c7d092f7",
-      "instance_type": "m3.large",
+      "type": "openstack",
+      "identity_endpoint": "https://slice-pdx1-prod.ops.puppetlabs.net:5000/v2.0",
+      "tenant_name":"{{ user `username` }}",
+      "username":"{{ user `username` }}",
+      "password":"{{ user `password` }}",
       "ssh_username": "centos",
-      "ami_name": "PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{isotime \"Jan02-0304\" }}",
-      "ssh_pty": "true"
+      "image_name": "PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{timestamp}}",
+      "source_image": "5c509a1d-c7b2-4629-97ed-0d7ccd66e154",
+      "flavor": "m1.large",
+      "floating_ip_pool":"ext-net-pdx1-opdx1",
+      "security_groups": ["sg0"],
+      "ssh_pty":"true"
     }
   ],
   "provisioners": [
@@ -20,7 +25,7 @@
         "TRAINING_BRANCH={{user `training_branch`}}",
         "VM_TYPE={{user `vm_type`}}"
       ],
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "execute_command": "{{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [
         "scripts/base.sh",
         "scripts/sshd.sh",
@@ -42,7 +47,7 @@
     "iso_url": "",
     "os_name": "",
     "pe_status": "release",
-    "pe_version": "2016.1.1",
+    "pe_version": "2015.3.2",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "vagrant",
     "system_user_password": "vagrant",
@@ -52,6 +57,8 @@
     "vm_memsize": "",
     "vm_disk_size": "",
     "vm_cores": "",
-    "ptb_version": "4.1"
+    "ptb_version": "4.1",
+    "username":"{{ env `OS_USERNAME`}}",
+    "password":"{{ env `OS_PASSWORD`}}"
   }
 }

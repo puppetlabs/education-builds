@@ -22,5 +22,6 @@ student_ports:
   - 30080
   - 40080
 students:
+  - instructor
   - foo
   - bar
