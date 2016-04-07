@@ -1,6 +1,6 @@
 ## Version 4.1
 
-* 2016.1.0 support
+* 2016.1.1 support
 
 ## Version 4.0
 
