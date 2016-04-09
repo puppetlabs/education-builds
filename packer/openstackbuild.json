@@ -57,7 +57,7 @@
     "vm_memsize": "",
     "vm_disk_size": "",
     "vm_cores": "",
-    "ptb_version": "4.1",
+    "ptb_version": "4.2",
     "username":"{{ env `OS_USERNAME`}}",
     "password":"{{ env `OS_PASSWORD`}}"
   }

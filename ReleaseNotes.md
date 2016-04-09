@@ -1,3 +1,7 @@
+## Version 4.2
+
+* hostname fix for Centos 6
+
 ## Version 4.1
 
 * 2016.1.1 support
