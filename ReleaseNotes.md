@@ -1,10 +1,7 @@
-## Version 4.2
-
-* hostname fix for Centos 6
-
-## Version 4.1
+## Version Master 4.1, Student 4.2
 
 * 2016.1.1 support
+* hostname fix for Centos 6 student VMs
 
 ## Version 4.0
 
@@ -35,7 +32,7 @@
 * Cache hocon gem
 * Move scripts to pltraining-bootstrap
 
-## Versione 2.33
+## Version 2.33
 
 * Some additional cached gems
 
