@@ -17,11 +17,6 @@
   ],
   "post-processors": [
     {
-      "type": "ovftool",
-      "format": "ova",
-      "target": "output/puppet-{{user `pe_version`}}-{{ user `vm_type` }}-{{ user `ptb_version` }}.ova"
-    },
-    {
       "type": "vagrant",
       "output": "output/{{user `vm_type`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
       "keep_input_artifact": true
