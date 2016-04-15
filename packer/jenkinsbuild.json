@@ -3,7 +3,7 @@
     {
       "vm_name": "{{ user `vm_type`}}",
       "type": "vmware-vmx",
-      "source_path": "output/{{ user `vm_type` }}-base-vmware/packer-centos-7.2-x86_64-vmware-vagrant-pe-{{timestamp}}.vmx",
+      "source_path": "output/{{ user `vm_type` }}-base-vmware/packer-centos-7.2-x86_64-vmware-vagrant-pe-\{\{timestamp\}\}.vmx",
       "ssh_username": "root",
       "ssh_password": "puppet",
       "skip_compaction": "true",
