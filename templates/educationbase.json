@@ -29,7 +29,7 @@
     },
     {
       "type": "file",
-      "source": "../file_cache/",
+      "source": "file_cache/",
       "destination": "/training/file_cache"
     },
     {
