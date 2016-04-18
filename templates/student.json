@@ -1,12 +1,11 @@
 {
-{
   "builders": [
     {
       "vm_name": "{{ user `vm_type`}}",
       "type": "vmware-vmx",
       "source_path": "output/{{ user `vm_type` }}-base-vmware/{{ user `vm_type` }}-base.vmx",
-      "ssh_username": "training",
-      "ssh_password": "training",
+      "ssh_username": "root",
+      "ssh_password": "puppet",
       "skip_compaction": "true",
       "shutdown_command": "{{user `shutdown_command`}}",
       "output_directory": "output/{{ user `vm_type`}}-vmware/",
@@ -27,6 +26,14 @@
     }
   ],
   "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["useradd training",
+                 "echo \"training:training\" | chpasswd",
+                 "echo \"training ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers",
+                 "mkdir -p /training/file_cache",
+                 "chown -R training:training /training"]
+    },
     {
       "environment_vars": [
         "PE_STATUS={{user `pe_status`}}",
@@ -61,7 +68,6 @@
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "training_branch": "master",
     "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
-    "vm_type": "training",
     "vm_cores": "2",
     "ptb_version": "4.2"
   }
