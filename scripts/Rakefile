@@ -168,7 +168,7 @@ end
 
 desc "Post build cleanup tasks"
 task :post do
-  version = YAML.load(File.read('version.yaml'))
+  version = YAML.load(File.read('../version.yaml'))
   # Put version file in place on VM
   cputs "Editing /etc/vm-version"
   FileUtils.copy('../version.yaml','/etc/vm-version')
