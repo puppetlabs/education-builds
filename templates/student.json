@@ -21,12 +21,16 @@
   "post-processors": [
     {
       "type": "vagrant",
-      "output": "output/{{user `vm_type`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
-      "keep_input_artifact": true
+      "output": "output/{{user `vm_type`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box"
     },
     {
       "type": "shell-local",
-      "inline": ["ovftool --targetType=ova --acceptAllEulas output/{{user `vm_type`}}-vmware/{{user `vm_type`}}.vmx output/puppet-{{user `vm_type`}}-ptb{{user `ptb_version`}}.ova"]
+      "script": "scripts/box-to-ova.sh",
+      "environment_vars": [
+        "VM_TYPE={{user `vm_type`}}",
+        "PE_VERSION={{user `pe_version`}}",
+        "PTB_VERSION={{user `ptb_version`}}"
+      ]
     }
   ],
   "provisioners": [

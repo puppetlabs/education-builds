@@ -6,7 +6,6 @@
       "source_path": "output/{{ user `vm_type` }}-base-vmware/{{ user `vm_type` }}-base.vmx",
       "ssh_username": "training",
       "ssh_password": "training",
-      "skip_compaction": "true",
       "shutdown_command": "{{user `shutdown_command`}}",
       "output_directory": "output/{{ user `vm_type`}}-vmware/",
       "ssh_pty": "true"
@@ -20,7 +19,12 @@
     },
     { 
       "type": "shell-local",
-      "inline":["ovftool --targetType=ova --acceptAllEulas output/{{user `vm_type`}}-vmware/{{user `vm_type`}}.vmx output/puppet-{{user `pe_version`}}-{{user `vm_type`}}-{{user `ptb_version`}}.ova"]
+      "script": "scripts/export-ova.sh",
+      "environment_vars": [
+        "VM_TYPE={{user `vm_type`}}",
+        "PE_VERSION={{user `pe_version`}}",
+        "PTB_VERSION={{user `ptb_version`}}"
+      ]
     }
   ],
   "provisioners": [
