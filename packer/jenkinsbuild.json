@@ -3,9 +3,9 @@
     {
       "vm_name": "{{ user `vm_type`}}",
       "type": "vmware-vmx",
-      "source_path": "output/{{ user `vm_type` }}-base-vmware/packer-centos-7.2-x86_64-vmware-vagrant-pe.vmx",
-      "ssh_username": "root",
-      "ssh_password": "puppet",
+      "source_path": "output/{{ user `vm_type` }}-base-vmware/{{ user `vm_type` }}-base.vmx",
+      "ssh_username": "training",
+      "ssh_password": "training",
       "skip_compaction": "true",
       "shutdown_command": "{{user `shutdown_command`}}",
       "output_directory": "output/{{ user `vm_type`}}-vmware/",
