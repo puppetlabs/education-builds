@@ -2,25 +2,23 @@
 Packer build scripts for master, training, student, or learning VMs. See versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
 
 ## Usage
-Packer scripts are provided in the `templates` directory. These depend on vmware fusion and the ovftool post-processor plugin from here: https://github.com/iancmcc/packer-post-processor-ovftool
+Packer scripts are provided in the `templates` directory. These depend on vmware fusion and ovftool
 
-Installing the post-processors can be a little tricky, if there are errors, go through all of the repos in gocode/src and do a `git pull` to make sure they're all up to date:
-
-    for d in ~/gocode/src/*/*/*; do cd $d; git pull;done
-
-The common configuration options have been set up in educationbase.json and vm specific variables are set in VMNAME.json
+The common configuration options for the training, learning, and master vms have been set up in educationbase.json and vm specific variables are set in VMNAME.json
 After the base VM is provisioned according to the settings in VMNAME.json, the bootstrap can be applied using educationbuild.json.
 
 First create a base VM without any bootstrap applied:
-- `packer build -var-file=student.json educationbase.json`
+- `packer build -var-file=templates/learning.json templates/educationbase.json`
 
 To initiate a packer build of the student vm on the base vm:
-- `packer build -var-file=student.json educationbuild.json`
-
+- `packer build -var-file=templates/learning.json templates/educationbuild.json`
 
 For the training vm follow the same two steps but with training.json:
-- `packer build -var-file=training.json educationbase.json`
-- `packer build -var-file=training.json educationbuild.json`
+- `packer build -var-file=templates/training.json templates/educationbase.json`
+- `packer build -var-file=templates/training.json templates/educationbuild.json`
+
+The Student VM is the only VM running Centos6 so it's build template is all in student.json:
+- `packer build templates/student.json`
 
 ## Vagrant
 There is a Vagrantfile that automates this process and builds on the puppetlabs/centos-7.2-x86_64-nocm base box.
@@ -44,7 +42,7 @@ For pre-release builds:
 
 1. Make a branch of this repo and of pltraining-bootstrap.
 1. Edit the Puppetfile on this branch to point to your own fork and branch of pltraining-bootstrap.
-1. Edit the build script in `/packer/scripts` to reference the correct branch of this repo at build time.
+1. Edit the build script in `./scripts` to reference the correct branch of this repo at build time.
   * Note this change does not need to be commited to the branch.
 1. Download the PE master and agent installers and place them in a `file_cache` directory in the root of this repository.
 1. Update the `$pe_version` in `bootstrap::params` in your branch of pltraining-bootstrap.
