@@ -171,7 +171,7 @@ task :post do
   version = YAML.load(File.read('version.yaml'))
   # Put version file in place on VM
   cputs "Editing /etc/vm-version"
-  FileUtils.copy('version.yaml','/etc/vm-version')
+  FileUtils.copy('/usr/src/puppetlabs-training-bootstrap/version.yaml','/etc/vm-version')
   cputs "Editing /etc/puppetlabs-release"
   File.open('/etc/puppetlabs-release', 'w') do |file|
     file.write "#{version[:major]}.#{version[:minor]}"
