@@ -16,7 +16,7 @@ PUPPET_VER = '4.3.1'
 FACTER_VER = '3.1.2'
 HIERA_VER = '3.0.5'
 VMTYPE = ENV['VMTYPE'] || 'training'
-PTBVERSION = YAML.load_file('version.yaml')
+PTBVERSION = YAML.load_file('../version.yaml')
 
 ## These are used by the shipping tasks
 SITESDIR = "/srv/builder/Sites" || ENV["SITESDIR"]
@@ -70,7 +70,7 @@ task :install_pe do
     end
   end
   File.open('/tmp/answers','w') do |f|
-    f.write ERB.new(File.read('/usr/src/puppetlabs-training-bootstrap/templates/answers.erb')).result(binding)
+    f.write ERB.new(File.read('../templates/answers.erb')).result(binding)
   end
   %x{mkdir /tmp/puppet-enterprise}
   %x{tar xf /tmp/puppet-enterprise.tar.gz -C /tmp/puppet-enterprise --strip-components=1} 
@@ -158,12 +158,12 @@ desc "Apply bootstrap manifest"
 task :build, [:role] do |t,args|
  cputs "Installing R10k"
  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin gem install r10k -v 1.5.1 --no-RI --no-RDOC')
- Dir.chdir('/usr/src/puppetlabs-training-bootstrap') do
+ Dir.chdir('..') do
   cputs "Running r10k Puppetfile install"
   system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
  end
  cputs "Running puppet apply on #{args[:role]}.pp"
- system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules:/opt/puppetlabs/puppet/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/#{args[:role]}.pp")
+ system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=../modules:/opt/puppetlabs/puppet/modules --verbose ../manifests/#{args[:role]}.pp")
 end
 
 desc "Post build cleanup tasks"
@@ -171,14 +171,14 @@ task :post do
   version = YAML.load(File.read('version.yaml'))
   # Put version file in place on VM
   cputs "Editing /etc/vm-version"
-  FileUtils.copy('/usr/src/puppetlabs-training-bootstrap/version.yaml','/etc/vm-version')
+  FileUtils.copy('../version.yaml','/etc/vm-version')
   cputs "Editing /etc/puppetlabs-release"
   File.open('/etc/puppetlabs-release', 'w') do |file|
     file.write "#{version[:major]}.#{version[:minor]}"
   end
   # Run cleanup manifest
   cputs "Running cleanup manifest"
-  system('PATH=$PATH:/opt/puppetlabs/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/post.pp')
+  system('PATH=$PATH:/opt/puppetlabs/bin puppet apply --modulepath=../modules --verbose ../manifests/post.pp')
 end
 
 desc "Uninstall Puppet"
