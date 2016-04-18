@@ -2,7 +2,7 @@
 Packer build scripts for master, training, student, or learning VMs. See versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
 
 ## Usage
-Packer scripts are provided in the `templates` directory. These depend on vmware fusion and ovftool
+Packer scripts are provided in the `templates` directory. These depend on packer, vmware fusion, and ovftool
 
 The common configuration options for the training, learning, and master vms have been set up in educationbase.json and vm specific variables are set in VMNAME.json
 After the base VM is provisioned according to the settings in VMNAME.json, the bootstrap can be applied using educationbuild.json.
