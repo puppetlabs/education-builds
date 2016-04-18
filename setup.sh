@@ -15,17 +15,14 @@ fi
 if [ ! -d $BUILD_ROOT_DIR/output ]; then
     mkdir $BUILD_ROOT_DIR/output
 fi
-if [ ! -d $BUILD_ROOT_DIR/output/education-base-vmware ]; then
-    mkdir $BUILD_ROOT_DIR/output/education-base-vmware
-fi
-if [ ! -d $BUILD_ROOT_DIR/output/student-base-vmware ]; then
-    mkdir $BUILD_ROOT_DIR/output/student-base-vmware
-fi
 if [ ! -d $BUILD_ROOT_DIR/packer_cache ]; then
     mkdir $BUILD_ROOT_DIR/packer_cache
 fi
 
+
 echo Downloading main base image
+rm -rf $BUILD_ROOT_DIR/output/education-base-vmware
+mkdir $BUILD_ROOT_DIR/output/education-base-vmware
 cd $BUILD_ROOT_DIR/output/education-base-vmware
 curl $VAGRANT_BASE_URL/$MAIN_VAGRANT_BOX_NAME -o $MAIN_VAGRANT_BOX_NAME
 tar xzvf $MAIN_VAGRANT_BOX_NAME
@@ -34,7 +31,10 @@ mv *.vmx education-base.vmx
 cd $BUILD_ROOT_DIR
 
 echo Downloading student base image
+rm -rf $BUILD_ROOT_DIR/output/student-base-vmware
+mkdir $BUILD_ROOT_DIR/output/student-base-vmware
 cd $BUILD_ROOT_DIR/output/student-base-vmware
+rm -f $BUILD_ROOT_DIR/output/student-base-vmware/*
 curl $VAGRANT_BASE_URL/$STUDENT_VAGRANT_BOX_NAME -o $STUDENT_VAGRANT_BOX_NAME
 tar xzvf $STUDENT_VAGRANT_BOX_NAME
 mv *.vmx student-base.vmx
