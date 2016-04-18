@@ -36,7 +36,7 @@ function get_vm {
   mv ${!IMAGE_BOX} $IMAGE_TYPE-base-vmware/
   cd $BUILD_ROOT_DIR/output/$IMAGE_TYPE-base-vmware
   tar xzvf ${!IMAGE_BOX}
-  mv *.vmx education-base.vmx
+  mv *.vmx $IMAGE_TYPE-base.vmx
 
   echo Converting to single disk
   vmware-vdiskmanager -r disk-cl1.vmdk -t 0 disk-cl1.vmdk.temp
