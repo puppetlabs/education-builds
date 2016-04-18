@@ -23,6 +23,10 @@
       "type": "vagrant",
       "output": "output/{{user `vm_type`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
       "keep_input_artifact": true
+    },
+    {
+      "type": "shell-local",
+      "inline": ["ovftool --targetType=ova --acceptAllEulas output/{{user `vm_type`}}-vmware/{{user `vm_type`}}.vmx output/puppet-{{user `vm_type`}}-ptb{{user `ptb_version`}}.ova"]
     }
   ],
   "provisioners": [

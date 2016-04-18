@@ -3,7 +3,7 @@
     {
       "vm_name": "{{ user `vm_type`}}-base",
       "type": "vmware-vmx",
-      "source_path": "output/education-base-vmware/packer-centos-7.2-x86_64-vmware-base.vmx",
+      "source_path": "output/education-base-vmware/education-base.vmx",
       "ssh_username": "root",
       "ssh_password": "puppet",
       "skip_compaction": "true",
