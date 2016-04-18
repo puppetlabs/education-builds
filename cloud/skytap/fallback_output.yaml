@@ -1,0 +1,305 @@
+---
+environment_id: '5622768'
+environment_name: Fallback Online Classroom
+publish_sets:
+- name: Instructor Dashboard
+  url: https://cloud.skytap.com/vms/ec64027ce050120f393b0296472f9d1c/desktop
+- name: Student VMs
+  url: https://cloud.skytap.com/vms/1450ab9fd6b98155fe397a0a0fe9bc9f/desktop
+- name: View Only
+  url: https://cloud.skytap.com/vms/b28a7fda87ee883097ac3ac3a6d75ccf/desktop
+vms:
+- name: master
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 30343
+  - id: '443'
+    internal_port: 443
+    external_ip: services-uswest.skytap.com
+    external_port: 31488
+  - id: '3000'
+    internal_port: 3000
+    external_ip: services-uswest.skytap.com
+    external_port: 31699
+- name: student18
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 31761
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 31763
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 31771
+- name: student17
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 31784
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 31788
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 32626
+- name: student16
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 32630
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 32734
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 16402
+- name: student15
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 16403
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 16410
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 16413
+- name: student14
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 16425
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 16429
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 16443
+- name: student13
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 16447
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 16485
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12008
+- name: student12
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12012
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12013
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12014
+- name: student11
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12016
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12017
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12019
+- name: student10
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12020
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12027
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12028
+- name: student9
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12029
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12030
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12031
+- name: student8
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12033
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12034
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12035
+- name: student7
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12036
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12038
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12039
+- name: student6
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12136
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12137
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12138
+- name: student5
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12139
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12140
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12141
+- name: student4
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12142
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12143
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12144
+- name: student3
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12145
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12147
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 29277
+- name: student2
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12148
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12149
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12151
+- name: student1
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12152
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12153
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12154
+- name: instructor
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12156
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12158
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12159
+- name: proxy
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12161
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12162
+  - id: '9090'
+    internal_port: 9090
+    external_ip: services-uswest.skytap.com
+    external_port: 12163

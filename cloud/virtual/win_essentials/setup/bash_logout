@@ -1,4 +1,0 @@
-unset HISTFILE
-rm -f ~/.bash_history
-rm -f ~/.viminfo
-sudo sh -c "echo > /var/log/lastlog"

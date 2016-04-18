@@ -1,0 +1,187 @@
+---
+environment_id: '6756888'
+environment_name: Infrastructure Design
+publish_sets:
+- name: Instructor Dashboard
+  url: https://cloud.skytap.com/vms/d0d0817b92a50be37bb017d974a2de90/desktops
+- name: Student VMs
+  url: https://cloud.skytap.com/vms/63564c37c7de3a91560efea2bada2372/desktops
+- name: View Only
+  url: https://cloud.skytap.com/vms/47fdf8fb718e0d955c4e3003b79df096/desktops
+vms:
+- name: master
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 29921
+  - id: '443'
+    internal_port: 443
+    external_ip: services-uswest.skytap.com
+    external_port: 12011
+  - id: '10080'
+    internal_port: 10080
+    external_ip: services-uswest.skytap.com
+    external_port: 12436
+  - id: '20080'
+    internal_port: 20080
+    external_ip: services-uswest.skytap.com
+    external_port: 12438
+  - id: '30080'
+    internal_port: 30080
+    external_ip: services-uswest.skytap.com
+    external_port: 12439
+  - id: '40080'
+    internal_port: 40080
+    external_ip: services-uswest.skytap.com
+    external_port: 12440
+- name: sayeed
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12441
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12443
+  - id: '443'
+    internal_port: 443
+    external_ip: services-uswest.skytap.com
+    external_port: 12444
+  - id: '10080'
+    internal_port: 10080
+    external_ip: services-uswest.skytap.com
+    external_port: 12446
+  - id: '20080'
+    internal_port: 20080
+    external_ip: services-uswest.skytap.com
+    external_port: 12447
+  - id: '30080'
+    internal_port: 30080
+    external_ip: services-uswest.skytap.com
+    external_port: 12448
+  - id: '40080'
+    internal_port: 40080
+    external_ip: services-uswest.skytap.com
+    external_port: 12449
+- name: dan
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12451
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12452
+  - id: '443'
+    internal_port: 443
+    external_ip: services-uswest.skytap.com
+    external_port: 12453
+  - id: '10080'
+    internal_port: 10080
+    external_ip: services-uswest.skytap.com
+    external_port: 12454
+  - id: '20080'
+    internal_port: 20080
+    external_ip: services-uswest.skytap.com
+    external_port: 12455
+  - id: '30080'
+    internal_port: 30080
+    external_ip: services-uswest.skytap.com
+    external_port: 12459
+  - id: '40080'
+    internal_port: 40080
+    external_ip: services-uswest.skytap.com
+    external_port: 12475
+- name: mark
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12477
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12479
+  - id: '443'
+    internal_port: 443
+    external_ip: services-uswest.skytap.com
+    external_port: 12480
+  - id: '10080'
+    internal_port: 10080
+    external_ip: services-uswest.skytap.com
+    external_port: 12481
+  - id: '20080'
+    internal_port: 20080
+    external_ip: services-uswest.skytap.com
+    external_port: 12483
+  - id: '30080'
+    internal_port: 30080
+    external_ip: services-uswest.skytap.com
+    external_port: 12489
+  - id: '40080'
+    internal_port: 40080
+    external_ip: services-uswest.skytap.com
+    external_port: 12490
+- name: liao
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12491
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12492
+  - id: '443'
+    internal_port: 443
+    external_ip: services-uswest.skytap.com
+    external_port: 12495
+  - id: '10080'
+    internal_port: 10080
+    external_ip: services-uswest.skytap.com
+    external_port: 12496
+  - id: '20080'
+    internal_port: 20080
+    external_ip: services-uswest.skytap.com
+    external_port: 12497
+  - id: '30080'
+    internal_port: 30080
+    external_ip: services-uswest.skytap.com
+    external_port: 12498
+  - id: '40080'
+    internal_port: 40080
+    external_ip: services-uswest.skytap.com
+    external_port: 12499
+- name: chaitanya
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 12500
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 12501
+  - id: '443'
+    internal_port: 443
+    external_ip: services-uswest.skytap.com
+    external_port: 12503
+  - id: '10080'
+    internal_port: 10080
+    external_ip: services-uswest.skytap.com
+    external_port: 29702
+  - id: '20080'
+    internal_port: 20080
+    external_ip: services-uswest.skytap.com
+    external_port: 12504
+  - id: '30080'
+    internal_port: 30080
+    external_ip: services-uswest.skytap.com
+    external_port: 12505
+  - id: '40080'
+    internal_port: 40080
+    external_ip: services-uswest.skytap.com
+    external_port: 12506

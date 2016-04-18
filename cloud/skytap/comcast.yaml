@@ -1,0 +1,175 @@
+---
+environment_id: '6639076'
+environment_name: Fundamentals Classroom
+publish_sets:
+- name: Instructor Dashboard
+  url: https://cloud.skytap.com/vms/45141af56189f1cd9a4b77485a4e128d/desktops
+- name: Student VMs
+  url: https://cloud.skytap.com/vms/0ffee20dbab820d8172d8838c3fb006b/desktops
+- name: View Only
+  url: https://cloud.skytap.com/vms/22fa4ce037112381d3cb016131b642f6/desktops
+vms:
+- name: master
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24955
+  - id: '443'
+    internal_port: 443
+    external_ip: services-uswest.skytap.com
+    external_port: 24986
+  - id: '3000'
+    internal_port: 3000
+    external_ip: services-uswest.skytap.com
+    external_port: 26643
+- name: student14
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 19032
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 19175
+- name: student13
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 23939
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 23947
+- name: student12
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 23948
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 23957
+- name: student11
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 23959
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 23967
+- name: student10
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24013
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 24019
+- name: student9
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24040
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 24043
+- name: student8
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24046
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 24047
+- name: student7
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24048
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 24052
+- name: student6
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24053
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 24056
+- name: student5
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24061
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 24063
+- name: student4
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24064
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 24066
+- name: student3
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24069
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 24072
+- name: student2
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24074
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 24075
+- name: student1
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24076
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 24079
+- name: instructor
+  services:
+  - id: '22'
+    internal_port: 22
+    external_ip: services-uswest.skytap.com
+    external_port: 24080
+  - id: '80'
+    internal_port: 80
+    external_ip: services-uswest.skytap.com
+    external_port: 24083
