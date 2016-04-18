@@ -26,10 +26,15 @@ function get_vm {
   
   rm -rf $BUILD_ROOT_DIR/output/$IMAGE_TYPE-base-vmware
   mkdir $BUILD_ROOT_DIR/output/$IMAGE_TYPE-base-vmware
-  cd $BUILD_ROOT_DIR/output/$IMAGE_TYPE-base-vmware
+  cd $BUILD_ROOT_DIR/output/
 
-  echo Downloading $IMAGE_TYPE base image
-  curl $VAGRANT_BASE_URL/${!IMAGE_BOX} -o ${!IMAGE_BOX}
+  if [ ! -s  ${!IMAGE_BOX} ]; then
+    echo Downloading ${!IMAGE_BOX} base image
+    curl $VAGRANT_BASE_URL/${!IMAGE_BOX} -o ${!IMAGE_BOX}
+  fi
+  
+  mv ${!IMAGE_BOX} $IMAGE_TYPE-base-vmware/
+  cd $BUILD_ROOT_DIR/output/$IMAGE_TYPE-base-vmware
   tar xzvf ${!IMAGE_BOX}
   mv *.vmx education-base.vmx
 
@@ -38,6 +43,7 @@ function get_vm {
   rm -rf disk-cl1*vmdk
   mv disk-cl1.vmdk.temp disk-cl1.vmdk
 
+  mv ${!IMAGE_BOX} $BUILD_ROOT_DIR/output/
   cd $BUILD_ROOT_DIR
 }
 
