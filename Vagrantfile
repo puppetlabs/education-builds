@@ -6,7 +6,6 @@
 # 
 #
 #
-GIT_BRANCH = %x(git rev-parse --abbrev-ref HEAD)
 VAGRANTFILE_API_VERSION = "2"
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
@@ -18,12 +17,11 @@ $script = <<SCRIPT
 		gem install json --no-rdoc --no-ri
 
 		cd /usr/src/
-		git clone /vagrant puppetlabs-training-bootstrap -b GIT_BRANCH --depth=1
+    ln -s /vagrant /usr/src/puppetlabs-training-bootstrap
 		cd /usr/src/puppetlabs-training-bootstrap/scripts
 
 		rake VMTYPE_full
 SCRIPT
-$script.sub! 'GIT_BRANCH', GIT_BRANCH
 
 	config.vm.define :master, autostart: false do |master_config|
 		master_config.vm.box = "puppetlabs/centos-7.2-64-nocm"
