@@ -6,7 +6,7 @@
 # 
 #
 #
-GIT_ACCOUNT = %x(git remote -v | grep -m 1 origin | sed -n -e 's/^.*github.com.\([a-z]*\).*$/\1/p')
+GIT_ACCOUNT = %x(git remote config --get remote.origin.url | sed -n -e 's/^.*github.com.\([a-z]*\).*$/\1/p')
 GIT_BRANCH = %x(git rev-parse --abbrev-ref HEAD)
 VAGRANTFILE_API_VERSION = "2"
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
