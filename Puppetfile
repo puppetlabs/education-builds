@@ -75,3 +75,9 @@ mod 'jfryman/nginx', '0.2.7'
 mod 'maestrodev/wget'
 mod 'ajcrowe/supervisord'
 mod 'puppet/nodejs'
+
+# Dependencies for bootstrap
+mod 'puppetlabs/firewall'
+mod 'puppetlabs/pe_gem'
+
+
