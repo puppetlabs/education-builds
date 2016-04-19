@@ -16,8 +16,7 @@ moduledir './modules/'
 
 
 mod 'bootstrap', 
-  :git => 'https://github.com/samuelson/pltraining-bootstrap',
-  :ref => 'firewall'
+  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
 
 mod 'learning',
   :git => 'https://github.com/puppetlabs/pltraining-learning'
@@ -77,7 +76,6 @@ mod 'ajcrowe/supervisord'
 mod 'puppet/nodejs'
 
 # Dependencies for bootstrap
-mod 'puppetlabs/firewall'
 mod 'puppetlabs/pe_gem'
 
 
