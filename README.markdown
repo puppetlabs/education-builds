@@ -12,7 +12,7 @@ After the base VM is provisioned according to the settings in VMNAME.json, the b
 First create a base VM without any bootstrap applied:
 - `packer build -var-file=templates/learning.json templates/educationbase.json`
 
-To initiate a packer build of the student vm on the base vm:
+To initiate a packer build of the learning vm on the base vm:
 - `packer build -var-file=templates/learning.json templates/educationbuild.json`
 
 For the training vm follow the same two steps but with training.json:
