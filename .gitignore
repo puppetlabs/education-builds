@@ -2,7 +2,7 @@
 *.swp
 .DS_Store
 *.un~
-modules/*/pkg/
+modules
 Gemfile.lock
 spec/log
 .bundle
