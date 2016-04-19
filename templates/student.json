@@ -77,6 +77,6 @@
     "training_branch": "master",
     "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
     "vm_cores": "2",
-    "ptb_version": "4.2"
+    "ptb_version": "5.0"
   }
 }
