@@ -6,7 +6,6 @@
 # 
 #
 #
-GIT_ACCOUNT = %x(git remote config --get remote.origin.url | sed -n -e 's/^.*github.com.\([a-z]*\).*$/\1/p')
 GIT_BRANCH = %x(git rev-parse --abbrev-ref HEAD)
 VAGRANTFILE_API_VERSION = "2"
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
@@ -19,12 +18,11 @@ $script = <<SCRIPT
 		gem install json --no-rdoc --no-ri
 
 		cd /usr/src/
-		git clone https://github.com/GIT_ACCOUNT/puppetlabs-training-bootstrap -b GIT_BRANCH
+		git clone /vagrant puppetlabs-training-bootstrap -b GIT_BRANCH
 		cd /usr/src/puppetlabs-training-bootstrap/scripts
 
 		rake VMTYPE_full
 SCRIPT
-$script.sub! 'GIT_ACCOUNT', GIT_ACCOUNT
 $script.sub! 'GIT_BRANCH', GIT_BRANCH
 
 	config.vm.define :master, autostart: false do |master_config|
