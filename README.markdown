@@ -2,7 +2,9 @@
 Packer build scripts for master, training, student, or learning VMs. See versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
 
 ## Usage
-Packer scripts are provided in the `templates` directory. These depend on packer, vmware fusion, and ovftool
+Packer scripts are provided in the `templates` directory. These depend on packer, vmware fusion, and ovftool. The packer builds pull directly from github and the master branch, so changes will need to be checked in.
+
+The base VMs are the published puppetlabs vagrant boxes.  To download and prepare them, run `setup.sh`. This will create the output, file_cache, and packer_cache directories if they don't exist.  If you'd like to keep those on a separate volume to save disk space, create symlinks before running the setup script.
 
 The common configuration options for the training, learning, and master vms have been set up in educationbase.json and vm specific variables are set in VMNAME.json
 After the base VM is provisioned according to the settings in VMNAME.json, the bootstrap can be applied using educationbuild.json.
@@ -21,7 +23,7 @@ The Student VM is the only VM running Centos6 so it's build template is all in s
 - `packer build templates/student.json`
 
 ## Vagrant
-There is a Vagrantfile that automates this process and builds on the puppetlabs/centos-7.2-x86_64-nocm base box.
+There is a Vagrantfile that automates this process and builds on the puppetlabs/centos-7.2-x86_64-nocm base box and the puppetlabs/cento-6.6-32-nocm base box for the student VM. The Vagrant boxes will use the current local files.
 There are three boxes specified.
 
 To start a student vagrant box:
