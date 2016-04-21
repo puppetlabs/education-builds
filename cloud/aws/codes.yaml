@@ -1,6 +1,7 @@
 ---
 "Infrastructure Design": "infrastructure"
 "Windows": "windows"
+"Architect": "architect"
 "Intro to Puppet": "puppetfactory"
 "Managing Puppet Code": "puppetfactory"
 "Writing your first module": "puppetfactory"

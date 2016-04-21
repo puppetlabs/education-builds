@@ -21,7 +21,7 @@ rm -rf /usr/src/installer
 rm -rf /opt/puppet/packages
 
 # Clean up other random files
-rm -rf /usr/src/puppetlabs-training-bootstrap
+rm -rf /usr/src/education-builds
 rm -rf /usr/src/puppet
 rm -rf /usr/share/doc/*
 rm -rf /usr/src/kernels

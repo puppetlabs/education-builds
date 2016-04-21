@@ -7,7 +7,7 @@
   "ks_file": "ks-lms",
   "os_name": "CentOS-7",
   "training_branch": "master",
-  "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
+  "training_repo": "https://github.com/puppetlabs/education-builds.git",
   "vm_cores": "1",
   "vm_disk_size": "10240",
   "vm_memsize": "1024",

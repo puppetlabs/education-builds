@@ -11,16 +11,17 @@ ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 $script = <<SCRIPT
+    echo Building $1 VM
 		yum install -y git yum-utils ruby-devel ruby rubygems gcc ntpdate
     yum clean all
 		gem install rake --no-rdoc --no-ri -v 10.5.0
 		gem install json --no-rdoc --no-ri
 
 		cd /usr/src/
-    ln -s /vagrant /usr/src/puppetlabs-training-bootstrap
-		cd /usr/src/puppetlabs-training-bootstrap/scripts
+    ln -s /vagrant /usr/src/education-builds
+		cd /usr/src/education-builds/scripts
 
-		rake VMTYPE_full
+		rake $1_full
 SCRIPT
 
 	config.vm.define :master, autostart: false do |master_config|
@@ -38,8 +39,10 @@ SCRIPT
   		v.vmx["numvcpus"] = "2"
 		end
 	
-		$script.sub! 'VMTYPE', 'master'
-		master_config.vm.provision "shell", inline: $script
+		master_config.vm.provision "shell" do |s|
+      s.inline = $script
+      s.args   = "'master'"
+    end
 	end
 
 	config.vm.define :training, autostart: false do |training_config|
@@ -57,8 +60,10 @@ SCRIPT
   		v.vmx["numvcpus"] = "2"
 		end
 	
-		$script.sub! 'VMTYPE', 'training'
-		training_config.vm.provision "shell", inline: $script
+		training_config.vm.provision "shell" do |s|
+      s.inline = $script
+      s.args   = "'training'"
+    end
 	end
 
 	config.vm.define :student do |student_config|
@@ -76,9 +81,10 @@ SCRIPT
   		v.vmx["numvcpus"] = "2"
 		end
 
-		$script.sub! 'VMTYPE', 'student'
-
-		student_config.vm.provision "shell", inline: $script
+		student_config.vm.provision "shell" do |s|
+      s.inline = $script
+      s.args   = "'student'"
+    end
 	end
 
 
@@ -101,8 +107,9 @@ SCRIPT
   		v.vmx["numvcpus"] = "2"
 		end
 		
-		$script.sub! 'VMTYPE', 'learning'
-
-		learning_config.vm.provision "shell", inline: $script 
+		learning_config.vm.provision "shell" do |s|
+      s.inline = $script
+      s.args   = "'learning'"
+    end
 	end
 end

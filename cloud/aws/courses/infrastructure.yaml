@@ -1,7 +1,7 @@
 ---
 student:
-  ami: "ami-caa14baa"
-  type: "m4.xlarge"
+  ami: "ami-3b97665b"
+  type: "m4.large"
   key_name: "training"
   security_group_ids:
     - "sg-688b120f"

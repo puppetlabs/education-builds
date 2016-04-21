@@ -75,7 +75,7 @@
     "pe_version": "2016.1.1",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "training_branch": "master",
-    "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
+    "training_repo": "https://github.com/puppetlabs/education-builds.git",
     "vm_cores": "2",
     "ptb_version": "5.0"
   }

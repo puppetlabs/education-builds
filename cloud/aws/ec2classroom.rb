@@ -61,7 +61,13 @@ def create_instance(ec2, image, name)
     :image_id                    => image["ami"],
     :instance_type               => image["type"],
     :key_name                    => image["key_name"],
-    :security_group_ids          => image["security_group_ids"]
+    :security_group_ids          => image["security_group_ids"],
+    :block_device_mappings       => [
+      :device_name => "/dev/sda1",
+      :ebs => {
+        :volume_size => 30,
+      }
+    ]
   )
   instance_id = resp.instances[0][:instance_id]
 

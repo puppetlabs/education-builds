@@ -16,7 +16,7 @@ rm -rf wkhtmltopdf-0.12.3-1.x86_64.rpm wkhtmltox wkhtmltox-0.12.3_linux-generic-
 
 # Main build
 cd /usr/src/
-git clone https://github.com/puppetlabs/puppetlabs-training-bootstrap
-cd /usr/src/puppetlabs-training-bootstrap/scripts
+git clone https://github.com/puppetlabs/education-builds
+cd /usr/src/education-builds/scripts
 
 rake master

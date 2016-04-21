@@ -1,5 +1,5 @@
 cd /usr/src/
-git clone https://github.com/samuelson/puppetlabs-training-bootstrap -b simplify_bootstrap
-cd /usr/src/puppetlabs-training-bootstrap/
+git clone https://github.com/samuelson/education-builds -b simplify_bootstrap
+cd /usr/src/education-builds/
 
 sudo rake learning

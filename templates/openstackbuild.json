@@ -52,7 +52,7 @@
     "system_user": "vagrant",
     "system_user_password": "vagrant",
     "training_branch": "master",
-    "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
+    "training_repo": "https://github.com/puppetlabs/education-builds.git",
     "vm_type": "",
     "vm_memsize": "",
     "vm_disk_size": "",

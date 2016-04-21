@@ -6,7 +6,7 @@
   "hostname": "training",
   "ks_file": "ks-training",
   "training_branch": "master",
-  "training_repo": "https://github.com/puppetlabs/puppetlabs-training-bootstrap.git",
+  "training_repo": "https://github.com/puppetlabs/education-builds.git",
   "vm_memsize": "4096",
   "vm_disk_size": "40960",
   "vm_cores": "4",
