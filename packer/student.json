@@ -1,9 +1,0 @@
-{
-  "shutdown_command": "sudo shutdown -P now",
-	"vm_type": "student",
-	"hostname": "student",
-	"ks_file": "ks-student",
-	"vm_memsize": "1024",
-	"vm_disk_size": "10240",
-	"vm_cores": "1"
-}
