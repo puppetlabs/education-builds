@@ -4,7 +4,7 @@ versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
 
 ## Usage
 Packer scripts are provided in the `templates` directory. These depend on
-packer, vmware fusion, and ovftool. The packer builds pull directly from github
+packer (>= v0.10.0), vmware fusion, and ovftool. The packer builds pull directly from github
 and the master branch, so changes will need to be checked in.
 
 The base VMs are the published puppetlabs vagrant boxes.  To download and
