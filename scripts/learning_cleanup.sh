@@ -3,10 +3,18 @@ export PATH=$PATH:/opt/puppetlabs/bin/
 # Install docker module
 puppet module install garethr-docker --modulepath=/etc/puppetlabs/code/modules
 
+# Make sure it's ok to run puppet
+while [ -f /opt/puppetlabs/puppet/cache/state/agent_catalog_run.lock ]; do echo Waiting for Puppet Run to complete; sleep 10; done
+while ! curl -k -I https://localhost:8140/packages/ 2>/dev/null | grep "200 OK" > /dev/null; do echo Waiting for Puppet Server to start; sleep 10; done
+echo Initializing Puppet Server
+sleep 60
+
 # Run puppet twice
 puppet agent -t
 
 puppet agent -t
+
+echo Puppet run completed
 
 # Stop all PE processes to free up memory
 for s in `find /etc/init.d/ -name pe* -type f -printf "%f\n"`
