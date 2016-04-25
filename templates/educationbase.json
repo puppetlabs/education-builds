@@ -32,10 +32,6 @@
       "destination": "/training/file_cache"
     },
     {
-      "type": "shell",
-      "inline": ["mv /training/file_cache/installers/puppet-enterprise-{{user `pe_version`}}-el-7-x86_64.tar.gz /tmp/puppet-enterprise.tar.gz"]
-    },
-    {
       "execute_command": "{{.Vars}} sudo \"PATH=$PATH\" -E -S bash '{{.Path}}'",
       "scripts": [
         "scripts/base.sh",
