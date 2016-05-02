@@ -28,7 +28,6 @@
       "execute_command": "{{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [
         "scripts/base.sh",
-        "scripts/sshd.sh",
         "scripts/pre_build.sh",
         "scripts/{{user `vm_type`}}_pre_build.sh",
         "scripts/{{user `vm_type`}}_build.sh",
