@@ -8,7 +8,11 @@
       "ssh_password": "training",
       "shutdown_command": "{{user `shutdown_command`}}",
       "output_directory": "output/{{ user `vm_type`}}-vmware/",
-      "ssh_pty": "true"
+      "ssh_pty": "true",
+      "vmx_data_post": {
+        "scsi0.pciSlotNumber": "-1",
+        "ide0:0.present": "FALSE"
+      }
     }
   ],
   "post-processors": [
