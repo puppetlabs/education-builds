@@ -2,17 +2,17 @@
   "builders": [
     {
       "vm_name": "{{ user `vm_type`}}",
-      "type": "vmware-vmx",
-      "source_path": "output/{{ user `vm_type` }}-base-vmware/{{ user `vm_type` }}-base.vmx",
+      "type": "virtualbox-ovf",
+      "source_path": "output/{{ user `vm_type` }}-base-virtualbox/{{ user `vm_type` }}-base.ovf",
       "ssh_username": "training",
       "ssh_password": "training",
       "shutdown_command": "{{user `shutdown_command`}}",
-      "output_directory": "output/{{ user `vm_type`}}-vmware/",
+      "output_directory": "output/{{ user `vm_type`}}-virtualbox/",
       "ssh_pty": "true",
-      "vmx_data_post": {
-        "scsi0.pciSlotNumber": "-1",
-        "ide0:0.present": "FALSE"
-      }
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--cpus", "1"],
+        ["modifyvm", "{{.Name}}", "--memory", "{{user `vm_memsize`}}"]
+      ]
     }
   ],
   "post-processors": [

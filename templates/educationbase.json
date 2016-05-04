@@ -2,19 +2,17 @@
   "builders": [
     {
       "vm_name": "{{ user `vm_type`}}-base",
-      "type": "vmware-vmx",
-      "source_path": "output/education-base-vmware/education-base.vmx",
+      "type": "virtualbox-ovf",
+      "source_path": "output/education-base-virtualbox/education-base.ovf",
       "ssh_username": "root",
       "ssh_password": "puppet",
       "shutdown_command": "{{user `shutdown_command`}}",
-      "output_directory": "output/{{ user `vm_type`}}-base-vmware/",
+      "output_directory": "output/{{ user `vm_type`}}-base-virtualbox/",
       "ssh_pty": "true",
-      "vmx_data": {
-        "cpuid.coresPerSocket": "1",
-        "memsize": "{{user `vm_memsize`}}",
-        "numvcpus": "{{user `vm_cores`}}",
-        "rtc.diffFromUTC": "0"
-      }
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--cpus", "1"],
+        ["modifyvm", "{{.Name}}", "--memory", "{{user `vm_memsize`}}"]
+      ]
     }
   ],
   "provisioners": [
