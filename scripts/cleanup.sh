@@ -11,4 +11,4 @@ yum clean all -y
 rm -rf /training
 rm -rf /etc/puppet
 
-
+ntpdate time.apple.com
