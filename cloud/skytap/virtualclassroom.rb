@@ -35,6 +35,7 @@ def create_base_environment(name, base_template)
 end
 
 def add_student_vms(environment_id, students, student_template_id, student_vm_id)
+  sleep 5
   environment = ''
   students.each do |student|
     RestClient.put( CONFIGURATION_URL + environment_id, { 'template_id' => student_template_id }, HEADERS)

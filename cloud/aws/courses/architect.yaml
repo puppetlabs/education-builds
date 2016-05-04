@@ -6,7 +6,7 @@ master:
   security_group_ids:
     - "sg-ee9abc89"
 student:
-  ami: ""
+  ami: "ami-89a150e9"
   type: "m4.large"
   key_name: "training"
   security_group_ids:
