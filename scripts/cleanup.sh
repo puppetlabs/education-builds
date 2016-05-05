@@ -10,3 +10,4 @@ yum clean all -y
 
 rm -rf /training
 rm -rf /etc/puppet
+

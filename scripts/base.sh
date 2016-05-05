@@ -2,7 +2,6 @@
 yum update -y
 yum install -y wget curl rake
 
-
 sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 sed -i "s/^\(.*env_keep = \"\)/\1PATH /" /etc/sudoers
 
