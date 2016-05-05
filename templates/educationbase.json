@@ -11,7 +11,8 @@
       "ssh_pty": "true",
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--cpus", "1"],
-        ["modifyvm", "{{.Name}}", "--memory", "{{user `vm_memsize`}}"]
+        ["modifyvm", "{{.Name}}", "--memory", "{{user `vm_memsize`}}"],
+        ["modifyvm", "{{.Name}}", "--rtcuseutc", "off"]
       ]
     }
   ],
