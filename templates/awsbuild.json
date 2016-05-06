@@ -49,7 +49,7 @@
     "iso_url": "",
     "os_name": "",
     "pe_status": "release",
-    "pe_version": "2016.1.1",
+    "pe_version": "2016.1.2",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "vagrant",
     "system_user_password": "vagrant",
@@ -59,6 +59,6 @@
     "vm_memsize": "",
     "vm_disk_size": "",
     "vm_cores": "",
-    "ptb_version": "5.0"
+    "ptb_version": "5.1"
   }
 }

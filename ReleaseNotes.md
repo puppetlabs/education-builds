@@ -1,3 +1,8 @@
+## Version 5.1
+
+* 2016.1.2 support
+* Converted build to use Virtualbox
+
 ## Version Master 4.1, Student 4.2
 
 * 2016.1.1 support

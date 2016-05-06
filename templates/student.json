@@ -68,11 +68,11 @@
     "vm_disk_size": "10240",
     "vm_cores": "1",
     "pe_status": "release",
-    "pe_version": "2016.1.1",
+    "pe_version": "2016.1.2",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "training_branch": "master",
     "training_repo": "https://github.com/puppetlabs/education-builds.git",
     "vm_cores": "2",
-    "ptb_version": "5.0"
+    "ptb_version": "5.1"
   }
 }
