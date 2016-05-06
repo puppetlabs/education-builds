@@ -1,6 +1,6 @@
 #! /bin/bash
 
-BUILD_ROOT_DIR=${BUILD_ROOT_DIR:-`pwd`}
+BUILD_ROOT_DIR=${BUILD_ROOT_DIR:-`pwd | tr -d '\n'`}
 EDUCATION_VAGRANT_BOX_NAME=${VAGRANT_BOX_NAME:-centos-7.2-x86_64-virtualbox-nocm-1.0.1.box}
 #Public download URL: https://atlas.hashicorp.com/puppetlabs/boxes/centos-7.2-64-nocm/versions/1.0.1/providers/virtualbox_desktop.box
 STUDENT_VAGRANT_BOX_NAME=${VAGRANT_BOX_NAME:-centos-6.6-i386-virtualbox-nocm-1.0.3.box}
@@ -27,7 +27,7 @@ fi
 
 function get_vm {
   IMAGE_TYPE=$1
-  IMAGE_NAME=`echo $IMAGE_TYPE | awk '{print toupper($0)}'`
+  IMAGE_NAME=`echo $IMAGE_TYPE | awk '{print toupper($0)} | tr -d "\n"'`
   IMAGE_BOX=${IMAGE_NAME}_VAGRANT_BOX_NAME
   
   rm -rf $BUILD_ROOT_DIR/output/$IMAGE_TYPE-base-virtualbox
