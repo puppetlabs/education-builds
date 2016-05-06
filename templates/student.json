@@ -22,7 +22,7 @@
     },
     {
       "type": "shell-local",
-      "script": "scripts/box-to-ova.sh",
+      "script": "scripts/export-ova.sh",
       "environment_vars": [
         "VM_TYPE={{user `vm_type`}}",
         "PE_VERSION={{user `pe_version`}}",
