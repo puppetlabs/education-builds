@@ -8,7 +8,7 @@
       "ssh_username": "training",
       "ssh_keypair_name": "training",
       "ssh_private_key_file": "{{ user `ssh_key` }}",
-      "ami_name": "Infrastructure-Design-PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{isotime \"Jan02-0304\" }}",
+      "ami_name": "First-Module-PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{isotime \"Jan02-0304\" }}",
       "ssh_pty": "true"
     }
   ],
