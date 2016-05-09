@@ -24,7 +24,7 @@
       ],
       "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [
-        "scripts/aws_ID.sh"
+        "scripts/courses/aws_ID.sh"
       ],
       "type": "shell"
     }
