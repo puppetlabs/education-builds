@@ -1,0 +1,54 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "us-west-2",
+      "source_ami": "ami-68ee1a08",
+      "instance_type": "m3.large",
+      "ssh_username": "training",
+      "ssh_keypair_name": "training",
+      "ssh_private_key_file": "{{ user `ssh_key` }}",
+      "ami_name": "Infrastructure-Design-PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{isotime \"Jan02-0304\" }}",
+      "ssh_pty": "true"
+    }
+  ],
+  "provisioners": [
+    {
+      "environment_vars": [
+        "PE_STATUS={{user `pe_status`}}",
+        "PE_VERSION={{user `pe_version`}}",
+        "RUBY_LIB={{user `rubylib`}}",
+        "TRAINING_REPO={{user `training_repo`}}",
+        "TRAINING_BRANCH={{user `training_branch`}}",
+        "VM_TYPE={{user `vm_type`}}"
+      ],
+      "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "scripts/awsinfra.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "ssh_key": "{{ env `HOME`}}/.ssh/training.pem",
+    "hostname": "vagrant",
+    "arch": "",
+    "guest_os_type": "centos",
+    "ks_file": "",
+    "iso_checksum": "",
+    "iso_url": "",
+    "os_name": "",
+    "pe_status": "release",
+    "pe_version": "2016.1.2",
+    "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
+    "system_user": "vagrant",
+    "system_user_password": "vagrant",
+    "training_branch": "master",
+    "training_repo": "https://github.com/puppetlabs/education-builds.git",
+    "vm_type": "",
+    "vm_memsize": "",
+    "vm_disk_size": "",
+    "vm_cores": "",
+    "ptb_version": "5.1"
+  }
+}

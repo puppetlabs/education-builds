@@ -4,9 +4,9 @@ export PATH=$PATH:/opt/puppetlabs/bin
 
 puppet module install pltraining-classroom --modulepath=/etc/puppetlabs/code/modules
 
-cat << EOF >> /etc/puppetlabs/code/environments/production/manifests/site.pp
+cat << EOF >> /etc/puppetlabs/code/environments/production/manifests/master.pp
 node master.puppetlabs.vm {
-  include classroom::course::infrastructure
+  include classroom::course::virtual::appropriate_module
 }
 EOF
 
