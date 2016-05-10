@@ -3,7 +3,7 @@
     {
       "type": "amazon-ebs",
       "region": "us-west-2",
-      "source_ami": "ami-0aec116a",
+      "source_ami": "ami-8834c9e8",
       "instance_type": "m3.large",
       "ssh_username": "training",
       "ssh_keypair_name": "training",
@@ -21,7 +21,7 @@
     {
       "type": "shell",
       "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
-      "inline": ["mv /tmp/try.puppet.com* /etc/ssl"]
+      "inline": ["mv /tmp/temp/try.puppet.com* /etc/ssl"]
     },
     {
       "environment_vars": [
