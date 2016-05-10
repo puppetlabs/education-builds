@@ -15,12 +15,13 @@
   "provisioners": [
     { 
       "type":"shell",
-      "inline": ["mkdir /home/training/courseware"]
+      "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "inline": ["mkdir /var/cache/showoff"]
     },
     {
       "type":"file",
       "source": "courseware-virtual/writing_your_first_module",
-      "destination":"/home/training/courseware"
+      "destination":"/var/cache/showoff"
     },
     {
       "environment_vars": [

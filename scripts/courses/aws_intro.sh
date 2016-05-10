@@ -6,7 +6,7 @@ puppet module install pltraining-classroom --modulepath=/etc/puppetlabs/code/mod
 
 cat << MASTER >> /etc/puppetlabs/code/environments/production/manifests/master.pp
 node master.puppetlabs.vm {
-  include classroom::course::virtual::first_module
+  include classroom::course::virtual::intro
 }
 MASTER
 
