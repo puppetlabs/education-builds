@@ -2,7 +2,6 @@
 
 export PATH=$PATH:/opt/puppetlabs/bin
 
-puppet module install pltraining-selfpaced --modulepath=/etc/puppetlabs/code/modules
 
 cat << COMMON >> /etc/puppetlabs/code/environments/production/hieradata/common.yaml
 ---
@@ -16,6 +15,9 @@ while ! curl -k -I https://localhost:8140/packages/ 2>/dev/null | grep "200 OK" 
 echo Initializing Puppet Server
 sleep 60
 
+puppet agent -t
+
+puppet module install pltraining-selfpaced --modulepath=/etc/puppetlabs/code/modules
 cat << SITE >> /etc/puppetlabs/code/environments/production/manifests/site.pp
 node master.puppetlabs.vm {
   include selfpaced

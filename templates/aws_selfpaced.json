@@ -34,8 +34,8 @@
       ],
       "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [
-        "scripts/clean_nodegroup.sh",
-        "scripts/selfpaced.sh"
+        "scripts/selfpaced.sh",
+        "scripts/clean_nodegroup.sh"
       ],
       "type": "shell"
     }
