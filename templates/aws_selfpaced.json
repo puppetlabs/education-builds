@@ -16,7 +16,12 @@
     { 
       "type": "file",
       "source": "temp",
-      "destination": "/etc/ssl"
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "inline": ["mv /tmp/try.puppet.com* /etc/ssl"]
     },
     {
       "environment_vars": [
