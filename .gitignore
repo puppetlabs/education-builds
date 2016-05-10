@@ -9,3 +9,4 @@ spec/log
 output
 packer_cache
 file_cache
+temp
