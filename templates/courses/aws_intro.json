@@ -3,25 +3,43 @@
     {
       "type": "amazon-ebs",
       "region": "us-west-2",
-      "source_ami": "ami-0aec116a",
+      "source_ami": "ami-8834c9e8",
       "instance_type": "m3.large",
       "ssh_username": "training",
       "ssh_keypair_name": "training",
       "ssh_private_key_file": "{{ user `ssh_key` }}",
-      "ami_name": "First-Module-PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{isotime \"Jan02-0304\" }}",
+      "ami_name": "Intro-PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{isotime \"Jan02-0304\" }}",
       "ssh_pty": "true"
     }
   ],
   "provisioners": [
-    { 
+    {
+      "type":"file",
+      "source": "courseware-virtual/intro",
+      "destination":"/tmp/"
+    },
+    {
       "type":"shell",
-      "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
-      "inline": ["mkdir /var/cache/showoff"]
+      "inline": ["mkdir /tmp/intro/_support"]
     },
     {
       "type":"file",
-      "source": "courseware-virtual/writing_your_first_module",
-      "destination":"/var/cache/showoff"
+      "source": "courseware-virtual/_support/watermark.css",
+      "destination": "/tmp/intro/_support/watermark.css"
+    },
+    {
+      "type":"file",
+      "source": "courseware-virtual/_support/watermark.pdf",
+      "destination": "/tmp/intro/_support/watermark.pdf"
+    },
+    {
+      "type":"file",
+      "source": "courseware-virtual/_support/watermark.png",
+      "destination": "/tmp/intro/_support/watermark.png"
+    },
+    { 
+      "type":"shell",
+      "inline": ["mv /tmp/intro /home/training/courseware"]
     },
     {
       "environment_vars": [
@@ -34,9 +52,17 @@
       ],
       "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [
-        "scripts/courses/aws_1M.sh"
+        "scripts/courses/aws_intro.sh"
       ],
       "type": "shell"
+    },
+    {
+      "type":"shell",
+      "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "inline": [
+          "chmod +x /home/training/courseware/_files/test.sh",
+          "/home/training/courseware/_files/test.sh"
+      ]
     }
   ],
   "variables": {
