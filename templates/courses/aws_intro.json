@@ -57,6 +57,13 @@
       "type": "shell"
     },
     {
+      "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "scripts/clean_nodegroup.sh"
+      ],
+      "type": "shell"
+    },
+    {
       "type":"shell",
       "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "inline": [
