@@ -3,7 +3,7 @@
     {
       "type": "amazon-ebs",
       "region": "us-west-2",
-      "source_ami": "ami-8834c9e8",
+      "source_ami": "ami-3ab34f5a",
       "instance_type": "m3.large",
       "ssh_username": "training",
       "ssh_keypair_name": "training",
@@ -55,6 +55,21 @@
         "scripts/courses/aws_1M.sh"
       ],
       "type": "shell"
+    },
+    {
+      "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "scripts/clean_nodegroup.sh"
+      ],
+      "type": "shell"
+    },
+    {
+      "type":"shell",
+      "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "inline": [
+          "chmod +x /home/training/courseware/_files/test.sh",
+          "/home/training/courseware/_files/test.sh"
+      ]
     }
   ],
   "variables": {
