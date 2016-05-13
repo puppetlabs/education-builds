@@ -3,16 +3,44 @@
     {
       "type": "amazon-ebs",
       "region": "us-west-2",
-      "source_ami": "ami-8834c9e8",
+      "source_ami": "ami-3ab34f5a",
       "instance_type": "m3.large",
       "ssh_username": "training",
       "ssh_keypair_name": "training",
       "ssh_private_key_file": "{{ user `ssh_key` }}",
-      "ami_name": "Appropriate-Module-Design-PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{isotime \"Jan02-0304\" }}",
+      "ami_name": "AMD-PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{isotime \"Jan02-0304\" }}",
       "ssh_pty": "true"
     }
   ],
   "provisioners": [
+    {
+      "type":"file",
+      "source": "courseware-virtual/appropriate_module_design",
+      "destination":"/tmp/"
+    },
+    {
+      "type":"shell",
+      "inline": ["mkdir /tmp/appropriate_module_design/_support"]
+    },
+    {
+      "type":"file",
+      "source": "courseware-virtual/_support/watermark.css",
+      "destination": "/tmp/appropriate_module_design/_support/watermark.css"
+    },
+    {
+      "type":"file",
+      "source": "courseware-virtual/_support/watermark.pdf",
+      "destination": "/tmp/appropriate_module_design/_support/watermark.pdf"
+    },
+    {
+      "type":"file",
+      "source": "courseware-virtual/_support/watermark.png",
+      "destination": "/tmp/appropriate_module_design/_support/watermark.png"
+    },
+    { 
+      "type":"shell",
+      "inline": ["mv /tmp/appropriate_module_design /home/training/courseware"]
+    },
     {
       "environment_vars": [
         "PE_STATUS={{user `pe_status`}}",
@@ -24,9 +52,24 @@
       ],
       "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
       "scripts": [
-        "scripts/courses/aws_ID.sh"
+        "scripts/courses/aws_AMD.sh"
       ],
       "type": "shell"
+    },
+    {
+      "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "scripts/clean_nodegroup.sh"
+      ],
+      "type": "shell"
+    },
+    {
+      "type":"shell",
+      "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "inline": [
+          "chmod +x /home/training/courseware/_files/test.sh",
+          "/home/training/courseware/_files/test.sh"
+      ]
     }
   ],
   "variables": {
