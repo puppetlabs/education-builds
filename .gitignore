@@ -9,4 +9,6 @@ spec/log
 output
 packer_cache
 file_cache
+courseware
+courseware-virtual
 temp
