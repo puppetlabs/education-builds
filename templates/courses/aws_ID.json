@@ -62,7 +62,7 @@
         "scripts/clean_nodegroup.sh"
       ],
       "type": "shell"
-    },
+    }
   ],
   "variables": {
     "ssh_key": "{{ env `HOME`}}/.ssh/training.pem",
