@@ -63,6 +63,14 @@
       ],
       "type": "shell"
     },
+    {
+      "type":"shell",
+      "execute_command": "echo 'training' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "inline": [
+          "chmod +x /home/training/courseware/_files/test.sh",
+          "/home/training/courseware/_files/test.sh"
+      ]
+    }
   ],
   "variables": {
     "ssh_key": "{{ env `HOME`}}/.ssh/training.pem",
