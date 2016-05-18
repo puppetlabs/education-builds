@@ -5,12 +5,12 @@ versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
 ## Usage
 
 1. Install virtualbox, packer, and vmware ovftool and ensure the binaries are in the path.
-2. Run setup script to download and deploy base images:
+1. Run setup script to download and deploy base images:
   * `setup.sh`
-3. Run packer to build educationbase VM. 
+1. Run packer to build educationbase VM. 
   * `packer build -var-file=templates/learning.json templates/educationbase.json`
-4. Run packer to complete VM build.
-  * `packer build -var-file=templates/learning.json templates/educationbuild.json`
+1. Run packer to complete VM build, the `--force` will replace any previous build artifacts.
+  * `packer build --force -var-file=templates/learning.json templates/educationbuild.json`
 
 For the master or training VMs, use `master.json` or `training.json`.
 For the student VM, you don't need an educationbase or var-file:
@@ -80,6 +80,27 @@ To start a training vagrant box for instructor use:
 To start a learning vagrant box:
 - `vagrant up learning`
 
+
+## Building with pre-released modules and code
+To develop the VMs, you need to use modules and other code that haven't yet
+been merged to master or released to the forge. The non-vagrant VM build checks 
+out code directly from github, so changes you make to the local filesystem won't 
+be used, you need to push them to a branch and reference that branch 
+in the build scripts:
+
+1. Fork this repo and create a branch for your changes.
+1. Update the build script to reference your namespace and branch
+  * You don't need to push this change, packer reads the local copy.
+  * You can also make temporary changes to the local packer json files without pushing.
+1. If you're changes are in a module, update the Puppetfile with the correct reference.
+1. Commit changes and push to your fork on github.
+1. Run the build.
+1. Iterate as needed.
+1. When module changes are merged to master and/or released on the forge, 
+  delete your education-build branch and build from master.
+
+Note: Be careful that references to your namespace aren't included in PRs.
+
 ## Updating PE version
 The version of PE used to build the VM is determined by the
 pltraining-bootstrap module. To update the version, set the value of
@@ -100,3 +121,14 @@ directory in the root of this repository.
 pltraining-bootstrap.
 1. Make sure to add, commit, and push those changes.
 1. The packer build should run as usual.
+
+## Troubleshooting
+
+### Setup script
+If the initial setup script fails, delete the contents of `output` and rerun.
+
+### Failed builds
+VM builds will fail if the output artifacts already exist.  You can avoid that
+by using the `--force` flag with packer.  If a build does fail on the OVA export
+you can run the ovftool directly.  For example usage see `scripts/export-ova.sh`.
+
