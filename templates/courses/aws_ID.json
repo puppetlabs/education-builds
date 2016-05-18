@@ -14,34 +14,6 @@
   ],
   "provisioners": [
     {
-      "type":"file",
-      "source": "courseware-virtual/infrastructure_design",
-      "destination":"/tmp/"
-    },
-    {
-      "type":"shell",
-      "inline": ["mkdir /tmp/infrastructure_design/_support"]
-    },
-    {
-      "type":"file",
-      "source": "courseware-virtual/_support/watermark.css",
-      "destination": "/tmp/infrastructure_design/_support/watermark.css"
-    },
-    {
-      "type":"file",
-      "source": "courseware-virtual/_support/watermark.pdf",
-      "destination": "/tmp/infrastructure_design/_support/watermark.pdf"
-    },
-    {
-      "type":"file",
-      "source": "courseware-virtual/_support/watermark.png",
-      "destination": "/tmp/infrastructure_design/_support/watermark.png"
-    },
-    { 
-      "type":"shell",
-      "inline": ["mv /tmp/infrastructure_design /home/training/courseware"]
-    },
-    {
       "environment_vars": [
         "PE_STATUS={{user `pe_status`}}",
         "PE_VERSION={{user `pe_version`}}",
