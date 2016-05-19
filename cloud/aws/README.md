@@ -1,3 +1,10 @@
+## Setting up virtual courses
+
+1. Log in to learndot and download the enrollment as a CSV file
+1. Use the classroom_setup.rb script to generate the JSON file for the course
+  `./classroom_setup.rb enrollment.csv`
+
+
 ## Classroom automation script - EC2
 
 The ec2classroom.rc script sets up classroom VMs.

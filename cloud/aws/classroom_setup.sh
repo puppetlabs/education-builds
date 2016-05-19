@@ -8,14 +8,14 @@ require 'yaml'
 
 
 if ARGV.empty?
-  puts "Usage: enrollment_parser enrollment.csv"
+  puts "Usage: classroom_setup enrollment.csv"
   exit 1
 end
 
 
 output = {"students" => {}}
-
-students = CSV.new(File.read(ARGV[0]), :headers => true, :header_converters => :symbol).to_a.map {|row| row.to_hash } 
+filename = ARGV[0]
+students = CSV.new(File.read(filename), :headers => true, :header_converters => :symbol).to_a.map {|row| row.to_hash } 
 
 students.each do |student|
   output["students"][student[:contactdisplayname]] = student[:contactemail]
@@ -40,7 +40,7 @@ if coursenum > courses_hash.keys.length
 else
   coursenum = coursenum - 1
   puts courses_hash.keys[coursenum]
-  output["title"] = courses_hash[courses_hash.keys[coursenum]]
+  output["title"] = courses_hash.keys[coursenum]
 end
 
 
@@ -58,4 +58,6 @@ instructor = $stdin.gets.chomp
 printf "Instructor Email: "
 output["students"][instructor] = $stdin.gets.chomp
 
-puts JSON.generate(output)
+File.open(filename.gsub(/\.csv$/,'.json'),'w') do |f|
+  f.puts JSON.generate(output)
+end
