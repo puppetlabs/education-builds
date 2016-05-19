@@ -32,7 +32,15 @@ COURSE_CODES = YAML.load_file("codes.yaml")
 #     "Another One": "another@one.com" 
 #   }
 # }
-COURSE_INFO = JSON.parse(ARGV[0])
+case ARGV[0] 
+when '-j', '--json'
+  COURSE_INFO = JSON.parse(ARGV[1])
+when '-f', '--file'
+  COURSE_INFO = JSON.parse(File.read(ARGV[1]))
+else
+  puts "Usage: -j <COURSE_INFO in json string> || -f <path/to/course_info.json>"
+  exit 1
+end
 
 if ! COURSE_INFO["title"] then raise "Title is required" end
 if ! COURSE_INFO["course_id"] then raise "Course ID is required" end
