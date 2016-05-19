@@ -1,4 +1,6 @@
 #! /usr/bin/env ruby
+# Quick script to generate JSON in proper format for the ec2classroom.rb script
+# Accepts the enrollment csv files exported from learn.puppet.com
 
 require 'json'
 require 'csv'
