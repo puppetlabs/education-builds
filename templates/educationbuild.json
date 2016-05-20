@@ -10,7 +10,7 @@
       "output_directory": "output/{{ user `vm_type`}}-virtualbox/",
       "ssh_pty": "true",
       "vboxmanage": [
-        ["modifyvm", "{{.Name}}", "--cpus", "1"],
+        ["modifyvm", "{{.Name}}", "--cpus", "{{user `vm_cores`}}"],
         ["modifyvm", "{{.Name}}", "--memory", "{{user `vm_memsize`}}"]
       ]
     }
