@@ -77,5 +77,4 @@ mod 'puppet/nodejs'
 
 # Dependencies for bootstrap
 mod 'puppetlabs/pe_gem'
-
-
+mod 'binford2k/abalone'
