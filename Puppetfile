@@ -16,7 +16,7 @@ moduledir './modules/'
 
 
 mod 'bootstrap', 
-  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
+  :git => 'https://github.com/puppetlabs/pltraining-bootstrap',
 
 mod 'learning',
   :git => 'https://github.com/puppetlabs/pltraining-learning'
@@ -77,5 +77,4 @@ mod 'puppet/nodejs'
 
 # Dependencies for bootstrap
 mod 'puppetlabs/pe_gem'
-
-
+mod 'binford2k/abalone'
