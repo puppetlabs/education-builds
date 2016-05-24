@@ -1,12 +1,12 @@
 ---
 master:
-  ami: "ami-68ee1a08"
+  ami: "ami-3ab34f5a"
   type: "m4.xlarge"
   key_name: "training"
   security_group_ids:
     - "sg-ee9abc89"
 student:
-  ami: "ami-89a150e9"
+  ami: "ami-39ec1259"
   type: "m4.large"
   key_name: "training"
   security_group_ids:
