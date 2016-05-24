@@ -5,8 +5,10 @@ master_template_id: 808573
 master_name: master
 master_ports:
   - 22
+  - 80
   - 443
-  - 3000
+  - 9090
+  - 8088
 student_template_id: 370665
 student_vm_id:
   - 2658740
