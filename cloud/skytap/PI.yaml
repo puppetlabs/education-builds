@@ -15,4 +15,7 @@ student_vm_id:
 student_ports:
   - 80
 students:
-  - instructor
+  - instructor-windows
+  - alice-windows
+  - bob-windows
+
