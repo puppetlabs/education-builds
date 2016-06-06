@@ -16,8 +16,7 @@ moduledir './modules/'
 
 
 mod 'bootstrap', 
-  :git => 'https://github.com/samuelson/pltraining-bootstrap',
-  :ref => '2016.2'
+  :git => 'https://github.com/samuelson/pltraining-bootstrap'
 
 mod 'learning',
   :git => 'https://github.com/puppetlabs/pltraining-learning'
