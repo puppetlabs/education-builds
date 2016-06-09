@@ -8,7 +8,7 @@ require 'open-uri'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
-PEVERSION = ENV['PEVERSION'] || '3.8.0'
+PE_VERSION = ENV['PE_VERSION'] || '3.8.0'
 PESTATUS = ENV['PESTATUS'] || 'release'
 PEURL = ENV['PEURL'] || 'https://pm.puppetlabs.com/cgi-bin/download.cgi?dist=el&rel=7&arch=x86_64&ver=latest'
 SRCDIR = ENV['SRCDIR'] || '/usr/src'
@@ -364,7 +364,7 @@ def cprint(string)
 end
 
 def retrieve_vm_as_ova(vmname)
-  ovaname = "puppet-#{PEVERSION}-#{VMTYPE}vm-#{PTBVERSION[:major]}.#{PTBVERSION[:minor]}"
+  ovaname = "puppet-#{PE_VERSION}-#{VMTYPE}vm-#{PTBVERSION[:major]}.#{PTBVERSION[:minor]}"
   vcenter_config = File.join(CACHEDIR, ".vmwarecfg.yml") || ENV["VCENTER_CONFIG"]
   vcenter_settings = YAML::load(File.open(vcenter_config))
   FileUtils.rm_rf(OVFDIR) if File.directory?(OVFDIR)
