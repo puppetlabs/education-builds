@@ -73,9 +73,20 @@ task :install_pe do
     f.write ERB.new(File.read('../templates/answers.erb')).result(binding)
   end
   %x{mkdir /tmp/puppet-enterprise}
-  %x{tar xf /tmp/puppet-enterprise.tar.gz -C /tmp/puppet-enterprise --strip-components=1} 
-  puts "Installing Puppet Enterprise"
-  %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /tmp/answers}
+  %x{tar xf /tmp/puppet-enterprise.tar.gz -C /tmp/puppet-enterprise --strip-components=1}
+  if Gem::Version.new(PE_VERSION) < Gem::Version.new('2016.2.0')
+    File.open('/tmp/answers','w') do |f|
+      f.write ERB.new(File.read('../templates/answers.erb')).result(binding)
+    end
+    puts "Installing Puppet Enterprise with answers file for version #{PE_VERSION}"
+    %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /tmp/answers}
+  else
+    File.open('/tmp/pe.conf','w') do |f|
+      f.write ERB.new(File.read('../templates/pe.conf.erb')).result(binding)
+    end
+    puts "Installing Puppet Enterprise with pe.conf for version #{PE_VERSION}"
+    %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -c /tmp/pe.conf}
+  end
 end
 
 desc "Training VM pre-install setup"
@@ -90,8 +101,8 @@ task :training_pre do
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
   # Include /etc/hostname for centos7+
   File.open('/etc/hostname', 'w') { |file| file.write("training.puppetlabs.vm") }
-
 end
+
 desc "Learning VM pre-install setup"
 task :learning_pre do
   # Set the dns info and hostname; must be done before puppet
