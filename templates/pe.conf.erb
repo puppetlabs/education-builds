@@ -1,8 +1,13 @@
 {
   "console_admin_password": "puppetlabs",
-  "puppet_enterprise::puppet_master_host": "master.puppetlabs.vm",
+  "puppet_enterprise::puppet_master_host": "<%= hostname %>.puppetlabs.vm",
   "pe_install::puppet_master_dnsaltnames": [
-    "puppet"
+    "<%= hostname %>",
+    "<%= hostname %>.puppetlabs.vm",
+    "puppet",
+    "puppet.localdomain",
+    "localhost",
+    "localhost.localdomain"
   ],
   "puppet_enterprise::use_application_services": true
 }
