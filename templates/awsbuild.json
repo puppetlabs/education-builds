@@ -49,7 +49,7 @@
     "iso_url": "",
     "os_name": "",
     "pe_status": "release",
-    "pe_version": "2016.1.2",
+    "pe_version": "2016.2.0",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "vagrant",
     "system_user_password": "vagrant",
