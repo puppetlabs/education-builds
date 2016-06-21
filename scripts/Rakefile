@@ -8,30 +8,252 @@ require 'open-uri'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
-PE_VERSION = ENV['PE_VERSION'] || '3.8.0'
-PESTATUS = ENV['PESTATUS'] || 'release'
-PEURL = ENV['PEURL'] || 'https://pm.puppetlabs.com/cgi-bin/download.cgi?dist=el&rel=7&arch=x86_64&ver=latest'
-SRCDIR = ENV['SRCDIR'] || '/usr/src'
-PUPPET_VER = '4.3.1'
-FACTER_VER = '3.1.2'
-HIERA_VER = '3.0.5'
-VMTYPE = ENV['VMTYPE'] || 'training'
 PTBVERSION = YAML.load_file('../version.yaml')
 
-## These are used by the shipping tasks
-SITESDIR = "/srv/builder/Sites" || ENV["SITESDIR"]
-CACHEDIR = File.join(SITESDIR, "cache")
-BUILDDIR = File.join(SITESDIR, "build")
-OVFDIR = File.join(BUILDDIR, "ovf")
+##############################################################
+#                                                            #
+# Methods to abstract the environment variable CL interface. #
+#                                                            #
+##############################################################
 
-$settings = Hash.new
+## The site directory and subdirectories are used by the shipping tasks
+def site_dir
+  ENV['SITE_DIR'] || '/srv/builder/Sites'
+end
 
-hostos = `uname -s`
+def cache_dir
+  File.join(site_dir, 'cache')
+end
+
+def build_dir
+  File.join(site_dir, 'build')
+end
+
+def ovf_dir
+  File.join(site_dir, 'ovf')
+end
+
+def src_dir
+  ENV['SRC_DIR'] || '/usr/src'
+end
+
+def vm_type
+  ENV['VM_TYPE'] || 'training'
+end
+
+def puppet_version
+  ENV['PUPPET_VERSION'] || '4.3.1'
+end
+
+def facter_version
+  ENV['FACTER_VERSION'] || '3.1.2'
+end
+
+def hiera_version
+  ENV['HIERA_VERSION'] || '3.0.5'
+end
+
+# If the PE_FAMILY environment variable isn't specified, extract it from the
+# the version. If there's no PE_VERSION, this defaults to nil
+def pe_family
+  ENV['PE_FAMILY'] or ENV['PE_VERSION'] ? ENV['PE_VERSION'].split('.')[0 .. 1].join('.') : nil
+end
+
+# Convert the string value 'true' for the PRE_RELEASE environment variable to
+# a boolean true.
+def pre_release?
+  ENV['PRE_RELEASE'] == 'true'
+end
+
+# If the PE_VERSION environmnet variable isn't specified, we can fetch the
+# latest version data for a pre-release build or use the string 'latest' for
+# the latest release version in the specified family.
+def pe_version
+  ENV['PE_VERSION'] or pre_release? ? latest_pre_version(pe_family) : nil
+end
+
+def host_os
+  `uname -s`
+end
+
+def hostname
+  `hostname -s`.chomp
+end
+
+##########################
+#                        #
+# General helper methods #
+#                        #
+##########################
+
+def cputs(string)
+  puts "\033[1m#{string}\033[0m"
+end
+
+def cprint(string)
+  print "\033[1m#{string}\033[0m"
+end
 
 # Bail if handed a 'VMTYPE' that's not supported.
 if VMTYPE !~ /^(training|learning|student)$/
   abort("ERROR: Unrecognized VMTYPE parameter: #{VMTYPE}")
 end
+
+#################################################
+#                                               #
+# Helper methods for the Install PE Master task #
+#                                               #
+#################################################
+
+# At some point we might modify this method to specify dist, release, and arch
+def installer_filename
+  "puppet-enterprise-#{pe_version}-el-7-x86_64.tar"
+end
+
+# Get the latest pre-release version string for a given PE Version family.
+def latest_pre_version(pe_family)
+  open("http://getpe.delivery.puppetlabs.net/latest/#{pe_family}").read
+end
+
+def pe_installer_url
+  "http://enterprise.delivery.puppetlabs.net/#{pe_family}/ci-ready/#{installer_filename}"
+end
+
+# Download the installer. Curl is nicer than re-inventing the wheel with ruby.
+def download_installer
+  unless `curl #{pe_installer_url} -o /tmp/puppet-enterprise.tar.gz`
+    fail "Error downloading the PE installer"
+  end
+end
+
+# Check if the installer exists and the file isn't empty.
+def installer_cached?
+  File.exist?('/tmp/puppet-enterprise.tar.gz') and File.zero?(path) == false
+end
+
+def write_answers_file
+  File.open('/tmp/answers','w') do |f|
+    f.write ERB.new(File.read('../templates/answers.erb')).result(binding)
+  end
+end
+
+def write_pe_conf_file 
+  File.open('/tmp/pe.conf','w') do |f|
+    f.write ERB.new(File.read('../templates/pe.conf.erb')).result(binding)
+  end
+end
+
+def install_pe
+  %x{mkdir /tmp/puppet-enterprise}
+  %x{tar xf /tmp/puppet-enterprise.tar.gz -C /tmp/puppet-enterprise --strip-components=1}
+  if Gem::Version.new(pe_version) < Gem::Version.new('2016.2.0')
+    write_answers_file
+    puts "Installing Puppet Enterprise with answers file for version #{pe_version}"
+    %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /tmp/answers}
+  else
+    write_pe_conf_file
+    puts "Installing Puppet Enterprise with pe.conf for version #{pe_version}"
+    %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -c /tmp/pe.conf}
+end
+
+########################################
+#                                      #
+# Helper methods for pre-install tasks #
+#                                      #
+########################################
+
+def set_hostname
+  # Set the dns info and hostname; must be done before puppet
+  cputs "Setting hostname #{vm_type}.puppetlabs.vm"
+  %x{hostname #{vm_type}.puppetlabs.vm}
+  # Include /etc/hostname for centos7+
+  File.open('/etc/hostname', 'w') { |file| file.write("#{vm_type}.puppetlabs.vm") }
+end
+
+def edit_hosts
+  cputs  "Editing /etc/hosts"
+  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 #{vm_type}.puppetlabs.vm #{vm_type} localhost localhost.localdomain localhost4/" /etc/hosts}
+end
+
+def configure_network
+  cputs "Editing /etc/sysconfig/network"
+  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=#{vm_type}.puppetlabs.vm/" /etc/sysconfig/network}
+  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
+end
+
+################################################
+#                                              #
+# Helper methods for puppet-agent install task #
+#                                              #
+################################################
+
+def add_yum_repo
+  if File.read('/etc/redhat-release') =~ /release 6/ then
+    cputs "Adding CentOS 6 yum repo"
+    %x{rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-6.noarch.rpm}
+  else
+    cputs "Adding CentOS 7 yum repo"
+    %x{rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm}
+  end
+end
+
+def install_puppet_agent
+  %x{yum -y install puppet-agent}
+end
+
+#####################################
+#                                   #
+# Helper methods for the build task #
+#                                   #
+#####################################
+
+def install_r10k
+  cputs "Installing R10K"
+  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin gem install r10k -v 1.5.1 --no-RI --no-RDOC')
+end
+
+def install_modules
+  Dir.chdir('..') do
+    cputs "Running r10k Puppetfile install"
+    system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
+  end
+end
+
+def apply_bootstrap
+  cputs "Running puppet apply on #{vm_type}.pp"
+  system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=../modules:/opt/puppetlabs/puppet/modules --verbose ../manifests/#{vm_type}.pp")
+end
+
+##################################################
+#                                                #
+# Helper methods for the post-build cleanup task #
+#                                                #
+##################################################
+
+def set_vm_version_file
+  # Put version file in place on VM
+  cputs "Editing /etc/vm-version"
+  FileUtils.copy('../version.yaml','/etc/vm-version')
+end
+
+def set_puppet_release_file
+  cputs "Editing /etc/puppetlabs-release"
+  File.open('/etc/puppetlabs-release', 'w') do |file|
+    file.write "#{PTBVERSION[:major]}.#{PTBVERSION[:minor]}"
+  end
+end
+
+def apply_cleanup_manifest
+  # Run cleanup manifest
+  cputs "Running cleanup manifest"
+  system('PATH=$PATH:/opt/puppetlabs/bin puppet apply --modulepath=../modules --verbose ../manifests/post.pp')
+end
+
+############################
+#                          #
+# Internal VM build tasks  #
+#                          #
+############################
 
 desc "Print list of rake tasks"
 task :default do
@@ -43,148 +265,37 @@ end
 
 desc "Install puppet-agent for VM deployment"
 task :standalone_puppet_agent do
+  add_yum_repo
+  install_puppet_agent
+end
 
-  if File.read('/etc/redhat-release') =~ /release 6/ then
-    cputs "Adding CentOS 6 yum repo"
-    %x{rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-6.noarch.rpm}
-  else
-    cputs "Adding CentOS 7 yum repo"
-    %x{rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm}
-  end
-
-  %x{yum -y install puppet-agent}
-
-  STDOUT.sync = true
-  STDOUT.flush
+desc "Host and networking configuration needed prior to installing PE"
+task :pre_install_setup do
+  set_hostname
+  edit_hosts
+  configure_network
 end
 
 desc "Install PE Master"
 task :install_pe do
-  hostname = `hostname -s`.chomp
-  if not File.exist?('/tmp/puppet-enterprise.tar.gz')
+  unless installer_cached?
     puts "Downloading Puppet Enterprise"
-    File.open("/tmp/puppet-enterprise.tar.gz","wb") do |saved_file|
-      open(PEURL, "rb") do |read_file|
-        saved_file.write(read_file.read)
-      end
-    end
+    download_installer
   end
-  File.open('/tmp/answers','w') do |f|
-    f.write ERB.new(File.read('../templates/answers.erb')).result(binding)
-  end
-  %x{mkdir /tmp/puppet-enterprise}
-  %x{tar xf /tmp/puppet-enterprise.tar.gz -C /tmp/puppet-enterprise --strip-components=1}
-  if Gem::Version.new(PE_VERSION) < Gem::Version.new('2016.2.0')
-    File.open('/tmp/answers','w') do |f|
-      f.write ERB.new(File.read('../templates/answers.erb')).result(binding)
-    end
-    puts "Installing Puppet Enterprise with answers file for version #{PE_VERSION}"
-    %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /tmp/answers}
-  else
-    File.open('/tmp/pe.conf','w') do |f|
-      f.write ERB.new(File.read('../templates/pe.conf.erb')).result(binding)
-    end
-    puts "Installing Puppet Enterprise with pe.conf for version #{PE_VERSION}"
-    %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -c /tmp/pe.conf}
-  end
+  install_pe
 end
 
-desc "Training VM pre-install setup"
-task :training_pre do
-  # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname training.puppetlabs.vm"
-  %x{hostname training.puppetlabs.vm}
-  cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 training.puppetlabs.vm training localhost localhost.localdomain localhost4/" /etc/hosts}
-  cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=training.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
-  # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("training.puppetlabs.vm") }
+desc "Install and apply the bootstrap manifest corresponding to the VM type being built"
+task :build do
+  install_r10k
+  install_modules
 end
 
-desc "Learning VM pre-install setup"
-task :learning_pre do
-  # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname learning.puppetlabs.vm"
-  %x{hostname learning.puppetlabs.vm}
-  cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 learning.puppetlabs.vm localhost localhost.localdomain localhost4/" /etc/hosts}
-  cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=learning.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
-  # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("learning.puppetlabs.vm") }
-
-end
-
-desc "Student VM pre-install setup"
-task :student_pre do
-  # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname student.puppetlabs.vm"
-  %x{hostname student.puppetlabs.vm}
-  cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 student.puppetlabs.vm training localhost localhost.localdomain localhost4/" /etc/hosts}
-  cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=student.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
-  # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("student.puppetlabs.vm") }
-end
-
-desc "Master VM pre-install setup"
-task :master_pre do
-  # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname master.puppetlabs.vm"
-  %x{hostname master.puppetlabs.vm}
-  cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 master.puppetlabs.vm master localhost localhost.localdomain localhost4/" /etc/hosts}
-  cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=master.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
-  # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("master.puppetlabs.vm") }
-end
-
-desc "LMS VM pre-install setup"
-task :lms_pre do
-  # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname lms.puppetlabs.vm"
-  %x{hostname lms.puppetlabs.vm}
-  cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 lms.puppetlabs.vm localhost localhost.localdomain localhost4/" /etc/hosts}
-  cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=lms.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
-  # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("lms.puppetlabs.vm") }
-end
-
-desc "Apply bootstrap manifest"
-task :build, [:role] do |t,args|
- cputs "Installing R10k"
- system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin gem install r10k -v 1.5.1 --no-RI --no-RDOC')
- Dir.chdir('..') do
-  cputs "Running r10k Puppetfile install"
-  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
- end
- cputs "Running puppet apply on #{args[:role]}.pp"
- system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=../modules:/opt/puppetlabs/puppet/modules --verbose ../manifests/#{args[:role]}.pp")
-end
-
-desc "Post build cleanup tasks"
+desc "Post build cleanup"
 task :post do
-  version = YAML.load(File.read('../version.yaml'))
-  # Put version file in place on VM
-  cputs "Editing /etc/vm-version"
-  FileUtils.copy('../version.yaml','/etc/vm-version')
-  cputs "Editing /etc/puppetlabs-release"
-  File.open('/etc/puppetlabs-release', 'w') do |file|
-    file.write "#{version[:major]}.#{version[:minor]}"
-  end
-  # Run cleanup manifest
-  cputs "Running cleanup manifest"
-  system('PATH=$PATH:/opt/puppetlabs/bin puppet apply --modulepath=../modules --verbose ../manifests/post.pp')
+  set_vm_version_file
+  set_puppet_release_file
+  apply_cleanup_manifest
 end
 
 desc "Uninstall Puppet"
@@ -192,102 +303,35 @@ task :uninstall do
   %x{yum -y remove puppet-agent}
 end
 
-desc "Full Training VM Build"
-task :training do
-  cputs "Building Training VM"
-  Rake::Task["standalone_puppet_agent"].execute
-  Rake::Task["training_pre"].execute
-  Rake::Task["build"].invoke("training")
-  Rake::Task["post"].execute
-  Rake::Task["uninstall"].execute
-end
+##################
+#                #
+# VM build tasks #
+#                #
+##################
 
-desc "Learning VM Pre Build"
-task :learning_install do
-  cputs "Building Learning VM"
-  Rake::Task["learning_pre"].execute
-  Rake::Task["install_pe"].execute
-end
+desc "Standalone agent pre-build"
+task :standalone_agent_pre => [:standalone_puppet_agent, :pre_install_setup]
 
-desc "Learning VM Build"
-task :learning do
-  cputs "Building Learning VM"
-  Rake::Task["build"].invoke("learning")
-  Rake::Task["post"].execute
-end
+desc "Standalone agent build"
+task :standalone_agent_build => [:build, :post, :uninstall]
 
-desc "Full Learning VM Build"
-task :learning_full do
-  cputs "Building Learning VM"
-  Rake::Task["learning_pre"].execute
-  Rake::Task["install_pe"].execute
-  Rake::Task["build"].invoke("learning")
-  Rake::Task["post"].execute
-end
+desc "Standalone agent full build"
+task :standalone_agent_full => [:standalone_agent_pre, :standalone_agent_build]
 
-desc "Learning VM on Master"
-task :learning_master do
-  cputs "Building Learning VM from Master VM"
-  Rake::Task["build"].invoke("learning")
-  Rake::Task["post"].execute
-end
+desc "PE Master pre-build"
+task :master_pre => [:pre_install_setup, :install_pe]
 
-desc "Student VM Pre Build"
-task :student_install do
-  cputs "Building Student VM"
-  Rake::Task["standalone_puppet_agent"].execute
-  Rake::Task["student_pre"].execute
-end
+desc "PE Master build"
+task :master_build => [:build, :post]
 
-desc "Student VM Build"
-task :student do
-  cputs "Building Student VM"
-  Rake::Task["build"].invoke("student")
-  Rake::Task["post"].execute
-  Rake::Task["uninstall"].execute
-end
+desc "PE Master full build"
+task :master_full => [:master_pre, :master_build]
 
-desc "Full Student VM Build"
-task :student_full do
-  cputs "Building Student VM"
-  Rake::Task["standalone_puppet_agent"].execute
-  Rake::Task["student_pre"].execute
-  Rake::Task["build"].invoke("student")
-  Rake::Task["post"].execute
-  Rake::Task["uninstall"].execute
-end
-
-desc "Master VM Pre Build"
-task :master_install do
-  cputs "Building Master VM"
-  Rake::Task["master_pre"].execute
-  Rake::Task["install_pe"].execute
-end
-
-desc "Master VM Build"
-task :master do
-  cputs "Building Master VM"
-  Rake::Task["build"].invoke("master")
-  Rake::Task["post"].execute
-end
-
-desc "Full Puppetfactory VM Build"
-task :master_full do
-  cputs "Building Master VM"
-  Rake::Task["master_pre"].execute
-  Rake::Task["install_pe"].execute
-  Rake::Task["build"].invoke("master")
-  Rake::Task["post"].execute
-end
-
-desc "Full LMS VM Build"
-task :lms do
-  cputs "Building LMS VM"
-  Rake::Task["standalone_puppet_agent"].execute
-  Rake::Task["lms_pre"].execute
-  Rake::Task["build"].invoke("lms")
-  Rake::Task["post"].execute
-end
+#########################################################
+#                                                       #
+# Packaging and Shipping things--Probably doesn't work! #
+#                                                       #
+#########################################################
 
 ## The job that calls this needs to be tied to a builder with ovftool and the int-resources NFS export mounted.
 ## Currently just pe-vm-builder-1
@@ -302,33 +346,6 @@ task :ship do
   cputs "Copying #{ovaname} to int-resources"
   ship_vm_to_dir(ovapath, "/mnt/nfs/EducationVMS/#{VMTYPE}")
   cputs "#{ovaname} is now available at http://int-resources.ops.puppetlabs.net/EducationVMS/#{VMTYPE}/#{ovaname}"
-end
-
-def download(url,path)
-  u = URI.parse(url)
-  net = Net::HTTP.new(u.host, u.port)
-  case u.scheme
-  when "http"
-    net.use_ssl = false
-  when "https"
-    net.use_ssl = true
-    net.verify_mode = OpenSSL::SSL::VERIFY_NONE
-  else
-    raise "Link #{url} is not HTTP(S)"
-  end
-  net.start do |http|
-    File.open(path,"wb") do |f|
-      begin
-        http.request_get(u.path) do |resp|
-          resp.read_body do |segment|
-            f.write(segment)
-          end
-        end
-      rescue => e
-        cputs "Error: #{e.message}"
-      end
-    end
-  end
 end
 
 def gitclone(source,destination,branch,tag = nil)
@@ -364,14 +381,6 @@ def verify_download(download, signature)
   crypto.verify(sign, :signed_text => file_to_check, :always_trust => true) do |signature|
    puts "Valid!" if signature.valid?
   end
-end
-
-def cputs(string)
-  puts "\033[1m#{string}\033[0m"
-end
-
-def cprint(string)
-  print "\033[1m#{string}\033[0m"
 end
 
 def retrieve_vm_as_ova(vmname)
