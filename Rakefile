@@ -63,7 +63,7 @@ end
 #                                 #             
 ###################################
 
-def build_vm(template, args={}, var_file=nil)
+def call_packer(template, args={}, var_file=nil)
   arg_string = ""
   args.each do |k, v|
     arg_string << " -var #{k}=#{v} "
@@ -71,6 +71,53 @@ def build_vm(template, args={}, var_file=nil)
   arg_string << " -var-file=#{var_file} " if var_file
   # Call packer and pass everything through to STDOUT live
   IO.popen("packer build #{arg_string} #{template}") { |io| while (line = io.gets) do puts line end }
+end
+
+def template_dir
+  './templates'
+end
+
+def template_file(build_type)
+  case build_type
+  when 'base'
+    File.join(template_dir, 'educationbase.json')
+  when 'build'
+    File.join(template_dir, 'educationbuild.json')
+  when 'student'
+    File.join(template_dir, 'student.json')
+  else
+    fail "ERROR: Invalid build type: #{build_type}"
+  end
+end
+
+def var_file(vm_name)
+  if vm_name == "student"
+    nil
+  else
+    File.join(template_dir, "#{vm_name}.json")
+  end
+end
+
+def output_dir(vm_name, build_type)
+  if build_type == 'student'
+    File.join('./output/', "#{vm_name}-virtualbox")
+  else
+    File.join('./output/', "#{vm_name}-#{build_type}-virtualbox")
+  end
+end
+
+def check_output_dir(vm_name, build_type)
+  vm_output_dir = output_dir(vm_name, build_type)
+  if File.exists?(vm_output_dir)
+    puts "An output directory already exists at #{vm_output_dir}. Would you like to replace it with this build? [y/N]"
+    raise "User cancelled" unless [ 'y', 'yes', '' ].include? STDIN.gets.strip.downcase
+    `rm -rf #{vm_output_dir}`
+  end
+end
+
+def build_vm(build_type, vm_name, args={})
+  check_output_dir(vm_name, build_type)
+  call_packer(template_file(build_type), args, var_file(vm_name))
 end
 
 #################################################
@@ -103,36 +150,35 @@ end
 
 desc "Training VM base build"
 task :training_base do
-  build_vm('./templates/educationbase.json', args={}, var_file='./templates/training.json')
+  build_vm('base', 'training', {})
 end
 
 desc "Training VM build"
 task :training_build do
-  build_vm('./templates/educationbuild.json', args={}, var_file='./templates/training.json')
+  build_vm('build', 'training', {})
 end
 
 desc "Master VM base build"
 task :master_base do
-  build_vm('./templates/educationbase.json', args={}, var_file='./templates/master.json')
+  build_vm('base', 'master', {})
 end
 
 desc "Master VM build"
 task :master_base do
-  build_vm('./templates/educationbuild.json', args={}, var_file='./templates/master.json')
+  build_vm('build', 'master', {})
 end
 
 desc "Learning VM base build"
-task :master_base do
-  build_vm('./templates/educationbase.json', args={}, var_file='./templates/learning.json')
+task :learning_base do
+  build_vm('base', 'learning', {})
 end
 
 desc "Learning VM build"
-task :master_base do
-  build_vm('./templates/educationbuild.json', args={}, var_file='./templates/learning.json')
+task :learning_build do
+  build_vm('build', 'learning', {})
 end
 
 desc "Student VM build"
 task :student_build do
-  # The student VM doesn't use a var file
-  build_vm('./templates/student.json', args={})
+  build_vm('student', 'student', {})
 end
