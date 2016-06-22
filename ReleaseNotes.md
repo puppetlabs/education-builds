@@ -1,3 +1,12 @@
+## Version 5.3
+
+* Cache docker images on master vm
+* 2016.2 builds for AWS
+
+## Version 5.2
+
+* 2016.2 support
+
 ## Version 5.1
 
 * 2016.1.2 support

@@ -56,6 +56,6 @@
     "vm_disk_size": "20480",
     "vm_cores": "2",
     "pe_version": "2016.2.0",
-    "ptb_version": "5.2"
+    "ptb_version": ""
   }
 }
