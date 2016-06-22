@@ -2,4 +2,4 @@ cd /usr/src/
 git clone https://github.com/puppetlabs/education-builds
 cd /usr/src/education-builds/scripts
 
-rake learning
+rake master_build

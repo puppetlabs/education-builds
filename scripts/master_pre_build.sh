@@ -8,6 +8,6 @@ cd /usr/src/
 git clone https://github.com/puppetlabs/education-builds
 cd /usr/src/education-builds/scripts
 
-rake master_install
+rake master_pre
 
 rm -rf /usr/src/education-builds/
