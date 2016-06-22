@@ -8,7 +8,7 @@ require 'open-uri'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
-PTBVERSION = YAML.load_file('../version.yaml')
+PTBVERSION = YAML.load_file(File.join(BASEDIR, 'version.yaml'))
 
 ##############################################################
 #                                                            #
@@ -95,8 +95,8 @@ def cprint(string)
 end
 
 # Bail if handed a 'VMTYPE' that's not supported.
-if VMTYPE !~ /^(training|learning|student)$/
-  abort("ERROR: Unrecognized VMTYPE parameter: #{VMTYPE}")
+if vm_type !~ /^(training|learning|student)$/
+  abort("ERROR: Unrecognized VM_TYPE parameter: #{vm_type}")
 end
 
 #################################################
@@ -128,18 +128,18 @@ end
 
 # Check if the installer exists and the file isn't empty.
 def installer_cached?
-  File.exist?('/tmp/puppet-enterprise.tar.gz') and File.zero?(path) == false
+  File.exist?('/tmp/puppet-enterprise.tar.gz') and File.zero?('/tmp/puppet-enterprise.tar.gz') == false
 end
 
 def write_answers_file
   File.open('/tmp/answers','w') do |f|
-    f.write ERB.new(File.read('../templates/answers.erb')).result(binding)
+    f.write ERB.new(File.read('./templates/answers.erb')).result(binding)
   end
 end
 
 def write_pe_conf_file 
   File.open('/tmp/pe.conf','w') do |f|
-    f.write ERB.new(File.read('../templates/pe.conf.erb')).result(binding)
+    f.write ERB.new(File.read('./templates/pe.conf.erb')).result(binding)
   end
 end
 
@@ -154,6 +154,7 @@ def install_pe
     write_pe_conf_file
     puts "Installing Puppet Enterprise with pe.conf for version #{pe_version}"
     %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -c /tmp/pe.conf}
+  end
 end
 
 ########################################
@@ -213,10 +214,8 @@ def install_r10k
 end
 
 def install_modules
-  Dir.chdir('..') do
-    cputs "Running r10k Puppetfile install"
-    system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
-  end
+  cputs "Running r10k Puppetfile install"
+  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
 end
 
 def apply_bootstrap
@@ -233,7 +232,7 @@ end
 def set_vm_version_file
   # Put version file in place on VM
   cputs "Editing /etc/vm-version"
-  FileUtils.copy('../version.yaml','/etc/vm-version')
+  FileUtils.copy('./version.yaml','/etc/vm-version')
 end
 
 def set_puppet_release_file
@@ -246,7 +245,7 @@ end
 def apply_cleanup_manifest
   # Run cleanup manifest
   cputs "Running cleanup manifest"
-  system('PATH=$PATH:/opt/puppetlabs/bin puppet apply --modulepath=../modules --verbose ../manifests/post.pp')
+  system('PATH=$PATH:/opt/puppetlabs/bin puppet apply --modulepath=./modules --verbose ./manifests/post.pp')
 end
 
 ############################
@@ -289,6 +288,7 @@ desc "Install and apply the bootstrap manifest corresponding to the VM type bein
 task :build do
   install_r10k
   install_modules
+  apply_bootstrap
 end
 
 desc "Post build cleanup"

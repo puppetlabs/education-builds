@@ -22,6 +22,7 @@
                  "echo \"training:training\" | chpasswd",
                  "echo \"training ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers",
                  "mkdir -p /training/file_cache",
+                 "mkdir -p /usr/src/build_files",
                  "chown -R training:training /training"]
     },
     {
