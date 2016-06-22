@@ -3,7 +3,7 @@
     {
       "type": "amazon-ebs",
       "region": "us-west-2",
-      "source_ami": "ami-3e2eea5e",
+      "source_ami": "ami-af39fdcf",
       "instance_type": "m3.large",
       "ssh_username": "training",
       "ssh_keypair_name": "training",
