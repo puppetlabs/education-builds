@@ -220,7 +220,7 @@ end
 
 def apply_bootstrap
   cputs "Running puppet apply on #{vm_type}.pp"
-  system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=../modules:/opt/puppetlabs/puppet/modules --verbose ../manifests/#{vm_type}.pp")
+  system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/#{vm_type}.pp")
 end
 
 ##################################################

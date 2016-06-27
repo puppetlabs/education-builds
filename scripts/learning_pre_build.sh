@@ -7,3 +7,5 @@ cp $PE_PATH /tmp/puppet-enterprise.tar.gz
 cd /usr/src/build_files
 
 rake master_pre
+
+rm -rf /usr/src/build_files

@@ -33,6 +33,15 @@
   ],
   "provisioners": [
     {
+      "type": "shell",
+      "inline": ["sudo mkdir -p /usr/src/build_files && sudo chown -R $(whoami):$(whoami) /usr/src/build_files"]
+    },
+    {
+      "type": "file",
+      "source": "build_files/",
+      "destination": "/usr/src/build_files"
+    },
+    {
       "environment_vars": [
         "PE_STATUS={{user `pe_status`}}",
         "PE_VERSION={{user `pe_version`}}",
@@ -63,6 +72,6 @@
     "vm_memsize": "4096",
     "vm_disk_size": "20480",
     "vm_cores": "2",
-    "ptb_version": ""
+    "ptb_version": "5.3"
   }
 }

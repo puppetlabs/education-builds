@@ -99,10 +99,10 @@ def var_file(vm_name)
 end
 
 def output_dir(vm_name, build_type)
-  if build_type == 'student'
+  unless build_type == 'base'
     File.join('./output/', "#{vm_name}-virtualbox")
   else
-    File.join('./output/', "#{vm_name}-#{build_type}-virtualbox")
+    File.join('./output/', "#{vm_name}-base-virtualbox")
   end
 end
 
