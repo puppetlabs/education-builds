@@ -121,14 +121,14 @@ end
 
 # Download the installer. Curl is nicer than re-inventing the wheel with ruby.
 def download_installer
-  unless `curl #{pe_installer_url} -o /tmp/puppet-enterprise.tar.gz`
+  unless `curl #{pe_installer_url} -o /tmp/puppet-enterprise.tar`
     fail "Error downloading the PE installer"
   end
 end
 
 # Check if the installer exists and the file isn't empty.
 def installer_cached?
-  File.exist?('/tmp/puppet-enterprise.tar.gz') and File.zero?('/tmp/puppet-enterprise.tar.gz') == false
+  File.exist?('/tmp/puppet-enterprise.tar') and File.zero?('/tmp/puppet-enterprise.tar') == false
 end
 
 def write_answers_file
@@ -145,7 +145,7 @@ end
 
 def install_pe
   %x{mkdir /tmp/puppet-enterprise}
-  %x{tar xf /tmp/puppet-enterprise.tar.gz -C /tmp/puppet-enterprise --strip-components=1}
+  %x{tar xf /tmp/puppet-enterprise.tar -C /tmp/puppet-enterprise --strip-components=1}
   if Gem::Version.new(pe_version) < Gem::Version.new('2016.2.0')
     write_answers_file
     puts "Installing Puppet Enterprise with answers file for version #{pe_version}"

@@ -33,7 +33,7 @@ end
 
 # At some point we might modify this method to specify dist, release, and arch
 def installer_filename
-  "puppet-enterprise-#{pe_version}-el-7-x86_64.tar"
+  "puppet-enterprise-#{pe_version}-el-7-x86_64.tar.gz"
 end
 
 # Get the latest pre-release version string for a given PE Version family.
@@ -41,6 +41,9 @@ def latest_pre_version(pe_family)
   open("http://getpe.delivery.puppetlabs.net/latest/#{pe_family}").read
 end
 
+# Public releases are .tar.gz, while internal releases are just tar.
+# When cacheing a pre-release, gzip it.
+# TODO Use https://s3.amazonaws.com/pe-builds/released/2016.2.0/puppet-enterprise-2016.2.0-el-7-x86_64.tar.gz
 def pe_installer_url
   "http://enterprise.delivery.puppetlabs.net/#{pe_family}/ci-ready/#{installer_filename}"
 end
@@ -66,7 +69,7 @@ end
 def call_packer(template, args={}, var_file=nil)
   arg_string = ""
   args.each do |k, v|
-    arg_string << " -var #{k}=#{v} "
+    arg_string << " -var '#{k}=#{v}' "
   end
   arg_string << " -var-file=#{var_file} " if var_file
   # Call packer and pass everything through to STDOUT live
@@ -111,6 +114,7 @@ def check_output_dir(vm_name, build_type)
   if File.exists?(vm_output_dir)
     puts "An output directory already exists at #{vm_output_dir}. Would you like to replace it with this build? [y/N]"
     raise "User cancelled" unless [ 'y', 'yes', '' ].include? STDIN.gets.strip.downcase
+    #TODO Instead of rm -rf, pass force to packer as default, delete all this stuff
     `rm -rf #{vm_output_dir}`
   end
 end
@@ -131,6 +135,10 @@ task :set_up_cache_dirs do
   FileUtils.mkdir_p(["./file_cache/gems", "./file_cache/installers", "./output", "./packer_cache"])
 end
 
+# TODO Add a task to set up symlinks for file_cache, output, and packer_cache
+# then mkdir_p for file_cache/gems and file_cache/installers
+# Environment variables for FILE_CACHE_SRC, OUTPUT_SRC, PACKER_CACHE_SRC
+
 desc "Cache the PE Installer"
 task :cache_pe_installer do
   cached_installer_path = "./file_cache/installers/#{installer_filename}"
@@ -149,8 +157,8 @@ end
 ##################
 
 desc "Training VM base build"
-task :training_base do
-  build_vm('base', 'training', {})
+task :training_base => [:cache_pe_installer]do
+  build_vm('base', 'training', {'pe_version' => pe_version})
 end
 
 desc "Training VM build"
@@ -159,18 +167,18 @@ task :training_build do
 end
 
 desc "Master VM base build"
-task :master_base do
-  build_vm('base', 'master', {})
+task :master_base => [:cache_pe_installer] do
+  build_vm('base', 'master', {'pe_version' => pe_version})
 end
 
 desc "Master VM build"
-task :master_base do
+task :master_build do
   build_vm('build', 'master', {})
 end
 
 desc "Learning VM base build"
-task :learning_base do
-  build_vm('base', 'learning', {})
+task :learning_base => [:cache_pe_installer] do
+  build_vm('base', 'learning', {'pe_version' => pe_version})
 end
 
 desc "Learning VM build"
