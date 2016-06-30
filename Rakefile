@@ -33,7 +33,16 @@ end
 
 # At some point we might modify this method to specify dist, release, and arch
 def installer_filename
-  "puppet-enterprise-#{pe_version}-el-7-x86_64.tar.gz"
+  if pre_release?
+    "puppet-enterprise-#{pe_version}-el-7-x86_64.tar"
+  else
+    "puppet-enterprise-#{pe_version}-el-7-x86_64.tar.gz"
+  end
+end
+
+# Note that because we gzip the pre-release installer, this is always .tar.gz
+def cached_installer_path
+  "./file_cache/installers/puppet-enterprise-#{pe_version}-el-7-x86_64.tar.gz"
 end
 
 # Get the latest pre-release version string for a given PE Version family.
@@ -43,9 +52,12 @@ end
 
 # Public releases are .tar.gz, while internal releases are just tar.
 # When cacheing a pre-release, gzip it.
-# TODO Use https://s3.amazonaws.com/pe-builds/released/2016.2.0/puppet-enterprise-2016.2.0-el-7-x86_64.tar.gz
 def pe_installer_url
-  "http://enterprise.delivery.puppetlabs.net/#{pe_family}/ci-ready/#{installer_filename}"
+  if pre_release?
+    "http://enterprise.delivery.puppetlabs.net/#{pe_family}/ci-ready/#{installer_filename}"
+  else
+    "https://s3.amazonaws.com/pe-builds/released/#{pe_family}/#{installer_filename}"
+  end
 end
 
 # Check if the installer exists and the file isn't empty.
@@ -53,11 +65,16 @@ def already_cached?(path)
   File.exist?(path) and File.zero?(path) == false
 end
 
+def gzip_installer
+  `gzip ./file_cache/installers/#{installer_filename}`
+end
+
 # Download the installer. Curl is nicer than re-inventing the wheel with ruby.
 def download_installer
   unless `curl #{pe_installer_url} -o ./file_cache/installers/#{installer_filename}`
     fail "Error downloading the PE installer"
   end
+  gzip_installer if pre_release?
 end
 
 ###################################
@@ -72,8 +89,9 @@ def call_packer(template, args={}, var_file=nil)
     arg_string << " -var '#{k}=#{v}' "
   end
   arg_string << " -var-file=#{var_file} " if var_file
-  # Call packer and pass everything through to STDOUT live
-  IO.popen("packer build #{arg_string} #{template}") { |io| while (line = io.gets) do puts line end }
+  # Call packer with a -f flag to remove any existing builds.
+  # Pass everything through to STDOUT live
+  IO.popen("packer build -force #{arg_string} #{template}") { |io| while (line = io.gets) do puts line end }
 end
 
 def template_dir
@@ -101,6 +119,7 @@ def var_file(vm_name)
   end
 end
 
+# This method isn't currently used.
 def output_dir(vm_name, build_type)
   unless build_type == 'base'
     File.join('./output/', "#{vm_name}-virtualbox")
@@ -109,18 +128,7 @@ def output_dir(vm_name, build_type)
   end
 end
 
-def check_output_dir(vm_name, build_type)
-  vm_output_dir = output_dir(vm_name, build_type)
-  if File.exists?(vm_output_dir)
-    puts "An output directory already exists at #{vm_output_dir}. Would you like to replace it with this build? [y/N]"
-    raise "User cancelled" unless [ 'y', 'yes', '' ].include? STDIN.gets.strip.downcase
-    #TODO Instead of rm -rf, pass force to packer as default, delete all this stuff
-    `rm -rf #{vm_output_dir}`
-  end
-end
-
 def build_vm(build_type, vm_name, args={})
-  check_output_dir(vm_name, build_type)
   call_packer(template_file(build_type), args, var_file(vm_name))
 end
 
