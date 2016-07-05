@@ -1,4 +1,5 @@
 require 'open-uri'
+require 'yaml'
 
 ##############################################################
 #                                                            #
@@ -22,7 +23,11 @@ end
 # latest version data for a pre-release build or use the string 'latest' for
 # the latest release version in the specified family.
 def pe_version
-  ENV["PE_VERSION"] or pre_release? ? latest_pre_version(pe_family) : nil
+  ENV["PE_VERSION"] or pre_release? ? latest_pre_version(pe_family) : latest_release_version
+end
+
+def ptb_version
+  YAML.load_file('./build_files/version.yaml')
 end
 
 ########################################
@@ -48,6 +53,12 @@ end
 # Get the latest pre-release version string for a given PE Version family.
 def latest_pre_version(pe_family)
   open("http://getpe.delivery.puppetlabs.net/latest/#{pe_family}").read
+end
+
+def latest_release_version
+  redirect_response = Net::HTTP.get_response(URI.parse("https://pm.puppetlabs.com/cgi-bin/download.cgi\?dist\=el\&rel\=7\&arch\=x86_64\&ver\=latest"))
+    .header['location']
+  return redirect_response.match(/(?<version>\d{4}\.\d+\.\d+)/)
 end
 
 # Public releases are .tar.gz, while internal releases are just tar.
@@ -77,6 +88,19 @@ def download_installer
   gzip_installer if pre_release?
 end
 
+def cache_directories
+  ["./file_cache/gems", "./file_cache/installers", "./output", "./packer_cache"]
+end
+
+def cache_directories_exist?
+  cache_directories.each{ |dir| return false unless File.exist?(dir) }
+  true
+end
+
+def create_cache_directories
+  FileUtils.mkdir_p(cache_directories)
+end
+
 ###################################
 #                                 #
 # Helper methods for building VMs #
@@ -90,8 +114,20 @@ def call_packer(template, args={}, var_file=nil)
   end
   arg_string << " -var-file=#{var_file} " if var_file
   # Call packer with a -f flag to remove any existing builds.
-  # Pass everything through to STDOUT live
-  IO.popen("packer build -force #{arg_string} #{template}") { |io| while (line = io.gets) do puts line end }
+  # Pass everything through to STDOUT live and pass SIGINT through
+  packer_io = IO.popen("packer build -force #{arg_string} #{template}") do |io|
+    trap('INT') do
+      Process.kill('INT', Process.pid)
+      while (line = io.gets) do
+        puts line
+      end
+      io.close
+      exit
+    end
+    while (line = io.gets) do
+      puts line
+    end
+  end
 end
 
 def template_dir
@@ -132,6 +168,21 @@ def build_vm(build_type, vm_name, args={})
   call_packer(template_file(build_type), args, var_file(vm_name))
 end
 
+############################################
+#                                          #
+# Helper methods for Learning VM packaging #
+#                                          #             
+############################################
+
+def ova_name
+  "puppet-#{pe_version}-learning-#{ptb_version[:major]}.#{ptb_version[:minor]}"
+end
+
+def make_learning_vm_dir
+  `mkdir /tmp/learning_puppet_vm`
+  `cp /output/#{ova_name} /tmp/learning/#{ova_name}`
+end
+
 #################################################
 #                                               #
 # Rake tasks for prepping the local environment #
@@ -140,7 +191,7 @@ end
 
 desc "Set up default cache dirctories"
 task :set_up_cache_dirs do
-  FileUtils.mkdir_p(["./file_cache/gems", "./file_cache/installers", "./output", "./packer_cache"])
+  create_cache_directories unless cache_directories_exist?
 end
 
 # TODO Add a task to set up symlinks for file_cache, output, and packer_cache

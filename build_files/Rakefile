@@ -69,7 +69,7 @@ end
 # latest version data for a pre-release build or use the string 'latest' for
 # the latest release version in the specified family.
 def pe_version
-  ENV['PE_VERSION'] or pre_release? ? latest_pre_version(pe_family) : nil
+  ENV['PE_VERSION'] or pre_release? ? latest_pre_version(pe_family) : latest_release_version
 end
 
 def host_os
@@ -107,7 +107,7 @@ end
 
 # At some point we might modify this method to specify dist, release, and arch
 def installer_filename
-  "puppet-enterprise-#{pe_version}-el-7-x86_64.tar"
+  "puppet-enterprise-#{pe_version}-el-7-x86_64.tar.gz"
 end
 
 # Get the latest pre-release version string for a given PE Version family.
@@ -116,19 +116,33 @@ def latest_pre_version(pe_family)
 end
 
 def pe_installer_url
-  "http://enterprise.delivery.puppetlabs.net/#{pe_family}/ci-ready/#{installer_filename}"
+  if pre_release?
+    "http://enterprise.delivery.puppetlabs.net/#{pe_family}/ci-ready/#{installer_filename}"
+  else
+    "https://s3.amazonaws.com/pe-builds/released/#{pe_family}/#{installer_filename}"
+  end
+end
+
+def latest_release_version
+  redirect_response = Net::HTTP.get_response(URI.parse("https://pm.puppetlabs.com/cgi-bin/download.cgi\?dist\=el\&rel\=7\&arch\=x86_64\&ver\=latest"))
+    .header['location']
+  return redirect_response.match(/(?<version>\d{4}\.\d+\.\d+)/)
+end
+
+def installer_path
+  "/training/file_cache/installers/#{installer_filename}"
 end
 
 # Download the installer. Curl is nicer than re-inventing the wheel with ruby.
 def download_installer
-  unless `curl #{pe_installer_url} -o /tmp/puppet-enterprise.tar`
+  unless `curl #{pe_installer_url} -o #{installer_path}`
     fail "Error downloading the PE installer"
   end
 end
 
 # Check if the installer exists and the file isn't empty.
 def installer_cached?
-  File.exist?('/tmp/puppet-enterprise.tar') and File.zero?('/tmp/puppet-enterprise.tar') == false
+  File.exist?(installer_path) and File.zero?(installer_path) == false
 end
 
 def write_answers_file
@@ -145,7 +159,7 @@ end
 
 def install_pe
   %x{mkdir /tmp/puppet-enterprise}
-  %x{tar xf /tmp/puppet-enterprise.tar -C /tmp/puppet-enterprise --strip-components=1}
+  %x{tar xf #{installer_path} -C /tmp/puppet-enterprise --strip-components=1}
   if Gem::Version.new(pe_version) < Gem::Version.new('2016.2.0')
     write_answers_file
     puts "Installing Puppet Enterprise with answers file for version #{pe_version}"
@@ -215,6 +229,7 @@ end
 
 def install_modules
   cputs "Running r10k Puppetfile install"
+  system('mkdir modules')
   system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
 end
 
@@ -253,14 +268,6 @@ end
 # Internal VM build tasks  #
 #                          #
 ############################
-
-desc "Print list of rake tasks"
-task :default do
-  system("rake -sT")  # s for silent
-  cputs "NOTE: The usage of this Rakefile has changed.\n" + \
-        "This is intended to be run within a blank VM to bootstrap it to the various Education VMs.\n" + \
-        "To use this repo to provision a VM, refer to the files in the packer directory.\n"
-end
 
 desc "Install puppet-agent for VM deployment"
 task :standalone_puppet_agent do
@@ -308,6 +315,14 @@ end
 # VM build tasks #
 #                #
 ##################
+
+desc "Print list of rake tasks"
+task :default do
+  system("rake -sT")  # s for silent
+  cputs "NOTE: The usage of this Rakefile has changed.\n" + \
+        "This is intended to be run within a blank VM to bootstrap it to the various Education VMs.\n" + \
+        "To use this repo to provision a VM, refer to the files in the packer directory.\n"
+end
 
 desc "Standalone agent pre-build"
 task :standalone_agent_pre => [:standalone_puppet_agent, :pre_install_setup]
