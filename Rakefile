@@ -1,33 +1,36 @@
 require 'open-uri'
 require 'yaml'
 
+PRE_RELEASE = ENV['PRE_RELEASE'] == 'true'
+PTB_VERSION = YAML.load_file('./build_files/version.yaml')
+
 ##############################################################
 #                                                            #
 # Methods to abstract the environment variable CL interface. #
 #                                                            #
 ##############################################################
 
-# If the PE_FAMILY environment variable isn't specified, extract it from the
-# the version. If there's no PE_VERSION, this defaults to nil
 def pe_family
-  ENV["PE_FAMILY"] or ENV["PE_VERSION"] ? ENV["PE_VERSION"].split('.')[0 .. 1].join('.') : nil
+  if !ENV['PE_VERSION'] || ENV['PE_VERSION'] == 'latest'
+    if ENV['PE_FAMILY']
+      return ENV['PE_FAMILY']
+    elsif !PRE_RELEASE
+      return nil
+    else
+      puts "You must set the PE_VERSION or PE_FAMILY environment variable to build a pre-release version"
+      exit 1
+    end
+  else
+    ENV["PE_VERSION"].split('.')[0 .. 1].join('.')
+  end
 end
 
-# Convert the string value 'true' for the PRE_RELEASE environment variable to
-# a boolean true.
-def pre_release?
-  ENV["PRE_RELEASE"] == 'true'
-end
-
-# If the PE_VERSION environmnet variable isn't specified, we can fetch the
-# latest version data for a pre-release build or use the string 'latest' for
-# the latest release version in the specified family.
 def pe_version
-  ENV["PE_VERSION"] or pre_release? ? latest_pre_version(pe_family) : latest_release_version
-end
-
-def ptb_version
-  YAML.load_file('./build_files/version.yaml')
+  if !ENV['PE_VERSION'] || ENV['PE_VERSION'] == 'latest'
+    PRE_RELEASE ? latest_pre_version(pe_family) : latest_release_version
+  else
+    ENV['PE_VERSION']
+  end
 end
 
 ########################################
@@ -38,7 +41,7 @@ end
 
 # At some point we might modify this method to specify dist, release, and arch
 def installer_filename
-  if pre_release?
+  if PRE_RELEASE
     "puppet-enterprise-#{pe_version}-el-7-x86_64.tar"
   else
     "puppet-enterprise-#{pe_version}-el-7-x86_64.tar.gz"
@@ -64,7 +67,7 @@ end
 # Public releases are .tar.gz, while internal releases are just tar.
 # When cacheing a pre-release, gzip it.
 def pe_installer_url
-  if pre_release?
+  if PRE_RELEASE
     "http://enterprise.delivery.puppetlabs.net/#{pe_family}/ci-ready/#{installer_filename}"
   else
     "https://s3.amazonaws.com/pe-builds/released/#{pe_family}/#{installer_filename}"
@@ -72,8 +75,8 @@ def pe_installer_url
 end
 
 # Check if the installer exists and the file isn't empty.
-def already_cached?(path)
-  File.exist?(path) and File.zero?(path) == false
+def already_cached?
+  File.exist?(cached_installer_path) and File.zero?(cached_installer_path) == false
 end
 
 def gzip_installer
@@ -85,7 +88,7 @@ def download_installer
   unless `curl #{pe_installer_url} -o ./file_cache/installers/#{installer_filename}`
     fail "Error downloading the PE installer"
   end
-  gzip_installer if pre_release?
+  gzip_installer if PRE_RELEASE
 end
 
 def cache_directories
@@ -107,6 +110,16 @@ end
 #                                 #             
 ###################################
 
+def subprocess_trap(io)
+  trap('INT') do
+    Process.kill('INT', io.pid)
+    while (line = io.gets) do
+      puts line
+    end
+    exit
+  end
+end
+
 def call_packer(template, args={}, var_file=nil)
   arg_string = ""
   args.each do |k, v|
@@ -116,14 +129,7 @@ def call_packer(template, args={}, var_file=nil)
   # Call packer with a -f flag to remove any existing builds.
   # Pass everything through to STDOUT live and pass SIGINT through
   packer_io = IO.popen("packer build -force #{arg_string} #{template}") do |io|
-    trap('INT') do
-      Process.kill('INT', Process.pid)
-      while (line = io.gets) do
-        puts line
-      end
-      io.close
-      exit
-    end
+    subprocess_trap(io)
     while (line = io.gets) do
       puts line
     end
@@ -164,8 +170,15 @@ def output_dir(vm_name, build_type)
   end
 end
 
-def build_vm(build_type, vm_name, args={})
-  call_packer(template_file(build_type), args, var_file(vm_name))
+def packer_args
+  {
+    'pe_version' => pe_version,
+    'ptb_version' => "#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}"
+  }
+end
+
+def build_vm(build_type, vm_name)
+  call_packer(template_file(build_type), packer_args, var_file(vm_name))
 end
 
 ############################################
@@ -175,7 +188,7 @@ end
 ############################################
 
 def ova_name
-  "puppet-#{pe_version}-learning-#{ptb_version[:major]}.#{ptb_version[:minor]}"
+  "puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}"
 end
 
 def make_learning_vm_dir
@@ -201,7 +214,7 @@ end
 desc "Cache the PE Installer"
 task :cache_pe_installer do
   cached_installer_path = "./file_cache/installers/#{installer_filename}"
-  if not already_cached?(cached_installer_path) 
+  if not already_cached? 
     puts "Downloading PE installer for #{pe_version}"
     download_installer
   else
@@ -222,30 +235,30 @@ end
 
 desc "Training VM build"
 task :training_build do
-  build_vm('build', 'training', {})
+  build_vm('build', 'training')
 end
 
 desc "Master VM base build"
 task :master_base => [:cache_pe_installer] do
-  build_vm('base', 'master', {'pe_version' => pe_version})
+  build_vm('base', 'master')
 end
 
 desc "Master VM build"
 task :master_build do
-  build_vm('build', 'master', {})
+  build_vm('build', 'master')
 end
 
 desc "Learning VM base build"
 task :learning_base => [:cache_pe_installer] do
-  build_vm('base', 'learning', {'pe_version' => pe_version})
+  build_vm('base', 'learning')
 end
 
 desc "Learning VM build"
 task :learning_build do
-  build_vm('build', 'learning', {})
+  build_vm('build', 'learning')
 end
 
 desc "Student VM build"
 task :student_build do
-  build_vm('student', 'student', {})
+  build_vm('student', 'student')
 end

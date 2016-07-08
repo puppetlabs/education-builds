@@ -160,7 +160,7 @@ end
 def install_pe
   %x{mkdir /tmp/puppet-enterprise}
   %x{tar xf #{installer_path} -C /tmp/puppet-enterprise --strip-components=1}
-  if Gem::Version.new(pe_version) < Gem::Version.new('2016.2.0')
+  if Gem::Version.new(pe_version.split('-')[0]) < Gem::Version.new('2016.2.0')
     write_answers_file
     puts "Installing Puppet Enterprise with answers file for version #{pe_version}"
     %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /tmp/answers}
