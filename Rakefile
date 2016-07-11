@@ -61,7 +61,7 @@ end
 def latest_release_version
   redirect_response = Net::HTTP.get_response(URI.parse("https://pm.puppetlabs.com/cgi-bin/download.cgi\?dist\=el\&rel\=7\&arch\=x86_64\&ver\=latest"))
     .header['location']
-  return redirect_response.match(/(?<version>\d{4}\.\d+\.\d+)/)
+  return redirect_response.match(/(?<version>\d{4}\.\d+\.\d+)/).to_s
 end
 
 # Public releases are .tar.gz, while internal releases are just tar.
