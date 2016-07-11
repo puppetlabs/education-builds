@@ -22,12 +22,18 @@
                  "echo \"training:training\" | chpasswd",
                  "echo \"training ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers",
                  "mkdir -p /training/file_cache",
+                 "mkdir -p /usr/src/build_files",
                  "chown -R training:training /training"]
     },
     {
       "type": "file",
       "source": "file_cache/",
       "destination": "/training/file_cache"
+    },
+    {
+      "type": "file",
+      "source": "build_files/",
+      "destination": "/usr/src/build_files"
     },
     {
       "execute_command": "{{.Vars}} sudo \"PATH=$PATH\" -E -S bash '{{.Path}}'",

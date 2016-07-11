@@ -40,6 +40,11 @@
                  "chown -R training:training /training"]
     },
     {
+      "type": "file",
+      "source": "build_files/",
+      "destination": "/usr/src/build_files"
+    },
+    {
       "environment_vars": [
         "PE_STATUS={{user `pe_status`}}",
         "PE_VERSION={{user `pe_version`}}",

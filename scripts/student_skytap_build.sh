@@ -1,5 +1,5 @@
-cd /usr/src/
-git clone https://github.com/puppetlabs/education-builds
-cd /usr/src/education-builds/
+cd /usr/src/build_files
 
 rake student_skytap
+
+rm -rf /usr/src/build_files

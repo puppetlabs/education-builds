@@ -1,7 +1,5 @@
-cd /usr/src/
-git clone https://github.com/puppetlabs/education-builds
-cd /usr/src/education-builds/scripts
+cd /usr/src/build_files
 
-rake student_install
+rake standalone_agent_pre
 
-rm -rf /usr/src/education-builds/
+rm -rf /usr/src/build_files

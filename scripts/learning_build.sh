@@ -1,5 +1,5 @@
-cd /usr/src/
-git clone https://github.com/puppetlabs/education-builds
-cd /usr/src/education-builds/scripts
+cd /usr/src/build_files
 
-rake learning
+rake master_build
+
+rm -rf /usr/src/build_files
