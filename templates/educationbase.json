@@ -47,6 +47,7 @@
       ],
       "scripts": [
         "scripts/base.sh",
+        "scripts/vbox.sh",
         "scripts/time.sh",
         "scripts/pre_build.sh",
         "scripts/{{ user `vm_type` }}_pre_build.sh",
