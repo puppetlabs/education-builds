@@ -188,12 +188,58 @@ end
 ############################################
 
 def ova_name
-  "puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}"
+  "puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}.ova"
 end
 
 def make_learning_vm_dir
-  `mkdir /tmp/learning_puppet_vm`
-  `cp /output/#{ova_name} /tmp/learning/#{ova_name}`
+  `rm -rf /tmp/learning_puppet_vm && mkdir /tmp/learning_puppet_vm`
+end
+
+def copy_ova_to_dir
+  `cp ./output/#{ova_name} /tmp/learning_puppet_vm/#{ova_name}`
+end
+
+def strip_version_include(string)
+  string.split("\n")[1..-1].join("\n")
+end
+
+def troubleshooting_string
+  open('https://raw.githubusercontent.com/puppetlabs/puppet-quest-guide/master/troubleshooting.md')
+    .read
+end
+
+def setup_string
+  open('https://raw.githubusercontent.com/puppetlabs/puppet-quest-guide/master/SETUP.md')
+    .read
+end
+
+def readme_markdown
+  strip_version_include(setup_string) + "\n" + strip_version_include(troubleshooting_string)
+end
+
+def readme_rtf
+  PandocRuby.new(readme_markdown, :standalone).to_rtf
+end
+
+def write_readme
+  File.write('/tmp/learning_puppet_vm/readme.rtf', readme_rtf)
+end
+
+def zip_learning_vm
+  puts "Compressing Learning VM..."
+  `zip -jrds 100  ./output/learning_puppet_vm.zip /tmp/learning_puppet_vm/`
+end
+
+def create_md5
+  `md5 ./output/learning_puppet_vm.zip > ./output/learning_puppet_vm.zip.md5`
+end
+
+def bundle_learning_vm
+  make_learning_vm_dir
+  copy_ova_to_dir
+  write_readme
+  zip_learning_vm
+  create_md5
 end
 
 #################################################
@@ -261,4 +307,15 @@ end
 desc "Student VM build"
 task :student_build do
   build_vm('student', 'student')
+end
+
+desc "Package learning VM"
+task :package_learning do
+  begin
+    require 'pandoc-ruby'
+  rescue LoadError
+    puts "You must have pandoc installed for the package Learning VM task!"
+    exit 1
+  end
+  bundle_learning_vm
 end
