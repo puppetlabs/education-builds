@@ -33,6 +33,15 @@
   "provisioners": [
     {
       "type": "shell",
+      "inline": ["sudo mkdir -p /usr/src/build_files && sudo chown -R $(whoami):$(whoami) /usr/src/build_files"]
+    },
+    {
+      "type": "file",
+      "source": "build_files/",
+      "destination": "/usr/src/build_files"
+    },
+    {
+      "type": "shell",
       "inline": ["useradd training",
                  "echo \"training:training\" | chpasswd",
                  "echo \"training ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers",

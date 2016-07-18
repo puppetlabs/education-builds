@@ -9,6 +9,10 @@ require 'open-uri'
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
 PTBVERSION = YAML.load_file(File.join(BASEDIR, 'version.yaml'))
+PE_VERSION = ENV['PE_VERSION']
+PRE_RELEASE = ENV['PE_RELEASE'] == 'true'
+PE_FAMILY = ENV['PE_FAMILY']
+VM_TYPE = ENV['VM_TYPE']
 
 ##############################################################
 #                                                            #
@@ -37,39 +41,12 @@ def src_dir
   ENV['SRC_DIR'] || '/usr/src'
 end
 
-def vm_type
-  ENV['VM_TYPE'] || 'training'
-end
-
-def puppet_version
-  ENV['PUPPET_VERSION'] || '4.3.1'
-end
-
 def facter_version
   ENV['FACTER_VERSION'] || '3.1.2'
 end
 
 def hiera_version
   ENV['HIERA_VERSION'] || '3.0.5'
-end
-
-# If the PE_FAMILY environment variable isn't specified, extract it from the
-# the version. If there's no PE_VERSION, this defaults to nil
-def pe_family
-  ENV['PE_FAMILY'] or ENV['PE_VERSION'] ? ENV['PE_VERSION'].split('.')[0 .. 1].join('.') : nil
-end
-
-# Convert the string value 'true' for the PRE_RELEASE environment variable to
-# a boolean true.
-def pre_release?
-  ENV['PRE_RELEASE'] == 'true'
-end
-
-# If the PE_VERSION environmnet variable isn't specified, we can fetch the
-# latest version data for a pre-release build or use the string 'latest' for
-# the latest release version in the specified family.
-def pe_version
-  ENV['PE_VERSION'] or pre_release? ? latest_pre_version(pe_family) : latest_release_version
 end
 
 def host_os
@@ -95,8 +72,8 @@ def cprint(string)
 end
 
 # Bail if handed a 'VMTYPE' that's not supported.
-if vm_type !~ /^(training|learning|student)$/
-  abort("ERROR: Unrecognized VM_TYPE parameter: #{vm_type}")
+if VM_TYPE !~ /^(training|learning|student)$/
+  abort("ERROR: Unrecognized VM_TYPE parameter: #{VM_TYPE}")
 end
 
 #################################################
@@ -107,26 +84,15 @@ end
 
 # At some point we might modify this method to specify dist, release, and arch
 def installer_filename
-  "puppet-enterprise-#{pe_version}-el-7-x86_64.tar.gz"
-end
-
-# Get the latest pre-release version string for a given PE Version family.
-def latest_pre_version(pe_family)
-  open("http://getpe.delivery.puppetlabs.net/latest/#{pe_family}").read
+  "puppet-enterprise-#{PE_VERSION}-el-7-x86_64.tar.gz"
 end
 
 def pe_installer_url
-  if pre_release?
-    "http://enterprise.delivery.puppetlabs.net/#{pe_family}/ci-ready/#{installer_filename}"
+  if PRE_RELEASE
+    "http://enterprise.delivery.puppetlabs.net/#{PE_FAMILY}/ci-ready/#{installer_filename}"
   else
-    "https://s3.amazonaws.com/pe-builds/released/#{pe_family}/#{installer_filename}"
+    "https://s3.amazonaws.com/pe-builds/released/#{PE_FAMILY}/#{installer_filename}"
   end
-end
-
-def latest_release_version
-  redirect_response = Net::HTTP.get_response(URI.parse("https://pm.puppetlabs.com/cgi-bin/download.cgi\?dist\=el\&rel\=7\&arch\=x86_64\&ver\=latest"))
-    .header['location']
-  return redirect_response.match(/(?<version>\d{4}\.\d+\.\d+)/)
 end
 
 def installer_path
@@ -160,13 +126,13 @@ end
 def install_pe
   %x{mkdir /tmp/puppet-enterprise}
   %x{tar xf #{installer_path} -C /tmp/puppet-enterprise --strip-components=1}
-  if Gem::Version.new(pe_version.split('-')[0]) < Gem::Version.new('2016.2.0')
+  if Gem::Version.new(PE_VERSION.split('-')[0]) < Gem::Version.new('2016.2.0')
     write_answers_file
-    puts "Installing Puppet Enterprise with answers file for version #{pe_version}"
+    puts "Installing Puppet Enterprise with answers file for version #{PE_VERSION}"
     %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /tmp/answers}
   else
     write_pe_conf_file
-    puts "Installing Puppet Enterprise with pe.conf for version #{pe_version}"
+    puts "Installing Puppet Enterprise with pe.conf for version #{PE_VERSION}"
     %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -c /tmp/pe.conf}
   end
 end
@@ -179,20 +145,20 @@ end
 
 def set_hostname
   # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname #{vm_type}.puppetlabs.vm"
-  %x{hostname #{vm_type}.puppetlabs.vm}
+  cputs "Setting hostname #{VM_TYPE}.puppetlabs.vm"
+  %x{hostname #{VM_TYPE}.puppetlabs.vm}
   # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("#{vm_type}.puppetlabs.vm") }
+  File.open('/etc/hostname', 'w') { |file| file.write("#{VM_TYPE}.puppetlabs.vm") }
 end
 
 def edit_hosts
   cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 #{vm_type}.puppetlabs.vm #{vm_type} localhost localhost.localdomain localhost4/" /etc/hosts}
+  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 #{VM_TYPE}.puppetlabs.vm #{VM_TYPE} localhost localhost.localdomain localhost4/" /etc/hosts}
 end
 
 def configure_network
   cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=#{vm_type}.puppetlabs.vm/" /etc/sysconfig/network}
+  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=#{VM_TYPE}.puppetlabs.vm/" /etc/sysconfig/network}
   %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
 end
 
@@ -234,8 +200,8 @@ def install_modules
 end
 
 def apply_bootstrap
-  cputs "Running puppet apply on #{vm_type}.pp"
-  system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/#{vm_type}.pp")
+  cputs "Running puppet apply on #{VM_TYPE}.pp"
+  system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/#{VM_TYPE}.pp")
 end
 
 ##################################################

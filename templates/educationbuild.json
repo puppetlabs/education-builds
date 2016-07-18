@@ -45,6 +45,8 @@
       "environment_vars": [
         "PE_STATUS={{user `pe_status`}}",
         "PE_VERSION={{user `pe_version`}}",
+        "PE_FAMILY={{user `pe_family`}}",
+        "PRE_RELEASE={{user `pre_release`}}",
         "RUBY_LIB={{user `rubylib`}}",
         "TRAINING_REPO={{user `training_repo`}}",
         "TRAINING_BRANCH={{user `training_branch`}}",
