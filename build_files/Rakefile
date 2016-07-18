@@ -190,13 +190,13 @@ end
 
 def install_r10k
   cputs "Installing R10K"
-  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin gem install r10k -v 1.5.1 --no-RI --no-RDOC')
+  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/gem install r10k --no-RI --no-RDOC')
 end
 
 def install_modules
   cputs "Running r10k Puppetfile install"
   system('mkdir modules')
-  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
+  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install')
 end
 
 def apply_bootstrap
