@@ -173,6 +173,8 @@ end
 def packer_args
   {
     'pe_version' => pe_version,
+    'pe_family' => pe_family,
+    'pre_release' => PRE_RELEASE,
     'ptb_version' => "#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}"
   }
 end
