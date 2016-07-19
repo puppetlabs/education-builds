@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'yaml'
+require 'net/http'
 
 PRE_RELEASE = ENV['PRE_RELEASE'] == 'true'
 PTB_VERSION = YAML.load_file('./build_files/version.yaml')
