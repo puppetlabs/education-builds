@@ -71,7 +71,7 @@ def pe_installer_url
   if PRE_RELEASE
     "http://enterprise.delivery.puppetlabs.net/#{pe_family}/ci-ready/#{installer_filename}"
   else
-    "https://s3.amazonaws.com/pe-builds/released/#{pe_family}/#{installer_filename}"
+    "https://s3.amazonaws.com/pe-builds/released/#{pe_version}/#{installer_filename}"
   end
 end
 
@@ -86,6 +86,7 @@ end
 
 # Download the installer. Curl is nicer than re-inventing the wheel with ruby.
 def download_installer
+  puts pe_installer_url
   unless `curl #{pe_installer_url} -o ./file_cache/installers/#{installer_filename}`
     fail "Error downloading the PE installer"
   end
