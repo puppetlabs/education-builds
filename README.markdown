@@ -7,20 +7,73 @@ versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
 1. Install virtualbox, packer, and vmware ovftool and ensure the binaries are in the path.
 1. Run setup script to download and deploy base images:
   * `setup.sh`
-1. Run packer to build educationbase VM. 
-  * `packer build -var-file=templates/learning.json templates/educationbase.json`
-1. Run packer to complete VM build, the `--force` will replace any previous build artifacts.
-  * `packer build --force -var-file=templates/learning.json templates/educationbuild.json`
-
-For the master or training VMs, use `master.json` or `training.json`.
-For the student VM, you don't need an educationbase or var-file:
-  * `packer build templates/student.json`
+1. Builds are triggered by a rake task that handles local caching and wraps the
+packer command. To begin a build, run the corresponding rake task, for example
+`rake master_base`. (Details on the available build tasks are included below.)
+1. To specify which version of PE to use for a base build, use the PE\_FAMILY,
+PE\_VERSION, and PRE\_RELEASE environment variables, for example,
+`PE_FAMILY=2016.3 PRE_RELEASE=true rake learning_base`.
 
 ## Detailed Usage
 
+### Rake tasks
+
+The Rakefile includes rake tasks to build the following VMs:
+
+* training
+  * `training_base`
+  * `training_build`
+
+* master
+  * `master_base`
+  * `master_build`
+
+* learning
+  * `learning_base`
+  * `learning_build`
+
+* student
+  * `student_build` (PE isn't installed, so there is no base build.)
+
+In addition, there are several tasks to help with caching, packaging, and
+related processes:
+
+* `cache_pe_installer`
+* `package_learning`
+* `ship_learning
+
+### Environment Variables
+
+The version of PE cached and subsequently installed can be specified through a
+combination of three environment variables:
+
+* **PE_VERSION**  
+  This specifies the specific verison of a PE release or pre-release to be
+  cached and/or used in a base build, for example `2016.2.0` or `2016.3.0-rc1-141-g5e261dc`
+* **PE_FAMILY**  
+  Thos specifies a y-level release, such as `2016.2`. This can be specified
+  instead of PE_VERSION to get the latest z-release or pre-release for the
+  specified family.
+* **PRE_RELEASE**  
+  If this is set to true, rake will use pre-release PE versions.
+ 
+A build without PE_VERSION or PE_FAMILY specified will use the latest release
+version of PE. A build with PRE_RELEASE set to true requires PE_VERSION or
+PE_FAMILY to be specified.
+
+These environment variables are used to calculate corresponding values that are
+passed through to the packer command in the format `-var name=value`. This
+method of specifying variables takes precedence over variables specified
+elsewhere, so the version information set via environment variables will take
+precedence over any specified version in the build template.
+
+### Packer
+
+The build tasks in the Rakefile wrap the `packer` tool, which is used to
+run the VM builds. Packer can also be run directly.
+
 Packer scripts are provided in the `templates` directory. These depend on
-packer (>= v0.10.0), vmware fusion, and ovftool. The packer builds pull 
-directly from github and the master branch, so changes will need to be checked in.
+packer (>= v0.10.0), VirtualBox, and ovftool.
 
 The base VMs are the published puppetlabs vagrant boxes.  To download and
 prepare them, run `setup.sh`. This will create the output, file_cache, and
@@ -30,9 +83,9 @@ The file_cache directory has a subfolder called "installers" for holding
 PE installer tarballs and another called gems for caching gems, the setup 
 script will create any necessary directories if they don't exist. If you'd like
 to keep those on a separate volume to save disk space, create symlinks before 
-running the setup script.
-
-The packer_cache directory is used by packer to store iso's for 
+running the setup script. The installer is automatically cached by the
+`cache_pe_installer` rake task, which precedes all base build tasks and selects
+a version of PE based on provided environment variables.
 
 The common configuration options for the training, learning, and master vms
 have been set up in educationbase.json and vm specific variables are set in
@@ -83,44 +136,11 @@ To start a learning vagrant box:
 
 ## Building with pre-released modules and code
 To develop the VMs, you need to use modules and other code that haven't yet
-been merged to master or released to the forge. The non-vagrant VM build checks 
-out code directly from github, so changes you make to the local filesystem won't 
-be used, you need to push them to a branch and reference that branch 
-in the build scripts:
+been merged to master or released to the forge.
 
-1. Fork this repo and create a branch for your changes.
-1. Update the build script to reference your namespace and branch
-  * You don't need to push this change, packer reads the local copy.
-  * You can also make temporary changes to the local packer json files without pushing.
-1. If you're changes are in a module, update the Puppetfile with the correct reference.
-1. Commit changes and push to your fork on github.
-1. Run the build.
-1. Iterate as needed.
-1. When module changes are merged to master and/or released on the forge, 
-  delete your education-build branch and build from master.
-
-Note: Be careful that references to your namespace aren't included in PRs.
-
-## Updating PE version
-The version of PE used to build the VM is determined by the
-pltraining-bootstrap module. To update the version, set the value of
-`$pe_version` in `bootstrap::params`.
-
-## Internal-only pre-release PE version builds
-For pre-release builds:
-
-1. Make a branch of this repo and of pltraining-bootstrap.
-1. Edit the Puppetfile on this branch to point to your own fork and branch of
-pltraining-bootstrap.
-1. Edit the build script in `./scripts` to reference the correct branch of this
-repo at build time.
-  * Note this change does not need to be commited to the branch.
-1. Download the PE master and agent installers and place them in a `file_cache`
-directory in the root of this repository.
-1. Update the `$pe_version` in `bootstrap::params` in your branch of
-pltraining-bootstrap.
-1. Make sure to add, commit, and push those changes.
-1. The packer build should run as usual.
+The modules used during the VM build are included in `build_files/Puppetfile`.
+See the documentation [here](https://docs.puppet.com/pe/latest/cmgmt_puppetfile.html#creating-and-editing-puppetfiles)
+for detailed information on specifying git refs in a Puppetfile. 
 
 ## Troubleshooting
 
