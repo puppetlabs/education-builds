@@ -40,7 +40,7 @@ related processes:
 
 * `cache_pe_installer`
 * `package_learning`
-* `ship_learning
+* `ship_learning`
 
 ### Environment Variables
 
