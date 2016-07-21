@@ -27,6 +27,9 @@ mod 'lms',
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
 
+mod 'dockeragent',
+  :git => 'https://github.com/puppetlabs/pltraining-dockeragent'
+
 mod 'pltraining/classroom'
 #mod 'classroom', 
 #  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
