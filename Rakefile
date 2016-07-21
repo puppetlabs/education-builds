@@ -5,6 +5,8 @@ require 'net/http'
 PRE_RELEASE = ENV['PRE_RELEASE'] == 'true'
 PTB_VERSION = YAML.load_file('./build_files/version.yaml')
 
+FILESHARE_SERVER = '//guest@int-resources.ops.puppetlabs.net/Resources'
+
 ##############################################################
 #                                                            #
 # Methods to abstract the environment variable CL interface. #
@@ -229,13 +231,17 @@ def write_readme
   File.write('/tmp/learning_puppet_vm/readme.rtf', readme_rtf)
 end
 
+def learning_vm_archive_path
+  './output/learning_puppet_vm.zip'
+end
+
 def zip_learning_vm
   puts "Compressing Learning VM..."
-  `zip -jrds 100  ./output/learning_puppet_vm.zip /tmp/learning_puppet_vm/`
+  `zip -jrds 100  #{learning_vm_archive_path} /tmp/learning_puppet_vm/`
 end
 
 def create_md5
-  `md5 ./output/learning_puppet_vm.zip > ./output/learning_puppet_vm.zip.md5`
+  `md5 #{learning_vm_archive_path} > #{learning_vm_archive_path + ".md5"}`
 end
 
 def bundle_learning_vm
@@ -244,6 +250,50 @@ def bundle_learning_vm
   write_readme
   zip_learning_vm
   create_md5
+end
+
+def mount_fileshare
+  begin
+    `mkdir -p /tmp/fileshare && mount_smbfs #{FILESHARE_SERVER} /tmp/fileshare`
+  rescue
+    puts "There was an error mounting the #{FILESHARE_SERVER} to /tmp/fileshare"
+    puts "Pleause check that this server isn't already mounted"
+    exit 1
+  end
+end
+
+def unmount_fileshare
+  `umount /tmp/fileshare`
+end
+
+def ship_to_fileshare(path, destination)
+  FileUtils.cp(path, destination)
+  FileUtils.chmod(0644, File.join(destination, File.basename(path)))
+end
+
+def ship_directory
+  "/tmp/fileshare/EducationVMs/learning/puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}/"
+end
+
+
+
+def update_symlink
+  if PRE_RELEASE
+    `ln -sf #{File.join(ship_directory, "learning_puppet_vm.zip")} /tmp/fileshare/EducationVMs/learning/learning_beta.zip`
+    `ln -sf #{File.join(ship_directory, "learning_puppet_vm.zip.md5")} /tmp/fileshare/EducationVMs/learning/learning_beta.zip.md5`
+  else
+    `ln -sf #{File.join(ship_directory, "learning_puppet_vm.zip")} /tmp/fileshare/EducationVMs/learning/learning_latest.zip`
+    `ln -sf #{File.join(ship_directory, "learning_puppet_vm.zip.md5")} /tmp/fileshare/EducationVMs/learning/learning_latest.zip.md5`
+  end 
+end
+
+def ship_learning_vm_files
+  mount_fileshare
+  `mkdir -p #{ship_directory}`
+  ship_to_fileshare(learning_vm_archive_path, ship_directory)
+  ship_to_fileshare(learning_vm_archive_path + ".md5", ship_directory)
+  update_symlink
+  unmount_fileshare
 end
 
 #################################################
@@ -322,4 +372,9 @@ task :package_learning do
     exit 1
   end
   bundle_learning_vm
+end
+
+desc "Ship Learning VM"
+task :ship_learning do
+  ship_learning_vm_files
 end
