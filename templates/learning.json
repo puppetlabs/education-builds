@@ -1,0 +1,16 @@
+{
+  "shutdown_command":"sudo shutdown now",
+  "vm_type": "learning",
+  "guest_os_type": "rhel7-64",
+  "os_name": "CentOS-7",
+  "hostname": "learning",
+  "ks_file": "ks-learning",
+  "training_branch": "master",
+  "training_repo": "https://github.com/puppetlabs/education-builds.git",
+  "vm_memsize": "3072",
+  "vm_disk_size": "20480",
+  "vm_cores": "2",
+  "iso_checksum": "4c6c65b5a70a1142dadb3c65238e9e97253c0d3a",
+  "iso_url": "http://osmirror.delivery.puppetlabs.net/iso/CentOS-7-x86_64-DVD-1511.iso",
+  "ptb_version": "5.3"
+}

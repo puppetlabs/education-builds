@@ -2,10 +2,13 @@
 *.swp
 .DS_Store
 *.un~
-modules/*/pkg/
+modules
 Gemfile.lock
 spec/log
 .bundle
-packer/output
-packer/packer_cache
+output
+packer_cache
 file_cache
+courseware
+courseware-virtual
+temp

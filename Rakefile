@@ -1,347 +1,325 @@
-require 'erb'
-require 'uri'
-require 'net/http'
-require 'net/https'
-require 'rubygems'
+require 'open-uri'
 require 'yaml'
+require 'net/http'
 
-STDOUT.sync = true
-BASEDIR = File.dirname(__FILE__)
-PEVERSION = ENV['PEVERSION'] || '3.8.0'
-PESTATUS = ENV['PESTATUS'] || 'release'
-SRCDIR = ENV['SRCDIR'] || '/usr/src'
-PUPPET_VER = '4.3.1'
-FACTER_VER = '3.1.2'
-HIERA_VER = '3.0.5'
-VMTYPE = ENV['VMTYPE'] || 'training'
-PTBVERSION = YAML.load_file('version.yaml')
+PRE_RELEASE = ENV['PRE_RELEASE'] == 'true'
+PTB_VERSION = YAML.load_file('./build_files/version.yaml')
 
-## These are used by the shipping tasks
-SITESDIR = "/srv/builder/Sites" || ENV["SITESDIR"]
-CACHEDIR = File.join(SITESDIR, "cache")
-BUILDDIR = File.join(SITESDIR, "build")
-OVFDIR = File.join(BUILDDIR, "ovf")
+##############################################################
+#                                                            #
+# Methods to abstract the environment variable CL interface. #
+#                                                            #
+##############################################################
 
-$settings = Hash.new
-
-hostos = `uname -s`
-
-# Bail if handed a 'VMTYPE' that's not supported.
-if VMTYPE !~ /^(training|learning|student)$/
-  abort("ERROR: Unrecognized VMTYPE parameter: #{VMTYPE}")
-end
-
-desc "Print list of rake tasks"
-task :default do
-  system("rake -sT")  # s for silent
-  cputs "NOTE: The usage of this Rakefile has changed.\n" + \
-        "This is intended to be run within a blank VM to bootstrap it to the various Education VMs.\n" + \
-        "To use this repo to provision a VM, refer to the files in the packer directory.\n"
-end
-
-desc "Install puppet-agent for VM deployment"
-task :standalone_puppet do
-
-  if File.read('/etc/redhat-release') =~ /release 6/ then
-    cputs "Adding CentOS 6 yum repo"
-    %x{rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-6.noarch.rpm}
+def pe_family
+  if !ENV['PE_VERSION'] || ENV['PE_VERSION'] == 'latest'
+    if ENV['PE_FAMILY']
+      return ENV['PE_FAMILY']
+    elsif !PRE_RELEASE
+      return nil
+    else
+      puts "You must set the PE_VERSION or PE_FAMILY environment variable to build a pre-release version"
+      exit 1
+    end
   else
-    cputs "Adding CentOS 7 yum repo"
-    %x{rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm}
+    ENV["PE_VERSION"].split('.')[0 .. 1].join('.')
   end
-
-  %x{yum -y install puppet-agent}
-
-  STDOUT.sync = true
-  STDOUT.flush
 end
 
-desc "Training VM pre-install setup"
-task :training_pre do
-  VMTYPE='training'
-  # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname training.puppetlabs.vm"
-  %x{hostname training.puppetlabs.vm}
-  cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 training.puppetlabs.vm training localhost localhost.localdomain localhost4/" /etc/hosts}
-  cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=training.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
-  # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("training.puppetlabs.vm") }
-
-end
-desc "Learning VM pre-install setup"
-task :learning_pre do
-  VMTYPE='learning'
-  # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname learning.puppetlabs.vm"
-  %x{hostname learning.puppetlabs.vm}
-  cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 learning.puppetlabs.vm localhost localhost.localdomain localhost4/" /etc/hosts}
-  cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=learning.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
-  # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("learning.puppetlabs.vm") }
-
-end
-
-desc "Student VM pre-install setup"
-task :student_pre do
-  VMTYPE='student'
-  # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname student.puppetlabs.vm"
-  %x{hostname student.puppetlabs.vm}
-  cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 student.puppetlabs.vm training localhost localhost.localdomain localhost4/" /etc/hosts}
-  cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=student.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
-  # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("student.puppetlabs.vm") }
-end
-
-desc "Master VM pre-install setup"
-task :master_pre do
-  VMTYPE='master'
-  # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname master.puppetlabs.vm"
-  %x{hostname master.puppetlabs.vm}
-  cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 master.puppetlabs.vm master localhost localhost.localdomain localhost4/" /etc/hosts}
-  cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=master.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
-  # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("master.puppetlabs.vm") }
-end
-
-desc "LMS VM pre-install setup"
-task :lms_pre do
-  VMTYPE='lms'
-  # Set the dns info and hostname; must be done before puppet
-  cputs "Setting hostname lms.puppetlabs.vm"
-  %x{hostname lms.puppetlabs.vm}
-  cputs  "Editing /etc/hosts"
-  %x{sed -i "s/127\.0\.0\.1.*/127.0.0.1 lms.puppetlabs.vm localhost localhost.localdomain localhost4/" /etc/hosts}
-  cputs "Editing /etc/sysconfig/network"
-  %x{sed -ie "s/HOSTNAME.*/HOSTNAME=lms.puppetlabs.vm/" /etc/sysconfig/network}
-  %x{printf '\nsupersede domain-search "puppetlabs.vm";\n' >> /etc/dhcp/dhclient-eth0.conf}
-  # Include /etc/hostname for centos7+
-  File.open('/etc/hostname', 'w') { |file| file.write("lms.puppetlabs.vm") }
-end
-
-desc "Apply bootstrap manifest"
-task :build do
- cputs "Installing R10k"
- system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin gem install r10k -v 1.5.1 --no-RI --no-RDOC')
- Dir.chdir('/usr/src/puppetlabs-training-bootstrap') do
-  cputs "Running r10k Puppetfile install"
-  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin r10k puppetfile install')
- end
- cputs "Running puppet apply on site.pp"
- system('PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/site.pp')
-end
-
-desc "Post build cleanup tasks"
-task :post do
-  version = YAML.load(File.read('version.yaml'))
-  # Put version file in place on VM
-  cputs "Editing /etc/vm-version"
-  FileUtils.copy('version.yaml','/etc/vm-version')
-  cputs "Editing /etc/puppetlabs-release"
-  File.open('/etc/puppetlabs-release', 'w') do |file|
-    file.write "#{version[:major]}.#{version[:minor]}"
-  end
-  # Run cleanup manifest
-  cputs "Running cleanup manifest"
-  system('PATH=$PATH:/opt/puppetlabs/bin puppet apply --modulepath=/usr/src/puppetlabs-training-bootstrap/modules --verbose /usr/src/puppetlabs-training-bootstrap/manifests/post.pp')
-
-  # Uninstall the agent for student and training VMs
-  if ['student','training'].include? VMTYPE then
-    %x{puppet resource yumrepo puppetlabs-pc1 enabled=0}
-    %x{yum -y remove puppet-agent}
-  end
-
-end
-
-desc "Full Training VM Build"
-task :training do
-  cputs "Building Training VM"
-  Rake::Task["standalone_puppet"].execute
-  Rake::Task["training_pre"].execute
-  Rake::Task["build"].execute
-  Rake::Task["post"].execute
-end
-
-desc "Full Learning VM Build"
-task :learning do
-  cputs "Building Learning VM"
-  Rake::Task["standalone_puppet"].execute
-  Rake::Task["learning_pre"].execute
-  Rake::Task["build"].execute
-  Rake::Task["post"].execute
-end
-
-desc "Full Student VM Build"
-task :student do
-  cputs "Building Student VM"
-  Rake::Task["standalone_puppet"].execute
-  Rake::Task["student_pre"].execute
-  Rake::Task["build"].execute
-  Rake::Task["post"].execute
-end
-
-desc "Full Puppetfactory VM Build"
-task :master do
-  cputs "Building Master VM"
-  Rake::Task["standalone_puppet"].execute
-  Rake::Task["master_pre"].execute
-  Rake::Task["build"].execute
-  Rake::Task["post"].execute
-end
-
-desc "Full LMS VM Build"
-task :lms do
-  cputs "Building LMS VM"
-  Rake::Task["standalone_puppet"].execute
-  Rake::Task["lms_pre"].execute
-  Rake::Task["build"].execute
-  Rake::Task["post"].execute
-end
-
-## The job that calls this needs to be tied to a builder with ovftool and the int-resources NFS export mounted.
-## Currently just pe-vm-builder-1
-desc "Package and ship a VM"
-task :ship do
-  vmname = ENV['VMNAME'].split(".").first || fail("VMNAME not set, usually set via a properties file from the build job")
-  cputs "Exporting #{vmname} from vSphere"
-  ovapath = retrieve_vm_as_ova(vmname)
-  ovaname = File.basename(ovapath)
-  cputs "Exporting #{ovaname} to vSphere as \"#{VMTYPE}\""
-  ship_vm_to_vmware(ovapath)
-  cputs "Copying #{ovaname} to int-resources"
-  ship_vm_to_dir(ovapath, "/mnt/nfs/EducationVMS/#{VMTYPE}")
-  cputs "#{ovaname} is now available at http://int-resources.ops.puppetlabs.net/EducationVMS/#{VMTYPE}/#{ovaname}"
-end
-
-def download(url,path)
-  u = URI.parse(url)
-  net = Net::HTTP.new(u.host, u.port)
-  case u.scheme
-  when "http"
-    net.use_ssl = false
-  when "https"
-    net.use_ssl = true
-    net.verify_mode = OpenSSL::SSL::VERIFY_NONE
+def pe_version
+  if !ENV['PE_VERSION'] || ENV['PE_VERSION'] == 'latest'
+    PRE_RELEASE ? latest_pre_version(pe_family) : latest_release_version
   else
-    raise "Link #{url} is not HTTP(S)"
+    ENV['PE_VERSION']
   end
-  net.start do |http|
-    File.open(path,"wb") do |f|
-      begin
-        http.request_get(u.path) do |resp|
-          resp.read_body do |segment|
-            f.write(segment)
-          end
-        end
-      rescue => e
-        cputs "Error: #{e.message}"
-      end
+end
+
+########################################
+#                                      #
+# Helper methods for installer caching #
+#                                      #             
+########################################
+
+# At some point we might modify this method to specify dist, release, and arch
+def installer_filename
+  if PRE_RELEASE
+    "puppet-enterprise-#{pe_version}-el-7-x86_64.tar"
+  else
+    "puppet-enterprise-#{pe_version}-el-7-x86_64.tar.gz"
+  end
+end
+
+# Note that because we gzip the pre-release installer, this is always .tar.gz
+def cached_installer_path
+  "./file_cache/installers/puppet-enterprise-#{pe_version}-el-7-x86_64.tar.gz"
+end
+
+# Get the latest pre-release version string for a given PE Version family.
+def latest_pre_version(pe_family)
+  open("http://getpe.delivery.puppetlabs.net/latest/#{pe_family}").read
+end
+
+def latest_release_version
+  redirect_response = Net::HTTP.get_response(URI.parse("https://pm.puppetlabs.com/cgi-bin/download.cgi\?dist\=el\&rel\=7\&arch\=x86_64\&ver\=latest"))
+    .header['location']
+  return redirect_response.match(/(?<version>\d{4}\.\d+\.\d+)/).to_s
+end
+
+# Public releases are .tar.gz, while internal releases are just tar.
+# When cacheing a pre-release, gzip it.
+def pe_installer_url
+  if PRE_RELEASE
+    "http://enterprise.delivery.puppetlabs.net/#{pe_family}/ci-ready/#{installer_filename}"
+  else
+    "https://s3.amazonaws.com/pe-builds/released/#{pe_version}/#{installer_filename}"
+  end
+end
+
+# Check if the installer exists and the file isn't empty.
+def already_cached?
+  File.exist?(cached_installer_path) and File.zero?(cached_installer_path) == false
+end
+
+def gzip_installer
+  `gzip ./file_cache/installers/#{installer_filename}`
+end
+
+# Download the installer. Curl is nicer than re-inventing the wheel with ruby.
+def download_installer
+  puts pe_installer_url
+  unless `curl #{pe_installer_url} -o ./file_cache/installers/#{installer_filename}`
+    fail "Error downloading the PE installer"
+  end
+  gzip_installer if PRE_RELEASE
+end
+
+def cache_directories
+  ["./file_cache/gems", "./file_cache/installers", "./output", "./packer_cache"]
+end
+
+def cache_directories_exist?
+  cache_directories.each{ |dir| return false unless File.exist?(dir) }
+  true
+end
+
+def create_cache_directories
+  FileUtils.mkdir_p(cache_directories)
+end
+
+###################################
+#                                 #
+# Helper methods for building VMs #
+#                                 #             
+###################################
+
+def subprocess_trap(io)
+  trap('INT') do
+    Process.kill('INT', io.pid)
+    while (line = io.gets) do
+      puts line
+    end
+    exit
+  end
+end
+
+def call_packer(template, args={}, var_file=nil)
+  arg_string = ""
+  args.each do |k, v|
+    arg_string << " -var '#{k}=#{v}' "
+  end
+  arg_string << " -var-file=#{var_file} " if var_file
+  # Call packer with a -f flag to remove any existing builds.
+  # Pass everything through to STDOUT live and pass SIGINT through
+  packer_io = IO.popen("packer build -force #{arg_string} #{template}") do |io|
+    subprocess_trap(io)
+    while (line = io.gets) do
+      puts line
     end
   end
 end
 
-def gitclone(source,destination,branch,tag = nil)
-  if File.directory?(destination) then
-    system("cd #{destination} && (git pull origin #{branch}") or raise(Error, "Cannot pull ${source}")
+def template_dir
+  './templates'
+end
+
+def template_file(build_type)
+  case build_type
+  when 'base'
+    File.join(template_dir, 'educationbase.json')
+  when 'build'
+    File.join(template_dir, 'educationbuild.json')
+  when 'student'
+    File.join(template_dir, 'student.json')
   else
-    system("git clone #{source} #{destination} -b #{branch}") or raise(Error, "Cannot clone #{source}")
-    system("cd #{destination} && git checkout #{tag}") if tag
+    fail "ERROR: Invalid build type: #{build_type}"
   end
 end
 
-## Prompt for a response if a given ENV variable isn't set.
-#
-# args:
-#   message:  the message you want displayed
-#   varname:  the name of the environment variable to look for
-#
-# usage: update = env_prompt('Increment the release version? [Y/n]: ', 'RELEASE')
-def env_prompt(message, varname)
-  if ENV.include? varname
-    ans = ENV[varname]
+def var_file(vm_name)
+  if vm_name == "student"
+    nil
   else
-    cprint message
-    ans = STDIN.gets.strip
-  end
-  return ans
-end
-
-def verify_download(download, signature)
-  crypto = GPGME::Crypto.new
-  sign = GPGME::Data.new(File.open(signature))
-  file_to_check = GPGME::Data.new(File.open(download))
-  crypto.verify(sign, :signed_text => file_to_check, :always_trust => true) do |signature|
-   puts "Valid!" if signature.valid?
+    File.join(template_dir, "#{vm_name}.json")
   end
 end
 
-def cputs(string)
-  puts "\033[1m#{string}\033[0m"
-end
-
-def cprint(string)
-  print "\033[1m#{string}\033[0m"
-end
-
-def retrieve_vm_as_ova(vmname)
-  ovaname = "puppet-#{PEVERSION}-#{VMTYPE}vm-#{PTBVERSION[:major]}.#{PTBVERSION[:minor]}"
-  vcenter_config = File.join(CACHEDIR, ".vmwarecfg.yml") || ENV["VCENTER_CONFIG"]
-  vcenter_settings = YAML::load(File.open(vcenter_config))
-  FileUtils.rm_rf(OVFDIR) if File.directory?(OVFDIR)
-  FileUtils.mkdir_p(OVFDIR)
-  Dir.chdir(BUILDDIR) do
-    verbose(false) do
-      sh(%Q</usr/bin/ovftool --noSSLVerify --targetType=OVA --compress=9 --name=#{ovaname} --powerOffSource vi://#{vcenter_settings['username']}\\@puppetlabs.com:#{vcenter_settings['password']}@vmware-vc2.ops.puppetlabs.net/opdx2/vm/vmpooler/centos-6-i386/#{vmname}  #{OVFDIR}/>)
-    end
+# This method isn't currently used.
+def output_dir(vm_name, build_type)
+  unless build_type == 'base'
+    File.join('./output/', "#{vm_name}-virtualbox")
+  else
+    File.join('./output/', "#{vm_name}-base-virtualbox")
   end
-  File.join(OVFDIR, ovaname) + ".ova"
 end
 
-def ship_vm_to_vmware(vmpath)
-  require 'rbvmomi'
-  vcenter_config = File.join(CACHEDIR, ".vmwarecfg.yml") || ENV["VCENTER_CONFIG"]
-  vcenter_settings = YAML::load(File.open(vcenter_config))
-  Dir.chdir(BUILDDIR) do
-    verbose(false) do
-      sh(%Q</usr/bin/ovftool --noSSLVerify --network='delivery' --datastore='instance1' -o --powerOffTarget -n=#{VMTYPE} #{vmpath} vi://#{vcenter_settings['username']}\@puppetlabs.com:#{vcenter_settings['password']}@vmware-vc2.ops.puppetlabs.net/opdx2/host/mac1>)
-    end
+def packer_args
+  {
+    'pe_version' => pe_version,
+    'pe_family' => pe_family,
+    'pre_release' => PRE_RELEASE,
+    'ptb_version' => "#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}"
+  }
+end
+
+def build_vm(build_type, vm_name)
+  call_packer(template_file(build_type), packer_args, var_file(vm_name))
+end
+
+############################################
+#                                          #
+# Helper methods for Learning VM packaging #
+#                                          #             
+############################################
+
+def ova_name
+  "puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}.ova"
+end
+
+def make_learning_vm_dir
+  `rm -rf /tmp/learning_puppet_vm && mkdir /tmp/learning_puppet_vm`
+end
+
+def copy_ova_to_dir
+  `cp ./output/#{ova_name} /tmp/learning_puppet_vm/#{ova_name}`
+end
+
+def strip_version_include(string)
+  string.split("\n")[1..-1].join("\n")
+end
+
+def troubleshooting_string
+  open('https://raw.githubusercontent.com/puppetlabs/puppet-quest-guide/master/troubleshooting.md')
+    .read
+end
+
+def setup_string
+  open('https://raw.githubusercontent.com/puppetlabs/puppet-quest-guide/master/SETUP.md')
+    .read
+end
+
+def readme_markdown
+  strip_version_include(setup_string) + "\n" + strip_version_include(troubleshooting_string)
+end
+
+def readme_rtf
+  PandocRuby.new(readme_markdown, :standalone).to_rtf
+end
+
+def write_readme
+  File.write('/tmp/learning_puppet_vm/readme.rtf', readme_rtf)
+end
+
+def zip_learning_vm
+  puts "Compressing Learning VM..."
+  `zip -jrds 100  ./output/learning_puppet_vm.zip /tmp/learning_puppet_vm/`
+end
+
+def create_md5
+  `md5 ./output/learning_puppet_vm.zip > ./output/learning_puppet_vm.zip.md5`
+end
+
+def bundle_learning_vm
+  make_learning_vm_dir
+  copy_ova_to_dir
+  write_readme
+  zip_learning_vm
+  create_md5
+end
+
+#################################################
+#                                               #
+# Rake tasks for prepping the local environment #
+#                                               #             
+#################################################
+
+desc "Set up default cache dirctories"
+task :set_up_cache_dirs do
+  create_cache_directories unless cache_directories_exist?
+end
+
+# TODO Add a task to set up symlinks for file_cache, output, and packer_cache
+# then mkdir_p for file_cache/gems and file_cache/installers
+# Environment variables for FILE_CACHE_SRC, OUTPUT_SRC, PACKER_CACHE_SRC
+
+desc "Cache the PE Installer"
+task :cache_pe_installer do
+  cached_installer_path = "./file_cache/installers/#{installer_filename}"
+  if not already_cached? 
+    puts "Downloading PE installer for #{pe_version}"
+    download_installer
+  else
+    puts "PE Installer for #{pe_version} is already cached. Moving on..."
   end
-  vim = RbVmomi::VIM.connect(
-    :host => 'vmware-vc2.ops.puppetlabs.net', 
-    :user => "#{vcenter_settings['username']}\@puppetlabs.com", 
-    :password => "#{vcenter_settings['password']}", 
-    :insecure => 'true')
-  rootFolder = vim.serviceInstance.content.rootFolder
-  dc = rootFolder.childEntity.grep(RbVmomi::VIM::Datacenter).find { |x| x.name == "opdx2" } or fail "datacenter not found"
-  vm = dc.find_vm(VMTYPE) or fail "VM not found"
-  cputs "Powering on VM"
-  vm.PowerOnVM_Task.wait_for_completion
-  vm_ip = nil
-  5.times do
-    vm_ip = vm.guest_ip
-    cputs "#{VMTYPE} IP is #{vm_ip}"
-    break unless vm_ip == nil
-    sleep 60
+end
+
+##################
+#                #
+# VM Build tasks #
+#                #             
+##################
+
+desc "Training VM base build"
+task :training_base => [:cache_pe_installer]do
+  build_vm('base', 'training', {'pe_version' => pe_version})
+end
+
+desc "Training VM build"
+task :training_build do
+  build_vm('build', 'training')
+end
+
+desc "Master VM base build"
+task :master_base => [:cache_pe_installer] do
+  build_vm('base', 'master')
+end
+
+desc "Master VM build"
+task :master_build do
+  build_vm('build', 'master')
+end
+
+desc "Learning VM base build"
+task :learning_base => [:cache_pe_installer] do
+  build_vm('base', 'learning')
+end
+
+desc "Learning VM build"
+task :learning_build do
+  build_vm('build', 'learning')
+end
+
+desc "Student VM build"
+task :student_build do
+  build_vm('student', 'student')
+end
+
+desc "Package learning VM"
+task :package_learning do
+  begin
+    require 'pandoc-ruby'
+  rescue LoadError
+    puts "You must have pandoc installed for the package Learning VM task!"
+    exit 1
   end
-  fail "Did not receive an IP address" if vm_ip == nil
+  bundle_learning_vm
 end
-
-def ship_vm_to_dir(vmpath, destination)
-  FileUtils.cp(vmpath, destination)
-  FileUtils.chmod(0644, File.join(destination, File.basename(vmpath)))
-end
-
-# vim: set sw=2 sts=2 et tw=80 :

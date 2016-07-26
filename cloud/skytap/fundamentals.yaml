@@ -1,0 +1,18 @@
+---
+title: Fundamentals Classroom
+domain_name: puppetlabs.vm
+master_template_id: 782045
+master_name: master
+master_ports:
+  - 22
+  - 443
+  - 3000
+student_template_id: 791817
+student_vm_id:
+  - 9645730
+student_ports:
+  - 22
+  - 80
+students:
+  - instructor
+  - student1

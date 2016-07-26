@@ -1,0 +1,64 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "us-west-2",
+      "source_ami": "ami-c7d092f7",
+      "instance_type": "m3.large",
+      "ssh_username": "centos",
+      "ami_name": "PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{isotime \"Jan02-0304\" }}",
+      "ssh_pty": "true"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "inline": ["useradd training",
+                 "echo \"training:training\" | chpasswd",
+                 "echo \"training ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers"
+                ]
+    },
+    {
+      "environment_vars": [
+        "PE_STATUS={{user `pe_status`}}",
+        "PE_VERSION={{user `pe_version`}}",
+        "RUBY_LIB={{user `rubylib`}}",
+        "TRAINING_REPO={{user `training_repo`}}",
+        "TRAINING_BRANCH={{user `training_branch`}}",
+        "VM_TYPE={{user `vm_type`}}"
+      ],
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/pre_build.sh",
+        "scripts/{{user `vm_type`}}_pre_build.sh",
+        "scripts/{{user `vm_type`}}_build.sh",
+        "scripts/cleanup.sh",
+        "scripts/{{user `vm_type`}}_cleanup.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "hostname": "vagrant",
+    "arch": "",
+    "guest_os_type": "centos",
+    "ks_file": "",
+    "iso_checksum": "",
+    "iso_url": "",
+    "os_name": "",
+    "pe_status": "release",
+    "pe_version": "2016.2.0",
+    "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
+    "system_user": "vagrant",
+    "system_user_password": "vagrant",
+    "training_branch": "master",
+    "training_repo": "https://github.com/puppetlabs/education-builds.git",
+    "vm_type": "",
+    "vm_memsize": "",
+    "vm_disk_size": "",
+    "vm_cores": "",
+    "ptb_version": "5.3"
+  }
+}

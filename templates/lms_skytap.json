@@ -1,0 +1,15 @@
+{
+  "arch": "x86_64",
+  "guest_os_type": "rhel7-64",
+  "hostname": "lms",
+  "iso_checksum": "1795184136b8bdddabe50453cc2cc2d46f0f7c5e",
+  "iso_url": "http://ftp.osuosl.org/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1503-01.iso",
+  "ks_file": "ks-lms",
+  "os_name": "CentOS-7",
+  "training_branch": "master",
+  "training_repo": "https://github.com/puppetlabs/education-builds.git",
+  "vm_cores": "1",
+  "vm_disk_size": "10240",
+  "vm_memsize": "1024",
+  "vm_type": "lms"
+}

@@ -1,0 +1,27 @@
+---
+title: Infrastructure Design
+domain_name: puppetlabs.vm
+master_template_id: 782189
+master_name: master
+master_ports:
+  - 22
+  - 443
+  - 10080
+  - 20080
+  - 30080
+  - 40080 
+student_template_id: 782189
+student_vm_id:
+  - 9407380
+student_ports:
+  - 22
+  - 80
+  - 443
+  - 10080
+  - 20080
+  - 30080
+  - 40080
+students:
+  - instructor
+  - foo
+  - bar

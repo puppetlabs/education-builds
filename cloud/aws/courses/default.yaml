@@ -1,0 +1,7 @@
+---
+master:
+  ami: "ami-75ce0915"
+  type: "m4.xlarge"
+  key_name: "training"
+  security_group_ids:
+    - "sg-f3b33794"

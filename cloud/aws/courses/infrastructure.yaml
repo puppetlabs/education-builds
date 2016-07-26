@@ -1,0 +1,7 @@
+---
+student:
+  ami: "ami-75ce0915"
+  type: "m4.large"
+  key_name: "training"
+  security_group_ids:
+    - "sg-688b120f"
