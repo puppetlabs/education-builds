@@ -1,0 +1,37 @@
+---
+master:
+  ami: "ami-9a0ec2fa"
+  type: "m4.large"
+  key_name: "training"
+  security_group_ids:
+    - "sg-ee9abc89"
+lon-agent-1234:
+  ami: "ami-13988772"
+  type: "t2.nano"
+  key_name: "training"
+  security_group_ids:
+    - "sg-ee9abc89"
+pdx-agent-1743:
+  ami: "ami-13988772"
+  type: "t2.nano"
+  key_name: "training"
+  security_group_ids:
+    - "sg-ee9abc89"
+pdx-agent-1663:
+  ami: "ami-05cf2265"
+  type: "t2.nano"
+  key_name: "training"
+  security_group_ids:
+    - "sg-ee9abc89"
+nyc-agent-1234:
+  ami: "ami-d2c924b2"
+  type: "t2.nano"
+  key_name: "training"
+  security_group_ids:
+    - "sg-ee9abc89"
+gitlab:
+  ami: "ami-d2c924b2"
+  type: "t2.nano"
+  key_name: "training"
+  security_group_ids:
+    - "sg-ee9abc89"
