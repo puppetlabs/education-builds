@@ -13,6 +13,15 @@
   "provisioners": [
     {
       "type": "shell",
+      "inline": ["sudo mkdir -p /usr/src/build_files && sudo chown -R $(whoami):$(whoami) /usr/src/build_files"]
+    },
+    {
+      "type": "file",
+      "source": "build_files/",
+      "destination": "/usr/src/build_files"
+    },
+    {
+      "type": "shell",
       "execute_command": "{{.Vars}} sudo -E -S bash '{{.Path}}'",
       "inline": ["useradd training",
                  "echo \"training:training\" | chpasswd",
