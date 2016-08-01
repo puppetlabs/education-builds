@@ -15,7 +15,7 @@ yum install -y wkhtmltopdf-0.12.3-1.x86_64.rpm
 rm -rf wkhtmltopdf-0.12.3-1.x86_64.rpm wkhtmltox wkhtmltox-0.12.3_linux-generic-amd64.tar.xz
 
 # Main build
- cd /usr/src/build_files
+cd /usr/src/build_files
 
 rake master_build
 

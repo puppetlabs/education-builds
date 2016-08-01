@@ -91,7 +91,7 @@ def pe_installer_url
   if PRE_RELEASE
     "http://enterprise.delivery.puppetlabs.net/#{PE_FAMILY}/ci-ready/#{installer_filename}"
   else
-    "https://s3.amazonaws.com/pe-builds/released/#{PE_FAMILY}/#{installer_filename}"
+    "https://s3.amazonaws.com/pe-builds/released/#{PE_VERSION}/#{installer_filename}"
   end
 end
 
