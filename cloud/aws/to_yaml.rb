@@ -1,9 +1,7 @@
 #! /usr/bin/env ruby
-# Quick script to generate JSON in proper format for the ec2classroom.rb script
-# Accepts the enrollment csv files exported from learn.puppet.com
+# Quick script to convert JSON output to YAML which is a bit more human-readable
 
 require 'json'
-require 'csv'
 require 'yaml'
 
 filename = ARGV[0]
