@@ -7,7 +7,7 @@ master:
     - "sg-ee9abc89"
 student:
   ami: "ami-9a0ec2fa"
-  type: "m4.large"
+  type: "m3.large"
   key_name: "training"
   security_group_ids:
     - "sg-ee9abc89"
