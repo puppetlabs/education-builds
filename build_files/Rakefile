@@ -193,10 +193,15 @@ def install_r10k
   system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/gem install r10k --no-RI --no-RDOC')
 end
 
-def install_modules
-  cputs "Running r10k Puppetfile install"
+def install_build_dependency_modules
+  cputs "Running r10k Puppetfile install for build dependencies"
   system('mkdir modules')
   system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install')
+end
+
+def install_persistent_modules
+  cputs "Running r10k Puppetfile install for persistent modules"
+  system("PUPPETFILE=./Puppetfile.#{VM_TYPE} PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install")
 end
 
 def apply_bootstrap
@@ -260,8 +265,9 @@ end
 desc "Install and apply the bootstrap manifest corresponding to the VM type being built"
 task :build do
   install_r10k
-  install_modules
+  install_build_dependency_modules
   apply_bootstrap
+  install_persistent_modules if File.exist?("./Puppetfile.#{VM_TYPE}")
 end
 
 desc "Post build cleanup"
