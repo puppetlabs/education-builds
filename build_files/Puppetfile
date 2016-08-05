@@ -1,7 +1,10 @@
 forge "http://forge.puppetlabs.com"
 moduledir './modules/'
 
-# The following are modules required to build the VMs
+# The following are modules required to build the VMs. These will be installed
+# into a './modules' directory which will be deleted after the bootstrap is
+# applied.
+#
 # For modules that are published on the forge, the default is
 #   to use the forge module. The git repos are added and commented
 #   out purely for convenience.

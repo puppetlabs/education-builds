@@ -1,0 +1,32 @@
+forge "http://forge.puppetlabs.com"
+moduledir '/etc/puppetlabs/code/environments/production/modules'
+
+# The following are modules to be installed on the Learning VM and persist
+# after the build process.
+#
+# For modules that are published on the forge, the default is
+#   to use the forge module. The git repos are added and commented
+#   out purely for convenience.
+# For modules that aren't published on the forge, we specify that the 
+#   master branch from the corresponding git repo be used.
+# To fetch a specific version of a forge module, use:
+#   mod 'pltraining/rbac', '1.0.1'
+# To fetch a ref (commit, branch, or tag) from a git repo, use:
+#   mod 'bootstrap', 
+#     :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
+#     :ref => 'ref-goes-here'
+
+
+mod 'dockeragent',
+  :git => 'https://github.com/puppetlabs/pltraining-dockeragent'
+
+mod 'puppetlabs/concat', '1.2.4'
+#mod 'concat', 
+#  :git => 'https://github.com/puppetlabs/puppetlabs-concat'
+
+mod 'puppetlabs/stdlib', '4.7.0'
+#mod 'stdlib', 
+#  :git => 'https://github.com/puppetlabs/puppetlabs-stdlib'
+
+# Dependencies for docker/beaker on Self paced
+mod 'garethr/docker'
