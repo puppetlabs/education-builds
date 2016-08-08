@@ -1,6 +1,6 @@
 ---
 master:
-  ami: "ami-9a0ec2fa"
+  ami: "ami-a75b93c7"
   type: "m4.large"
   key_name: "training"
   security_group_ids:
