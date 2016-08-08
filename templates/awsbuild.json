@@ -49,7 +49,7 @@
       "scripts": [
         "scripts/base.sh",
         "scripts/pre_build.sh",
-        "scripts/{{user `vm_type`}}_full.sh",
+        "scripts/{{user `vm_type`}}_build.sh",
         "scripts/cleanup.sh",
         "scripts/{{user `vm_type`}}_cleanup.sh"
       ],
