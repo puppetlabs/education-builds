@@ -152,6 +152,8 @@ def template_file(build_type)
     File.join(template_dir, 'educationbuild.json')
   when 'student'
     File.join(template_dir, 'student.json')
+  when 'ami'
+    File.join(template_dir, 'awsbuild.json')
   else
     fail "ERROR: Invalid build type: #{build_type}"
   end
@@ -338,6 +340,11 @@ task :training_build do
   build_vm('build', 'training')
 end
 
+desc "Training AMI build"
+task :training_ami do
+  build_vm('ami', 'training')
+end
+
 desc "Master VM base build"
 task :master_base => [:cache_pe_installer] do
   build_vm('base', 'master')
@@ -346,6 +353,11 @@ end
 desc "Master VM build"
 task :master_build do
   build_vm('build', 'master')
+end
+
+desc "Master AMI build"
+task :master_ami do
+  build_vm('ami', 'master')
 end
 
 desc "Learning VM base build"
