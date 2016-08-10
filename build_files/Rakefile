@@ -117,7 +117,7 @@ def write_answers_file
   end
 end
 
-def write_pe_conf_file 
+def write_pe_conf_file
   File.open('/tmp/pe.conf','w') do |f|
     f.write ERB.new(File.read('./templates/pe.conf.erb')).result(binding)
   end
@@ -193,10 +193,15 @@ def install_r10k
   system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/gem install r10k --no-RI --no-RDOC')
 end
 
-def install_modules
-  cputs "Running r10k Puppetfile install"
+def install_build_dependency_modules
+  cputs "Running r10k Puppetfile install for build dependencies"
   system('mkdir modules')
   system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install')
+end
+
+def install_persistent_modules
+  cputs "Running r10k Puppetfile install for persistent modules"
+  system("PUPPETFILE=./Puppetfile.#{VM_TYPE} PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install")
 end
 
 def apply_bootstrap
@@ -260,8 +265,9 @@ end
 desc "Install and apply the bootstrap manifest corresponding to the VM type being built"
 task :build do
   install_r10k
-  install_modules
+  install_build_dependency_modules
   apply_bootstrap
+  install_persistent_modules if File.exist?("./Puppetfile.#{VM_TYPE}")
 end
 
 desc "Post build cleanup"
@@ -307,6 +313,15 @@ task :master_build => [:build, :post]
 
 desc "PE Master full build"
 task :master_full => [:master_pre, :master_build]
+
+desc "Classroom in a box pre build"
+task :ciab_pre => [:pre_install_setup, :standalone_puppet_agent]
+
+desc "Classroom in a box build"
+task :ciab_build => [:build]
+
+desc "Classroom in a box full build"
+task :ciab_full => [:ciab_pre, :ciab_build]
 
 #########################################################
 #                                                       #
@@ -388,9 +403,9 @@ def ship_vm_to_vmware(vmpath)
     end
   end
   vim = RbVmomi::VIM.connect(
-    :host => 'vmware-vc2.ops.puppetlabs.net', 
-    :user => "#{vcenter_settings['username']}\@puppetlabs.com", 
-    :password => "#{vcenter_settings['password']}", 
+    :host => 'vmware-vc2.ops.puppetlabs.net',
+    :user => "#{vcenter_settings['username']}\@puppetlabs.com",
+    :password => "#{vcenter_settings['password']}",
     :insecure => 'true')
   rootFolder = vim.serviceInstance.content.rootFolder
   dc = rootFolder.childEntity.grep(RbVmomi::VIM::Datacenter).find { |x| x.name == "opdx2" } or fail "datacenter not found"
