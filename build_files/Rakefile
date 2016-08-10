@@ -117,7 +117,7 @@ def write_answers_file
   end
 end
 
-def write_pe_conf_file 
+def write_pe_conf_file
   File.open('/tmp/pe.conf','w') do |f|
     f.write ERB.new(File.read('./templates/pe.conf.erb')).result(binding)
   end
@@ -314,6 +314,15 @@ task :master_build => [:build, :post]
 desc "PE Master full build"
 task :master_full => [:master_pre, :master_build]
 
+desc "Classroom in a box pre build"
+task :ciab_pre => [:pre_install_setup, :standalone_puppet_agent]
+
+desc "Classroom in a box build"
+task :ciab_build => [:build]
+
+desc "Classroom in a box full build"
+task :ciab_full => [:ciab_pre, :ciab_build]
+
 #########################################################
 #                                                       #
 # Packaging and Shipping things--Probably doesn't work! #
@@ -394,9 +403,9 @@ def ship_vm_to_vmware(vmpath)
     end
   end
   vim = RbVmomi::VIM.connect(
-    :host => 'vmware-vc2.ops.puppetlabs.net', 
-    :user => "#{vcenter_settings['username']}\@puppetlabs.com", 
-    :password => "#{vcenter_settings['password']}", 
+    :host => 'vmware-vc2.ops.puppetlabs.net',
+    :user => "#{vcenter_settings['username']}\@puppetlabs.com",
+    :password => "#{vcenter_settings['password']}",
     :insecure => 'true')
   rootFolder = vim.serviceInstance.content.rootFolder
   dc = rootFolder.childEntity.grep(RbVmomi::VIM::Datacenter).find { |x| x.name == "opdx2" } or fail "datacenter not found"
