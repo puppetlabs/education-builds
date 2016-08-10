@@ -72,7 +72,7 @@ def cprint(string)
 end
 
 # Bail if handed a 'VMTYPE' that's not supported.
-if VM_TYPE !~ /^(master|training|learning|student)$/
+if VM_TYPE !~ /^(master|training|learning|student|ciab)$/
   abort("ERROR: Unrecognized VM_TYPE parameter: #{VM_TYPE}")
 end
 
