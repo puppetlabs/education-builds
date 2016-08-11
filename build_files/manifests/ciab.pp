@@ -1,1 +1,1 @@
-notify {'CIAB build':}
+include bootstrap::role::ciab
