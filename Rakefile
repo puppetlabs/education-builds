@@ -332,7 +332,7 @@ end
 
 desc "Training VM base build"
 task :training_base => [:cache_pe_installer]do
-  build_vm('base', 'training', {'pe_version' => pe_version})
+  build_vm('base', 'training')
 end
 
 desc "Training VM build"
