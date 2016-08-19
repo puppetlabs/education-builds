@@ -9,17 +9,17 @@
   <clock sync="localtime"/>
   <devices>
     <disk type='file' device='disk'>
-			<driver name='qemu' type='qcow2' />
-			<source file='/var/lib/libvirt/images/<%= data[:id] %>.qcow2'/>
+      <driver name='qemu' type='qcow2' />
+      <source file='/var/lib/libvirt/images/<%= data[:id] %>.qcow2'/>
       <backingStore type='file'> 
-				<format type='raw'/> 
-				<source file='/var/lib/libvirt/images/<%= profile[:name] %>.img'/>
-			</backingStore>
+        <format type='raw'/> 
+        <source file='/var/lib/libvirt/images/<%= profile[:name] %>.img'/>
+      </backingStore>
       <target dev='hda'/>
     </disk>
     <interface type='bridge'>
       <source bridge='br0'/>
-			<target dev='vnet<%= data[:id]%>'/>
+      <target dev='vnet<%= data[:id]%>'/>
     </interface>
     <graphics type='vnc' port='-1' keymap='us'/>
   </devices>

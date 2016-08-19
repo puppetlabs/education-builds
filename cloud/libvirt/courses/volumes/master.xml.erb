@@ -1,11 +1,11 @@
 <volume type='file'>
-	<name><%= data[:id] %>.qcow2</name>
-	<target>
-		<path>/var/lib/libvirt/images/<%= data[:id] %>.qcow2</path>
-		<format type='qcow2'/>
-	</target>
-	<backingStore type='file'>
-		<format type='raw'/>
-		<path>/var/lib/libvirt/images/<%= profile[:name] %>.img</path>
-	</backingStore>
+  <name><%= data[:id] %>.qcow2</name>
+  <target>
+    <path>/var/lib/libvirt/images/<%= data[:id] %>.qcow2</path>
+    <format type='qcow2'/>
+  </target>
+  <backingStore type='file'>
+    <format type='raw'/>
+    <path>/var/lib/libvirt/images/<%= profile[:name] %>.img</path>
+  </backingStore>
 </volume>
