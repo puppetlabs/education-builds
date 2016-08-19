@@ -16,7 +16,8 @@ student_vm_id:
 student_ports:
   - 80
 students:
-  - instructor-windows
-  - alice-windows
-  - bob-windows
+  - instructorwin
+  - alicewin
+  - bobwin
 
+# Student names should not exceed 14 characters
