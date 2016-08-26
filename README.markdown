@@ -50,12 +50,17 @@ The version of PE cached and subsequently installed can be specified through a
 combination of three environment variables:
 
 * **PE_VERSION**  
-  This specifies the specific verison of a PE release or pre-release to be
-  cached and/or used in a base build, for example `2016.2.0` or `2016.3.0-rc1-141-g5e261dc`
+  This specifies the verison of a PE release or pre-release to be cached and/or
+  used in a base build, for example `2016.2.0` for a release build or
+  `2016.3.0-rc1-141-g5e261dc` for a pre-release build. If this is unset or
+  set to `latest`, the version will default to the most recent release version
+  in the case of a release build or the latest pre-release build of the
+  specified family. (Note that currently setting `latest` for a release
+  build will always use the latest release version regardless of a specified
+  PE_FAMILY variable.)
 * **PE_FAMILY**  
   Thos specifies a y-level release, such as `2016.2`. This can be specified
-  instead of PE_VERSION to get the latest z-release or pre-release for the
-  specified family.
+  instead of PE_VERSION to get the latest pre-release for the specified family.
 * **PRE_RELEASE**  
   If this is set to true, rake will use pre-release PE versions.
  
