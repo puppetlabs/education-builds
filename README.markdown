@@ -12,7 +12,9 @@ packer command. To begin a build, run the corresponding rake task, for example
 `rake master_base`. (Details on the available build tasks are included below.)
 1. To specify which version of PE to use for a base build, use the PE\_FAMILY,
 PE\_VERSION, and PRE\_RELEASE environment variables, for example,
-`PE_FAMILY=2016.3 PRE_RELEASE=true rake learning_base`.
+`PE_FAMILY=2016.3 PRE_RELEASE=true rake learning_base`. See the *Environment variables*
+section below for details on how the correct version is derived from these
+variables.
 
 ## Detailed Usage
 
