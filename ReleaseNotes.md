@@ -1,3 +1,9 @@
+## Version 5.4
+
+* Rake tasks for doing builds.
+* Libvirt templates for vcmanager
+* Puppetfiles to install build dependencies
+
 ## Version 5.3
 
 * Cache docker images on master vm
