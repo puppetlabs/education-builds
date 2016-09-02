@@ -234,17 +234,21 @@ def write_readme
   File.write('/tmp/learning_puppet_vm/readme.rtf', readme_rtf)
 end
 
-def learning_vm_archive_path
-  './output/learning_puppet_vm.zip'
+def vm_path(vm_type)
+  if vm_type == 'learning'
+    './output/learning_puppet_vm.zip'
+  else
+    "./output/puppet-#{pe_version}-#{vm_type}-#{PTB_VERSION}.ova"
+  end
 end
 
 def zip_learning_vm
   puts "Compressing Learning VM..."
-  `zip -jrds 100  #{learning_vm_archive_path} /tmp/learning_puppet_vm/`
+  `zip -jrds 100  #{vm_path("learning")} /tmp/learning_puppet_vm/`
 end
 
-def create_md5
-  `md5 #{learning_vm_archive_path} > #{learning_vm_archive_path + ".md5"}`
+def create_md5(vm_type)
+  `md5 #{vm_path(vm_type)} > #{vm_path(vm_type) + ".md5"}`
 end
 
 def bundle_learning_vm
@@ -252,7 +256,7 @@ def bundle_learning_vm
   copy_ova_to_dir
   write_readme
   zip_learning_vm
-  create_md5
+  create_md5("learning")
 end
 
 def mount_fileshare
@@ -290,12 +294,14 @@ def update_symlink
   end 
 end
 
-def ship_learning_vm_files
+def ship_vm_files(vm_type)
   mount_fileshare
   `mkdir -p #{ship_directory}`
-  ship_to_fileshare(learning_vm_archive_path, ship_directory)
-  ship_to_fileshare(learning_vm_archive_path + ".md5", ship_directory)
-  update_symlink
+  ship_to_fileshare(vm_path(vmtype), ship_directory)
+  ship_to_fileshare(vm_path(vmtype) + ".md5", ship_directory)
+  if vm_type == "learning"
+    update_symlink
+  end
   unmount_fileshare
 end
 
@@ -339,6 +345,7 @@ end
 desc "Training VM build"
 task :training_build do
   build_vm('build', 'training')
+  create_md5("training")
 end
 
 desc "Training AMI build"
@@ -354,6 +361,7 @@ end
 desc "Master VM build"
 task :master_build do
   build_vm('build', 'master')
+  create_md5("master")
 end
 
 desc "Master AMI build"
@@ -374,6 +382,7 @@ end
 desc "Student VM build"
 task :student_build do
   build_vm('student', 'student')
+  create_md5("student")
 end
 
 desc "Package learning VM"
@@ -389,5 +398,20 @@ end
 
 desc "Ship Learning VM"
 task :ship_learning do
-  ship_learning_vm_files
+  ship_vm_files("learning")
+end
+
+desc "Ship Master VM"
+task :ship_master do
+  ship_vm_files("master")
+end
+
+desc "Ship Training VM"
+task :ship_training do
+  ship_vm_files("training")
+end
+
+desc "Ship Student VM"
+task :ship_student do
+  ship_vm_files("student")
 end
