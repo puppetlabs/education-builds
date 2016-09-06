@@ -238,7 +238,7 @@ def vm_path(vm_type)
   if vm_type == 'learning'
     './output/learning_puppet_vm.zip'
   else
-    "./output/puppet-#{pe_version}-#{vm_type}-#{PTB_VERSION}.ova"
+    "./output/puppet-#{pe_version}-#{vm_type}-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}.ova"
   end
 end
 
@@ -297,8 +297,8 @@ end
 def ship_vm_files(vm_type)
   mount_fileshare
   `mkdir -p #{ship_directory}`
-  ship_to_fileshare(vm_path(vmtype), ship_directory)
-  ship_to_fileshare(vm_path(vmtype) + ".md5", ship_directory)
+  ship_to_fileshare(vm_path(vm_type), ship_directory)
+  ship_to_fileshare(vm_path(vm_type) + ".md5", ship_directory)
   if vm_type == "learning"
     update_symlink
   end
