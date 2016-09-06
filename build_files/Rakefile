@@ -207,8 +207,8 @@ end
 def apply_bootstrap
   cputs "Running puppet apply on #{VM_TYPE}.pp"
   system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --detailed-exitcodes --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/#{VM_TYPE}.pp")
-  if ! [0,2].include? $?.exitcode
-    raise "Puppet failed with exit status #{$?.exitcode}"
+  if ($?.exitstatus != 0) || ($?.exitstatus != 2)
+    raise "Puppet failed with exit status #{$?.exitstatus}"
   end
 end
 
