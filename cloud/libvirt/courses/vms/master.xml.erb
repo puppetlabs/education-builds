@@ -18,7 +18,7 @@
       <target dev='hda'/>
     </disk>
     <interface type='bridge'>
-      <source bridge='br0'/>
+      <source bridge='virbr0'/>
       <target dev='vnet<%= data[:id]%>'/>
     </interface>
     <graphics type='vnc' port='-1'/>
