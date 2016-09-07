@@ -1,4 +1,9 @@
 ---
+:domain: 'puppetlabs.vm'
+:dhcp-range: 
+  :start: '192.168.223.128'
+  :end: '192.168.223.255'
+  :netmask: '255.255.255.0'
 :master:
   :name: 'master'
 
