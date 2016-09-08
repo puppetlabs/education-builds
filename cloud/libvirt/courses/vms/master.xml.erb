@@ -1,7 +1,7 @@
 <domain type='kvm'>
-  <name><%= profile[:name] %></name>
+  <name><%= profile[:name] %><%= @options[:domain] %></name>
   <uuid></uuid>
-  <memory unit='GB'>1</memory>
+  <memory unit='GB'>6</memory>
   <vcpu>1</vcpu>
   <os>
     <type arch="x86_64">hvm</type>
@@ -18,7 +18,7 @@
       <target dev='hda'/>
     </disk>
     <interface type='bridge'>
-      <source bridge='br0'/>
+      <source bridge='virbr0'/>
       <target dev='vnet<%= data[:id]%>'/>
     </interface>
     <graphics type='vnc' port='-1'/>
