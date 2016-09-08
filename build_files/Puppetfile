@@ -84,5 +84,10 @@ mod 'puppet/nodejs'
 # Dependencies for bootstrap
 mod 'puppetlabs/pe_gem'
 mod 'binford2k/abalone'
-mod 'thias/libvirt'
+
+# Use vendored version until PR is merged
+mod 'libvirt',
+  :git => 'https://github.com/samuelson/puppet-libvirt',
+  :ref => 'domain_name'
+
 mod 'razorsedge/network'
