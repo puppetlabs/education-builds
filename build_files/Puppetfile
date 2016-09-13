@@ -35,7 +35,7 @@ mod 'dockeragent',
 
 mod 'pltraining/classroom'
 #mod 'classroom', 
-#  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
+#  :git => 'https://github.com/puppetlabs/pltraining-classroom'
 
 mod 'pltraining/rbac', '0.0.4'
 #mod 'rbac', 
