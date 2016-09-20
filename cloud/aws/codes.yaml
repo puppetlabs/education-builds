@@ -1,5 +1,5 @@
 ---
-"Infrastructure Design": "infrastructure"
+"Infrastructure Design Using Puppet Modules": "infrastructure"
 "Windows": "windows"
 "Puppet Architect": "architect"
 "Virtual Puppet Architect": "architect"
@@ -8,3 +8,4 @@
 "Writing your first module": "puppetfactory"
 "Appropriate Module Design": "puppetfactory"
 "Fundamentals": "puppetfactory"
+"Practitioner": "practitioner"
