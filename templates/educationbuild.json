@@ -9,6 +9,7 @@
       "shutdown_command": "{{user `shutdown_command`}}",
       "output_directory": "output/{{ user `vm_type`}}-virtualbox/",
       "ssh_pty": "true",
+      "headless": "true",
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--cpus", "{{user `vm_cores`}}"],
         ["modifyvm", "{{.Name}}", "--memory", "{{user `vm_memsize`}}"]
@@ -74,6 +75,6 @@
     "vm_memsize": "4096",
     "vm_disk_size": "20480",
     "vm_cores": "2",
-    "ptb_version": "5.3"
+    "ptb_version": "5.4"
   }
 }
