@@ -86,6 +86,8 @@ mod 'puppetlabs/pe_gem'
 mod 'binford2k/abalone'
 
 # Use vendored version until PR is merged
+mod 'puppetlabs/firewall'
+mod 'puppetlabs/mysql'
 mod 'libvirt',
   :git => 'https://github.com/samuelson/puppet-libvirt',
   :ref => 'domain_name'
