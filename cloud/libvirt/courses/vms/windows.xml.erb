@@ -1,26 +1,57 @@
 <domain type='kvm'>
   <name><%= profile[:name] %><%= @options[:domain] %></name>
-  <uuid></uuid>
-  <memory unit='GB'>1</memory>
-  <vcpu>1</vcpu>
+  <memory unit='KiB'>1048576</memory>
+  <currentMemory unit='KiB'>1048576</currentMemory>
+  <vcpu placement='static'>1</vcpu>
+  <resource>
+    <partition>/machine</partition>
+  </resource>
   <os>
-    <type arch="x86_64">hvm</type>
+    <type arch='x86_64' machine='pc-i440fx-rhel7.0.0'>hvm</type>
+    <boot dev='hd'/>
   </os>
-  <clock sync="localtime"/>
+  <features>
+    <acpi/>
+    <apic/>
+    <hyperv>
+      <relaxed state='on'/>
+      <vapic state='on'/>
+      <spinlocks state='on' retries='8191'/>
+    </hyperv>
+  </features>
+  <cpu mode='custom' match='exact'>
+    <model fallback='allow'>Broadwell</model>
+  </cpu>
+  <clock offset='localtime'>
+    <timer name='rtc' tickpolicy='catchup'/>
+    <timer name='pit' tickpolicy='delay'/>
+    <timer name='hpet' present='no'/>
+    <timer name='hypervclock' present='yes'/>
+  </clock>
+  <on_reboot>restart</on_reboot>
+  <on_crash>restart</on_crash>
+  <pm>
+    <suspend-to-mem enabled='no'/>
+    <suspend-to-disk enabled='no'/>
+  </pm>
   <devices>
+    <emulator>/usr/libexec/qemu-kvm</emulator>
     <disk type='file' device='disk'>
-      <driver name='qemu' type='qcow2' />
+      <driver name='qemu' type='qcow2'/>
       <source file='/var/lib/libvirt/images/<%= data[:id] %>.qcow2'/>
-      <backingStore type='file'> 
-        <format type='raw'/> 
+      <backingStore type='file' index='1'>
+        <format type='raw'/>
         <source file='/var/lib/libvirt/images/<%= profile[:name] %>.img'/>
+        <backingStore/>
       </backingStore>
-      <target dev='hda'/>
+      <target dev='hda' bus='ide'/>
+      <alias name='ide0-0-0'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
     </disk>
     <interface type='bridge'>
       <source bridge='virbr0'/>
       <target dev='vnet<%= data[:id]%>'/>
     </interface>
-    <graphics type='vnc' port='-1'/>
+    <graphics type='vnc' port='-1' listen='0.0.0.0'/>
   </devices>
 </domain>
