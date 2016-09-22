@@ -85,6 +85,9 @@ mod 'puppet/nodejs'
 mod 'puppetlabs/pe_gem'
 mod 'binford2k/abalone'
 
+# Dependencies for CIAB
+mod 'puppetlabs/firewall'
+mod 'puppetlabs/mysql'
 # Use vendored version until PR is merged
 mod 'libvirt',
   :git => 'https://github.com/samuelson/puppet-libvirt',
