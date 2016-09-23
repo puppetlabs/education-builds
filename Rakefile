@@ -278,13 +278,15 @@ end
 
 
 def update_symlink
-  if PRE_RELEASE
-    `ln -sf #{File.join(ship_directory, "learning_puppet_vm.zip")} /tmp/fileshare/EducationVMs/learning/learning_beta.zip`
-    `ln -sf #{File.join(ship_directory, "learning_puppet_vm.zip.md5")} /tmp/fileshare/EducationVMs/learning/learning_beta.zip.md5`
-  else
-    `ln -sf #{File.join(ship_directory, "learning_puppet_vm.zip")} /tmp/fileshare/EducationVMs/learning/learning_latest.zip`
-    `ln -sf #{File.join(ship_directory, "learning_puppet_vm.zip.md5")} /tmp/fileshare/EducationVMs/learning/learning_latest.zip.md5`
-  end 
+  Dir.chdir(ship_directory) do
+    if PRE_RELEASE
+      `ln -sf learning_puppet_vm.zip ../learning_beta.zip`
+      `ln -sf learning_puppet_vm.zip.md5 ../learning_beta.zip.md5`
+    else
+      `ln -sf learning_puppet_vm.zip ../learning_latest.zip`
+      `ln -sf learning_puppet_vm.zip.md5 ../learning_latest.zip.md5`
+    end 
+  end
 end
 
 def ship_learning_vm_files
