@@ -1,3 +1,4 @@
+set -e
 # Base install
 yum update -y
 yum install -y wget curl rake

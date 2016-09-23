@@ -35,7 +35,7 @@ mod 'dockeragent',
 
 mod 'pltraining/classroom'
 #mod 'classroom', 
-#  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
+#  :git => 'https://github.com/puppetlabs/pltraining-classroom'
 
 mod 'pltraining/rbac', '0.0.4'
 #mod 'rbac', 
@@ -84,3 +84,13 @@ mod 'puppet/nodejs'
 # Dependencies for bootstrap
 mod 'puppetlabs/pe_gem'
 mod 'binford2k/abalone'
+
+# Dependencies for CIAB
+mod 'puppetlabs/firewall'
+mod 'puppetlabs/mysql'
+# Use vendored version until PR is merged
+mod 'libvirt',
+  :git => 'https://github.com/samuelson/puppet-libvirt',
+  :ref => 'domain_name'
+
+mod 'razorsedge/network'

@@ -1,6 +1,6 @@
 ---
 student:
-  ami: "ami-75ce0915"
+  ami: "ami-c82bf6a8"
   type: "m4.large"
   key_name: "training"
   security_group_ids:

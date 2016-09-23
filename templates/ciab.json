@@ -1,9 +1,9 @@
 {
   "shutdown_command":"sudo shutdown -P now",
-  "vm_type": "master",
+  "vm_type": "ciab",
   "guest_os_type": "rhel7-64",
   "os_name": "CentOS-7",
-  "hostname": "master",
+  "hostname": "ciab",
   "ks_file": "ks-master",
   "training_branch": "master",
   "training_repo": "https://github.com/puppetlabs/education-builds.git",
