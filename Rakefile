@@ -379,6 +379,11 @@ task :learning_build do
   build_vm('build', 'learning')
 end
 
+desc "Demo VM build"
+task :demo_build do
+  build_vm('build', 'demo')
+end
+
 desc "Student VM build"
 task :student_build do
   build_vm('student', 'student')
