@@ -379,6 +379,11 @@ task :learning_build do
   build_vm('build', 'learning')
 end
 
+desc "Demo VM base build"
+task :demo_base => [:cache_pe_installer] do
+  build_vm('base', 'demo')
+end
+
 desc "Demo VM build"
 task :demo_build do
   build_vm('build', 'demo')
