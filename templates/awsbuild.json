@@ -75,7 +75,6 @@
     "vm_type": "",
     "vm_memsize": "",
     "vm_disk_size": "",
-    "vm_cores": "",
-    "ptb_version": "5.4"
+    "vm_cores": ""
   }
 }

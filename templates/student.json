@@ -88,6 +88,6 @@
     "training_branch": "master",
     "training_repo": "https://github.com/puppetlabs/education-builds.git",
     "vm_cores": "2",
-    "ptb_version": "5.4"
+    "ptb_version": "5.6"
   }
 }
