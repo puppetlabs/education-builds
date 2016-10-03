@@ -30,3 +30,6 @@ mod 'puppetlabs/stdlib', '4.7.0'
 
 # Dependencies for docker/beaker on Self paced
 mod 'garethr/docker'
+
+# Dependencies for docker/beaker on Self paced
+mod 'puppet/nginx'
