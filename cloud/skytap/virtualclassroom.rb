@@ -29,7 +29,7 @@ def create_base_environment(name, base_template)
   env_config = {
     'template_id' => base_template, 
     'name' => name,
-    'suspend_on_idle' => null
+    'suspend_on_idle' => 345600
   }
   return JSON.parse(RestClient.post(CONFIGURATION_URL, JSON.generate(env_config), HEADERS))
 end
