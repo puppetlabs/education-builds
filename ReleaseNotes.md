@@ -1,3 +1,9 @@
+## Version 5.7
+
+* Build script improvments
+* Build for Classroom in a box
+* Pull in latest bootstrap changes
+
 ## Version 5.4
 
 * Rake tasks for doing builds.
