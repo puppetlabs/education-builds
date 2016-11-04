@@ -248,7 +248,12 @@ def zip_learning_vm
 end
 
 def create_md5(vm_type)
-  `md5 #{vm_path(vm_type)} > #{vm_path(vm_type) + ".md5"}`
+  if `uname` == 'Darwin'
+    `md5 #{vm_path(vm_type)} > #{vm_path(vm_type) + ".md5"}`
+  else
+    `md5sum #{vm_path(vm_type)} > #{vm_path(vm_type) + ".md5"}`
+  end
+
 end
 
 def bundle_learning_vm
