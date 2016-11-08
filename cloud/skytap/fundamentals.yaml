@@ -2,6 +2,8 @@
 title: Fundamentals Classroom
 domain_name: puppetlabs.vm
 master_template_id: 870989
+master_memory: 8192
+master_cpus: 4
 master_name: master
 master_ports:
   - 22

@@ -25,13 +25,23 @@ def create_publish_set(config_id, vms, set_name)
   return JSON.parse(RestClient.get(CONFIGURATION_URL + config_id + '/publish_sets', HEADERS))
 end  
 
-def create_base_environment(name, base_template)
+def create_base_environment(name, base_template, base_memory, base_cpus)
   env_config = {
     'template_id' => base_template, 
     'name' => name,
     'suspend_on_idle' => 345600
   }
-  return JSON.parse(RestClient.post(CONFIGURATION_URL, JSON.generate(env_config), HEADERS))
+  env_info = JSON.parse(RestClient.post(CONFIGURATION_URL, JSON.generate(env_config), HEADERS))
+  env_info['vms'].each do |vm|
+    vm_change = {
+      "hardware" => {
+        "ram" => base_memory,
+        "cpus" => base_cpus
+      }
+    }
+    RestClient.put(URL + "vms/#{vm['id']}.json", JSON.generate(vm_change), HEADERS)
+  end
+  return env_info
 end
 
 def add_student_vms(environment_id, students, student_template_id, student_vm_id)
@@ -105,7 +115,7 @@ end
 classroom = YAML.load(File.read(ARGV[0]))
 
 # Create environment from base base_template_id
-environment = create_base_environment(classroom['title'],classroom['master_template_id'])
+environment = create_base_environment(classroom['title'],classroom['master_template_id'],classroom['master_memory'],classroom['master_cpus'])
 master_vm_id = environment['vms'][0]['id']
 puts "Master VM id is " + master_vm_id if DEBUG_OUTPUT
 
