@@ -11,3 +11,15 @@ student:
   key_name: "training"
   security_group_ids:
     - "sg-ee9abc89"
+proxy:
+  ami: "ami-a75b93c7"
+  type: "m3.large"
+  key_name: "training"
+  security_group_ids:
+    - "sg-ee9abc89"
+instructor:
+  ami: "ami-a75b93c7"
+  type: "m3.large"
+  key_name: "training"
+  security_group_ids:
+    - "sg-ee9abc89"
