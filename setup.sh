@@ -16,7 +16,7 @@ if [ ! -d "$BUILD_ROOT_DIR/file_cache/gems" ]; then
   mkdir "$BUILD_ROOT_DIR/file_cache/gems"
 fi
 if [ ! -d "$BUILD_ROOT_DIR/file_cache/installers" ]; then
-  mkdir "$BUILD_ROOT_DIR/file_cache/installer"
+  mkdir "$BUILD_ROOT_DIR/file_cache/installers"
 fi
 if [ ! -d "$BUILD_ROOT_DIR/output" ]; then
   mkdir "$BUILD_ROOT_DIR/output"
