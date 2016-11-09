@@ -1,4 +1,10 @@
 ---
+master:
+  ami: "ami-c82bf6a8"
+  type: "m4.large"
+  key_name: "training"
+  security_group_ids:
+    - "sg-688b120f"
 student:
   ami: "ami-c82bf6a8"
   type: "m4.large"
