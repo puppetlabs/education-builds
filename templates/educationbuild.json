@@ -19,17 +19,8 @@
   "post-processors": [
     {
       "type": "vagrant",
-      "output": "output/{{user `vm_type`}}-ptb{{user `ptb_version`}}-{{.Provider}}.box",
+      "output": "output/puppet-{{user `pe_version`}}-{{user `vm_type`}}-{{user `ptb_version`}}-{{.Provider}}.box",
       "keep_input_artifact": true
-    },
-    { 
-      "type": "shell-local",
-      "script": "scripts/export-ova.sh",
-      "environment_vars": [
-        "VM_TYPE={{user `vm_type`}}",
-        "PE_VERSION={{user `pe_version`}}",
-        "PTB_VERSION={{user `ptb_version`}}"
-      ]
     }
   ],
   "provisioners": [
