@@ -19,7 +19,7 @@
   "post-processors": [
     {
       "type": "vagrant",
-      "output": "output/puppet-{{user `pe_version`}}-{{user `vm_type`}}-{{user `ptb_version`}}-{{.Provider}}.box",
+      "output": "output/puppet-{{user `pe_version`}}-{{user `vm_type`}}-{{user `ptb_version`}}.box",
       "keep_input_artifact": true
     }
   ],

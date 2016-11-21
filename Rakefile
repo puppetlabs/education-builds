@@ -189,7 +189,7 @@ end
 def box_to_ova(vm_name)
   box_name = "puppet-#{pe_version}-#{vm_name}-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}"
   puts %x{mkdir -p output/temp}
-  puts %x{cd output/temp; tar xvf ../#{box_name}-virtualbox.box}
+  puts %x{cd output/temp; tar xvf ../#{box_name}.box}
   open('output/temp/box.ovf','r') do |f|
     open('output/temp/box.ovf.temp','w') do |f2|
       f.each_line do |line|
@@ -201,6 +201,7 @@ def box_to_ova(vm_name)
   puts %x{cd output/temp; tar cvf #{box_name}.ova *.ovf *.vmdk *.json Vagrantfile}
   puts %x{mv output/temp/#{box_name}.ova output}
   puts %x{rm -rf output/temp}
+  puts %x{rm -f output/#{box_name}.box}
 end
 
 def build_vm(build_type, vm_name)
