@@ -186,6 +186,24 @@ def packer_args
   }
 end
 
+def box_to_ova(vm_name)
+  box_name = "puppet-#{pe_version}-#{vm_name}-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}"
+  puts %x{mkdir -p output/temp}
+  puts %x{cd output/temp; tar xvf ../#{box_name}.box}
+  open('output/temp/box.ovf','r') do |f|
+    open('output/temp/box.ovf.temp','w') do |f2|
+      f.each_line do |line|
+        f2.write(line) unless line.match(/VirtualSystemType/)
+      end
+    end
+  end
+  FileUtils.mv 'output/temp/box.ovf.temp', 'output/temp/box.ovf'
+  puts %x{cd output/temp; tar cvf #{box_name}.ova *.ovf *.vmdk *.json Vagrantfile}
+  puts %x{mv output/temp/#{box_name}.ova output}
+  puts %x{rm -rf output/temp}
+  puts %x{rm -f output/#{box_name}.box}
+end
+
 def build_vm(build_type, vm_name)
   call_packer(template_file(build_type), packer_args, var_file(vm_name))
 end
@@ -248,7 +266,7 @@ def zip_learning_vm
 end
 
 def create_md5(vm_type)
-  if `uname` == 'Darwin'
+  if `uname` =~ /Darwin/
     `md5 #{vm_path(vm_type)} > #{vm_path(vm_type) + ".md5"}`
   else
     `md5sum #{vm_path(vm_type)} > #{vm_path(vm_type) + ".md5"}`
@@ -352,6 +370,7 @@ end
 desc "Training VM build"
 task :training_build do
   build_vm('build', 'training')
+  box_to_ova('training')
   create_md5("training")
 end
 
@@ -368,6 +387,7 @@ end
 desc "Master VM build"
 task :master_build do
   build_vm('build', 'master')
+  box_to_ova('master')
   create_md5("master")
 end
 
@@ -384,6 +404,7 @@ end
 desc "Learning VM build"
 task :learning_build do
   build_vm('build', 'learning')
+  box_to_ova('learning')
 end
 
 desc "Demo VM base build"
@@ -394,11 +415,13 @@ end
 desc "Demo VM build"
 task :demo_build do
   build_vm('build', 'demo')
+  box_to_ova('demo')
 end
 
 desc "Student VM build"
 task :student_build do
   build_vm('student', 'student')
+  box_to_ova('student')
   create_md5("student")
 end
 
