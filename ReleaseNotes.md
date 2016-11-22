@@ -1,3 +1,10 @@
+## Version 5.8
+
+* Cloud template updates
+* PE 2016.4.2
+* Export a single ova/box artifact
+ 
+
 ## Version 5.7
 
 * Build script improvments
