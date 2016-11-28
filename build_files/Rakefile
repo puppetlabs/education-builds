@@ -317,6 +317,15 @@ task :master_build => [:build, :post]
 desc "PE Master full build"
 task :master_full => [:master_pre, :master_build]
 
+desc "Training VM pre-build"
+task :training_pre => [:pre_install_setup]
+
+desc "Training VM build"
+task :training_build => [:build, :post]
+
+desc "Training VM full build"
+task :training_full => [:training_pre, :training_build]
+
 desc "Classroom in a box pre build"
 task :ciab_pre => [:pre_install_setup, :standalone_puppet_agent]
 
