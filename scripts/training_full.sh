@@ -17,7 +17,6 @@ rm -rf wkhtmltopdf-0.12.3-1.x86_64.rpm wkhtmltox wkhtmltox-0.12.3_linux-generic-
 # Main build
 cd /usr/src/build_files
 
-rake training_pre
-rake training_build
+rake standalone_agent_full
 
 rm -rf /usr/src/build_files
