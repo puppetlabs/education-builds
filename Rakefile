@@ -193,6 +193,9 @@ def box_to_ova(vm_name)
   open('output/temp/box.ovf','r') do |f|
     open('output/temp/box.ovf.temp','w') do |f2|
       f.each_line do |line|
+        # Remove mac address for vbox support
+        line.sub!(/MACAddress=\"[0-9A-F]*\"\s/,'')
+        # Remove VM hardware to support vbox and vmware
         f2.write(line) unless line.match(/VirtualSystemType/)
       end
     end
