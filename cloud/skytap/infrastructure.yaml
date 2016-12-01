@@ -11,7 +11,9 @@ master_ports:
   - 10080
   - 20080
   - 30080
-  - 40080 
+  - 40080
+  - 9090
+  - 9091
 student_template_id: 782189
 student_vm_id:
   - 9407380

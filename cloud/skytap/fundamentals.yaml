@@ -9,6 +9,8 @@ master_ports:
   - 22
   - 443
   - 3000
+  - 9090
+  - 9091
 student_template_id: 791817
 student_vm_id:
   - 9645730
