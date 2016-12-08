@@ -12,7 +12,17 @@ PTBVERSION = YAML.load_file(File.join(BASEDIR, 'version.yaml'))
 PE_VERSION = ENV['PE_VERSION']
 PRE_RELEASE = ENV['PE_RELEASE'] == 'true'
 PE_FAMILY = ENV['PE_FAMILY']
-VM_TYPE = ENV['VM_TYPE']
+
+hostname = `hostname -s`.chomp
+if ENV['VM_TYPE'] then
+  VM_TYPE = ENV['VM_TYPE']
+elsif hostname =~ /^(master|training|learning|student|ciab|demo)$/ then
+  VM_TYPE = hostname
+else
+  abort("ERROR: Unrecognized VM_TYPE parameter: #{VM_TYPE}")
+end
+
+
 
 ##############################################################
 #                                                            #
@@ -53,9 +63,6 @@ def host_os
   `uname -s`
 end
 
-def hostname
-  `hostname -s`.chomp
-end
 
 ##########################
 #                        #
@@ -69,11 +76,6 @@ end
 
 def cprint(string)
   print "\033[1m#{string}\033[0m"
-end
-
-# Bail if handed a 'VMTYPE' that's not supported.
-if VM_TYPE !~ /^(master|training|learning|student|ciab|demo)$/
-  abort("ERROR: Unrecognized VM_TYPE parameter: #{VM_TYPE}")
 end
 
 #################################################
@@ -273,6 +275,11 @@ task :build do
   install_persistent_modules if File.exist?("./Puppetfile.#{VM_TYPE}")
 end
 
+desc "Restore root password to match splash screen"
+task :restore_password do
+  `cat /var/local/password | passwd root --stdin`
+end
+
 desc "Post build cleanup"
 task :post do
   set_vm_version_file
@@ -325,6 +332,9 @@ task :ciab_build => [:build]
 
 desc "Classroom in a box full build"
 task :ciab_full => [:ciab_pre, :ciab_build]
+
+desc "Update VM to latest build. Note: This will reset the root password to match the login screen"
+task :update => [:build, :restore_password]
 
 #########################################################
 #                                                       #
