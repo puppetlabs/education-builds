@@ -114,12 +114,14 @@ def installer_cached?
 end
 
 def write_answers_file
+  hostname = VM_TYPE
   File.open('/tmp/answers','w') do |f|
     f.write ERB.new(File.read('./templates/answers.erb')).result(binding)
   end
 end
 
 def write_pe_conf_file
+  hostname = VM_TYPE
   File.open('/tmp/pe.conf','w') do |f|
     f.write ERB.new(File.read('./templates/pe.conf.erb')).result(binding)
   end
