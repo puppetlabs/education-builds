@@ -1,7 +1,7 @@
 ---
 title: Puppetizing Infrastructure
 domain_name: puppetlabs.vm
-master_template_id: 870989
+master_template_id: 930325
 master_memory: 16384
 master_cpus: 8
 master_name: master
@@ -13,9 +13,9 @@ master_ports:
   - 9091
   - 8088
   - 8170
-student_template_id: 370665
+student_template_id: 887849
 student_vm_id:
-  - 2658740
+  - 12068212
 student_ports:
   - 80
 students:
