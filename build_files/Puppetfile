@@ -16,7 +16,7 @@ moduledir './modules/'
 #   mod 'bootstrap', 
 #     :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
 #     :ref => 'ref-goes-here'
-branch = ENV['STABLE_MODULES'] =~ /yes/ ? 'release' : 'master'
+branch = ENV['STABLE_MODULES'] =~ /^(true|yes|y|Y)/ ? 'release' : 'master'
   
 
 mod 'bootstrap', 
