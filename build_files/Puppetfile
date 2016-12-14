@@ -21,19 +21,19 @@ branch = ENV['STABLE_MODULES'] =~ /yes/ ? 'release' : 'master'
 
 mod 'bootstrap', 
   :git => 'https://github.com/puppetlabs/pltraining-bootstrap',
-  :ref => branch
+  :ref => ENV['BOOTSTRAP_BRANCH'] || branch
 
 mod 'learning',
   :git => 'https://github.com/puppetlabs/pltraining-learning',
-  :ref => branch
+  :ref => ENV['LEARNING_BRANCH'] || branch
 
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo',
-  :ref => branch
+  :ref => ENV['LOCALREPO_BRANCH'] || branch
 
 mod 'dockeragent',
   :git => 'https://github.com/puppetlabs/pltraining-dockeragent',
-  :ref => branch
+  :ref => ENV['DOCKERAGENT_BRANCH'] || branch
 
 if branch == 'release'
   mod 'pltraining/classroom'
@@ -42,13 +42,17 @@ if branch == 'release'
   mod 'pltraining/userprefs'
 else
   mod 'classroom', 
-    :git => 'https://github.com/puppetlabs/pltraining-classroom'
+    :git => 'https://github.com/puppetlabs/pltraining-classroom',
+    :ref => ENV['CLASSROOM_BRANCH'] || 'master'
   mod 'rbac', 
     :git => 'https://github.com/puppetlabs/pltraining-rbac'
+    :ref => ENV['RBAC_BRANCH'] || 'master'
   mod 'dirtree', 
     :git => 'https://github.com/puppetlabs/pltraining-dirtree'
+    :ref => ENV['DIRTREE_BRANCH'] || 'master'
   mod 'userprefs', 
     :git => 'https://github.com/puppetlabs/pltraining-userprefs'
+    :ref => ENV['USERPREFS_BRANCH'] || 'master
 end
 
 
