@@ -63,6 +63,10 @@ combination of three environment variables:
   instead of PE_VERSION to get the latest pre-release for the specified family.
 * **PRE_RELEASE**  
   If this is set to true, rake will use pre-release PE versions.
+
+* **STABLE_MODULES**
+  If this is set to true, rake will use the "release" branch of the pltraining
+  modules. Otherwise it defaults to using the "master".
  
 A build without PE_VERSION or PE_FAMILY specified will use the latest release
 version of PE. A build with PRE_RELEASE set to true requires PE_VERSION or
