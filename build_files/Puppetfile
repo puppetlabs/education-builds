@@ -52,7 +52,7 @@ else
     :ref => ENV['DIRTREE_BRANCH'] || 'master'
   mod 'userprefs', 
     :git => 'https://github.com/puppetlabs/pltraining-userprefs'
-    :ref => ENV['USERPREFS_BRANCH'] || 'master
+    :ref => ENV['USERPREFS_BRANCH'] || 'master'
 end
 
 
