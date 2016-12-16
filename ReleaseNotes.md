@@ -1,3 +1,7 @@
+## Version 5.10
+* PE 2016.5.1
+* Dynamic puppetfile to support release branch
+
 ## Version 5.8
 
 * Cloud template updates
