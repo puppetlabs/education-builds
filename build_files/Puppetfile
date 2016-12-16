@@ -45,13 +45,13 @@ else
     :git => 'https://github.com/puppetlabs/pltraining-classroom',
     :ref => ENV['CLASSROOM_BRANCH'] || 'master'
   mod 'rbac', 
-    :git => 'https://github.com/puppetlabs/pltraining-rbac'
+    :git => 'https://github.com/puppetlabs/pltraining-rbac',
     :ref => ENV['RBAC_BRANCH'] || 'master'
   mod 'dirtree', 
-    :git => 'https://github.com/puppetlabs/pltraining-dirtree'
+    :git => 'https://github.com/puppetlabs/pltraining-dirtree',
     :ref => ENV['DIRTREE_BRANCH'] || 'master'
   mod 'userprefs', 
-    :git => 'https://github.com/puppetlabs/pltraining-userprefs'
+    :git => 'https://github.com/puppetlabs/pltraining-userprefs',
     :ref => ENV['USERPREFS_BRANCH'] || 'master'
 end
 
