@@ -1,25 +1,25 @@
 ---
 master:
-  ami: "ami-ea11b28a"
+  ami: "ami-2840f048"
   type: "m4.xlarge"
   key_name: "training"
   security_group_ids:
-    - "sg-ee9abc89"
+    - "sg-3004c848"
 student:
-  ami: "ami-a75b93c7"
+  ami: "ami-525ded32"
   type: "m3.large"
   key_name: "training"
   security_group_ids:
-    - "sg-ee9abc89"
+    - "sg-3004c848"
 proxy:
-  ami: "ami-a75b93c7"
+  ami: "ami-525ded32"
   type: "m3.large"
   key_name: "training"
   security_group_ids:
-    - "sg-ee9abc89"
+    - "sg-3004c848"
 instructor:
-  ami: "ami-a75b93c7"
+  ami: "ami-525ded32"
   type: "m3.large"
   key_name: "training"
   security_group_ids:
-    - "sg-ee9abc89"
+    - "sg-3004c848"
