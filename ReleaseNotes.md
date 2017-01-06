@@ -1,3 +1,6 @@
+## Version 5.11
+* Updated cached packages
+
 ## Version 5.10
 * PE 2016.5.1
 * Dynamic puppetfile to support release branch

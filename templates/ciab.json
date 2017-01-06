@@ -13,5 +13,5 @@
   "arch": "x86_64",
   "iso_checksum": "4c6c65b5a70a1142dadb3c65238e9e97253c0d3a",
   "iso_url": "http://osmirror.delivery.puppetlabs.net/iso/CentOS-7-x86_64-DVD-1511.iso",
-  "ptb_version": "5.10"
+  "ptb_version": "5.11"
 }
