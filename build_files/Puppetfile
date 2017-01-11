@@ -19,9 +19,13 @@ moduledir './modules/'
 branch = ENV['STABLE_MODULES'] =~ /^(true|yes|y|Y)/ ? 'release' : 'master'
   
 
+# mod 'bootstrap',
+#   :git => 'https://github.com/puppetlabs/pltraining-bootstrap',
+#   :ref => ENV['BOOTSTRAP_BRANCH'] || branch
+#
 mod 'bootstrap', 
-  :git => 'https://github.com/puppetlabs/pltraining-bootstrap',
-  :ref => ENV['BOOTSTRAP_BRANCH'] || branch
+  :git => 'https://github.com/greglarkin/pltraining-bootstrap',
+  :ref => 'add-ciab-vagrant-support'
 
 mod 'learning',
   :git => 'https://github.com/puppetlabs/pltraining-learning',
