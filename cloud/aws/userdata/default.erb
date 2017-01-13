@@ -1,0 +1,11 @@
+<% if profile.include? 'master_ip' -%>
+#cloud-config
+runcmd:
+ - echo "<%= profile['master_ip'] %>  master.puppetlabs.vm" >> /etc/hosts
+
+powershell: |
+ <powershell>
+  $file = "$env:windir\System32\drivers\etc\hosts"
+  "<%= profile['master_ip'] %>  master.puppetlabs.vm" | Add-Content -PassThru $file
+ </powershell>
+<% end -%>
