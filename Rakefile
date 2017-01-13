@@ -483,3 +483,9 @@ desc "Ship Student VM"
 task :ship_student do
   ship_vm_files("student")
 end
+
+desc "Create PR to release branch"
+task :release do
+  `hub pull-request -h puppetlabs/education-builds:master -b puppetlabs/education-builds:release`
+end
+
