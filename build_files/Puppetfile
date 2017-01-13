@@ -16,36 +16,45 @@ moduledir './modules/'
 #   mod 'bootstrap', 
 #     :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
 #     :ref => 'ref-goes-here'
-
+branch = ENV['STABLE_MODULES'] =~ /^(true|yes|y|Y)/ ? 'release' : 'master'
+  
 
 mod 'bootstrap', 
-  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
+  :git => 'https://github.com/puppetlabs/pltraining-bootstrap',
+  :ref => ENV['BOOTSTRAP_BRANCH'] || branch
 
 mod 'learning',
-  :git => 'https://github.com/puppetlabs/pltraining-learning'
-
-mod 'lms',
-  :git => 'https://github.com/puppetlabs/pltraining-lms'
+  :git => 'https://github.com/puppetlabs/pltraining-learning',
+  :ref => ENV['LEARNING_BRANCH'] || branch
 
 mod 'localrepo',
-  :git => 'https://github.com/puppetlabs/pltraining-localrepo'
+  :git => 'https://github.com/puppetlabs/pltraining-localrepo',
+  :ref => ENV['LOCALREPO_BRANCH'] || branch
 
 mod 'dockeragent',
-  :git => 'https://github.com/puppetlabs/pltraining-dockeragent'
+  :git => 'https://github.com/puppetlabs/pltraining-dockeragent',
+  :ref => ENV['DOCKERAGENT_BRANCH'] || branch
 
-mod 'pltraining/classroom'
-#mod 'classroom', 
-#  :git => 'https://github.com/puppetlabs/pltraining-classroom'
+if branch == 'release'
+  mod 'pltraining/classroom'
+  mod 'pltraining/rbac', '0.0.4'
+  mod 'pltraining/dirtree'
+  mod 'pltraining/userprefs'
+else
+  mod 'classroom', 
+    :git => 'https://github.com/puppetlabs/pltraining-classroom',
+    :ref => ENV['CLASSROOM_BRANCH'] || 'master'
+  mod 'rbac', 
+    :git => 'https://github.com/puppetlabs/pltraining-rbac',
+    :ref => ENV['RBAC_BRANCH'] || 'master'
+  mod 'dirtree', 
+    :git => 'https://github.com/puppetlabs/pltraining-dirtree',
+    :ref => ENV['DIRTREE_BRANCH'] || 'master'
+  mod 'userprefs', 
+    :git => 'https://github.com/puppetlabs/pltraining-userprefs',
+    :ref => ENV['USERPREFS_BRANCH'] || 'master'
+end
 
-mod 'pltraining/rbac', '0.0.4'
-#mod 'rbac', 
-#  :git => 'https://github.com/puppetlabs/pltraining-rbac'
-
-#mod 'pltraining/userprefs'
-mod 'userprefs', 
-  :git => 'https://github.com/puppetlabs/pltraining-userprefs'
-
-mod 'pltraining/dirtree'
 
 mod 'puppetlabs/concat', '1.2.4'
 #mod 'concat', 

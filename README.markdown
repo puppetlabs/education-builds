@@ -5,8 +5,8 @@ versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
 ## Usage
 
 1. Install virtualbox, packer, and vmware ovftool and ensure the binaries are in the path.
-1. Run setup script to download and deploy base images:
-  * `setup.sh`
+1. Run setup task to download and deploy base images:
+  * `rake setup`
 1. Builds are triggered by a rake task that handles local caching and wraps the
 packer command. To begin a build, run the corresponding rake task, for example
 `rake master_base`. (Details on the available build tasks are included below.)
@@ -63,6 +63,10 @@ combination of three environment variables:
   instead of PE_VERSION to get the latest pre-release for the specified family.
 * **PRE_RELEASE**  
   If this is set to true, rake will use pre-release PE versions.
+
+* **STABLE_MODULES**
+  If this is set to true, rake will use the "release" branch of the pltraining
+  modules. Otherwise it defaults to using the "master".
  
 A build without PE_VERSION or PE_FAMILY specified will use the latest release
 version of PE. A build with PRE_RELEASE set to true requires PE_VERSION or

@@ -101,11 +101,25 @@ def installer_path
   "/training/file_cache/installers/#{installer_filename}"
 end
 
+def installer_dest
+  if VM_TYPE == "training"
+    "/root/puppet-enterprise"
+  else
+    "/tmp/puppet-enterprise"
+  end
+end
+
 # Download the installer. Curl is nicer than re-inventing the wheel with ruby.
 def download_installer
-  unless `curl #{pe_installer_url} -o #{installer_path}`
-    fail "Error downloading the PE installer"
+  unless installer_cached?
+    puts "Downloading Puppet Enterprise"
+    unless `curl #{pe_installer_url} -o #{installer_path}`
+      fail "Error downloading the PE installer"
+    end
   end
+  puts "Untaring PE installer to #{installer_dest}"
+  %x{mkdir #{installer_dest}}
+  %x{tar xf #{installer_path} -C #{installer_dest} --strip-components=1}
 end
 
 # Check if the installer exists and the file isn't empty.
@@ -128,16 +142,14 @@ def write_pe_conf_file
 end
 
 def install_pe
-  %x{mkdir /tmp/puppet-enterprise}
-  %x{tar xf #{installer_path} -C /tmp/puppet-enterprise --strip-components=1}
   if Gem::Version.new(PE_VERSION.split('-')[0]) < Gem::Version.new('2016.2.0')
     write_answers_file
     puts "Installing Puppet Enterprise with answers file for version #{PE_VERSION}"
-    %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -a /tmp/answers}
+    %x{#{installer_dest}/puppet-enterprise-installer -D -a /tmp/answers}
   else
     write_pe_conf_file
     puts "Installing Puppet Enterprise with pe.conf for version #{PE_VERSION}"
-    %x{/tmp/puppet-enterprise/puppet-enterprise-installer -D -c /tmp/pe.conf}
+    %x{#{installer_dest}/puppet-enterprise-installer -D -c /tmp/pe.conf}
   end
 end
 
@@ -258,14 +270,11 @@ task :pre_install_setup do
   set_hostname
   edit_hosts
   configure_network
+  download_installer unless VM_TYPE == "student"
 end
 
 desc "Install PE Master"
 task :install_pe do
-  unless installer_cached?
-    puts "Downloading Puppet Enterprise"
-    download_installer
-  end
   install_pe
 end
 
