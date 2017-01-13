@@ -22,7 +22,18 @@ else
   abort("ERROR: Unrecognized VM_TYPE parameter: #{VM_TYPE}")
 end
 
-
+# Pass in the number of student VMs to create when operating in
+# classroom-in-a-box mode
+if VM_TYPE == "ciab" then
+  if ENV['NUM_STUDENTS'] then
+    NUM_STUDENTS = ENV['NUM_STUDENTS']
+  else
+    NUM_STUDENTS = 1
+  end
+  FACTER_VAR="FACTER_num_students=#{NUM_STUDENTS}"
+else
+  FACTER_VAR=""
+end
 
 ##############################################################
 #                                                            #
@@ -222,7 +233,7 @@ end
 
 def apply_bootstrap
   cputs "Running puppet apply on #{VM_TYPE}.pp"
-  system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet apply --detailed-exitcodes --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/#{VM_TYPE}.pp")
+  system("PATH=$PATH:/opt/puppetlabs/puppet/bin #{FACTER_VAR} puppet apply --detailed-exitcodes --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/#{VM_TYPE}.pp")
   if ($?.exitstatus != 0) && ($?.exitstatus != 2)
     raise "Puppet failed with exit status #{$?.exitstatus}"
   end
