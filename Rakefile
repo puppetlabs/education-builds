@@ -109,6 +109,25 @@ def create_cache_directories
   FileUtils.mkdir_p(cache_directories)
 end
 
+def get_base_vm(image_type)
+	if image_type == "student" then
+		image_box="centos-6.6-i386-virtualbox-nocm-1.0.3.box"
+	else
+		image_box="centos-7.2-x86_64-virtualbox-nocm-1.0.1.box"
+	end
+	vagrant_base_url="http://int-resources.ops.puppetlabs.net/Vagrant%20images"
+  #Public download URL: https://atlas.hashicorp.com/puppetlabs/boxes/centos-7.2-64-nocm/versions/1.0.1/providers/virtualbox_desktop.box
+  #Public download URL: https://atlas.hashicorp.com/puppetlabs/boxes/centos-6.6-32-nocm/versions/1.0.3/providers/virtualbox_desktop.box
+
+  `rm -rf output/#{image_type}-base-virtualbox`
+  `mkdir output/#{image_type}-base-virtualbox`
+
+  puts "Downloading #{image_type} base image"
+  `curl #{vagrant_base_url}/#{image_box} -o output/#{image_type}-base-virtualbox/#{image_box}`
+  `cd output/#{image_type}-base-virtualbox/; tar xzvf ../#{image_box}`
+  `mv output/#{image_type}-base-virtualbox/*.ovf output/#{image_type}-base-virtualbox/#{image_type}-base.ovf`
+end
+
 ###################################
 #                                 #
 # Helper methods for building VMs #
@@ -357,6 +376,12 @@ task :cache_pe_installer do
   else
     puts "PE Installer for #{pe_version} is already cached. Moving on..."
   end
+end
+
+desc "Setup build environment"
+task :setup => [:set_up_cache_dirs] do
+	get_base_vm "education"
+	get_base_vm "student"
 end
 
 ##################
