@@ -3,7 +3,7 @@
     {
       "type": "amazon-ebs",
       "region": "us-west-2",
-      "source_ami": "ami-b12cf1d1",
+      "source_ami": "ami-2840f048",
       "instance_type": "m3.large",
       "ssh_username": "training",
       "ssh_keypair_name": "training",
@@ -46,7 +46,7 @@
     "iso_url": "",
     "os_name": "",
     "pe_status": "release",
-    "pe_version": "2016.2.1",
+    "pe_version": "2016.5.1",
     "rubylib": "/usr/src/puppet/lib:/usr/src/facter/lib:/usr/src/hiera/lib",
     "system_user": "vagrant",
     "system_user_password": "vagrant",
