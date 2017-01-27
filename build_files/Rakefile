@@ -30,7 +30,12 @@ if VM_TYPE == "ciab" then
   else
     NUM_STUDENTS = 1
   end
-  FACTER_VAR="FACTER_num_students=#{NUM_STUDENTS}"
+  if ENV['NUM_WIN_STUDENTS'] then
+    NUM_WIN_STUDENTS = ENV['NUM_WIN_STUDENTS']
+  else
+    NUM_WIN_STUDENTS = 0
+  end
+  FACTER_VAR="FACTER_num_students=#{NUM_STUDENTS} FACTER_num_win_students=#{NUM_WIN_STUDENTS}"
 else
   FACTER_VAR=""
 end
