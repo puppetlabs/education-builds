@@ -1,3 +1,7 @@
+## Version 5.12
+* Cache agent packages in a better way
+* Cache maci0/systemd and centos:7 docker images
+
 ## Version 5.11
 * Updated cached packages
 

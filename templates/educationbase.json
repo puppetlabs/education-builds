@@ -65,7 +65,7 @@
     "vm_memsize": "4096",
     "vm_disk_size": "20480",
     "vm_cores": "2",
-    "pe_version": "2016.2.0",
+    "pe_version": "2016.5.1",
     "ptb_version": ""
   }
 }
