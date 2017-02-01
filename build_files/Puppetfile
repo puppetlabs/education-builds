@@ -19,7 +19,7 @@ moduledir './modules/'
 branch = ENV['STABLE_MODULES'] =~ /^(true|yes|y|Y)/ ? 'release' : 'master'
   
 
-mod 'bootstrap', 
+mod 'bootstrap',
   :git => 'https://github.com/puppetlabs/pltraining-bootstrap',
   :ref => ENV['BOOTSTRAP_BRANCH'] || branch
 
@@ -91,15 +91,30 @@ mod 'ajcrowe/supervisord'
 mod 'puppet/nodejs'
 
 # Dependencies for bootstrap
+mod 'stahnma/epel'
+mod 'pltraining/userprefs'
 mod 'puppetlabs/pe_gem'
+mod 'puppetlabs/mysql'
+mod 'pltraining/dirtree'
+mod 'jfryman/selinux'
 mod 'binford2k/abalone'
+mod 'garethr/docker'
+mod 'razorsedge/network'
+mod 'puppetlabs/stdlib'
 
 # Dependencies for CIAB
 mod 'puppetlabs/firewall'
 mod 'puppetlabs/mysql'
-# Use vendored version until PR is merged
-mod 'libvirt',
-  :git => 'https://github.com/samuelson/puppet-libvirt',
-  :ref => 'domain_name'
+mod 'puppet/virtualbox'
+mod 'unibet/vagrant'
+
+# Dependencies for userprefs
+mod 'puppetlabs/chocolatey'
+mod 'puppetlabs/stdlib'
+mod 'puppetlabs/registry'
+mod 'stahnma/epel'
+
+# Dependencies for mysql
+mod 'puppet-staging'
 
 mod 'razorsedge/network'
