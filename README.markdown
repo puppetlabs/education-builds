@@ -78,6 +78,10 @@ method of specifying variables takes precedence over variables specified
 elsewhere, so the version information set via environment variables will take
 precedence over any specified version in the build template.
 
+* **AUTOMATED_BUILD**
+  If this is set to `true`, the build will skip the bailout message after the
+  build validation output.
+
 ### Packer
 
 The build tasks in the Rakefile wrap the `packer` tool, which is used to
