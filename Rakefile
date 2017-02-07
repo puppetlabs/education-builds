@@ -236,21 +236,14 @@ end
 
 def validate_build_details
   puts "\nPE version: #{pe_version}\n"
-  puppetfile_name = ENV['STABLE'] == 'true' ? "Puppetfile.stable" : "Puppetfile"
-  puppetfile = R10K::Puppetfile.new(File.expand_path(File.join(File.dirname(__FILE__), '/build_files')), puppetfile_name = puppetfile_name)
+  name = STABLE == 'true' ? "Puppetfile.stable" : "Puppetfile"
+  basedir = File.expand_path(File.join(File.dirname(__FILE__), '/build_files'))
+  puppetfile_path = File.join(basedir, name)
+  puppetfile = R10K::Puppetfile.new(basedir, module_dir = nil, puppetfile_path = puppetfile_path)
   puppetfile.load
   puts "\nThe following modules will be included in the Puppetfile for this build:\n\n"
   puppetfile.modules.each do | m |
-    puts "module: " + m.name
-    case m.class.name
-    when "R10K::Module::Git"
-      puts "remote: " + m.instance_variable_get(:@remote)
-      puts "ref: #{m.instance_variable_get(:@ref)}" if m.instance_variable_get(:@ref)
-    when "R10K::Module::Forge"
-      puts "title: " + m.instance_variable_get(:@title)
-      puts "args: #{m.instance_variable_get(:@args)}" if m.instance_variable_get(:@args)
-    end
-    puts "\n"
+    puts "#{m.name.ljust(20)}#{m.instance_variable_get(:@args)}"
   end
   unless ENV['AUTOMATED_BUILD'] == 'true'
     puts "Do you wish to begin the build with these modules? Y/n"
