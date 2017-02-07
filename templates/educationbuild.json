@@ -42,7 +42,8 @@
         "RUBY_LIB={{user `rubylib`}}",
         "TRAINING_REPO={{user `training_repo`}}",
         "TRAINING_BRANCH={{user `training_branch`}}",
-        "VM_TYPE={{user `vm_type`}}"
+        "VM_TYPE={{user `vm_type`}}",
+        "STABLE={{user `stable`}}"
       ],
       "execute_command": "{{.Vars}} sudo \"PATH=$PATH\" -E -S bash '{{.Path}}'",
       "scripts": [
@@ -66,6 +67,7 @@
     "vm_memsize": "4096",
     "vm_disk_size": "20480",
     "vm_cores": "2",
-    "ptb_version": "5.12"
+    "ptb_version": "5.12",
+    "stable": "true"
   }
 }

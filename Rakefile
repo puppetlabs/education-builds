@@ -5,6 +5,7 @@ require 'r10k/puppetfile'
 
 PRE_RELEASE = ENV['PRE_RELEASE'] == 'true'
 PTB_VERSION = YAML.load_file('./build_files/version.yaml')
+STABLE = ENV['STABLE'] || 'false'
 
 FILESHARE_SERVER = '//guest@int-resources.ops.puppetlabs.net/Resources'
 STDOUT.sync = true
@@ -199,10 +200,11 @@ end
 
 def packer_args
   {
-    'pe_version' => pe_version,
-    'pe_family' => pe_family,
+    'pe_version'  => pe_version,
+    'pe_family'   => pe_family,
     'pre_release' => PRE_RELEASE,
-    'ptb_version' => "#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}"
+    'ptb_version' => "#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}",
+    'stable'      => ENV['STABLE']
   }
 end
 
@@ -234,7 +236,8 @@ end
 
 def validate_build_details
   puts "\nPE version: #{pe_version}\n"
-  puppetfile = R10K::Puppetfile.new(File.expand_path(File.join(File.dirname(__FILE__), '/build_files')))
+  puppetfile_name = ENV['STABLE'] == 'true' ? "Puppetfile.stable" : "Puppetfile"
+  puppetfile = R10K::Puppetfile.new(File.expand_path(File.join(File.dirname(__FILE__), '/build_files')), puppetfile_name = puppetfile_name)
   puppetfile.load
   puts "\nThe following modules will be included in the Puppetfile for this build:\n\n"
   puppetfile.modules.each do | m |

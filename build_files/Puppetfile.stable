@@ -17,7 +17,7 @@ moduledir './modules/'
 #     :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
 #     :ref => 'ref-goes-here'
 
-mod 'bootstrap',
+mod 'bootstrap', 
   :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
 
 mod 'learning',
@@ -29,17 +29,10 @@ mod 'localrepo',
 mod 'dockeragent',
   :git => 'https://github.com/puppetlabs/pltraining-dockeragent'
 
-mod 'pltraining/classroom',
-  :git => 'https://github.com/puppetlabs/pltraining-classroom'
-
-mod 'rbac', 
-  :git => 'https://github.com/puppetlabs/pltraining-rbac'
-
-mod 'dirtree', 
-  :git => 'https://github.com/puppetlabs/pltraining-dirtree'
-
-mod 'userprefs', 
-  :git => 'https://github.com/puppetlabs/pltraining-userprefs'
+mod 'pltraining/classroom'
+mod 'pltraining/rbac', '0.0.4'
+mod 'pltraining/dirtree'
+mod 'pltraining/userprefs'
 
 mod 'puppetlabs/concat', '1.2.4'
 #mod 'concat', 
@@ -76,30 +69,15 @@ mod 'ajcrowe/supervisord'
 mod 'puppet/nodejs'
 
 # Dependencies for bootstrap
-mod 'stahnma/epel'
-mod 'pltraining/userprefs'
 mod 'puppetlabs/pe_gem'
-mod 'puppetlabs/mysql'
-mod 'pltraining/dirtree'
-mod 'jfryman/selinux'
 mod 'binford2k/abalone'
-mod 'garethr/docker'
-mod 'razorsedge/network'
-mod 'puppetlabs/stdlib'
 
 # Dependencies for CIAB
 mod 'puppetlabs/firewall'
 mod 'puppetlabs/mysql'
-mod 'puppet/virtualbox'
-mod 'unibet/vagrant'
-
-# Dependencies for userprefs
-mod 'puppetlabs/chocolatey'
-mod 'puppetlabs/stdlib'
-mod 'puppetlabs/registry'
-mod 'stahnma/epel'
-
-# Dependencies for mysql
-mod 'puppet-staging'
+# Use vendored version until PR is merged
+mod 'libvirt',
+  :git => 'https://github.com/samuelson/puppet-libvirt',
+  :ref => 'domain_name'
 
 mod 'razorsedge/network'
