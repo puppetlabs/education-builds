@@ -12,6 +12,7 @@ PTBVERSION = YAML.load_file(File.join(BASEDIR, 'version.yaml'))
 PE_VERSION = ENV['PE_VERSION']
 PRE_RELEASE = ENV['PE_RELEASE'] == 'true'
 PE_FAMILY = ENV['PE_FAMILY']
+STABLE = ENV['STABLE']
 
 hostname = `hostname -s`.chomp
 if ENV['VM_TYPE'] then
@@ -228,7 +229,8 @@ end
 def install_build_dependency_modules
   cputs "Running r10k Puppetfile install for build dependencies"
   system('mkdir modules')
-  system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install')
+  puppetfile_name = ENV['STABLE'] == 'true' ? 'Puppetfile.stable' : 'Puppetfile'
+  system("PUPPETFILE=./#{puppetfile_name} PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install")
 end
 
 def install_persistent_modules
