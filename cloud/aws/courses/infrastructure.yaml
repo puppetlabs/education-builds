@@ -1,12 +1,12 @@
 ---
 master:
-  ami: "ami-35299555"
+  ami: "ami-65119705"
   type: "m4.large"
   key_name: "training"
   security_group_ids:
     - "sg-688b120f"
 student:
-  ami: "ami-35299555"
+  ami: "ami-65119705"
   type: "m4.large"
   key_name: "training"
   security_group_ids:
