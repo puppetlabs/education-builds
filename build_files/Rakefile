@@ -29,7 +29,7 @@ if VM_TYPE == "ciab" then
   if ENV['NUM_STUDENTS'] then
     NUM_STUDENTS = ENV['NUM_STUDENTS']
   else
-    NUM_STUDENTS = 1
+    NUM_STUDENTS = 0
   end
   if ENV['NUM_WIN_STUDENTS'] then
     NUM_WIN_STUDENTS = ENV['NUM_WIN_STUDENTS']
