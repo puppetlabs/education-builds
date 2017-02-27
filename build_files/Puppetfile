@@ -100,6 +100,6 @@ mod 'puppetlabs/registry'
 mod 'stahnma/epel'
 
 # Dependencies for mysql
-mod 'puppet-staging'
+#mod 'puppet-staging'
 
 mod 'razorsedge/network'
