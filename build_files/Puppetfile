@@ -18,10 +18,7 @@ moduledir './modules/'
 #     :ref => 'ref-goes-here'
 
 mod 'bootstrap',
-  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
-
-mod 'learning',
-  :git => 'https://github.com/puppetlabs/pltraining-learning'
+  :git => 'https://github.com/puppetlabs/pltraining-bootstrap',
 
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
@@ -70,7 +67,8 @@ mod 'garethr/docker'
 mod 'puppetlabs/apt'
 
 # Dependencies for learning VM
-mod 'jfryman/nginx', '0.2.7'
+mod 'puppet/nginx', '0.6.0'
+mod 'puppetlabs/inifile'
 mod 'maestrodev/wget'
 mod 'ajcrowe/supervisord'
 mod 'puppet/nodejs'
