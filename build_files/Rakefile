@@ -27,9 +27,9 @@ end
 # classroom-in-a-box mode
 if VM_TYPE == "ciab" then
   if ENV['NUM_WIN_VMS'] then
-    NUM_WIN_STUDENTS = ENV['NUM_WIN_VMS']
+    NUM_WIN_VMS = ENV['NUM_WIN_VMS']
   else
-    NUM_WIN_STUDENTS = 0
+    NUM_WIN_VMS = 0
   end
   FACTER_VAR="FACTER_num_win_vms=#{NUM_WIN_VMS}"
 else
