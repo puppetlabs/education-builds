@@ -26,17 +26,12 @@ end
 # Pass in the number of student VMs to create when operating in
 # classroom-in-a-box mode
 if VM_TYPE == "ciab" then
-  if ENV['NUM_STUDENTS'] then
-    NUM_STUDENTS = ENV['NUM_STUDENTS']
-  else
-    NUM_STUDENTS = 1
-  end
-  if ENV['NUM_WIN_STUDENTS'] then
-    NUM_WIN_STUDENTS = ENV['NUM_WIN_STUDENTS']
+  if ENV['NUM_WIN_VMS'] then
+    NUM_WIN_STUDENTS = ENV['NUM_WIN_VMS']
   else
     NUM_WIN_STUDENTS = 0
   end
-  FACTER_VAR="FACTER_num_students=#{NUM_STUDENTS} FACTER_num_win_students=#{NUM_WIN_STUDENTS}"
+  FACTER_VAR="FACTER_num_win_vms=#{NUM_WIN_VMS}"
 else
   FACTER_VAR=""
 end
