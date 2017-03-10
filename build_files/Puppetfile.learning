@@ -20,13 +20,4 @@ moduledir '/etc/puppetlabs/code/environments/production/modules'
 mod 'dockeragent',
   :git => 'https://github.com/puppetlabs/pltraining-dockeragent'
 
-mod 'puppetlabs/concat', '1.2.4'
-#mod 'concat', 
-#  :git => 'https://github.com/puppetlabs/puppetlabs-concat'
-
-mod 'puppetlabs/stdlib', '4.7.0'
-#mod 'stdlib', 
-#  :git => 'https://github.com/puppetlabs/puppetlabs-stdlib'
-
-# Dependencies for docker/beaker on Self paced
 mod 'garethr/docker'
