@@ -18,7 +18,8 @@ moduledir './modules/'
 #     :ref => 'ref-goes-here'
 
 mod 'bootstrap',
-  :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
+  :git => 'https://github.com/greglarkin/pltraining-bootstrap',
+  :ref => 'auto-configure-guacamole'
 
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
