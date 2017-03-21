@@ -31,7 +31,12 @@ if VM_TYPE == "ciab" then
   else
     NUM_WIN_VMS = 0
   end
-  FACTER_VAR="FACTER_num_win_vms=#{NUM_WIN_VMS}"
+  if ENV['OFFLINE'] then
+    OFFLINE = true
+  else
+    OFFLINE = false
+  end
+  FACTER_VAR="FACTER_num_win_vms=#{NUM_WIN_VMS} FACTER_offline=#{OFFLINE}"
 else
   FACTER_VAR=""
 end
