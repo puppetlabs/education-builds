@@ -241,9 +241,6 @@ end
 def apply_bootstrap
   cputs "Running puppet apply on #{VM_TYPE}.pp"
   if (VM_TYPE == 'ciab') && (OFFLINE == true) then
-    cputs "Turning off Guacamole Docker containers for reconfiguration to offline mode"
-    system("service docker-ciab-guacamole stop")
-    system("service docker-ciab-guacd stop")
     system("PATH=$PATH:/opt/puppetlabs/puppet/bin #{FACTER_VAR} puppet apply --detailed-exitcodes --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/ciab_offline.pp")
   end
   system("PATH=$PATH:/opt/puppetlabs/puppet/bin #{FACTER_VAR} puppet apply --detailed-exitcodes --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/#{VM_TYPE}.pp")
