@@ -268,6 +268,12 @@ def set_puppet_release_file
   end
 end
 
+def apply_pre_manifest
+  # Run pre update manifest
+  cputs "Running pre update manifest"
+  system('PATH=$PATH:/opt/puppetlabs/bin puppet apply --modulepath=./modules --verbose ./manifests/pre.pp')
+end
+
 def apply_cleanup_manifest
   # Run cleanup manifest
   cputs "Running cleanup manifest"
@@ -310,6 +316,11 @@ end
 desc "Restore root password to match splash screen"
 task :restore_password do
   `cat /var/local/password | passwd root --stdin`
+end
+
+desc "Update prep"
+task :update_pre do
+  apply_pre_manifest
 end
 
 desc "Post build cleanup"
@@ -366,7 +377,7 @@ desc "Classroom in a box full build"
 task :ciab_full => [:ciab_pre, :ciab_build]
 
 desc "Update VM to latest build. Note: This will reset the root password to match the login screen"
-task :update => [:build, :restore_password]
+task :update => [:update_pre, :build, :restore_password]
 
 #########################################################
 #                                                       #
