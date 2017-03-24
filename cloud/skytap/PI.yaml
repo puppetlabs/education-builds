@@ -1,7 +1,7 @@
 ---
 title: Puppetizing Infrastructure
 domain_name: puppetlabs.vm
-master_template_id: 977781
+master_template_id: 1022613
 master_memory: 16384
 master_cpus: 8
 master_name: master
