@@ -14,7 +14,7 @@ moduledir './modules/'
 #   mod 'pltraining/rbac', '1.0.1'
 # To fetch a ref (commit, branch, or tag) from a git repo, use:
 #   mod 'bootstrap', 
-#     :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
+#     :git => 'https://github.com/puppetlabs/pltraining-bootstrap',
 #     :ref => 'ref-goes-here'
 
 mod 'bootstrap',
