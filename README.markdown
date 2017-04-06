@@ -1,9 +1,11 @@
 # Bootstrap CentOS VMs for training
-Packer build scripts for master, training, student, or learning VMs. See
-versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
+Packer build scripts and tools for master, training, student, or learning VMs, and classroom_in_a_box setup.
+
+See versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
 
 ## Usage
 
+1. If you are looking for info on `classroom_in_a_box`, look in that directory for a [README.md](classroom_in_a_box/README.md) file for instructions on how to set up a classroom_in_a_box machine.
 1. Install virtualbox, packer, and vmware ovftool and ensure the binaries are in the path.
 1. Run setup script to download and deploy base images:
   * `setup.sh`
