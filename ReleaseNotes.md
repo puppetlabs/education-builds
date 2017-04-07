@@ -1,3 +1,10 @@
+## Version 5.14
+* Classroom in a box build
+* update to PE 2017.1.1
+* pltraining-learning module merged to pltraining-bootstrap
+* Cache docker images at build time
+* Install cmake and several other new deps
+
 ## Version 5.12
 * Cache agent packages in a better way
 * Cache maci0/systemd and centos:7 docker images
