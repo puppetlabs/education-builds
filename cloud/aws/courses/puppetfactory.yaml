@@ -1,7 +1,0 @@
----
-master:
-  ami: "ami-ecd9448c"
-  type: "m4.xlarge"
-  key_name: "training"
-  security_group_ids:
-    - "sg-f3b33794"
