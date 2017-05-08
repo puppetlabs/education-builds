@@ -31,12 +31,7 @@ if VM_TYPE == "ciab" then
   else
     NUM_WIN_VMS = 0
   end
-  if ENV['OFFLINE'] then
-    OFFLINE = true
-  else
-    OFFLINE = false
-  end
-  FACTER_VAR="FACTER_num_win_vms=#{NUM_WIN_VMS} FACTER_offline=#{OFFLINE}"
+  FACTER_VAR="FACTER_num_win_vms=#{NUM_WIN_VMS}"
 else
   FACTER_VAR=""
 end
@@ -240,9 +235,6 @@ end
 
 def apply_bootstrap
   cputs "Running puppet apply on #{VM_TYPE}.pp"
-  if (VM_TYPE == 'ciab') && (OFFLINE == true) then
-    system("PATH=$PATH:/opt/puppetlabs/puppet/bin #{FACTER_VAR} puppet apply --detailed-exitcodes --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/ciab_offline.pp")
-  end
   system("PATH=$PATH:/opt/puppetlabs/puppet/bin #{FACTER_VAR} puppet apply --detailed-exitcodes --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/#{VM_TYPE}.pp")
   if ($?.exitstatus != 0) && ($?.exitstatus != 2)
     raise "Puppet failed with exit status #{$?.exitstatus}"
