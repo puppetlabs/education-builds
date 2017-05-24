@@ -33,13 +33,7 @@ def create_base_environment(name, base_template, base_memory, base_cpus)
   }
   env_info = JSON.parse(RestClient.post(CONFIGURATION_URL, JSON.generate(env_config), HEADERS))
   env_info['vms'].each do |vm|
-    vm_change = {
-      "hardware" => {
-        "ram" => base_memory,
-        "cpus" => base_cpus
-      }
-    }
-    RestClient.put(URL + "vms/#{vm['id']}.json", JSON.generate(vm_change), HEADERS)
+    set_vm_resources(vm, base_memory, base_cpus)
   end
   return env_info
 end
@@ -70,6 +64,17 @@ def set_domain(environment, domain_name)
   RestClient.put( CONFIGURATION_URL + environment['id'] + '/networks/' + environment['networks'][0]['id'], { 'name' => domain_name }, HEADERS)
   RestClient.get( CONFIGURATION_URL + environment['id'] + '/networks/' + environment['networks'][0]['id'], HEADERS)
   puts "  Network complete" if DEBUG_OUTPUT
+end
+
+def set_vm_resources(vm, base_memory, base_cpus)
+  puts "  Setting VM resources " + domain_name if DEBUG_OUTPUT
+  vm_change = {
+    "hardware" => {
+      "ram" => base_memory,
+      "cpus" => base_cpus
+    }
+  }
+  RestClient.put(URL + "vms/#{vm['id']}.json", JSON.generate(vm_change), HEADERS)
 end
 
 def map_vm_ports(vm,ports)
@@ -137,6 +142,7 @@ environment['vms'].each do |vm|
   else
     student_name = students.pop
     set_vm_name(vm,student_name)
+    set_vm_resources(vm, classroom['student_memory'], classroom['student_cpus'])
     map_vm_ports(vm,classroom['student_ports'])
     # Add only Student VMs to student publish set
     student_vms.push( { 'vm_ref' => URL + 'vms/' + vm['id'], 'access' => 'use' } )
