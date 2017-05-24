@@ -21,3 +21,9 @@ mod 'dockeragent',
   :git => 'https://github.com/puppetlabs/pltraining-dockeragent'
 
 mod 'garethr/docker'
+mod 'puppetlabs/stdlib'
+mod 'puppetlabs/apt'
+mod 'stahnma/epel'
+mod 'hunner/wordpress'
+mod 'puppetlabs/apache'
+mod 'puppetlabs/concat'
