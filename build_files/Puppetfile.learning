@@ -22,8 +22,8 @@ mod 'dockeragent',
 
 mod 'garethr/docker'
 mod 'puppetlabs/stdlib'
-mod 'puppetlabs/apt'
+mod 'puppetlabs/apt', '2.4.0'
 mod 'stahnma/epel'
 mod 'hunner/wordpress'
 mod 'puppetlabs/apache'
-mod 'puppetlabs/concat'
+mod 'puppetlabs/concat', '2.2.0'
