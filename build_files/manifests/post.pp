@@ -4,7 +4,7 @@ exec { 'yum -y update':
 }
 
 # Disable non-local yum repos
-yumrepo { [ 'updates', 'base', 'extras', 'epel']:
+yumrepo { [ 'updates', 'base', 'extras', 'epel', 'docker']:
   enabled             => '0',
   priority            => '99',
   skip_if_unavailable => '1',
