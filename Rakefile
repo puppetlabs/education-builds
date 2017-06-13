@@ -159,6 +159,8 @@ def call_packer(template, args={}, var_file=nil)
     while (line = io.gets) do
       puts line
     end
+    io.close
+    fail "ERROR: packer build failed" unless $?.success?
   end
 end
 
