@@ -11,9 +11,9 @@ master_ports:
   - 3000
   - 9090
   - 9091
-student_template_id: 791817
+student_template_id: 1061377
 student_vm_id:
-  - 9645730
+  - 18922698
 student_memory: 1024
 student_cpus: 1
 student_ports:
