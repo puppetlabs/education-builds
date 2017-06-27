@@ -306,6 +306,13 @@ def vm_path(vm_type)
 end
 
 def zip_learning_vm
+  if File.exist?(vm_path("learning"))
+    unless ENV['AUTOMATED_BUILD'] == 'true' 
+      puts "#{vm_path("learning")} already exists. Do you want to replace it? Y/n"
+      raise "Cancelled" if [ 'n', 'no' ].include? STDIN.gets.strip.downcase
+    end
+    `rm #{vm_path("learning")}`
+  end
   puts "Compressing Learning VM..."
   `zip -jrds 100  #{vm_path("learning")} /tmp/learning_puppet_vm/`
 end
