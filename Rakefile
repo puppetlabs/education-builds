@@ -299,7 +299,7 @@ end
 
 def vm_path(vm_type)
   if vm_type == 'learning'
-    './output/learning_puppet_vm.zip'
+    "./output/learning_puppet_vm-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}.zip"
   else
     "./output/puppet-#{pe_version}-#{vm_type}-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}.ova"
   end
