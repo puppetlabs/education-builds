@@ -80,4 +80,3 @@ mod 'unibet/vagrant'
 # Dependencies for userprefs
 mod 'puppetlabs/chocolatey'
 mod 'puppetlabs/registry'
-mod 'stahnma/epel'
