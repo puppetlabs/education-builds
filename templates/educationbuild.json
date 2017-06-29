@@ -68,6 +68,6 @@
     "vm_disk_size": "20480",
     "vm_cores": "2",
     "stable": "true",
-    "ptb_version": "5.15"
+    "ptb_version": "6.0"
   }
 }

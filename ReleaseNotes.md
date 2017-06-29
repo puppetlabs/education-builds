@@ -1,3 +1,8 @@
+## Version 6.0
+* Changes to learning VM build artifact name
+* Updates to skytap templates
+* Stop using localrepo for cached packages
+
 ## Version 5.14
 * Classroom in a box build
 * update to PE 2017.1.1
