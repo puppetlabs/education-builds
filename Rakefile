@@ -174,6 +174,8 @@ def template_file(build_type)
     File.join(template_dir, 'educationbase.json')
   when 'build'
     File.join(template_dir, 'educationbuild.json')
+  when 'test'
+    File.join(template_dir, 'educationtest.json')
   when 'student'
     File.join(template_dir, 'student.json')
   when 'ami'
@@ -463,6 +465,11 @@ desc "Learning VM build"
 task :learning_build do
   build_vm('build', 'learning')
   box_to_ova('learning')
+end
+
+desc "Learning VM test"
+task :learning_test do
+  build_vm('test', 'learning')
 end
 
 desc "Demo VM base build"
