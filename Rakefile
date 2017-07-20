@@ -469,7 +469,7 @@ end
 
 desc "Learning VM test"
 task :learning_test do
-  build_vm('test', 'learning')
+  call_packer(template_file('test'), packer_args, var_file('learning'))
 end
 
 desc "Demo VM base build"
