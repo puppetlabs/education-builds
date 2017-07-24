@@ -11,9 +11,11 @@ instructorwin:
   key_name: "training"
   security_group_ids:
     - "sg-688b120f"
+    - "sg-db63e0be"
 student:
   ami: "ami-2d3f141d"
   type: "t2.micro"
   key_name: "training"
   security_group_ids:
     - "sg-688b120f"
+    - "sg-db63e0be"
