@@ -6,9 +6,8 @@ master:
   security_group_ids:
     - "sg-688b120f"
 student:
-  ami: "ami-2d3f141d"
+  ami: "ami-2051b840"
   type: "t2.micro"
   key_name: "training"
   security_group_ids:
     - "sg-688b120f"
-    - "sg-db63e0be"
