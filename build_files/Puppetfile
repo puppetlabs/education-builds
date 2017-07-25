@@ -71,6 +71,7 @@ mod 'jfryman/selinux'
 mod 'binford2k/abalone'
 mod 'garethr/docker'
 mod 'razorsedge/network'
+mod 'puppet/archive'
 
 # Dependencies for CIAB
 mod 'puppetlabs/firewall'
