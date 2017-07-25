@@ -6,14 +6,14 @@ master:
   security_group_ids:
     - "sg-688b120f"
 instructorwin:
-  ami: "ami-2d3f141d"
+  ami: "ami-e8f6ed91"
   type: "t2.micro"
   key_name: "training"
   security_group_ids:
     - "sg-688b120f"
     - "sg-db63e0be"
 student:
-  ami: "ami-2d3f141d"
+  ami: "ami-e8f6ed91"
   type: "t2.micro"
   key_name: "training"
   security_group_ids:
