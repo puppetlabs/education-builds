@@ -277,26 +277,26 @@ def strip_version_include(string)
   string.split("\n")[1..-1].join("\n")
 end
 
-def troubleshooting_string
-  open('https://raw.githubusercontent.com/puppetlabs/puppet-quest-guide/master/troubleshooting.md')
+def troubleshooting_string(locale)
+  open("https://raw.githubusercontent.com/puppetlabs/puppet-quest-guide/master/#{locale}/troubleshooting.md")
     .read
 end
 
-def setup_string
-  open('https://raw.githubusercontent.com/puppetlabs/puppet-quest-guide/master/SETUP.md')
+def setup_string(locale)
+  open("https://raw.githubusercontent.com/puppetlabs/puppet-quest-guide/master/#{locale}/SETUP.md")
     .read
 end
 
-def readme_markdown
-  strip_version_include(setup_string) + "\n" + strip_version_include(troubleshooting_string)
+def readme_markdown(locale)
+  strip_version_include(setup_string(locale)) + "\n" + strip_version_include(troubleshooting_string(locale))
 end
 
-def readme_rtf
-  PandocRuby.new(readme_markdown, :standalone).to_rtf
+def readme_rtf(locale)
+  PandocRuby.new(readme_markdown(locale), :standalone).to_rtf
 end
 
-def write_readme
-  File.write('/tmp/learning_puppet_vm/readme.rtf', readme_rtf)
+def write_readme(locale)
+  File.write("/tmp/learning_puppet_vm/readme_#{locale}.rtf", readme_rtf(locale))
 end
 
 def vm_path(vm_type)
@@ -331,7 +331,8 @@ end
 def bundle_learning_vm
   make_learning_vm_dir
   copy_ova_to_dir
-  write_readme
+  write_readme('us_en')
+  write_readme('ja_jp')
   zip_learning_vm
   create_md5("learning")
 end
