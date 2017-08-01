@@ -1,0 +1,21 @@
+---
+master:
+  ami: "ami-ab76eccb"
+  type: "m4.xlarge"
+  key_name: "training"
+  security_group_ids:
+    - "sg-f3b33794"
+instructorwin:
+  ami: "ami-e8f6ed91"
+  type: "t2.micro"
+  key_name: "training"
+  security_group_ids:
+    - "sg-688b120f"
+    - "sg-db63e0be"
+student:
+  ami: "ami-e8f6ed91"
+  type: "t2.micro"
+  key_name: "training"
+  security_group_ids:
+    - "sg-688b120f"
+    - "sg-db63e0be"
