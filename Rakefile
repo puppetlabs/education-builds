@@ -440,6 +440,11 @@ task :training_ami do
   build_vm('ami', 'training')
 end
 
+desc "Training Test"
+task :training_test do
+  puts "No tests implemented for training"
+end
+
 desc "Master VM base build"
 task :master_base => [:cache_pe_installer] do
   build_vm('base', 'master')
@@ -455,6 +460,11 @@ end
 desc "Master AMI build"
 task :master_ami do
   build_vm('ami', 'master')
+end
+
+desc "Master Test"
+task :master_test do
+  puts "No tests implemented for master"
 end
 
 desc "Learning VM base build"
@@ -489,6 +499,11 @@ task :student_build do
   build_vm('student', 'student')
   box_to_ova('student')
   create_md5("student")
+end
+
+desc "Student Test"
+task :student_test do
+  puts "No tests implemented for student"
 end
 
 desc "Package learning VM"
