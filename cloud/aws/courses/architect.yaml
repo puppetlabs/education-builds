@@ -1,24 +1,24 @@
 ---
 master:
-  ami: "ami-ab76eccb"
+  ami: "ami-f130d789"
   type: "m4.xlarge"
   key_name: "training"
   security_group_ids:
     - "sg-3004c848"
 student:
-  ami: "ami-9e118cfe"
+  ami: "ami-673cdb1f"
   type: "m3.large"
   key_name: "training"
   security_group_ids:
     - "sg-3004c848"
 proxy:
-  ami: "ami-9e118cfe"
+  ami: "ami-673cdb1f"
   type: "m3.large"
   key_name: "training"
   security_group_ids:
     - "sg-3004c848"
 instructor:
-  ami: "ami-9e118cfe"
+  ami: "ami-673cdb1f"
   type: "m3.large"
   key_name: "training"
   security_group_ids:
