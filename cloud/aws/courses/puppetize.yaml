@@ -11,8 +11,7 @@ instructorwin:
   key_name: "training"
   security_group_ids:
     - "sg-41ad373b"
-  subnet_id:
-    - "subnet-987484fe"
+  subnet_id: "subnet-987484fe"
 student:
   ami: "ami-e8f6ed91"
   type: "t2.micro"
