@@ -423,87 +423,22 @@ end
 #                #             
 ##################
 
-desc "Training VM base build"
-task :training_base => [:cache_pe_installer]do
-  build_vm('base', 'training')
+desc "Build VM"
+task :build, [:build_type, :vm_name] => [:cache_pe_installer] do |t, args|
+  build_vm(args[:build_type], args[:vm_name])
+  if args[:build_type] == 'build'
+    box_to_ova(args[:vm_name])
+    create_md5(args[:vm_name])
+  end
 end
 
-desc "Training VM build"
-task :training_build do
-  build_vm('build', 'training')
-  box_to_ova('training')
-  create_md5("training")
-end
-
-desc "Training AMI build"
-task :training_ami do
-  build_vm('ami', 'training')
-end
-
-desc "Training Test"
-task :training_test do
-  puts "No tests implemented for training"
-end
-
-desc "Master VM base build"
-task :master_base => [:cache_pe_installer] do
-  build_vm('base', 'master')
-end
-
-desc "Master VM build"
-task :master_build do
-  build_vm('build', 'master')
-  box_to_ova('master')
-  create_md5("master")
-end
-
-desc "Master AMI build"
-task :master_ami do
-  build_vm('ami', 'master')
-end
-
-desc "Master Test"
-task :master_test do
-  puts "No tests implemented for master"
-end
-
-desc "Learning VM base build"
-task :learning_base => [:cache_pe_installer] do
-  build_vm('base', 'learning')
-end
-
-desc "Learning VM build"
-task :learning_build do
-  build_vm('build', 'learning')
-  box_to_ova('learning')
-end
-
-desc "Learning VM test"
-task :learning_test do
-  call_packer(template_file('test'), packer_args, var_file('learning'))
-end
-
-desc "Demo VM base build"
-task :demo_base => [:cache_pe_installer] do
-  build_vm('base', 'demo')
-end
-
-desc "Demo VM build"
-task :demo_build do
-  build_vm('build', 'demo')
-  box_to_ova('demo')
-end
-
-desc "Student VM build"
-task :student_build do
-  build_vm('student', 'student')
-  box_to_ova('student')
-  create_md5("student")
-end
-
-desc "Student Test"
-task :student_test do
-  puts "No tests implemented for student"
+desc "Test VM"
+task :test, [:vm_name] do |t, args|
+  if args[:vm_name] == 'learning'
+    call_packer(template_file('test'), packer_args, var_file(args[:vm_name]))
+  else
+    puts "No tests implemented for #{args[:vm_name]}"
+  end
 end
 
 desc "Package learning VM"
@@ -517,24 +452,9 @@ task :package_learning do
   bundle_learning_vm
 end
 
-desc "Ship Learning VM"
-task :ship_learning do
-  ship_vm_files("learning")
-end
-
-desc "Ship Master VM"
-task :ship_master do
-  ship_vm_files("master")
-end
-
-desc "Ship Training VM"
-task :ship_training do
-  ship_vm_files("training")
-end
-
-desc "Ship Student VM"
-task :ship_student do
-  ship_vm_files("student")
+desc "Ship VM"
+task :ship, [:vm_name] do |t, args|
+  ship_vm_files(args[:vm_name])
 end
 
 desc "Create PR to release branch"
