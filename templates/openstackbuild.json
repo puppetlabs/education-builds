@@ -30,7 +30,7 @@
         "scripts/base.sh",
         "scripts/pre_build.sh",
         "scripts/rake_base.sh",
-        "scripts/rake_main.sh",
+        "scripts/rake_build.sh",
         "scripts/cleanup.sh",
         "scripts/rake_cleanup.sh"
       ],
