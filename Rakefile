@@ -98,17 +98,10 @@ def download_installer
   gzip_installer if PRE_RELEASE
 end
 
-def cache_directories
-  ["./file_cache/gems", "./file_cache/installers", "./output", "./packer_cache"]
-end
-
-def cache_directories_exist?
-  cache_directories.each{ |dir| return false unless File.exist?(dir) }
-  true
-end
-
 def create_cache_directories
-  FileUtils.mkdir_p(cache_directories)
+  ["./file_cache/gems", "./file_cache/installers", "./output", "./packer_cache"].each do |dir|
+    FileUtils.mkdir_p(dir)
+  end
 end
 
 def get_base_vm(image_type)
@@ -193,15 +186,6 @@ def var_file(vm_name)
   end
 end
 
-# This method isn't currently used.
-def output_dir(vm_name, build_type)
-  unless build_type == 'base'
-    File.join('./output/', "#{vm_name}-virtualbox")
-  else
-    File.join('./output/', "#{vm_name}-base-virtualbox")
-  end
-end
-
 def packer_args
   {
     'pe_version'  => pe_version,
@@ -261,15 +245,9 @@ end
 #                                          #             
 ############################################
 
-def ova_name
-  "puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}.ova"
-end
-
-def make_learning_vm_dir
+def package_learning
+  ova_name = "puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}.ova"
   `rm -rf /tmp/learning_puppet_vm && mkdir /tmp/learning_puppet_vm`
-end
-
-def copy_ova_to_dir
   `cp ./output/#{ova_name} /tmp/learning_puppet_vm/#{ova_name}`
 end
 
@@ -291,11 +269,8 @@ def readme_markdown(locale)
   strip_version_include(setup_string(locale)) + "\n" + strip_version_include(troubleshooting_string(locale))
 end
 
-def readme_rtf(locale)
-  PandocRuby.new(readme_markdown(locale), :standalone).to_rtf
-end
-
 def write_readme(locale)
+  PandocRuby.new(readme_markdown(locale), :standalone).to_rtf
   File.write("/tmp/learning_puppet_vm/readme_#{locale}.rtf", readme_rtf(locale))
 end
 
@@ -360,8 +335,6 @@ def ship_directory
   "/tmp/fileshare/EducationVMs/learning/puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}/"
 end
 
-
-
 def update_symlink
   Dir.chdir(ship_directory) do
     if PRE_RELEASE
@@ -393,7 +366,7 @@ end
 
 desc "Set up default cache dirctories"
 task :set_up_cache_dirs do
-  create_cache_directories unless cache_directories_exist?
+  create_cache_directories
 end
 
 # TODO Add a task to set up symlinks for file_cache, output, and packer_cache
