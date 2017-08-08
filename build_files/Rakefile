@@ -330,6 +330,7 @@ end
 def student_cleanup
   %x{yum clean all}
   %x{yum makecache}
+  %x{updatedb}
 end
 
 ##################
@@ -361,8 +362,8 @@ task :base do
   FileUtils.rm_rf('/usr/src/build_files')
 end
 
-desc "Main"
-task :main do
+desc "Build"
+task :build do
     install_r10k
     install_build_dependency_modules
     apply_bootstrap
@@ -379,7 +380,7 @@ task :main do
 end
 
 desc "Full"
-task :full => [:base, :main]
+task :full => [:build, :base]
 
 desc "Clean up"
 task :clean do
@@ -405,5 +406,5 @@ end
 desc "Update VM to latest build. Note: This will reset the root password to match the login screen"
 task :update do
   apply_pre_manifest
-  Rake::Task["main"].invoke
+  Rake::Task["build"].invoke
 end
