@@ -6,6 +6,7 @@ require 'r10k/puppetfile'
 PRE_RELEASE = ENV['PRE_RELEASE'] == 'true'
 PTB_VERSION = YAML.load_file('./build_files/version.yaml')
 STABLE = ENV['STABLE'] || 'false'
+GIT_BRANCH =  Dir.chdir(File.dirname(__FILE__)){ `git branch | grep \\* | cut -d ' ' -f2` }.strip
 
 FILESHARE_SERVER = '//guest@int-resources.ops.puppetlabs.net/Resources'
 STDOUT.sync = true
