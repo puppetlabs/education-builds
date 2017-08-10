@@ -398,16 +398,12 @@ end
 desc "Build AMI"
 task :build_ami, [:vm_name] => [:cache_pe_installer] do |t, args|
   build_vm('ami', args[:vm_name])
-  if args[:build_type] == 'build'
-    box_to_ova(args[:vm_name])
-    create_md5(args[:vm_name])
-  end
 end
 
 desc "Build base"
 task :build_base, [:vm_name] => [:cache_pe_installer] do |t, args|
   build_vm('base', args[:vm_name])
-  if args[:build_type] == 'build'
+  if args[:build_type] == 'main'
     box_to_ova(args[:vm_name])
     create_md5(args[:vm_name])
   end
@@ -416,10 +412,8 @@ end
 desc "Build main"
 task :build_main, [:vm_name] => [:cache_pe_installer] do |t, args|
   build_vm('main', args[:vm_name])
-  if args[:build_type] == 'build'
-    box_to_ova(args[:vm_name])
-    create_md5(args[:vm_name])
-  end
+  box_to_ova(args[:vm_name])
+  create_md5(args[:vm_name]) unless args[:vm_name] == 'learning'
 end
 
 desc "Test VM"
