@@ -362,8 +362,8 @@ task :base do
   FileUtils.rm_rf('/usr/src/build_files')
 end
 
-desc "Build"
-task :build do
+desc "Main"
+task :main do
     install_r10k
     install_build_dependency_modules
     apply_bootstrap
@@ -380,7 +380,7 @@ task :build do
 end
 
 desc "Full"
-task :full => [:build, :base]
+task :full => [:base, :main]
 
 desc "Clean up"
 task :clean do
@@ -406,5 +406,5 @@ end
 desc "Update VM to latest build. Note: This will reset the root password to match the login screen"
 task :update do
   apply_pre_manifest
-  Rake::Task["build"].invoke
+  Rake::Task["main"].invoke
 end
