@@ -235,8 +235,8 @@ def install_persistent_modules
 end
 
 def apply_bootstrap
-  cputs "Running puppet apply on #{VM_TYPE}.pp"
-  system("PATH=$PATH:/opt/puppetlabs/puppet/bin #{FACTER_VAR} puppet apply --detailed-exitcodes --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/#{VM_TYPE}.pp")
+  cputs "Running puppet apply -e 'include bootstrap::role::#{VM_TYPE}'"
+  system("PATH=$PATH:/opt/puppetlabs/puppet/bin #{FACTER_VAR} puppet apply --detailed-exitcodes --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose -e 'include bootstrap::role::#{VM_TYPE}'")
   if ($?.exitstatus != 0) && ($?.exitstatus != 2)
     raise "Puppet failed with exit status #{$?.exitstatus}"
   end
@@ -362,8 +362,8 @@ task :base do
   FileUtils.rm_rf('/usr/src/build_files')
 end
 
-desc "Build"
-task :build do
+desc "Main"
+task :main do
     install_r10k
     install_build_dependency_modules
     apply_bootstrap
@@ -380,7 +380,7 @@ task :build do
 end
 
 desc "Full"
-task :full => [:build, :base]
+task :full => [:base, :main]
 
 desc "Clean up"
 task :clean do
@@ -406,5 +406,5 @@ end
 desc "Update VM to latest build. Note: This will reset the root password to match the login screen"
 task :update do
   apply_pre_manifest
-  Rake::Task["build"].invoke
+  Rake::Task["main"].invoke
 end

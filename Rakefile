@@ -166,12 +166,10 @@ def template_file(build_type)
   case build_type
   when 'base'
     File.join(template_dir, 'educationbase.json')
-  when 'build'
-    File.join(template_dir, 'educationbuild.json')
+  when 'main'
+    File.join(template_dir, 'educationmain.json')
   when 'test'
     File.join(template_dir, 'educationtest.json')
-  when 'student'
-    File.join(template_dir, 'student.json')
   when 'ami'
     File.join(template_dir, 'awsbuild.json')
   else
@@ -397,9 +395,27 @@ end
 #                #             
 ##################
 
-desc "Build VM"
-task :build, [:build_type, :vm_name] => [:cache_pe_installer] do |t, args|
-  build_vm(args[:build_type], args[:vm_name])
+desc "Build AMI"
+task :build_ami, [:vm_name] => [:cache_pe_installer] do |t, args|
+  build_vm('ami', args[:vm_name])
+  if args[:build_type] == 'build'
+    box_to_ova(args[:vm_name])
+    create_md5(args[:vm_name])
+  end
+end
+
+desc "Build base"
+task :build_base, [:vm_name] => [:cache_pe_installer] do |t, args|
+  build_vm('base', args[:vm_name])
+  if args[:build_type] == 'build'
+    box_to_ova(args[:vm_name])
+    create_md5(args[:vm_name])
+  end
+end
+
+desc "Build main"
+task :build_main, [:vm_name] => [:cache_pe_installer] do |t, args|
+  build_vm('main', args[:vm_name])
   if args[:build_type] == 'build'
     box_to_ova(args[:vm_name])
     create_md5(args[:vm_name])
@@ -435,4 +451,3 @@ desc "Create PR to release branch"
 task :release do
   `hub pull-request -h puppetlabs/education-builds:master -b puppetlabs/education-builds:release`
 end
-
