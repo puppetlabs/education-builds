@@ -483,6 +483,12 @@ task :learning_test do
   call_packer(template_file('test'), packer_args, var_file('learning'))
 end
 
+desc "Learning AMI build"
+task :learning_ami do
+  build_vm('ami', 'learning')
+end
+
+
 desc "Demo VM base build"
 task :demo_base => [:cache_pe_installer] do
   build_vm('base', 'demo')
