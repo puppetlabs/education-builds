@@ -10,7 +10,7 @@ instructorwin:
   type: "t2.micro"
   key_name: "training"
   security_group_ids:
-    - "sg-41ad373b"
+    - "sg-5bec9621"
   subnet_id: "subnet-987484fe"
 student:
   ami: "ami-e8f6ed91"
