@@ -330,7 +330,6 @@ end
 def student_cleanup
   %x{yum clean all}
   %x{yum makecache}
-  %x{updatedb}
 end
 
 ##################
