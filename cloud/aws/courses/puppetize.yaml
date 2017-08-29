@@ -1,6 +1,6 @@
 ---
 master:
-  ami: "ami-f130d789"
+  ami: "ami-5490702c"
   type: "m4.xlarge"
   key_name: "training"
   security_group_ids:
@@ -10,12 +10,11 @@ instructorwin:
   type: "t2.micro"
   key_name: "training"
   security_group_ids:
-    - "sg-688b120f"
-    - "sg-db63e0be"
+    - "sg-5bec9621"
+  subnet_id: "subnet-987484fe"
 student:
   ami: "ami-e8f6ed91"
   type: "t2.micro"
   key_name: "training"
   security_group_ids:
-    - "sg-688b120f"
     - "sg-db63e0be"

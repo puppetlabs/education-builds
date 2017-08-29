@@ -1,7 +1,7 @@
 ---
 title: Windows Essentials
 domain_name: puppetlabs.vm
-master_template_id: 1037137
+master_template_id: 1108697
 master_memory: 8192
 master_cpus: 4
 master_name: master
