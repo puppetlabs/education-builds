@@ -5,6 +5,7 @@ require 'net/https'
 require 'rubygems'
 require 'yaml'
 require 'open-uri'
+require 'fileutils'
 
 STDOUT.sync = true
 BASEDIR = File.dirname(__FILE__)
@@ -17,7 +18,7 @@ STABLE = ENV['STABLE']
 hostname = `hostname -s`.chomp
 if ENV['VM_TYPE'] then
   VM_TYPE = ENV['VM_TYPE']
-elsif hostname =~ /^(master|training|learning|student|ciab|demo)$/ then
+elsif hostname =~ /^(master|training|learning|student|ciab)$/ then
   VM_TYPE = hostname
 else
   abort("ERROR: Unrecognized VM_TYPE parameter: #{VM_TYPE}")
@@ -234,8 +235,8 @@ def install_persistent_modules
 end
 
 def apply_bootstrap
-  cputs "Running puppet apply on #{VM_TYPE}.pp"
-  system("PATH=$PATH:/opt/puppetlabs/puppet/bin #{FACTER_VAR} puppet apply --detailed-exitcodes --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose ./manifests/#{VM_TYPE}.pp")
+  cputs "Running puppet apply -e 'include bootstrap::role::#{VM_TYPE}'"
+  system("PATH=$PATH:/opt/puppetlabs/puppet/bin #{FACTER_VAR} puppet apply --detailed-exitcodes --modulepath=./modules:/opt/puppetlabs/puppet/modules --verbose -e 'include bootstrap::role::#{VM_TYPE}'")
   if ($?.exitstatus != 0) && ($?.exitstatus != 2)
     raise "Puppet failed with exit status #{$?.exitstatus}"
   end
@@ -272,59 +273,63 @@ def apply_cleanup_manifest
   system('PATH=$PATH:/opt/puppetlabs/bin puppet apply --modulepath=./modules --verbose ./manifests/post.pp')
 end
 
-############################
-#                          #
-# Internal VM build tasks  #
-#                          #
-############################
-
-desc "Install puppet-agent for VM deployment"
-task :standalone_puppet_agent do
-  add_yum_repo
-  install_puppet_agent
+def create_access_token
+  %x{echo 'puppetlabs' | HOME=/root /opt/puppetlabs/bin/puppet-access login deployer --lifetime 365d}
 end
 
-desc "Host and networking configuration needed prior to installing PE"
-task :pre_install_setup do
-  set_hostname
-  edit_hosts
-  configure_network
-  download_installer unless VM_TYPE == "student"
+def wait_for_puppet
+  # Make sure it's ok to run puppet
+  puts "Waiting for Puppet Run to complete..."
+  while File.exist?('/opt/puppetlabs/puppet/cache/state/agent_catalog_run.lock') do
+    sleep 10
+  end
+  puts "Waiting for Puppet server to start..."
+  while (`curl -k -I https://localhost:8140/packages/ 2>/dev/null | grep "200 OK" > /dev/null`; ! $?.success?) do
+    sleep 10
+  end
+  puts "Initializing Puppet Server"
+  sleep 60
 end
 
-desc "Install PE Master"
-task :install_pe do
-  install_pe
+def stop_pe_processes
+  #Stop all PE processes to free up memory
+  %x{systemctl stop pe-*}
 end
 
-desc "Install and apply the bootstrap manifest corresponding to the VM type being built"
-task :build do
-  install_r10k
-  install_build_dependency_modules
-  apply_bootstrap
-  install_persistent_modules if File.exist?("./Puppetfile.#{VM_TYPE}")
+def remove_installer_files
+  FileUtils.rm_rf([
+    '/root/puppet-enterprise',
+    Dir.glob('/root/puppet-enterprise*'),
+    '/etc/yum.repos.d/puppet_enterprise.repo',
+    '/usr/src/installer'
+  ])
 end
 
-desc "Restore root password to match splash screen"
-task :restore_password do
-  `cat /var/local/password | passwd root --stdin`
+def remove_puppet_packages
+  FileUtils.rm_rf('/opt/puppet/packages')
 end
 
-desc "Update prep"
-task :update_pre do
-  apply_pre_manifest
+def remove_misc_files
+  FileUtils.rm_rf([
+    '/usr/src/education-builds',
+    '/usr/src/puppet',
+    Dir.glob('/usr/src/usr/share/doc/*'),
+    '/usr/src/kernels'
+  ])
 end
 
-desc "Post build cleanup"
-task :post do
-  set_vm_version_file
-  set_puppet_release_file
-  apply_cleanup_manifest
+def run_agent
+  %x{puppet agent -t}
 end
 
-desc "Uninstall Puppet"
-task :uninstall do
-  %x{yum -y remove puppet-agent}
+def set_puppet_config
+  %x{opt/puppet/bin/puppet config set certname #{hostname}}
+  %x{opt/puppet/bin/puppet config set server #{hostname}}
+end
+
+def student_cleanup
+  %x{yum clean all}
+  %x{yum makecache}
 end
 
 ##################
@@ -341,138 +346,64 @@ task :default do
         "To use this repo to provision a VM, refer to the files in the packer directory.\n"
 end
 
-desc "Standalone agent pre-build"
-task :standalone_agent_pre => [:standalone_puppet_agent, :pre_install_setup]
+desc "Base"
+task :base do
+  set_hostname
+  edit_hosts
+  configure_network
+  if ["learning", "master"].include? VM_TYPE
+    download_installer
+    install_pe
+  elsif ["student", "training", "ciab"].include? VM_TYPE
+    add_yum_repo
+    install_puppet_agent
+  end
+  FileUtils.rm_rf('/usr/src/build_files')
+end
 
-desc "Standalone agent build"
-task :standalone_agent_build => [:build, :post, :uninstall]
+desc "Main"
+task :main do
+    install_r10k
+    install_build_dependency_modules
+    apply_bootstrap
+    install_persistent_modules if File.exist?("./Puppetfile.#{VM_TYPE}")
+  if ["learning", "master", "student", "training"].include? VM_TYPE
+    create_access_token
+    set_vm_version_file
+    set_puppet_release_file
+    apply_cleanup_manifest
+  end
+  if ["student", "training"].include? VM_TYPE
+    %x{yum -y remove puppet-agent}
+  end
+end
 
-desc "Standalone agent full build"
-task :standalone_agent_full => [:standalone_agent_pre, :standalone_agent_build]
+desc "Full"
+task :full => [:base, :main]
 
-desc "PE Master pre-build"
-task :master_pre => [:pre_install_setup, :install_pe]
-
-desc "PE Master build"
-task :master_build => [:build, :post]
-
-desc "PE Master full build"
-task :master_full => [:master_pre, :master_build]
-
-desc "Classroom in a box pre build"
-task :ciab_pre => [:pre_install_setup, :standalone_puppet_agent]
-
-desc "Classroom in a box build"
-task :ciab_build => [:build]
-
-desc "Classroom in a box full build"
-task :ciab_full => [:ciab_pre, :ciab_build]
+desc "Clean up"
+task :clean do
+  if ["learning"].include? VM_TYPE
+    wait_for_puppet
+    run_agent
+  end
+  if ["lms","learning"].include? VM_TYPE
+    stop_pe_processes
+    remove_installer_files
+  end
+  if ["lms"].include? VM_TYPE
+    set_puppet_config
+    remove_puppet_packages
+    remove_misc_files
+  end
+  if ["student", "training"].include? VM_TYPE
+    student_cleanup
+  end
+  FileUtils.rm_rf('/usr/src/build_files')
+end
 
 desc "Update VM to latest build. Note: This will reset the root password to match the login screen"
-task :update => [:update_pre, :build, :restore_password]
-
-#########################################################
-#                                                       #
-# Packaging and Shipping things--Probably doesn't work! #
-#                                                       #
-#########################################################
-
-## The job that calls this needs to be tied to a builder with ovftool and the int-resources NFS export mounted.
-## Currently just pe-vm-builder-1
-desc "Package and ship a VM"
-task :ship do
-  vmname = ENV['VMNAME'].split(".").first || fail("VMNAME not set, usually set via a properties file from the build job")
-  cputs "Exporting #{vmname} from vSphere"
-  ovapath = retrieve_vm_as_ova(vmname)
-  ovaname = File.basename(ovapath)
-  cputs "Exporting #{ovaname} to vSphere as \"#{VMTYPE}\""
-  ship_vm_to_vmware(ovapath)
-  cputs "Copying #{ovaname} to int-resources"
-  ship_vm_to_dir(ovapath, "/mnt/nfs/EducationVMS/#{VMTYPE}")
-  cputs "#{ovaname} is now available at http://int-resources.ops.puppetlabs.net/EducationVMS/#{VMTYPE}/#{ovaname}"
+task :update do
+  apply_pre_manifest
+  Rake::Task["main"].invoke
 end
-
-def gitclone(source,destination,branch,tag = nil)
-  if File.directory?(destination) then
-    system("cd #{destination} && (git pull origin #{branch}") or raise(Error, "Cannot pull ${source}")
-  else
-    system("git clone #{source} #{destination} -b #{branch}") or raise(Error, "Cannot clone #{source}")
-    system("cd #{destination} && git checkout #{tag}") if tag
-  end
-end
-
-## Prompt for a response if a given ENV variable isn't set.
-#
-# args:
-#   message:  the message you want displayed
-#   varname:  the name of the environment variable to look for
-#
-# usage: update = env_prompt('Increment the release version? [Y/n]: ', 'RELEASE')
-def env_prompt(message, varname)
-  if ENV.include? varname
-    ans = ENV[varname]
-  else
-    cprint message
-    ans = STDIN.gets.strip
-  end
-  return ans
-end
-
-def verify_download(download, signature)
-  crypto = GPGME::Crypto.new
-  sign = GPGME::Data.new(File.open(signature))
-  file_to_check = GPGME::Data.new(File.open(download))
-  crypto.verify(sign, :signed_text => file_to_check, :always_trust => true) do |signature|
-   puts "Valid!" if signature.valid?
-  end
-end
-
-def retrieve_vm_as_ova(vmname)
-  ovaname = "puppet-#{PE_VERSION}-#{VMTYPE}vm-#{PTBVERSION[:major]}.#{PTBVERSION[:minor]}"
-  vcenter_config = File.join(CACHEDIR, ".vmwarecfg.yml") || ENV["VCENTER_CONFIG"]
-  vcenter_settings = YAML::load(File.open(vcenter_config))
-  FileUtils.rm_rf(OVFDIR) if File.directory?(OVFDIR)
-  FileUtils.mkdir_p(OVFDIR)
-  Dir.chdir(BUILDDIR) do
-    verbose(false) do
-      sh(%Q</usr/bin/ovftool --noSSLVerify --targetType=OVA --compress=9 --name=#{ovaname} --powerOffSource vi://#{vcenter_settings['username']}\\@puppetlabs.com:#{vcenter_settings['password']}@vmware-vc2.ops.puppetlabs.net/opdx2/vm/vmpooler/centos-6-i386/#{vmname}  #{OVFDIR}/>)
-    end
-  end
-  File.join(OVFDIR, ovaname) + ".ova"
-end
-
-def ship_vm_to_vmware(vmpath)
-  require 'rbvmomi'
-  vcenter_config = File.join(CACHEDIR, ".vmwarecfg.yml") || ENV["VCENTER_CONFIG"]
-  vcenter_settings = YAML::load(File.open(vcenter_config))
-  Dir.chdir(BUILDDIR) do
-    verbose(false) do
-      sh(%Q</usr/bin/ovftool --noSSLVerify --network='delivery' --datastore='instance1' -o --powerOffTarget -n=#{VMTYPE} #{vmpath} vi://#{vcenter_settings['username']}\@puppetlabs.com:#{vcenter_settings['password']}@vmware-vc2.ops.puppetlabs.net/opdx2/host/mac1>)
-    end
-  end
-  vim = RbVmomi::VIM.connect(
-    :host => 'vmware-vc2.ops.puppetlabs.net',
-    :user => "#{vcenter_settings['username']}\@puppetlabs.com",
-    :password => "#{vcenter_settings['password']}",
-    :insecure => 'true')
-  rootFolder = vim.serviceInstance.content.rootFolder
-  dc = rootFolder.childEntity.grep(RbVmomi::VIM::Datacenter).find { |x| x.name == "opdx2" } or fail "datacenter not found"
-  vm = dc.find_vm(VMTYPE) or fail "VM not found"
-  cputs "Powering on VM"
-  vm.PowerOnVM_Task.wait_for_completion
-  vm_ip = nil
-  5.times do
-    vm_ip = vm.guest_ip
-    cputs "#{VMTYPE} IP is #{vm_ip}"
-    break unless vm_ip == nil
-    sleep 60
-  end
-  fail "Did not receive an IP address" if vm_ip == nil
-end
-
-def ship_vm_to_dir(vmpath, destination)
-  FileUtils.cp(vmpath, destination)
-  FileUtils.chmod(0644, File.join(destination, File.basename(vmpath)))
-end
-
-# vim: set sw=2 sts=2 et tw=80 :

@@ -53,7 +53,7 @@
         "scripts/vbox.sh",
         "scripts/time.sh",
         "scripts/pre_build.sh",
-        "scripts/{{ user `vm_type` }}_pre_build.sh",
+        "scripts/rake_base.sh",
         "scripts/cleanup.sh"
       ],
       "type": "shell"
