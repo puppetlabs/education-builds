@@ -50,8 +50,7 @@
         "scripts/base.sh",
         "scripts/pre_build.sh",
         "scripts/rake_full.sh",
-        "scripts/cleanup.sh",
-        "scripts/rake_cleanup.sh"
+        "scripts/cleanup.sh"
       ],
       "type": "shell"
     }
