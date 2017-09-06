@@ -358,7 +358,6 @@ task :base do
     add_yum_repo
     install_puppet_agent
   end
-  FileUtils.rm_rf('/usr/src/build_files')
 end
 
 desc "Main"
