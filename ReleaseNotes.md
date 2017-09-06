@@ -1,3 +1,19 @@
+## Version 6.1
+* Japanese i18n for learning VM
+* Automated tests for LVM
+* Puppetfile cleanup and pinning modules
+* Script for getting details from running skytap classroom
+* Build script improvements and cleanup
+* CIAB improvmenets
+* Disable http proxy for 2017.2.2
+* Use bootstrap::profile::cache_rpms instead of localrepo for yum cache
+* Precache dockeragent images
+* Clean up gem cache
+* Gitea version bump
+* Guacamole improvments
+* Cleanup of old LVM cruft
+* Stop using stickler
+
 ## Version 5.14
 * Classroom in a box build
 * update to PE 2017.1.1

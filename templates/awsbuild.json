@@ -49,9 +49,8 @@
       "scripts": [
         "scripts/base.sh",
         "scripts/pre_build.sh",
-        "scripts/{{user `vm_type`}}_full.sh",
-        "scripts/cleanup.sh",
-        "scripts/{{user `vm_type`}}_cleanup.sh"
+        "scripts/rake_full.sh",
+        "scripts/cleanup.sh"
       ],
       "type": "shell"
     }

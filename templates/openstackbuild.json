@@ -29,10 +29,10 @@
       "scripts": [
         "scripts/base.sh",
         "scripts/pre_build.sh",
-        "scripts/{{user `vm_type`}}_pre_build.sh",
-        "scripts/{{user `vm_type`}}_build.sh",
+        "scripts/rake_base.sh",
+        "scripts/rake_main.sh",
         "scripts/cleanup.sh",
-        "scripts/{{user `vm_type`}}_cleanup.sh"
+        "scripts/rake_cleanup.sh"
       ],
       "type": "shell"
     }

@@ -6,6 +6,7 @@ require 'r10k/puppetfile'
 PRE_RELEASE = ENV['PRE_RELEASE'] == 'true'
 PTB_VERSION = YAML.load_file('./build_files/version.yaml')
 STABLE = ENV['STABLE'] || 'false'
+GIT_BRANCH =  Dir.chdir(File.dirname(__FILE__)){ `git branch | grep \\* | cut -d ' ' -f2` }.strip
 
 FILESHARE_SERVER = '//guest@int-resources.ops.puppetlabs.net/Resources'
 STDOUT.sync = true
@@ -98,17 +99,10 @@ def download_installer
   gzip_installer if PRE_RELEASE
 end
 
-def cache_directories
-  ["./file_cache/gems", "./file_cache/installers", "./output", "./packer_cache"]
-end
-
-def cache_directories_exist?
-  cache_directories.each{ |dir| return false unless File.exist?(dir) }
-  true
-end
-
 def create_cache_directories
-  FileUtils.mkdir_p(cache_directories)
+  ["./file_cache/gems", "./file_cache/installers", "./output", "./packer_cache"].each do |dir|
+    FileUtils.mkdir_p(dir)
+  end
 end
 
 def get_base_vm(image_type)
@@ -172,12 +166,10 @@ def template_file(build_type)
   case build_type
   when 'base'
     File.join(template_dir, 'educationbase.json')
-  when 'build'
-    File.join(template_dir, 'educationbuild.json')
+  when 'main'
+    File.join(template_dir, 'educationmain.json')
   when 'test'
     File.join(template_dir, 'educationtest.json')
-  when 'student'
-    File.join(template_dir, 'student.json')
   when 'ami'
     File.join(template_dir, 'awsbuild.json')
   else
@@ -190,15 +182,6 @@ def var_file(vm_name)
     nil
   else
     File.join(template_dir, "#{vm_name}.json")
-  end
-end
-
-# This method isn't currently used.
-def output_dir(vm_name, build_type)
-  unless build_type == 'base'
-    File.join('./output/', "#{vm_name}-virtualbox")
-  else
-    File.join('./output/', "#{vm_name}-base-virtualbox")
   end
 end
 
@@ -261,15 +244,9 @@ end
 #                                          #             
 ############################################
 
-def ova_name
-  "puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}.ova"
-end
-
-def make_learning_vm_dir
+def package_learning
+  ova_name = "puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}.ova"
   `rm -rf /tmp/learning_puppet_vm && mkdir /tmp/learning_puppet_vm`
-end
-
-def copy_ova_to_dir
   `cp ./output/#{ova_name} /tmp/learning_puppet_vm/#{ova_name}`
 end
 
@@ -291,11 +268,8 @@ def readme_markdown(locale)
   strip_version_include(setup_string(locale)) + "\n" + strip_version_include(troubleshooting_string(locale))
 end
 
-def readme_rtf(locale)
-  PandocRuby.new(readme_markdown(locale), :standalone).to_rtf
-end
-
 def write_readme(locale)
+  PandocRuby.new(readme_markdown(locale), :standalone).to_rtf
   File.write("/tmp/learning_puppet_vm/readme_#{locale}.rtf", readme_rtf(locale))
 end
 
@@ -360,8 +334,6 @@ def ship_directory
   "/tmp/fileshare/EducationVMs/learning/puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}/"
 end
 
-
-
 def update_symlink
   Dir.chdir(ship_directory) do
     if PRE_RELEASE
@@ -393,7 +365,7 @@ end
 
 desc "Set up default cache dirctories"
 task :set_up_cache_dirs do
-  create_cache_directories unless cache_directories_exist?
+  create_cache_directories
 end
 
 # TODO Add a task to set up symlinks for file_cache, output, and packer_cache
@@ -423,87 +395,34 @@ end
 #                #             
 ##################
 
-desc "Training VM base build"
-task :training_base => [:cache_pe_installer]do
-  build_vm('base', 'training')
+desc "Build AMI"
+task :build_ami, [:vm_name] => [:cache_pe_installer] do |t, args|
+  build_vm('ami', args[:vm_name])
 end
 
-desc "Training VM build"
-task :training_build do
-  build_vm('build', 'training')
-  box_to_ova('training')
-  create_md5("training")
+desc "Build base"
+task :build_base, [:vm_name] => [:cache_pe_installer] do |t, args|
+  build_vm('base', args[:vm_name])
+  if args[:build_type] == 'main'
+    box_to_ova(args[:vm_name])
+    create_md5(args[:vm_name])
+  end
 end
 
-desc "Training AMI build"
-task :training_ami do
-  build_vm('ami', 'training')
+desc "Build main"
+task :build_main, [:vm_name] => [:cache_pe_installer] do |t, args|
+  build_vm('main', args[:vm_name])
+  box_to_ova(args[:vm_name])
+  create_md5(args[:vm_name]) unless args[:vm_name] == 'learning'
 end
 
-desc "Training Test"
-task :training_test do
-  puts "No tests implemented for training"
-end
-
-desc "Master VM base build"
-task :master_base => [:cache_pe_installer] do
-  build_vm('base', 'master')
-end
-
-desc "Master VM build"
-task :master_build do
-  build_vm('build', 'master')
-  box_to_ova('master')
-  create_md5("master")
-end
-
-desc "Master AMI build"
-task :master_ami do
-  build_vm('ami', 'master')
-end
-
-desc "Master Test"
-task :master_test do
-  puts "No tests implemented for master"
-end
-
-desc "Learning VM base build"
-task :learning_base => [:cache_pe_installer] do
-  build_vm('base', 'learning')
-end
-
-desc "Learning VM build"
-task :learning_build do
-  build_vm('build', 'learning')
-  box_to_ova('learning')
-end
-
-desc "Learning VM test"
-task :learning_test do
-  call_packer(template_file('test'), packer_args, var_file('learning'))
-end
-
-desc "Demo VM base build"
-task :demo_base => [:cache_pe_installer] do
-  build_vm('base', 'demo')
-end
-
-desc "Demo VM build"
-task :demo_build do
-  build_vm('build', 'demo')
-  box_to_ova('demo')
-end
-
-desc "Student VM build"
-task :student_build do
-  build_vm('student', 'student')
-  box_to_ova('student')
-  create_md5("student")
-end
-
-desc "Student Test"
-task :student_test do
-  puts "No tests implemented for student"
+desc "Test VM"
+task :test, [:vm_name] do |t, args|
+  if args[:vm_name] == 'learning'
+    call_packer(template_file('test'), packer_args, var_file(args[:vm_name]))
+  else
+    puts "No tests implemented for #{args[:vm_name]}"
+  end
 end
 
 desc "Package learning VM"
@@ -517,28 +436,12 @@ task :package_learning do
   bundle_learning_vm
 end
 
-desc "Ship Learning VM"
-task :ship_learning do
-  ship_vm_files("learning")
-end
-
-desc "Ship Master VM"
-task :ship_master do
-  ship_vm_files("master")
-end
-
-desc "Ship Training VM"
-task :ship_training do
-  ship_vm_files("training")
-end
-
-desc "Ship Student VM"
-task :ship_student do
-  ship_vm_files("student")
+desc "Ship VM"
+task :ship, [:vm_name] do |t, args|
+  ship_vm_files(args[:vm_name])
 end
 
 desc "Create PR to release branch"
 task :release do
   `hub pull-request -h puppetlabs/education-builds:master -b puppetlabs/education-builds:release`
 end
-
