@@ -15,7 +15,7 @@
 
 1. The flash drive should now be mounted on the directory `/Volumes/CIAB`.
     
-1. Download the following CentOS ISO: [CentOS-7-x86_64-Everything-1611.iso](http://vault.centos.org/7.3.1611/isos/x86_64/CentOS-7-x86_64-Everything-1611.iso)
+1. Download the following CentOS ISO: [CentOS-7-x86_64-Everything-1611.iso](http://archive.kernel.org/centos-vault/7.3.1611/isos/x86_64/CentOS-7-x86_64-Everything-1611.iso)
 
 1. Attach the ISO file as a disk device but don't mount:  
     `hdiutil attach -nomount CentOS-7-x86_64-Everything-1611.iso`
