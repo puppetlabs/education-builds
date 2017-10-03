@@ -9,7 +9,13 @@
       "ssh_keypair_name": "training",
       "ssh_private_key_file": "{{ user `ssh_key` }}",
       "ami_name": "Selfpaced-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{isotime \"Jan02-0304\" }}",
-      "ssh_pty": "true"
+      "ssh_pty": "true",
+      "run_tags":  {
+        "created_by": "eduteam",
+        "department": "EDU",
+        "project": "vm_publish",
+        "lifetime": "3h"
+      }
     }
   ],
   "provisioners": [
