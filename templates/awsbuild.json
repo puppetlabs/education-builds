@@ -7,7 +7,13 @@
       "instance_type": "m3.large",
       "ssh_username": "centos",
       "ami_name": "PE-{{user `pe_version`}}-{{ user `vm_type`}}-{{ user `ptb_version`}}-{{isotime \"Jan02-0304\" }}",
-      "ssh_pty": "true"
+      "ssh_pty": "true",
+      "run_tags":  {
+        "created_by": "eduteam",
+        "department": "EDU",
+        "project": "vm_publish",
+        "lifetime": "1h"
+      }
     }
   ],
   "provisioners": [
