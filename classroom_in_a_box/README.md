@@ -58,6 +58,9 @@
 1. Copy the grub.cfg to the USB drive:  
     `cp EFI/BOOT/grub.cfg /Volumes/CIAB/EFI/BOOT/grub.cfg`
     
-1. Eject the flash drive, insert it into the NUC, and power on the NUC. If prompted, press `F10` to display the boot menu and select the flash drive as the boot device. From here, the installation should continue unattended, and after 60-90 minutes, the NUC should be configured as a "Classroom in a Box" machine.
+1. Eject the flash drive, insert it into the NUC, and power on the NUC. When prompted, press `F10` to display the boot menu and select the flash drive as the boot device.
+   Make sure to select the `UEFI: USB` option and not the `USB` option; the second will cause an issue where on reboot it restarts the installation process.
+
+1. The installation process will take approximately 60-90 minutes.  At the end, it may boot to a screen that looks like an error with one of the controllers.  This is not an error.  It is actually looking for you to accept the user agreement.  Press `2` to accept the agreement then `c` to continue as many times as necessary.
 
 1. At the end of the installation process, the NUC will reboot and display a login screen that includes the root password. You may also log in with the default username `training` and the default password `training`.
