@@ -6,19 +6,19 @@ master:
   security_group_ids:
     - "sg-3004c848"
 student:
-  ami: "ami-e3e61c9b"
+  ami: "ami-cd5fa5b5"
   type: "m3.large"
   key_name: "training"
   security_group_ids:
     - "sg-3004c848"
 proxy:
-  ami: "ami-e3e61c9b"
+  ami: "ami-cd5fa5b5"
   type: "m3.large"
   key_name: "training"
   security_group_ids:
     - "sg-3004c848"
 instructor:
-  ami: "ami-e3e61c9b"
+  ami: "ami-cd5fa5b5"
   type: "m3.large"
   key_name: "training"
   security_group_ids:
