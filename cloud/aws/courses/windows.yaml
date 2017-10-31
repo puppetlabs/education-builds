@@ -4,7 +4,7 @@ master:
   type: "m4.xlarge"
   key_name: "training"
   security_group_ids:
-    - "sg-688b120f"
+    - "sg-f3b33794"
 instructorwin:
   ami: "ami-e8f6ed91"
   type: "t2.medium"
