@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "file_format": "This MAINTAINERS file format is described at http://pup.pt/maintainers",
+  "issues": "https://tickets.puppetlabs.com/projects/TRAINTECH/issues/",
+  "people": [
+    {
+      "github": "binford2k",
+      "email": "ben.ford@puppet.com",
+      "name": "Ben Ford"
+    },
+    {
+      "github": "carthik",
+      "email": "carthik@puppet.com",
+      "name": "Carthik Sharma"
+    },
+    {
+      "github": "kjhenner",
+      "email": "kevin@puppet.com",
+      "name": "Kevin Henner"
+    }
+  ]
+}
