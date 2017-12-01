@@ -74,6 +74,7 @@ mod 'garethr/docker'
 mod 'razorsedge/network'
 mod 'puppet/archive'
 mod 'puppetlabs/powershell'
+mod 'saz/sudo'
 
 # Dependencies for CIAB
 mod 'puppetlabs/firewall'
