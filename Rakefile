@@ -269,8 +269,8 @@ def readme_markdown(locale)
 end
 
 def write_readme(locale)
-  PandocRuby.new(readme_markdown(locale), :standalone).to_rtf
-  File.write("/tmp/learning_puppet_vm/readme_#{locale}.rtf", readme_rtf(locale))
+  readme_rtf = PandocRuby.new(readme_markdown(locale), :standalone).to_rtf
+  File.write("/tmp/learning_puppet_vm/readme_#{locale}.rtf", readme_rtf)
 end
 
 def vm_path(vm_type)
@@ -303,8 +303,7 @@ def create_md5(vm_type)
 end
 
 def bundle_learning_vm
-  make_learning_vm_dir
-  copy_ova_to_dir
+  package_learning
   write_readme('us_en')
   write_readme('ja_jp')
   zip_learning_vm
