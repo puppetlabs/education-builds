@@ -164,3 +164,6 @@ publish_all_vms = create_publish_set( environment['id'], all_vms, 'Instructor Da
 
 # Output the student URLs
 puts output_classroom(environment['id']).to_yaml
+  
+STDERR.puts "Don't forget to ensure that auto-suspend is disabled!"
+  
