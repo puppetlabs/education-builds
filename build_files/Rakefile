@@ -300,6 +300,7 @@ def remove_installer_files
   FileUtils.rm_rf([
     '/root/puppet-enterprise',
     Dir.glob('/root/puppet-enterprise*'),
+    Dir.glob('/tmp/*'),
     '/etc/yum.repos.d/puppet_enterprise.repo',
     '/usr/src/installer'
   ])
