@@ -6,21 +6,21 @@ master:
   security_group_ids:
     - "sg-f3b33794"
 instructorwin:
-  ami: "ami-76b81d0e"
+  ami: "ami-d405a0ac"
   type: "t2.medium"
   key_name: "training"
   security_group_ids:
     - "sg-dc5409a6"
   subnet_id: "subnet-987484fe"
 adserver:
-  ami: "ami-76b81d0e"
+  ami: "ami-d405a0ac"
   type: "t2.medium"
   key_name: "training"
   security_group_ids:
     - "sg-dc5409a6"
   subnet_id: "subnet-987484fe"
 student:
-  ami: "ami-76b81d0e"
+  ami: "ami-d405a0ac"
   type: "t2.medium"
   key_name: "training"
   security_group_ids:
