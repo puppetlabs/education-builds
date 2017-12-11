@@ -304,7 +304,7 @@ end
 
 def bundle_learning_vm
   package_learning
-  write_readme('us_en')
+  write_readme('en_us')
   write_readme('ja_jp')
   zip_learning_vm
   create_md5("learning")
