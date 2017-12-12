@@ -12,8 +12,10 @@ You can access the classroom master using:
 Please distribute the Windows Administrator password to each
 student as needed:
 
-<% @event[:passwords].each do |password_hash| %>
-<%= password_hash['name'] %>: <%= password_hash['password'] %>
+<% @event[:passwords].each do |instance, password_data| -%>
+<% unless password_data['password'].nil? -%>
+<%= password_data['name'] -%>: <%= password_data['password'] -%>
+<% end -%>
 <% end -%>
 <% end -%>
 
