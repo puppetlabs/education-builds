@@ -1,0 +1,17 @@
+<% userid = 2 -%>
+<% instance_data.each do |instance, data| -%>
+<% username = data['username'] -%>
+<% fullname = data['fullname'] -%>
+<% unless username.nil? and fullname.nil? -%>
+INSERT INTO `guacamole_user` VALUES (<%= userid %>,'<%= username %>',0xF1347AFA9AD93643969902A31E3D43AC777283EDF57228E0969A12646B264708,0x77DDBEE7CBE3F3A39CA5609A244C6FEA9124F94224F2D2DC043AA4C428886387,'2017-12-18 20:03:34',0,1,NULL,NULL,NULL,NULL,NULL,'<%= fullname %>',NULL,NULL,NULL);
+INSERT INTO `guacamole_user_permission` VALUES (1,<%= userid %>,'READ');
+INSERT INTO `guacamole_user_permission` VALUES (1,<%= userid %>,'UPDATE');
+INSERT INTO `guacamole_user_permission` VALUES (1,<%= userid %>,'DELETE');
+INSERT INTO `guacamole_user_permission` VALUES (1,<%= userid %>,'ADMINISTER');
+INSERT INTO `guacamole_user_permission` VALUES (<%= userid %>,<%= userid %>,'READ');
+INSERT INTO `guacamole_user_permission` VALUES (<%= userid %>,<%= userid %>,'UPDATE');
+INSERT INTO `guacamole_connection_group_permission` VALUES (<%= userid %>,1,'READ');
+<% userid = userid + 1 -%>
+<% end -%>
+<% end -%>
+
