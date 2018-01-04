@@ -8,11 +8,11 @@ You can access the classroom master using:
   * Dashboard: <%= @event[:dashboard] %>
   * Zoom URL: <%= @event[:session_url] %>
 
-<% if @event[:passwords] and @event[:passwords].size > 0 -%>
+<% if @event[:instance_data] -%>
 Please distribute the Windows Administrator password to each
 student as needed:
 
-<% @event[:passwords].each do |instance, password_data| -%>
+<% @event[:instance_data].each do |instance, password_data| -%>
 <% unless password_data['password'].nil? -%>
 <%= password_data['name'] %>: <%= password_data['password'] %>
 <% end -%>
