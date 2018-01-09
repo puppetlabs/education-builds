@@ -7,13 +7,13 @@ master:
     - "sg-ee9abc89"
 lon-agent-1324:
   ami: "ami-86e0ffe7"
-  type: "t1.micro"
+  type: "t2.micro"
   key_name: "met"
   security_group_ids:
     - "sg-ee9abc89"
 pdx-agent-1743:
   ami: "ami-86e0ffe7"
-  type: "t1.micro"
+  type: "t2.micro"
   key_name: "met"
   security_group_ids:
     - "sg-ee9abc89"
