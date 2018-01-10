@@ -9,7 +9,6 @@ INSERT INTO `guacamole_user_permission` VALUES (1,<%= userid %>,'UPDATE');
 INSERT INTO `guacamole_user_permission` VALUES (1,<%= userid %>,'DELETE');
 INSERT INTO `guacamole_user_permission` VALUES (1,<%= userid %>,'ADMINISTER');
 INSERT INTO `guacamole_user_permission` VALUES (<%= userid %>,<%= userid %>,'READ');
-INSERT INTO `guacamole_user_permission` VALUES (<%= userid %>,<%= userid %>,'UPDATE');
 <% userid = userid + 1 -%>
 <% end -%>
 <% end -%>
