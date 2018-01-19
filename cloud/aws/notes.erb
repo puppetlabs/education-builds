@@ -9,12 +9,15 @@ You can access the classroom master using:
   * Zoom URL: <%= @event[:session_url] %>
 
 <% if @event[:instance_data] -%>
-Please distribute the Windows Administrator password to each
-student as needed:
+To log in to Windows instances, browse to https://thinrdp.classroom.puppet.com/
+
+Please distribute the Windows instance IP address and Administrator password
+to each student as needed. Enter them along with the Administrator username
+into the ThinRDP UI to log in to the student Windows instance.
 
 <% @event[:instance_data].each do |instance, password_data| -%>
 <% unless password_data['password'].nil? -%>
-<%= password_data['name'] %>: <%= password_data['password'] %>
+<%= password_data['name'] %>: <%= password_data['private_ip'] %> / <%= password_data['password'] %>
 <% end -%>
 <% end -%>
 <% end -%>
