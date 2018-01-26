@@ -363,10 +363,10 @@ end
 
 desc "Main"
 task :main do
-    install_r10k
-    install_build_dependency_modules
-    apply_bootstrap
-    install_persistent_modules if File.exist?("./Puppetfile.#{VM_TYPE}")
+  install_r10k
+  install_build_dependency_modules
+  apply_bootstrap
+  install_persistent_modules if File.exist?("./Puppetfile.#{VM_TYPE}")
   if ["learning", "master", "student", "training"].include? VM_TYPE
     create_access_token
     set_vm_version_file
