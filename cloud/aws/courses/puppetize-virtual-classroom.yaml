@@ -10,10 +10,10 @@ instructorwin:
   type: "t2.medium"
   key_name: "training"
   security_group_ids:
-    - "sg-4d3f2b31"
+    - "sg-f3b33794"
 student:
   ami: "ami-6a14b112"
   type: "t2.medium"
   key_name: "training"
   security_group_ids:
-    - "sg-4d3f2b31"
+    - "sg-f3b33794"
