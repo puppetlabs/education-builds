@@ -9,12 +9,13 @@ You can access the classroom master using:
   * Zoom URL: <%= @event[:session_url] %>
 
 <% if @event[:instance_data] -%>
-Please distribute the Windows Administrator password to each
-student as needed:
+Please distribute the Windows instance IP address and Administrator password
+to each student as needed. To log in to a Windows instance, open an RDP client
+and enter the listed IP address.
 
 <% @event[:instance_data].each do |instance, password_data| -%>
 <% unless password_data['password'].nil? -%>
-<%= password_data['name'] %>: <%= password_data['password'] %>
+<%= password_data['name'] %>: <%= password_data['public_ip'] %> / <%= password_data['password'] %>
 <% end -%>
 <% end -%>
 <% end -%>

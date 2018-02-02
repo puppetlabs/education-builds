@@ -10,19 +10,16 @@ instructorwin:
   type: "t2.medium"
   key_name: "training"
   security_group_ids:
-    - "sg-dc5409a6"
-  subnet_id: "subnet-987484fe"
+    - "sg-f3b33794"
 adserver:
   ami: "ami-6a14b112"
   type: "t2.medium"
   key_name: "training"
   security_group_ids:
-    - "sg-dc5409a6"
-  subnet_id: "subnet-987484fe"
+    - "sg-f3b33794"
 student:
   ami: "ami-6a14b112"
   type: "t2.medium"
   key_name: "training"
   security_group_ids:
-    - "sg-dc5409a6"
-  subnet_id: "subnet-987484fe"
+    - "sg-f3b33794"
