@@ -1,6 +1,6 @@
 ---
 master:
-  ami: "ami-17ec166f"
+  ami: "ami-75bb700d"
   type: "m4.xlarge"
   key_name: "training"
   security_group_ids:
