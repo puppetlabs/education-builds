@@ -9,15 +9,14 @@ You can access the classroom master using:
   * PE Console: <%= @event[:console] %>
   * Zoom URL: <%= @event[:session_url] %>
 
-<% if @event[:instance_data] %>
+<% windows_nodes = @event[:instance_data].reject {|node| node['password'].nil? } %>
+<% if windows_nodes %>
 Please distribute the Windows instance IP address and Administrator password
 to each student as needed. To log in to a Windows instance, open an RDP client
 and enter the listed IP address.
 
-<% @event[:instance_data].each do |instance, password_data| %>
-<% unless password_data['password'].nil? %>
+<% windows_nodes.each do |instance, password_data| %>
 <%= password_data['name'] %>: <%= password_data['public_ip'] %> / <%= password_data['password'] %>
-<% end %>
 <% end %>
 <% end %>
 
