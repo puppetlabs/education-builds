@@ -6,6 +6,6 @@ runcmd:
 powershell: |
  <powershell>
   $file = "$env:windir\System32\drivers\etc\hosts"
-  "<%= profile['master_ip'] %>  master.puppetlabs.vm master puppet" | Add-Content -PassThru $file
+  "\n<%= profile['master_ip'] %>  master.puppetlabs.vm master puppet" | Add-Content -PassThru $file
  </powershell>
 <% end -%>
