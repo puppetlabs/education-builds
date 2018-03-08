@@ -235,10 +235,11 @@ def install_persistent_modules
   Dir.chdir("/etc/puppetlabs/code-staging") do
     system("PUPPETFILE=/usr/src/build_files/Puppetfile.#{VM_TYPE} PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install")
   end
-  FileUtils.chown('pe-puppet', 'pe-puppet', '/etc/puppetlabs/code-staging')
+  FileUtils.chown_R('pe-puppet', 'pe-puppet', '/etc/puppetlabs/code-staging')
   Dir.chdir("/etc/puppetlabs/code") do
     system("PUPPETFILE=/usr/src/build_files/Puppetfile.#{VM_TYPE} PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install")
   end
+  FileUtils.chown_R('pe-puppet', 'pe-puppet', '/etc/puppetlabs/code')
 end
 
 def apply_bootstrap
