@@ -1,5 +1,4 @@
 forge "http://forge.puppetlabs.com"
-moduledir '/etc/puppetlabs/code/modules'
 
 # The following are modules to be installed on the Learning VM and persist
 # after the build process.

@@ -231,7 +231,15 @@ end
 
 def install_persistent_modules
   cputs "Running r10k Puppetfile install for persistent modules"
-  system("PUPPETFILE=./Puppetfile.#{VM_TYPE} PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install")
+  FileUtils.mkdir_p("/etc/puppetlabs/code-staging")
+  Dir.chdir("/etc/puppetlabs/code-staging") do
+    system("PUPPETFILE=/usr/src/build_files/Puppetfile.#{VM_TYPE} PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install")
+  end
+  FileUtils.chown_R('pe-puppet', 'pe-puppet', '/etc/puppetlabs/code-staging')
+  Dir.chdir("/etc/puppetlabs/code") do
+    system("PUPPETFILE=/usr/src/build_files/Puppetfile.#{VM_TYPE} PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install")
+  end
+  FileUtils.chown_R('pe-puppet', 'pe-puppet', '/etc/puppetlabs/code')
 end
 
 def apply_bootstrap
