@@ -1,36 +1,42 @@
 ---
 master:
+  description: Monolithic Puppet Master VM
   ami: "ami-a75b93c7"
   type: "m4.large"
   key_name: "met"
   security_group_ids:
     - "sg-ee9abc89"
 lon-agent-1324:
-  ami: "ami-86e0ffe7"
-  type: "t2.micro"
+  description: Official Ubuntu 14.04 LTS
+  ami: "ami-3b199243"
+  type: "t1.micro"
   key_name: "met"
   security_group_ids:
     - "sg-ee9abc89"
 pdx-agent-1743:
-  ami: "ami-86e0ffe7"
-  type: "t2.micro"
+  description: Official Ubuntu 14.04 LTS
+  ami: "ami-3b199243"
+  type: "t1.micro"
   key_name: "met"
   security_group_ids:
     - "sg-ee9abc89"
 pdx-agent-1663:
-  ami: "ami-05cf2265"
-  type: "t2.micro"
+  description: Official CentOS 6.x
+  ami: "ami-8b44f2f3"
+  type: "t1.micro"
   key_name: "met"
   security_group_ids:
     - "sg-ee9abc89"
 nyc-agent-4163:
-  ami: "ami-d2c924b2"
-  type: "t2.micro"
+  description: Official CentOS 7.x
+  ami: "ami-75bb700d"
+  type: "t1.micro"
   key_name: "met"
   security_group_ids:
     - "sg-ee9abc89"
 gitlab:
-  ami: "ami-d2c924b2"
+  description: Official CentOS 7.x
+  ami: "ami-75bb700d"
   type: "t2.medium"
   key_name: "met"
   security_group_ids:
