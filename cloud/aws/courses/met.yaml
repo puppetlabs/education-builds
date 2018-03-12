@@ -23,14 +23,14 @@ pdx-agent-1743:
 pdx-agent-1663:
   description: Official CentOS 6.x
   ami: "ami-8b44f2f3"
-  type: "t1.micro"
+  type: "t2.micro"
   key_name: "met"
   security_group_ids:
     - "sg-ee9abc89"
 nyc-agent-4163:
   description: Official CentOS 7.x
   ami: "ami-75bb700d"
-  type: "t1.micro"
+  type: "t2.micro"
   key_name: "met"
   security_group_ids:
     - "sg-ee9abc89"
