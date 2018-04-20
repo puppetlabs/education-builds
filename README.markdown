@@ -1,5 +1,5 @@
 # Bootstrap CentOS VMs for training
-Packer build scripts and tools for master, training, student, or learning VMs, and classroom_in_a_box setup.
+Packer build scripts and tools for master, training, or learning VMs, and classroom_in_a_box setup.
 
 See versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
 
