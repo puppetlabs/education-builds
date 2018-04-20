@@ -11,10 +11,10 @@ See versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
   * `rake setup`
 1. Builds are triggered by a rake task that handles local caching and wraps the
 packer command. To begin a build, run the corresponding rake task, for example
-`rake master_base`. (Details on the available build tasks are included below.)
+`rake build_base['master']`. (Details on the available build tasks are included below.)
 1. To specify which version of PE to use for a base build, use the PE\_FAMILY,
 PE\_VERSION, and PRE\_RELEASE environment variables, for example,
-`PE_FAMILY=2016.3 PRE_RELEASE=true rake learning_base`. See the *Environment variables*
+`PE_FAMILY=2016.3 PRE_RELEASE=true rake build_base['learning']`. See the *Environment variables*
 section below for details on how the correct version is derived from these
 variables.
 
@@ -25,26 +25,23 @@ variables.
 The Rakefile includes rake tasks to build the following VMs:
 
 * training
-  * `training_base`
-  * `training_build`
+  * `build_base['training']`
+  * `build_main['training']`
 
 * master
-  * `master_base`
-  * `master_build`
+  * `build_base['master']`
+  * `build_main['master']`
 
 * learning
-  * `learning_base`
-  * `learning_build`
-
-* student
-  * `student_build` (PE isn't installed, so there is no base build.)
+  * `build_base['learning']`
+  * `build_main['learning']`
 
 In addition, there are several tasks to help with caching, packaging, and
 related processes:
 
 * `cache_pe_installer`
 * `package_learning`
-* `ship_learning`
+* `ship['learning']`
 
 ### Environment Variables
 
@@ -104,11 +101,11 @@ running the setup script. The installer is automatically cached by the
 `cache_pe_installer` rake task, which precedes all base build tasks and selects
 a version of PE based on provided environment variables.
 
-The common configuration options for the training, learning, and master vms
-have been set up in educationbase.json and vm specific variables are set in
-VMNAME.json
+The common configuration options for the training, learning, and master VMs
+have been set up in educationbase.json and VM-specific variables are set in
+*VMNAME*.json
 
-After the base VM is provisioned according to the settings in VMNAME.json, the
+After the base VM is provisioned according to the settings in *VMNAME*.json, the
 bootstrap can be applied using educationbuild.json.
 
 First create a base VM without any bootstrap applied:
@@ -121,10 +118,6 @@ For the training vm follow the same two steps but with training.json:
 - `packer build -var-file=templates/training.json templates/educationbase.json`
 - `packer build -var-file=templates/training.json templates/educationbuild.json`
 
-The Student VM is the only VM running Centos6 so it's build template is all in
-student.json:
-- `packer build templates/student.json`
-
 There are also several AMI builds in templates. These don't require a base build.
 To build these, set up the AWS builder requirements as described in the packer
 documentation and use the following command:
@@ -132,11 +125,10 @@ documentation and use the following command:
 
 ## Vagrant
 There is a Vagrantfile that automates this process and builds on the
-puppetlabs/centos-7.2-x86_64-nocm base box and the puppetlabs/cento-6.6-32-nocm
-base box for the student VM. 
+puppetlabs/centos-7.2-x86_64-nocm base box.
 
 The Vagrant boxes will use the current local files for building rather than 
-checking out the code from github. They have full write access, to be aware that
+checking out the code from GitHub. They have full write access, to be aware that
 new files in the repo be created and existing files may change.
 
 There are three boxes specified.
@@ -153,10 +145,10 @@ To start a learning vagrant box:
 
 ## Building with pre-released modules and code
 To develop the VMs, you need to use modules and other code that haven't yet
-been merged to master or released to the forge.
+been merged to master or released to the Puppet Forge.
 
 The modules used during the VM build are included in `build_files/Puppetfile`.
-See the documentation [here](https://docs.puppet.com/pe/latest/cmgmt_puppetfile.html#creating-and-editing-puppetfiles)
+See the documentation [here](https://puppet.com/docs/pe/latest/code_management/puppetfile.html#creating-and-editing-puppetfiles)
 for detailed information on specifying git refs in a Puppetfile. 
 
 ## Troubleshooting
