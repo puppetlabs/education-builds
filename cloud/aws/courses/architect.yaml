@@ -1,25 +1,25 @@
 ---
 master:
   ami: "ami-17ec166f"
-  type: "m5.xlarge"
+  type: "m4.xlarge"
   key_name: "training"
   security_group_ids:
     - "sg-3004c848"
 student:
   ami: "ami-3ed71246"
-  type: "m5.large"
+  type: "m3.large"
   key_name: "training"
   security_group_ids:
     - "sg-3004c848"
 proxy:
   ami: "ami-3ed71246"
-  type: "m5.large"
+  type: "m3.large"
   key_name: "training"
   security_group_ids:
     - "sg-3004c848"
 instructor:
   ami: "ami-3ed71246"
-  type: "m5.large"
+  type: "m3.large"
   key_name: "training"
   security_group_ids:
     - "sg-3004c848"
