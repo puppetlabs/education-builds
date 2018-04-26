@@ -11,7 +11,7 @@ create an AMI from that.
 1. Configure appropriately and start it up.
     * Choose reasonable defaults for disk, etc.
     * Tag the instance following company standards.
-        * https://confluence.puppetlabs.com/display/OPS/Amazon+Cloud+Management+Standards+-+Tags+and+Tagging
+        * https://confluence.puppetlabs.com/display/SRE/Amazon+Cloud+Management+Standards+-+Tags+and+Tagging
     * Generally you'll want to use the `training` keypair.
 1. SSH to the new node.
     * `ssh -i ~/.ssh/training.pem centos@[address]`
