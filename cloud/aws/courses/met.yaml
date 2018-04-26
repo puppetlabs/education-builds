@@ -2,7 +2,7 @@
 master:
   description: Monolithic Puppet Master VM
   ami: "ami-a75b93c7"
-  type: "m5.large"
+  type: "m4.large"
   key_name: "met"
   security_group_ids:
     - "sg-ee9abc89"
