@@ -12,11 +12,14 @@ create an AMI from that.
     * Choose reasonable defaults for disk, etc.
     * Tag the instance following company standards.
         * https://confluence.puppetlabs.com/display/SRE/Amazon+Cloud+Management+Standards+-+Tags+and+Tagging
+    * If this running instance will be used to generate a new standard AMI for virtual classroom use, the only required tag at this time is `termination_date` with a sufficiently long lifetime. Once the new AMI is created and launched by `vcmanager` in the future, all other required tags will be added as specified in the SRE document.
     * Generally you'll want to use the `training` keypair.
 1. SSH to the new node.
     * `ssh -i ~/.ssh/training.pem centos@[address]`
+1. Become root with `sudo su`
 1. Configure Cloud Init
-    * Install one or more `.cfg` files to `/etc/cloud/cloud.cfg.d/`
+    * Install one or more `.cfg` files to `/etc/cloud/cloud.cfg.d/` (including https://github.com/puppetlabs/education-builds/blob/master/cloud/aws/ami/99_provisioning.cfg if generating a new virtual classroom AMI - see below)
+1. Perform other customizations as needed, e.g. `yum update`, etc.
 1. Right click in the AWS Console and create an image.
 1. Please name it descriptively.
 
