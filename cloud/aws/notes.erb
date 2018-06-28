@@ -10,14 +10,15 @@ You can access the classroom master using:
   * Zoom URL: <%= @event[:session_url] %>
 
 <% windows_nodes = @event[:instance_data].reject {|instance, password_data| password_data['password'].nil? } %>
-<% if windows_nodes %>
-Please distribute the Windows instance IP address and Administrator password
-to each student as needed. To log in to a Windows instance, open an RDP client
-and enter the listed IP address.
 
-<% windows_nodes.each do |instance, password_data| %>
-<%= password_data['name'] %>: <%= password_data['public_ip'] %> / <%= password_data['password'] %>
-<% end %>
+<% if windows_nodes && !windows_nodes.empty? %>
+  Please distribute the Windows instance IP address and Administrator password
+  to each student as needed. To log in to a Windows instance, open an RDP client
+  and enter the listed IP address.
+
+  <% windows_nodes.each do |instance, password_data| %>
+    <%= password_data['name'] %>: <%= password_data['public_ip'] %> / <%= password_data['password'] %>
+  <% end %>
 <% end %>
 
 This machine will be shut down on <%= @event[:termination_date] %>.
