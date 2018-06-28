@@ -11,7 +11,7 @@ You can access the classroom master using:
 
 <% windows_nodes = @event[:instance_data].reject {|instance, password_data| password_data['password'].nil? } %>
 
-<% if windows_nodes && !windows_nodes.empty? %>
+<% if !windows_nodes.empty? %>
   Please distribute the Windows instance IP address and Administrator password
   to each student as needed. To log in to a Windows instance, open an RDP client
   and enter the listed IP address.
