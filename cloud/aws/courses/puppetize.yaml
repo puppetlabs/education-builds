@@ -6,13 +6,13 @@ master:
   security_group_ids:
     - "sg-f3b33794"
 instructorwin:
-  ami: "ami-6a14b112"
+  ami: "ami-02820430d832dc390"
   type: "t2.medium"
   key_name: "training"
   security_group_ids:
     - "sg-f3b33794"
 student:
-  ami: "ami-6a14b112"
+  ami: "ami-02820430d832dc390"
   type: "t2.medium"
   key_name: "training"
   security_group_ids:
