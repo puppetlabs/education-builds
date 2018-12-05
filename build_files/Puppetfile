@@ -19,7 +19,7 @@ moduledir './modules/'
 
 mod 'bootstrap',
   :git => 'https://github.com/puppetlabs/pltraining-bootstrap',
-  :ref => 'legacy'
+  :ref => '278c98b0aa3374b39c28eb69f1ad516b83b60fc7'
 
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
@@ -75,6 +75,8 @@ mod 'razorsedge/network'
 mod 'puppet/archive'
 mod 'puppetlabs/powershell'
 mod 'saz/sudo'
+mod 'herculesteam/augeasproviders_core'
+mod 'herculesteam/augeasproviders_grub'
 
 # Dependencies for CIAB
 mod 'puppetlabs/firewall'

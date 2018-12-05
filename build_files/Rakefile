@@ -218,28 +218,32 @@ end
 #####################################
 
 def install_r10k
-  cputs "Installing R10K"
+  cputs "Installing r10K"
   system('PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/gem install r10k --no-RI --no-RDOC')
 end
 
 def install_build_dependency_modules
   cputs "Running r10k Puppetfile install for build dependencies"
-  system('mkdir modules')
   puppetfile_name = ENV['STABLE'] == 'true' ? 'Puppetfile.stable' : 'Puppetfile'
-  system("PUPPETFILE=./#{puppetfile_name} PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install")
+  system("PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install --puppetfile=#{puppetfile_name} --moduledir=/etc/puppetlabs/code/modules")
 end
 
 def install_persistent_modules
   cputs "Running r10k Puppetfile install for persistent modules"
   FileUtils.mkdir_p("/etc/puppetlabs/code-staging")
   Dir.chdir("/etc/puppetlabs/code-staging") do
-    system("PUPPETFILE=/usr/src/build_files/Puppetfile.#{VM_TYPE} PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install")
+    system("PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install --puppetfile=/usr/src/build_files/Puppetfile.#{VM_TYPE} --moduledir=/etc/puppetlabs/code-staging/modules")
   end
   FileUtils.chown_R('pe-puppet', 'pe-puppet', '/etc/puppetlabs/code-staging')
   Dir.chdir("/etc/puppetlabs/code") do
-    system("PUPPETFILE=/usr/src/build_files/Puppetfile.#{VM_TYPE} PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install")
+    system("PATH=$PATH:/opt/puppetlabs/puppet/bin:/usr/local/bin /opt/puppetlabs/puppet/bin/r10k puppetfile install --puppetfile=/usr/src/build_files/Puppetfile.#{VM_TYPE} --moduledir=/etc/puppetlabs/code/modules")
   end
   FileUtils.chown_R('pe-puppet', 'pe-puppet', '/etc/puppetlabs/code')
+end
+
+def list_installed_modules
+  cputs "Listing currently installed modules"
+  system("PATH=$PATH:/opt/puppetlabs/puppet/bin puppet module list --tree")
 end
 
 def apply_bootstrap
