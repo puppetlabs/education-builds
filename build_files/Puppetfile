@@ -19,7 +19,7 @@ moduledir './modules/'
 
 mod 'bootstrap',
   :git => 'https://github.com/puppetlabs/pltraining-bootstrap',
-  :ref => '278c98b0aa3374b39c28eb69f1ad516b83b60fc7'
+  :ref => 'legacy'
 
 mod 'localrepo',
   :git => 'https://github.com/puppetlabs/pltraining-localrepo'
