@@ -75,6 +75,8 @@ mod 'razorsedge/network'
 mod 'puppet/archive'
 mod 'puppetlabs/powershell'
 mod 'saz/sudo'
+mod 'herculesteam/augeasproviders_core'
+mod 'herculesteam/augeasproviders_grub'
 
 # Dependencies for CIAB
 mod 'puppetlabs/firewall'

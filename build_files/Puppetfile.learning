@@ -11,10 +11,9 @@ forge "http://forge.puppetlabs.com"
 # To fetch a specific version of a forge module, use:
 #   mod 'pltraining/rbac', '1.0.1'
 # To fetch a ref (commit, branch, or tag) from a git repo, use:
-#   mod 'bootstrap', 
-#     :git => 'https://github.com/puppetlabs/pltraining-bootstrap'
+#   mod 'bootstrap',
+#     :git => 'https://github.com/puppetlabs/pltraining-bootstrap',
 #     :ref => 'ref-goes-here'
-
 
 mod 'dockeragent',
   :git => 'https://github.com/puppetlabs/pltraining-dockeragent'

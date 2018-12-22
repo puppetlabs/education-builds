@@ -6,13 +6,19 @@ See versioned release notes at [ReleaseNotes.md](ReleaseNotes.md).
 ## Usage
 
 1. If you are looking for info on `classroom_in_a_box`, look in that directory for a [README.md](classroom_in_a_box/README.md) file for instructions on how to set up a classroom_in_a_box machine.
-1. Install virtualbox, packer, and vmware ovftool and ensure the binaries are in the path.
-1. Run setup task to download and deploy base images:
-  * `rake setup`
-1. Builds are triggered by a rake task that handles local caching and wraps the
+2. Install virtualbox, packer, vmware ovftool, bundler, and Xcode Command-Line Tools and ensure the binaries are in the path.
+    * Install Bundler
+      * `sudo gem install bundler`
+    * Install XCode Command-Line Tools
+      * `sudo xcode-select --install`
+      * `sudo xcodebuild -license`
+3. Run setup task to download and deploy base images:
+    * `bundle install`
+    * `rake setup`
+4. Builds are triggered by a rake task that handles local caching and wraps the
 packer command. To begin a build, run the corresponding rake task, for example
 `rake build_base['master']`. (Details on the available build tasks are included below.)
-1. To specify which version of PE to use for a base build, use the PE\_FAMILY,
+5. To specify which version of PE to use for a base build, use the PE\_FAMILY,
 PE\_VERSION, and PRE\_RELEASE environment variables, for example,
 `PE_FAMILY=2016.3 PRE_RELEASE=true rake build_base['learning']`. See the *Environment variables*
 section below for details on how the correct version is derived from these
