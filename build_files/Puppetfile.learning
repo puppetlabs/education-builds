@@ -18,8 +18,11 @@ forge "http://forge.puppetlabs.com"
 mod 'dockeragent',
   :git => 'https://github.com/puppetlabs/pltraining-dockeragent'
 
-mod 'garethr/docker'
+mod 'puppetlabs/docker'
+mod 'puppetlabs/apt'
+mod 'puppetlabs/powershell'
+mod 'puppetlabs/reboot'
 mod 'puppetlabs/stdlib'
-mod 'puppetlabs/apt', '2.4.0'
+mod 'puppetlabs/translate'
 mod 'stahnma/epel'
-mod 'puppetlabs/concat', '2.2.0'
+mod 'puppetlabs/concat'
