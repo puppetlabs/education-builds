@@ -1,3 +1,8 @@
+## Version 6.6
+* Updated to use PE 2019.0.1
+* Upgraded to currently-supported modules
+* Increased VM RAM size from 3Gb to 4Gb
+
 ## Version 6.1
 * Japanese i18n for learning VM
 * Automated tests for LVM
