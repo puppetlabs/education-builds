@@ -1,3 +1,6 @@
+## Version 6.7
+* Incorporated latest Japanese translation of quest guide
+
 ## Version 6.6
 * Updated to use PE 2019.0.1
 * Upgraded to currently-supported modules
