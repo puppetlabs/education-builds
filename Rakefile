@@ -8,7 +8,6 @@ PTB_VERSION = YAML.load_file('./build_files/version.yaml')
 STABLE = ENV['STABLE'] || 'false'
 GIT_BRANCH =  Dir.chdir(File.dirname(__FILE__)){ `git branch | grep \\* | cut -d ' ' -f2` }.strip
 
-FILESHARE_SERVER = '//guest@int-resources.ops.puppetlabs.net/Resources'
 STDOUT.sync = true
 
 ##############################################################
@@ -108,18 +107,18 @@ end
 def get_base_vm(image_type)
 	if image_type == "student" then
 		image_box="centos-6.6-i386-virtualbox-nocm-1.0.3.box"
+                download_url="https://app.terraform.io/puppetlabs/boxes/centos-6.2-32-nocm/versions/1.0.3/providers/virtualbox_desktop.box"
 	else
 		image_box="centos-7.2-x86_64-virtualbox-nocm-1.0.1.box"
+                download_url="https://app.vagrantup.com/puppetlabs/boxes/centos-7.2-64-nocm/versions/1.0.1/providers/virtualbox.box"
 	end
 	vagrant_base_url="http://int-resources.ops.puppetlabs.net/Vagrant%20images"
-  #Public download URL: https://atlas.hashicorp.com/puppetlabs/boxes/centos-7.2-64-nocm/versions/1.0.1/providers/virtualbox_desktop.box
-  #Public download URL: https://atlas.hashicorp.com/puppetlabs/boxes/centos-6.6-32-nocm/versions/1.0.3/providers/virtualbox_desktop.box
 
   `rm -rf output/#{image_type}-base-virtualbox`
   `mkdir output/#{image_type}-base-virtualbox`
 
   puts "Downloading #{image_type} base image"
-  `curl #{vagrant_base_url}/#{image_box} -o output/#{image_type}-base-virtualbox/#{image_box}`
+  `curl -L #{download_url} -o output/#{image_type}-base-virtualbox/#{image_box}`
   `cd output/#{image_type}-base-virtualbox/; tar xzvf #{image_box}`
   `mv output/#{image_type}-base-virtualbox/*.ovf output/#{image_type}-base-virtualbox/#{image_type}-base.ovf`
 end
@@ -309,52 +308,6 @@ def bundle_learning_vm
   create_md5("learning")
 end
 
-def mount_fileshare
-  begin
-    `mkdir -p /tmp/fileshare && mount_smbfs #{FILESHARE_SERVER} /tmp/fileshare`
-  rescue
-    puts "There was an error mounting the #{FILESHARE_SERVER} to /tmp/fileshare"
-    puts "Pleause check that this server isn't already mounted"
-    exit 1
-  end
-end
-
-def unmount_fileshare
-  `umount /tmp/fileshare`
-end
-
-def ship_to_fileshare(path, destination)
-  FileUtils.cp(path, destination)
-  FileUtils.chmod(0644, File.join(destination, File.basename(path)))
-end
-
-def ship_directory
-  "/tmp/fileshare/EducationVMs/learning/puppet-#{pe_version}-learning-#{PTB_VERSION[:major]}.#{PTB_VERSION[:minor]}/"
-end
-
-def update_symlink
-  Dir.chdir(ship_directory) do
-    if PRE_RELEASE
-      `ln -sf learning_puppet_vm.zip ../learning_beta.zip`
-      `ln -sf learning_puppet_vm.zip.md5 ../learning_beta.zip.md5`
-    else
-      `ln -sf learning_puppet_vm.zip ../learning_latest.zip`
-      `ln -sf learning_puppet_vm.zip.md5 ../learning_latest.zip.md5`
-    end 
-  end
-end
-
-def ship_vm_files(vm_type)
-  mount_fileshare
-  `mkdir -p #{ship_directory}`
-  ship_to_fileshare(vm_path(vm_type), ship_directory)
-  ship_to_fileshare(vm_path(vm_type) + ".md5", ship_directory)
-  if vm_type == "learning"
-    update_symlink
-  end
-  unmount_fileshare
-end
-
 #################################################
 #                                               #
 # Rake tasks for prepping the local environment #
@@ -384,7 +337,6 @@ end
 desc "Setup build environment"
 task :setup => [:set_up_cache_dirs] do
 	get_base_vm "education"
-	get_base_vm "student"
 end
 
 ##################
@@ -432,11 +384,6 @@ task :package_learning do
     exit 1
   end
   bundle_learning_vm
-end
-
-desc "Ship VM"
-task :ship, [:vm_name] do |t, args|
-  ship_vm_files(args[:vm_name])
 end
 
 desc "Create PR to release branch"
