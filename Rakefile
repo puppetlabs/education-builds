@@ -105,14 +105,13 @@ def create_cache_directories
 end
 
 def get_base_vm(image_type)
-	if image_type == "student" then
-		image_box="centos-6.6-i386-virtualbox-nocm-1.0.3.box"
-                download_url="https://app.terraform.io/puppetlabs/boxes/centos-6.2-32-nocm/versions/1.0.3/providers/virtualbox_desktop.box"
-	else
-		image_box="centos-7.2-x86_64-virtualbox-nocm-1.0.1.box"
-                download_url="https://app.vagrantup.com/puppetlabs/boxes/centos-7.2-64-nocm/versions/1.0.1/providers/virtualbox.box"
-	end
-	vagrant_base_url="http://int-resources.ops.puppetlabs.net/Vagrant%20images"
+  if image_type == "student" then
+    image_box="centos-6.6-i386-virtualbox-nocm-1.0.3.box"
+    download_url="https://app.terraform.io/puppetlabs/boxes/centos-6.2-32-nocm/versions/1.0.3/providers/virtualbox_desktop.box"
+  else
+    image_box="centos-7.2-x86_64-virtualbox-nocm-1.0.1.box"
+    download_url="https://app.vagrantup.com/puppetlabs/boxes/centos-7.2-64-nocm/versions/1.0.1/providers/virtualbox.box"
+  end
 
   `rm -rf output/#{image_type}-base-virtualbox`
   `mkdir output/#{image_type}-base-virtualbox`
