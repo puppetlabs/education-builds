@@ -18,7 +18,7 @@ forge "http://forge.puppetlabs.com"
 mod 'dockeragent',
   :git => 'https://github.com/puppetlabs/pltraining-dockeragent'
 
-mod 'puppetlabs/docker', '3.1.0'
+mod 'puppetlabs/docker', '3.10.0'
 mod 'puppetlabs/apt', '6.3.0'
 mod 'puppetlabs/powershell', '2.2.0'
 mod 'puppetlabs/reboot', '2.1.2'
