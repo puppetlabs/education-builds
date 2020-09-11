@@ -1,3 +1,9 @@
+## Version 6.11
+* Updated to use PE 2019.8.1
+* Incorporated latest version of the Learning VM quest guide
+
+## Version 6.10
+
 ## Version 6.9
 * Dropped Japanese localization in the Learning VM quest guide
 
